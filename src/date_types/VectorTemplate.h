@@ -1,4 +1,5 @@
 #pragma once
+
 template <typename T>
 class _Vec2d {
 private:

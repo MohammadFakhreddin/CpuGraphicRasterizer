@@ -48,7 +48,7 @@ class _Matrix{
       assert(rhs.height==height);
       T** resultsCell = new T*[width];
       for(int i=0;i<width;i++){
-        resultsCell[i] = new T[height];
+        resultsCell[width] = new T[height];
         for(int j=0;j<height;j++){
           resultsCell[i][j] = rhs.cells[i][j] + cells[i][j];
         }
@@ -74,39 +74,22 @@ class _Matrix{
       return this;
     }
     _Matrix<T> operator*(_Matrix<T> rhs){
-      assert(rhs.width==height);
-      T** resultCells = new T*[width];
-      for(int i=0;i<width;i++){
-        resultCells[i] = new T[rhs.height];
-        for(int j=0;j<height;j++){
+      assert(rhs.height==width);
+      auto finalWidth = rhs.width;
+      auto finalHeight = height;
+      T** resultCells = new T*[finalWidth];
+      int i,j,k,p; 
+      for(i=0;i<finalWidth;i++){
+        resultCells[i] = new T[finalHeight];
+         for(j=0;j<finalHeight;j++){
           resultCells[i][j] = 0;
-          for(int k=0;k<width;k++){
-            for(int p=0;p<rhs.height;p++){
-              resultCells[i][j] += cells[k][j] + rhs.cells[i][p]; 
-            }
+          for(k=0,p=0;k<width;k++,p++){
+            resultCells[i][j] += cells[k][j] * rhs.cells[i][p]; 
           }
         }
       }
-      _Matrix<T> resultMatrix(width,rhs.height,resultCells);
+      _Matrix<T> resultMatrix(finalWidth,finalHeight,resultCells);
       return resultMatrix;
-    }
-    _Matrix<T>& operator*=(_Matrix<T> rhs){
-      assert(rhs.width==height);
-      T** resultCells = new T[width][rhs.height];
-      for(int i=0;i<width;i++){
-        resultCells[i] = new T[rhs.height];
-        for(int j=0;j<height;j++){
-          resultCells[i][j] = 0;
-          for(int k=0;k<width;k++){
-            for(int p=0;p<rhs.height;p++){
-              resultCells[i][j] += cells[k][j] + rhs.cells[i][p]; 
-            }
-          }
-        }
-      }
-      this->cells = resultCells;
-      this->height = rhs.height;
-      return this;
     }
     int getWidth(){
       return width;
@@ -118,13 +101,16 @@ class _Matrix{
       std::cout<<"---Printing matrix----"<<std::endl;
       std::cout<<"Width:"<<width<<std::endl;
       std::cout<<"Height:"<<height<<std::endl;
-      for(int i=0;i<width;i++){
-        for(int j=0;j<height;j++){
-          std::cout<<" "<<cells[i][j]<<" ";
+      for(int i=0;i<height;i++){
+        for(int j=0;j<width;j++){
+          std::cout<<" "<<cells[j][i]<<" ";
         }
         std::cout<<std::endl;
       }
       std::cout<<"-----------------------"<<std::endl;
+    }
+    T get(int x,int y){
+      return this->cells[x][y];
     }
 };
 
