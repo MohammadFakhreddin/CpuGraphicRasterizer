@@ -1,0 +1,44 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/Constants.h
+math.h
+-
+TargetConditionals.h
+-
+
+/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/OpenGlHeaders.h
+GLUT/glut.h
+-
+GL/glut.h
+-
+
+/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/date_types/MatrixTemplate.h
+assert.h
+-
+iostream
+-
+
+/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/main.cpp
+Constants.h
+/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/Constants.h
+utils/screen/ScreenSize.h
+/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/utils/screen/ScreenSize.h
+OpenGlHeaders.h
+/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/OpenGlHeaders.h
+memory
+-
+iostream
+-
+date_types/MatrixTemplate.h
+/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/date_types/MatrixTemplate.h
+
+/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/utils/screen/ScreenSize.h
+../../Constants.h
+/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/Constants.h
+
