@@ -43,6 +43,19 @@ class _Matrix{
       }
       delete initialCellValue;
     }
+    _Matrix<T>& operator=(_Matrix<T> rhs){
+      width = rhs.width;
+      height = rhs.height;
+      delete cells;
+      cells = new T*[width];
+      for(int i=0;i<width;i++){
+        cells[i] = new T[height];
+        for(int j=0;j<height;j++){
+          cells[i][j] = rhs.cells[i][j];
+        }
+      }
+      return *this;
+    }
     _Matrix<T> operator+(_Matrix<T> rhs){
       assert(rhs.width==width);
       assert(rhs.height==height);
@@ -110,7 +123,25 @@ class _Matrix{
       std::cout<<"-----------------------"<<std::endl;
     }
     T get(int x,int y){
+      assert(x<width);
+      assert(y<height);
       return this->cells[x][y];
+    }
+    void set(int x,int y,T value){
+      assert(x<width);
+      assert(y<height);
+      this->cells[x][y] = value;
+    }
+    _Matrix<T> clone(){
+      T** cellsCopy = new T*[width];
+      int i,j;
+      for(i=0;i<width;i++){
+        cellsCopy[i] = new T[height];
+        for(j=0;j<height;j++){
+          cellsCopy[i][j] = cells[i][j];
+        }
+      }
+      return _Matrix<T>(width,height,cellsCopy);
     }
 };
 

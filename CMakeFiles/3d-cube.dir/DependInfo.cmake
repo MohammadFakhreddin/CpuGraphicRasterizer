@@ -4,6 +4,8 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
+  "/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/3d_shape/Shape3d.cpp" "/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/CMakeFiles/3d-cube.dir/src/3d_shape/Shape3d.cpp.o"
+  "/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/application/Application.cpp" "/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/CMakeFiles/3d-cube.dir/src/application/Application.cpp.o"
   "/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/main.cpp" "/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/CMakeFiles/3d-cube.dir/src/main.cpp.o"
   "/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/utils/screen/ScreenSize.cpp" "/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/CMakeFiles/3d-cube.dir/src/utils/screen/ScreenSize.cpp.o"
   )

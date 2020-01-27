@@ -2,18 +2,19 @@
 #include "utils/screen/ScreenSize.h"
 #include "OpenGlHeaders.h"
 #include <memory>
-// #include "application/Application.h"
+#include "application/Application.h"
 #include <iostream>
 #include "date_types/MatrixTemplate.h"
-// std::unique_ptr<Application> application;
+
+std::unique_ptr<Application> application;
 
 void update(){
-	// application->update();
+	application->update();
 }
 
 void render(){
     glClear( GL_COLOR_BUFFER_BIT);
-	// application->render();
+    application->render();
     glFlush();
 }
 
@@ -40,10 +41,9 @@ int main(int argc, char** argv) {
 		realScreenHeight
 	);
     glutInitWindowSize(Constants::Window::screenWidth,Constants::Window::screenHeight);
-    glutInitWindowPosition(0,0);
-    // glutInitWindowPosition(
-    //         (int)(realScreenWidth/2 - Constants::Window::screenWidth/2),
-    //         (int)(realScreenHeight/2 - Constants::Window::screenHeight/2));
+    glutInitWindowPosition(
+            (int)(realScreenWidth/2 - Constants::Window::screenWidth/2),
+            (int)(realScreenHeight/2 - Constants::Window::screenHeight/2));
 #endif
     glutCreateWindow(Constants::Window::appName);
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f); // Set background color to black and opaque
@@ -63,7 +63,7 @@ int main(int argc, char** argv) {
     matrix1.print();
     auto matrix3 = matrix2 * matrix1;
     matrix3.print();
-    // application = std::make_unique<Application>();
+    application = std::unique_ptr<Application>();
 	glutTimerFunc(0, timer, 0);
 	glutDisplayFunc(mainLoop);
     glutMainLoop();

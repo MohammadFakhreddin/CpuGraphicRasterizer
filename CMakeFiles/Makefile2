@@ -74,12 +74,12 @@ clean: CMakeFiles/3d-cube.dir/clean
 CMakeFiles/3d-cube.dir/all:
 	$(MAKE) -f CMakeFiles/3d-cube.dir/build.make CMakeFiles/3d-cube.dir/depend
 	$(MAKE) -f CMakeFiles/3d-cube.dir/build.make CMakeFiles/3d-cube.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/CMakeFiles --progress-num=1,2,3 "Built target 3d-cube"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/CMakeFiles --progress-num=1,2,3,4,5 "Built target 3d-cube"
 .PHONY : CMakeFiles/3d-cube.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/3d-cube.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/CMakeFiles 3
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/CMakeFiles 5
 	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/3d-cube.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/CMakeFiles 0
 .PHONY : CMakeFiles/3d-cube.dir/rule

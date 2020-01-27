@@ -6,10 +6,20 @@
 
 #IncludeRegexTransform: 
 
-/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/Constants.h
+/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/3d_shape/Shape3d.cpp
+Shape3d.h
+/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/3d_shape/Shape3d.h
+assert.h
+-
+../OpenGlHeaders.h
+/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/OpenGlHeaders.h
 math.h
 -
-TargetConditionals.h
+
+/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/3d_shape/Shape3d.h
+../date_types/MatrixTemplate.h
+/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/date_types/MatrixTemplate.h
+vector
 -
 
 /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/OpenGlHeaders.h
@@ -23,22 +33,4 @@ assert.h
 -
 iostream
 -
-
-/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/main.cpp
-Constants.h
-/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/Constants.h
-utils/screen/ScreenSize.h
-/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/utils/screen/ScreenSize.h
-OpenGlHeaders.h
-/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/OpenGlHeaders.h
-memory
--
-iostream
--
-date_types/MatrixTemplate.h
-/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/date_types/MatrixTemplate.h
-
-/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/utils/screen/ScreenSize.h
-../../Constants.h
-/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/Constants.h
 

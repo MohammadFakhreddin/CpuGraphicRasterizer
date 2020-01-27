@@ -1,0 +1,64 @@
+# Prerequisites
+*.d
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Fortran module files
+*.mod
+*.smod
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
+.idea
+.idea/*
+
+cmake-build-debug
+cmake-build-debug/*
+cmake-build-release/*
+cmake-build-release
+CMakeCache.txt
+CMakeFiles/*
+CMakeFiles
+*.vcxproj
+*.vcxproj.filters
+*.vcxproj.user
+cmake_install.cmake
+*.sln
+.vs/*
+.vs
+Debug/*
+3d-cube.dir/*
+.idea/*
+.idea
+Win32/*
+Win32
+Makefile
+*.cbp
+settings.json
+
+.DS_Store
+
+*.o
+
+3d-cube

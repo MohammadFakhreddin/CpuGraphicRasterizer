@@ -123,6 +123,60 @@ depend:
 	$(MAKE) -f CMakeFiles/3d-cube.dir/build.make CMakeFiles/3d-cube.dir/build
 .PHONY : 3d-cube/fast
 
+src/3d_shape/Shape3d.o: src/3d_shape/Shape3d.cpp.o
+
+.PHONY : src/3d_shape/Shape3d.o
+
+# target to build an object file
+src/3d_shape/Shape3d.cpp.o:
+	$(MAKE) -f CMakeFiles/3d-cube.dir/build.make CMakeFiles/3d-cube.dir/src/3d_shape/Shape3d.cpp.o
+.PHONY : src/3d_shape/Shape3d.cpp.o
+
+src/3d_shape/Shape3d.i: src/3d_shape/Shape3d.cpp.i
+
+.PHONY : src/3d_shape/Shape3d.i
+
+# target to preprocess a source file
+src/3d_shape/Shape3d.cpp.i:
+	$(MAKE) -f CMakeFiles/3d-cube.dir/build.make CMakeFiles/3d-cube.dir/src/3d_shape/Shape3d.cpp.i
+.PHONY : src/3d_shape/Shape3d.cpp.i
+
+src/3d_shape/Shape3d.s: src/3d_shape/Shape3d.cpp.s
+
+.PHONY : src/3d_shape/Shape3d.s
+
+# target to generate assembly for a file
+src/3d_shape/Shape3d.cpp.s:
+	$(MAKE) -f CMakeFiles/3d-cube.dir/build.make CMakeFiles/3d-cube.dir/src/3d_shape/Shape3d.cpp.s
+.PHONY : src/3d_shape/Shape3d.cpp.s
+
+src/application/Application.o: src/application/Application.cpp.o
+
+.PHONY : src/application/Application.o
+
+# target to build an object file
+src/application/Application.cpp.o:
+	$(MAKE) -f CMakeFiles/3d-cube.dir/build.make CMakeFiles/3d-cube.dir/src/application/Application.cpp.o
+.PHONY : src/application/Application.cpp.o
+
+src/application/Application.i: src/application/Application.cpp.i
+
+.PHONY : src/application/Application.i
+
+# target to preprocess a source file
+src/application/Application.cpp.i:
+	$(MAKE) -f CMakeFiles/3d-cube.dir/build.make CMakeFiles/3d-cube.dir/src/application/Application.cpp.i
+.PHONY : src/application/Application.cpp.i
+
+src/application/Application.s: src/application/Application.cpp.s
+
+.PHONY : src/application/Application.s
+
+# target to generate assembly for a file
+src/application/Application.cpp.s:
+	$(MAKE) -f CMakeFiles/3d-cube.dir/build.make CMakeFiles/3d-cube.dir/src/application/Application.cpp.s
+.PHONY : src/application/Application.cpp.s
+
 src/main.o: src/main.cpp.o
 
 .PHONY : src/main.o
@@ -186,6 +240,12 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
 	@echo "... 3d-cube"
+	@echo "... src/3d_shape/Shape3d.o"
+	@echo "... src/3d_shape/Shape3d.i"
+	@echo "... src/3d_shape/Shape3d.s"
+	@echo "... src/application/Application.o"
+	@echo "... src/application/Application.i"
+	@echo "... src/application/Application.s"
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"
