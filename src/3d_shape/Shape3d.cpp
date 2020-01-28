@@ -129,8 +129,8 @@ void Shape3d::rotateY(float y){
   rotationDegreeMatrix.set(1,0,rotationDegreeMatrix.get(1,0) + y);
   rotationValueYMatrix.set(0,0,cosf(rotationDegreeMatrix.get(1,0)));
   rotationValueYMatrix.set(0,2,sinf(rotationDegreeMatrix.get(1,0)));
-  rotationValueYMatrix.set(1,0,-sinf(rotationDegreeMatrix.get(1,0))); 
-  rotationValueYMatrix.set(1,2,cosf(rotationDegreeMatrix.get(1,0))); 
+  rotationValueYMatrix.set(2,0,-sinf(rotationDegreeMatrix.get(1,0))); 
+  rotationValueYMatrix.set(2,2,cosf(rotationDegreeMatrix.get(1,0))); 
 }
 
 void Shape3d::rotateZ(float z){
