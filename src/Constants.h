@@ -13,7 +13,7 @@ namespace Constants {
 		static constexpr double piDouble = _piTemplate<double>;
 	};
 	namespace Window {
-		static constexpr char appName[] = "Perspective camera";
+		static constexpr char appName[] = "3D CUBE";
 		static constexpr int screenWidth = 800;
 		static constexpr int screenHeight = 600;
 	};

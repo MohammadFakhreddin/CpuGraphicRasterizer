@@ -15,6 +15,8 @@ assert.h
 /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/OpenGlHeaders.h
 math.h
 -
+iostream
+-
 
 /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/3d_shape/Shape3d.h
 ../date_types/MatrixTemplate.h
@@ -32,5 +34,9 @@ GL/glut.h
 assert.h
 -
 iostream
+-
+vector
+-
+memory
 -
 

@@ -49,23 +49,23 @@ int main(int argc, char** argv) {
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f); // Set background color to black and opaque
     glViewport(0,0,Constants::Window::screenWidth,Constants::Window::screenHeight);
     glOrtho(0.0, Constants::Window::screenWidth, 0.0, Constants::Window::screenHeight, -1.0, 1.0);
-    MatrixInt matrix2(3,1,new int*[3]{
-        new int[1]{1},
-        new int[1]{2},
-        new int[1]{3},
-    });
-    matrix2.print();
-    MatrixInt matrix1(3,3,new int*[3]{
-        new int[3]{1,2,3},
-        new int[3]{4,5,6},
-        new int[3]{7,8,9}
-    });
-    matrix1.print();
-    auto matrix3 = matrix2 * matrix1;
-    matrix3.print();
-    application = std::unique_ptr<Application>();
-	glutTimerFunc(0, timer, 0);
+    application = std::unique_ptr<Application>(new Application());
+    glutTimerFunc(0, timer, 0);
 	glutDisplayFunc(mainLoop);
     glutMainLoop();
+    // MatrixInt matrix2(3,1,new int*[3]{
+    //     new int[1]{1},
+    //     new int[1]{2},
+    //     new int[1]{3},
+    // });
+    // matrix2.print();
+    // MatrixInt matrix1(3,3,new int*[3]{
+    //     new int[3]{1,2,3},
+    //     new int[3]{4,5,6},
+    //     new int[3]{7,8,9}
+    // });
+    // matrix1.print();
+    // auto matrix3 = matrix2 * matrix1;
+    // matrix3.print();
     return 0;
 }

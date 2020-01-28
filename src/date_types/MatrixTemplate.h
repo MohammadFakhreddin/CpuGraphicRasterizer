@@ -2,56 +2,44 @@
 
 #include <assert.h>
 #include <iostream>
+#include <vector>
+#include <memory>
 
 template <typename T>
 class _Matrix{
   private:
     int width;
     int height;
-    T** cells;
+    std::vector<std::vector<T>> cells;
   public:
-    ~_Matrix()
-    {
-      delete cells;
-    }
     _Matrix(int width,int height,T cellDefaultValue)
       :
       width(width),
       height(height)
     {
-      this->cells = new T*[width];
       int i,j;
       for(i=0;i<width;i++){
-        this->cells[i] = new T[height];
+        cells.emplace_back(std::vector<T>());
         for(j=0;j<height;j++){
-          this->cells[i][j] = cellDefaultValue;
+          cells.at(i).emplace_back(cellDefaultValue);
         }
       }
     }
-    _Matrix(int width,int height,T** initialCellValue)
+    _Matrix(int width,int height,std::vector<std::vector<T>> initialCellValue)
       :
       width(width),
       height(height)
     {
-      this->cells = new T*[width];
-      int i,j;
-      for(i=0;i<width;i++){
-        this->cells[i] = new T[height];
-        for(j=0;j<height;j++){
-          this->cells[i][j] = initialCellValue[i][j];
-        }
-      }
-      delete initialCellValue;
+      this->cells = initialCellValue;
     }
     _Matrix<T>& operator=(_Matrix<T> rhs){
       width = rhs.width;
       height = rhs.height;
-      delete cells;
-      cells = new T*[width];
+      cells.erase(cells.begin(),cells.end());
       for(int i=0;i<width;i++){
-        cells[i] = new T[height];
+        cells.emplace_back(std::vector<T>());
         for(int j=0;j<height;j++){
-          cells[i][j] = rhs.cells[i][j];
+          cells.at(i).emplace_back(rhs.cells.at(i).at(j));
         }
       }
       return *this;
@@ -59,45 +47,28 @@ class _Matrix{
     _Matrix<T> operator+(_Matrix<T> rhs){
       assert(rhs.width==width);
       assert(rhs.height==height);
-      T** resultsCell = new T*[width];
+      std::vector<std::vector<T>> resultsCell;
       for(int i=0;i<width;i++){
-        resultsCell[width] = new T[height];
+        resultsCell.emplace_back(std::vector<T>());
         for(int j=0;j<height;j++){
-          resultsCell[i][j] = rhs.cells[i][j] + cells[i][j];
+          resultsCell.at(i).emplace_back(rhs.cells.at(i).at(j) + cells.at(i).at(j));
         }
       }
       _Matrix<T> result(width,height,resultsCell);
       return result;
     }
-    _Matrix<T>& operator+=(_Matrix<T> rhs){
-      assert(rhs.width==width);
-      assert(rhs.height==height);
-      for(int i=0;i<width;i++){
-        for(int j=0;j<height;j++){
-          cells[i][j] += rhs.cells[i][j];
-        }
-      }
-      return *this;
-    }
-    _Matrix<T> operator-(_Matrix<T> rhs){
-      return this + -1*rhs;
-    }
-    _Matrix<T> operator-=(_Matrix<T> rhs){
-      this += -1 * rhs;
-      return this;
-    }
     _Matrix<T> operator*(_Matrix<T> rhs){
       assert(rhs.height==width);
       auto finalWidth = rhs.width;
       auto finalHeight = height;
-      T** resultCells = new T*[finalWidth];
+      std::vector<std::vector<T>> resultCells;
       int i,j,k,p; 
       for(i=0;i<finalWidth;i++){
-        resultCells[i] = new T[finalHeight];
+        resultCells.emplace_back(std::vector<T>());
          for(j=0;j<finalHeight;j++){
-          resultCells[i][j] = 0;
+          resultCells.at(i).emplace_back(0);
           for(k=0,p=0;k<width;k++,p++){
-            resultCells[i][j] += cells[k][j] * rhs.cells[i][p]; 
+            resultCells.at(i).at(j) += cells.at(k).at(j) * rhs.cells.at(i).at(p); 
           }
         }
       }
@@ -116,7 +87,7 @@ class _Matrix{
       std::cout<<"Height:"<<height<<std::endl;
       for(int i=0;i<height;i++){
         for(int j=0;j<width;j++){
-          std::cout<<" "<<cells[j][i]<<" ";
+          std::cout<<" "<<cells.at(j).at(i)<<" ";
         }
         std::cout<<std::endl;
       }
@@ -125,20 +96,20 @@ class _Matrix{
     T get(int x,int y){
       assert(x<width);
       assert(y<height);
-      return this->cells[x][y];
+      return this->cells.at(x).at(y);
     }
     void set(int x,int y,T value){
       assert(x<width);
       assert(y<height);
-      this->cells[x][y] = value;
+      this->cells.at(x).at(y) = value;
     }
     _Matrix<T> clone(){
-      T** cellsCopy = new T*[width];
+      std::vector<std::vector<T>> cellsCopy;
       int i,j;
       for(i=0;i<width;i++){
-        cellsCopy[i] = new T[height];
+        cellsCopy.emplace_back(std::vector<T>());
         for(j=0;j<height;j++){
-          cellsCopy[i][j] = cells[i][j];
+          cellsCopy.at(i).emplace_back(cells.at(i).at(j));
         }
       }
       return _Matrix<T>(width,height,cellsCopy);

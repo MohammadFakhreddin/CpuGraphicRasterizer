@@ -2,7 +2,7 @@
 
 #include <memory>
 #include <unordered_map>
-// #include "../3d_shape/Shape3d.h"
+#include "../3d_shape/Shape3d.h"
 
 class Application {
 public:
@@ -23,14 +23,14 @@ public:
 	};
 	static constexpr float shapeTransformSpeed = 10.0f;
 	static constexpr float shapeRotationSpeed = 0.1f;
-	static constexpr float shapeScaleSpeed = 0.01f;
+static constexpr float shapeScaleSpeed = 0.01f;
 	Application();
 	void render();
 	void update();
 	void notifyKeyIsPressed(Application::Buttons);
 	static Application* getInstance();
 private:
-	// std::unique_ptr<Shape3d> shape;
+	std::unique_ptr<Shape3d> shape;
 	static Application* instance;
 	std::unordered_map<Application::Buttons,bool> keyEvents;
 };

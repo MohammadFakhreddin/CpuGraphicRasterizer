@@ -2,6 +2,7 @@
 #include <assert.h>
 #include "../OpenGlHeaders.h"
 #include <math.h>
+#include <iostream>
 
 Edge::Edge(int first,int second)
 :
@@ -32,25 +33,25 @@ Shape3d::Shape3d(std::vector<MatrixFloat> nodes,std::vector<Edge> edges)
   edges(edges),
   transformMatrix(3,1,0.0f),
   rotationDegreeMatrix(3,1,0.0f),
-  rotationValueXMatrix(3,3,new float*[3]{
-    new float[3]{cosf(0),-sinf(0),0},
-    new float[3]{sinf(0),cosf(0),0},
-    new float[3]{0,0,1}
+  rotationValueXMatrix(3,3,std::vector<std::vector<float>>{
+    std::vector<float>{cosf(0),-sinf(0),0},
+    std::vector<float>{sinf(0),cosf(0),0},
+    std::vector<float>{0,0,1}
   }),
-  rotationValueYMatrix(3,3,new float*[3]{
-    new float[3]{cosf(0),0,sinf(0)},
-    new float[3]{0,1,0},
-    new float[3]{-sinf(0),0,cosf(0)}
+  rotationValueYMatrix(3,3,std::vector<std::vector<float>>{
+    std::vector<float>{cosf(0),0,sinf(0)},
+    std::vector<float>{0,1,0},
+    std::vector<float>{-sinf(0),0,cosf(0)}
   }),
-  rotationValueZMatrix(3,3,new float*[3]{
-    new float[3]{1,0,0},
-    new float[3]{0,cosf(0),sinf(0)},
-    new float[3]{0,-sinf(0),cosf(0)}
+  rotationValueZMatrix(3,3,std::vector<std::vector<float>>{
+    std::vector<float>{1,0,0},
+    std::vector<float>{0,cosf(0),sinf(0)},
+    std::vector<float>{0,-sinf(0),cosf(0)}
   }),
-  scaleValueMatrix(3,3,new float*[3]{
-    new float[3]{1,0,0},
-    new float[3]{0,1,0},
-    new float[3]{0,0,1}
+  scaleValueMatrix(3,3,std::vector<std::vector<float>>{
+    std::vector<float>{1,0,0},
+    std::vector<float>{0,1,0},
+    std::vector<float>{0,0,1}
   })
 {
   assert(nodes.size()>0);
@@ -91,8 +92,8 @@ void Shape3d::render(){
   if(nodes.size()>0 && edges.size()>0){
     for(auto& edge:edges){
       glBegin(GL_LINES);
-      glVertex2f(worldPoints.at(edge.getByIndex(0)).get(0,0),worldPoints.at(edge.getByIndex(0)).get(0,1));
-      glVertex2f(worldPoints.at(edge.getByIndex(1)).get(0,0),worldPoints.at(edge.getByIndex(1)).get(0,1));
+      glVertex2f(worldPoints.at(edge.getByIndex(0)).get(0,0),worldPoints.at(edge.getByIndex(0)).get(1,0));
+      glVertex2f(worldPoints.at(edge.getByIndex(1)).get(0,0),worldPoints.at(edge.getByIndex(1)).get(1,0));
       glEnd();
     }
   }
