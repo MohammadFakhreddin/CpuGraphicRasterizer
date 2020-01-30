@@ -55,7 +55,7 @@ Application::Application()
 	glutKeyboardFunc(handleKeyboardEvent);
 	float x = -50;
 	float y = -50;
-	float z = 0;
+	float z = -50;
 	float h = 100;
 	float w = 100;
 	float d = 100;

@@ -21,9 +21,9 @@ public:
 		zoomInButton,
 		zoomOutButton
 	};
-	static constexpr float shapeTransformSpeed = 10.0f;
+	static constexpr float shapeTransformSpeed = 20.0f;
 	static constexpr float shapeRotationSpeed = 0.1f;
-static constexpr float shapeScaleSpeed = 0.01f;
+static constexpr float shapeScaleSpeed = 0.1f;
 	Application();
 	void render();
 	void update();
