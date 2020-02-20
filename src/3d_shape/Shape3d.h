@@ -27,6 +27,7 @@ private:
   MatrixFloat rotationValueYMatrix;
   MatrixFloat rotationValueZMatrix;
   MatrixFloat scaleValueMatrix;
+  MatrixFloat zScaleMatrix;
 public:
   static std::unique_ptr<Shape3d> generate3DCube(
     float xWidth,

@@ -4,6 +4,7 @@
 CMakeFiles/3d-cube.dir/src/3d_shape/Shape3d.cpp.o: src/3d_shape/Shape3d.cpp
 CMakeFiles/3d-cube.dir/src/3d_shape/Shape3d.cpp.o: src/3d_shape/Shape3d.h
 CMakeFiles/3d-cube.dir/src/3d_shape/Shape3d.cpp.o: src/OpenGlHeaders.h
+CMakeFiles/3d-cube.dir/src/3d_shape/Shape3d.cpp.o: src/application/Application.h
 CMakeFiles/3d-cube.dir/src/3d_shape/Shape3d.cpp.o: src/date_types/MatrixTemplate.h
 
 CMakeFiles/3d-cube.dir/src/application/Application.cpp.o: src/3d_shape/Shape3d.h

@@ -75,6 +75,10 @@ class _Matrix{
       _Matrix<T> resultMatrix(finalWidth,finalHeight,resultCells);
       return resultMatrix;
     }
+    _Matrix<T>& operator*=(_Matrix<T> rhs){
+      this = this * rhs;
+      return *this;
+    }
     int getWidth(){
       return width;
     }

@@ -127,6 +127,14 @@ void Application::update() {
 		shape->scale(-1 * Application::shapeScaleSpeed);
 		keyEvents[zoomOutButton] = false;
 	}
+	if(keyEvents[forwardZButton]){
+		shape->transformZ(Application::shapeTransformSpeed);
+		keyEvents[forwardZButton] = false;
+	}
+	if(keyEvents[backwardZButton]){
+		shape->transformZ(-1 * Application::shapeTransformSpeed);
+		keyEvents[backwardZButton] = false;
+	}
 	shape->update();
 }
 

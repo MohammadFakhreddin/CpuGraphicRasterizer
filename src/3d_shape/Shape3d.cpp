@@ -3,6 +3,7 @@
 #include "../OpenGlHeaders.h"
 #include <math.h>
 #include <iostream>
+#include "../application/Application.h"
 
 std::unique_ptr<Shape3d> Shape3d::generate3DCube(
   float h,
@@ -161,6 +162,11 @@ Shape3d::Shape3d(
     std::vector<float>{1,0,0},
     std::vector<float>{0,1,0},
     std::vector<float>{0,0,1}
+  }),
+  zScaleMatrix(3,3,std::vector<std::vector<float>>{
+    std::vector<float>{1,0,0},
+    std::vector<float>{0,1,0},
+    std::vector<float>{0,0,1}
   })
 {
   assert(nodes.size()>0);
@@ -187,17 +193,30 @@ bool Shape3d::checkForNodesValidation(){
       }
     }
   }
-return true;
+  return true;
 }
 
 void Shape3d::update(){
   if(nodes.size()>0){
+    MatrixFloat rotationAndScaleResult(3,1,0);
+    MatrixFloat zComparisionMatrix(3,1,0);
+    float zLocation = 0;
+    float scaleValue = 0;
     for(int i=0;i<nodes.size();i++){
-      worldPoints.at(i) = nodes[i] * 
+      rotationAndScaleResult = (
+        nodes[i] * 
         rotationValueXMatrix *
         rotationValueYMatrix *
         rotationValueZMatrix *
-        scaleValueMatrix + 
+        scaleValueMatrix
+      );
+      zComparisionMatrix = rotationAndScaleResult + transformMatrix;
+      zLocation = zComparisionMatrix.get(2,0);
+      scaleValue = (Application::cameraZLocation - zLocation) / Application::maximumFov;
+      zScaleMatrix.set(0,0,scaleValue);
+      zScaleMatrix.set(1,1,scaleValue);
+      worldPoints.at(i) = rotationAndScaleResult *
+        zScaleMatrix + 
         transformMatrix;
     }
   }
@@ -205,10 +224,14 @@ void Shape3d::update(){
 
 void Shape3d::render(){
   if(nodes.size()>0 && edges.size()>0){
+    MatrixFloat* currentWorldPoint;
     for(auto& edge:edges){
+      //TODO Avoid rendering objects that are out of FOV
       glBegin(GL_LINES);
-      glVertex2f(worldPoints.at(edge.getByIndex(0)).get(0,0),worldPoints.at(edge.getByIndex(0)).get(1,0));
-      glVertex2f(worldPoints.at(edge.getByIndex(1)).get(0,0),worldPoints.at(edge.getByIndex(1)).get(1,0));
+      currentWorldPoint = &worldPoints.at(edge.getByIndex(0));
+      glVertex2f(currentWorldPoint->get(0,0),currentWorldPoint->get(1,0));
+      currentWorldPoint = &worldPoints.at(edge.getByIndex(1));
+      glVertex2f(currentWorldPoint->get(0,0),currentWorldPoint->get(1,0));
       glEnd();
     }
   }
