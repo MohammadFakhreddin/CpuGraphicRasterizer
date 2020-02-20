@@ -12,6 +12,8 @@ public:
 		rightButton,
 		forwardButton,
 		backwardButton,
+		forwardZButton,
+		backwardZButton,
 		rotationZRightButton,
 		rotationZLeftButton,
 		rotationXRightButton,

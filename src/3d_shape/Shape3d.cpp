@@ -4,6 +4,90 @@
 #include <math.h>
 #include <iostream>
 
+std::unique_ptr<Shape3d> Shape3d::generate3DCube(
+  float h,
+  float w,
+  float d,
+  float transformX,
+  float transformY,
+  float transformZ,
+  float rotationX,
+  float rotationY,
+  float rotationZ,
+  float scale
+){
+  float x = -w/2;
+	float y = -h/2;
+	float z = -d/2;
+	std::vector<MatrixFloat> nodeList = {
+		MatrixFloat(3,1,std::vector<std::vector<float>>{
+			std::vector<float>{x},
+			std::vector<float>{y},
+			std::vector<float>{z}
+		}),
+		MatrixFloat(3,1,std::vector<std::vector<float>>{
+			std::vector<float>{x},
+			std::vector<float>{y},
+			std::vector<float>{z+d}
+		}),
+		MatrixFloat(3,1,std::vector<std::vector<float>>{
+			std::vector<float>{x},
+			std::vector<float>{y+h},
+			std::vector<float>{z}
+		}),
+		MatrixFloat(3,1,std::vector<std::vector<float>>{
+			std::vector<float>{x},
+			std::vector<float>{y+h},
+			std::vector<float>{z+d}
+		}),
+		MatrixFloat(3,1,std::vector<std::vector<float>>{
+			std::vector<float>{x+w},
+			std::vector<float>{y},
+			std::vector<float>{z}
+		}),
+		MatrixFloat(3,1,std::vector<std::vector<float>>{
+			std::vector<float>{x+w},
+			std::vector<float>{y},
+			std::vector<float>{z+d}
+		}),
+		MatrixFloat(3,1,std::vector<std::vector<float>>{
+			std::vector<float>{x+w},
+			std::vector<float>{y+h},
+			std::vector<float>{z}
+		}),
+		MatrixFloat(3,1,std::vector<std::vector<float>>{
+			std::vector<float>{x+w},
+			std::vector<float>{y+h},
+			std::vector<float>{z+d}
+		})
+	};
+	std::vector<Edge> edgeList = {
+		Edge(0,1),
+		Edge(1,3),
+		Edge(3,2),
+		Edge(2,0),
+		Edge(4,5),
+		Edge(5,7),
+		Edge(7,6),
+		Edge(6,4),
+		Edge(0,4),
+		Edge(1,5),
+		Edge(2,6),
+		Edge(3,7)
+	};
+	return std::unique_ptr<Shape3d>(new Shape3d(
+		nodeList,
+		edgeList,
+		transformX,
+		transformY,
+    transformZ,
+    rotationX,
+    rotationY,
+    rotationZ,
+    scale
+	));
+}
+
 Edge::Edge(int first,int second)
 :
 first(first),
@@ -29,6 +113,31 @@ int Edge::getSecond(){
 
 Shape3d::Shape3d(std::vector<MatrixFloat> nodes,std::vector<Edge> edges)
   :
+  Shape3d(nodes,edges,0,0,0,0,0,0,1)
+{}
+
+Shape3d::Shape3d(
+  std::vector<MatrixFloat> nodes,
+  std::vector<Edge> edges,
+  float initialTransformX,
+  float initialTransformY,
+  float initialTransformZ
+)
+  :
+  Shape3d(nodes,edges,initialTransformX,initialTransformY,initialTransformZ,0,0,0,1)
+{}
+
+Shape3d::Shape3d(
+  std::vector<MatrixFloat> nodes,
+  std::vector<Edge> edges,
+  float transformX,
+  float transformY,
+  float transformZ,
+  float rotationDegreeX,
+  float rotationDegreeY,
+  float rotationDegreeZ,
+  float scaleValue
+)  :
   nodes(nodes),
   edges(edges),
   transformMatrix(3,1,0.0f),
@@ -62,6 +171,12 @@ Shape3d::Shape3d(std::vector<MatrixFloat> nodes,std::vector<Edge> edges)
       worldPoints.emplace_back(node.clone());
     }
   }
+  transformMatrix.set(0,0,transformX);
+  transformMatrix.set(1,0,transformY);
+  transformMatrix.set(2,0,transformZ);
+  rotationDegreeMatrix.set(0,0,rotationDegreeX);
+  rotationDegreeMatrix.set(1,0,rotationDegreeY);
+  rotationDegreeMatrix.set(2,0,rotationDegreeZ);
 }
 
 bool Shape3d::checkForNodesValidation(){
@@ -72,7 +187,7 @@ bool Shape3d::checkForNodesValidation(){
       }
     }
   }
-  return true;
+return true;
 }
 
 void Shape3d::update(){

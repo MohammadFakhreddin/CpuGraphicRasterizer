@@ -47,75 +47,30 @@ void handleKeyboardEvent(unsigned char key, int x, int y)
 	if (key == 'c' || key == 'C') {
 		Application::getInstance()->notifyKeyIsPressed(Application::Buttons::zoomOutButton);
 	}
+	if(key == 'v' || key == 'V'){
+		Application::getInstance()->notifyKeyIsPressed(Application::Buttons::forwardZButton);
+	}
+	if(key == 'b' || key == 'B'){
+		Application::getInstance()->notifyKeyIsPressed(Application::Buttons::backwardZButton);
+	}
 }
 
 Application::Application()
 {
 	instance = this;
 	glutKeyboardFunc(handleKeyboardEvent);
-	float x = -50;
-	float y = -50;
-	float z = -50;
-	float h = 100;
-	float w = 100;
-	float d = 100;
-	std::vector<MatrixFloat> nodeList = {
-		MatrixFloat(3,1,std::vector<std::vector<float>>{
-			std::vector<float>{x},
-			std::vector<float>{y},
-			std::vector<float>{z}
-		}),
-		MatrixFloat(3,1,std::vector<std::vector<float>>{
-			std::vector<float>{x},
-			std::vector<float>{y},
-			std::vector<float>{z+d}
-		}),
-		MatrixFloat(3,1,std::vector<std::vector<float>>{
-			std::vector<float>{x},
-			std::vector<float>{y+h},
-			std::vector<float>{z}
-		}),
-		MatrixFloat(3,1,std::vector<std::vector<float>>{
-			std::vector<float>{x},
-			std::vector<float>{y+h},
-			std::vector<float>{z+d}
-		}),
-		MatrixFloat(3,1,std::vector<std::vector<float>>{
-			std::vector<float>{x+w},
-			std::vector<float>{y},
-			std::vector<float>{z}
-		}),
-		MatrixFloat(3,1,std::vector<std::vector<float>>{
-			std::vector<float>{x+w},
-			std::vector<float>{y},
-			std::vector<float>{z+d}
-		}),
-		MatrixFloat(3,1,std::vector<std::vector<float>>{
-			std::vector<float>{x+w},
-			std::vector<float>{y+h},
-			std::vector<float>{z}
-		}),
-		MatrixFloat(3,1,std::vector<std::vector<float>>{
-			std::vector<float>{x+w},
-			std::vector<float>{y+h},
-			std::vector<float>{z+d}
-		})
-	};
-	std::vector<Edge> edgeList = {
-		Edge(0,1),
-		Edge(1,3),
-		Edge(3,2),
-		Edge(2,0),
-		Edge(4,5),
-		Edge(5,7),
-		Edge(7,6),
-		Edge(6,4),
-		Edge(0,4),
-		Edge(1,5),
-		Edge(2,6),
-		Edge(3,7)
-	};
-	shape = std::unique_ptr<Shape3d>(new Shape3d(nodeList,edgeList));
+	shape = Shape3d::generate3DCube(
+		100,
+		100,
+		100,
+		Constants::Window::screenWidth/2,
+		Constants::Window::screenHeight/2,
+		0,
+		0,
+		0,
+		0,
+		1
+	);
 }
 
 void Application::render() {
