@@ -62,19 +62,19 @@ std::unique_ptr<Shape3d> Shape3d::generate3DCube(
 			std::vector<float>{z+d}
 		})
 	};
-	std::vector<Edge> edgeList = {
-		Edge(0,1),
-		Edge(1,3),
-		Edge(3,2),
-		Edge(2,0),
-		Edge(4,5),
-		Edge(5,7),
-		Edge(7,6),
-		Edge(6,4),
-		Edge(0,4),
-		Edge(1,5),
-		Edge(2,6),
-		Edge(3,7)
+	std::vector<ColorEdge> edgeList = {
+		ColorEdge(0,1,3,false,1,1,1),
+		ColorEdge(1,3,2,false,1,1,1),
+		ColorEdge(3,2,0,false,1,1,1),
+		ColorEdge(2,0,1,false,1,1,1),
+		ColorEdge(4,5,7,false,1,1,1),
+		ColorEdge(5,7,6,false,1,1,1),
+		ColorEdge(7,6,4,false,1,1,1),
+		ColorEdge(6,4,5,false,1,1,1),
+		ColorEdge(0,4,5,false,1,1,1),
+		ColorEdge(1,5,7,false,1,1,1),
+		ColorEdge(2,6,4,false,1,1,1),
+		ColorEdge(3,7,6,false,1,1,1)
 	};
 	return std::unique_ptr<Shape3d>(new Shape3d(
 		nodeList,
@@ -89,37 +89,89 @@ std::unique_ptr<Shape3d> Shape3d::generate3DCube(
 	));
 }
 
-Edge::Edge(int first,int second)
+ColorEdge::ColorEdge(
+  int edge1,
+  int edge2,
+  int edge3,
+  bool fillSpaceBetween,
+  float red,
+  float green,
+  float blue
+)
 :
-first(first),
-second(second)
+  edge1(edge1),
+  edge2(edge2),
+  edge3(edge3),
+  fillSpaceBetween(fillSpaceBetween),
+  red(red),
+  green(green),
+  blue(blue)
 {}
 
-int Edge::getByIndex(int index){
+int ColorEdge::getEdgeByIndex(int index){
   assert(index>-1);
-  assert(index<2);
-  if(index==1){
-    return second;
+  assert(index<3);
+  switch (index)
+  {
+  case 0:
+    return edge1;
+  case 1:
+    return edge2;
+  case 2:
+    return edge3;
   }
-  return first;
 }
 
-int Edge::getFirst(){
-  return first;
+int ColorEdge::getEdge1(){
+  return edge1;
 }
 
-int Edge::getSecond(){
-  return second;
+int ColorEdge::getEdge2(){
+  return edge2;
 }
 
-Shape3d::Shape3d(std::vector<MatrixFloat> nodes,std::vector<Edge> edges)
+int ColorEdge::getEdge3(){
+  return edge3;
+}
+
+float ColorEdge::getColorByIndex(int index){
+  assert(index>-1);
+  assert(index<3);
+  switch (index)
+  {
+  case 0:
+    return red;
+  case 1:
+    return green;
+  case 2:
+    return blue;
+  }
+}
+
+float ColorEdge::getRed(){
+  return red;
+}
+
+float ColorEdge::getGreen(){
+  return green;
+}
+
+float ColorEdge::getBlue(){
+  return blue;
+}
+
+bool ColorEdge::getFillSpaceBetween(){
+  return fillSpaceBetween;
+}
+
+Shape3d::Shape3d(std::vector<MatrixFloat> nodes,std::vector<ColorEdge> edges)
   :
   Shape3d(nodes,edges,0,0,0,0,0,0,1)
 {}
 
 Shape3d::Shape3d(
   std::vector<MatrixFloat> nodes,
-  std::vector<Edge> edges,
+  std::vector<ColorEdge> edges,
   float initialTransformX,
   float initialTransformY,
   float initialTransformZ
@@ -130,7 +182,7 @@ Shape3d::Shape3d(
 
 Shape3d::Shape3d(
   std::vector<MatrixFloat> nodes,
-  std::vector<Edge> edges,
+  std::vector<ColorEdge> edges,
   float transformX,
   float transformY,
   float transformZ,
@@ -197,43 +249,159 @@ bool Shape3d::checkForNodesValidation(){
 }
 
 void Shape3d::update(){
+  pixelMap.erase(pixelMap.begin(),pixelMap.end());
   if(nodes.size()>0){
-    MatrixFloat rotationAndScaleResult(3,1,0);
-    MatrixFloat zComparisionMatrix(3,1,0);
-    float zLocation = 0;
-    float scaleValue = 0;
-    for(int i=0;i<nodes.size();i++){
-      rotationAndScaleResult = (
-        nodes[i] * 
-        rotationValueXMatrix *
-        rotationValueYMatrix *
-        rotationValueZMatrix *
-        scaleValueMatrix
-      );
-      zComparisionMatrix = rotationAndScaleResult + transformMatrix;
-      zLocation = zComparisionMatrix.get(2,0);
-      scaleValue = (Application::cameraZLocation - zLocation) / Application::maximumFov;
-      zScaleMatrix.set(0,0,scaleValue);
-      zScaleMatrix.set(1,1,scaleValue);
-      worldPoints.at(i) = rotationAndScaleResult *
-        zScaleMatrix + 
-        transformMatrix;
+    {
+      MatrixFloat rotationAndScaleResult(3,1,0);
+      MatrixFloat zComparisionMatrix(3,1,0);
+      float zLocation = 0;
+      float scaleValue = 0;
+      for(int i=0;i<nodes.size();i++){
+        rotationAndScaleResult = (
+          nodes[i] * 
+          rotationValueXMatrix *
+          rotationValueYMatrix *
+          rotationValueZMatrix *
+          scaleValueMatrix
+        );
+        zComparisionMatrix = rotationAndScaleResult + transformMatrix;
+        zLocation = zComparisionMatrix.get(2,0);
+        scaleValue = (Application::cameraZLocation - zLocation) / Application::maximumFov;
+        zScaleMatrix.set(0,0,scaleValue);
+        zScaleMatrix.set(1,1,scaleValue);
+        worldPoints.at(i) = rotationAndScaleResult *
+          zScaleMatrix + 
+          transformMatrix;
+      }
+    }
+    if(edges.size()>0){
+      for(auto& edge:edges){
+        //TODO Avoid rendering objects that are out of FOV
+        if(edge.getFillSpaceBetween()==false){
+          for(int i=0;i<3;i++){
+            drawLineBetweenPoints(
+              worldPoints.at(edge.getEdgeByIndex((i)%3)),
+              worldPoints.at(edge.getEdgeByIndex((i+1)%3)),
+              edge.getRed(),
+              edge.getGreen(),
+              edge.getBlue()
+            );
+            drawLineBetweenPoints(
+              worldPoints.at(edge.getEdgeByIndex((i)%3)),
+              worldPoints.at(edge.getEdgeByIndex((i+2)%3)),
+              edge.getRed(),
+              edge.getGreen(),
+              edge.getBlue()
+            );
+            drawLineBetweenPoints(
+              worldPoints.at(edge.getEdgeByIndex((i+2)%3)),
+              worldPoints.at(edge.getEdgeByIndex((i+1)%3)),
+              edge.getRed(),
+              edge.getGreen(),
+              edge.getBlue()
+            );
+          }
+        } else{
+          //TODO
+        }
+      }
     }
   }
 }
 
-void Shape3d::render(){
-  if(nodes.size()>0 && edges.size()>0){
-    MatrixFloat* currentWorldPoint;
-    for(auto& edge:edges){
-      //TODO Avoid rendering objects that are out of FOV
-      glBegin(GL_LINES);
-      currentWorldPoint = &worldPoints.at(edge.getByIndex(0));
-      glVertex2f(currentWorldPoint->get(0,0),currentWorldPoint->get(1,0));
-      currentWorldPoint = &worldPoints.at(edge.getByIndex(1));
-      glVertex2f(currentWorldPoint->get(0,0),currentWorldPoint->get(1,0));
-      glEnd();
+void Shape3d::drawLineBetweenPoints(
+  MatrixFloat point1,
+  MatrixFloat point2,
+  float red,
+  float green,
+  float blue
+){
+  float startX = point1.get(0,0);
+  float startY = point1.get(1,0);
+  float startZ = point1.get(2,0);
+  float endX = point2.get(0,0);
+  float endY = point2.get(1,0);
+  float endZ = point2.get(2,0);
+  bool moveByX = true;
+  if(abs(startX-endX)<abs(startY-endY)){
+    moveByX = false;
+  }
+  if( moveByX == true ){
+    float xDifference = endX - startX;
+    float yM = (endY - startY)/xDifference;
+    float zM = (endZ - startZ)/xDifference;
+    int drawY = roundf(startY);
+    putPixelInMapIfPossible(startX,drawY,startZ,red,green,blue);
+    float stepMoveValue = startX - endX > 0 ? -1 : +1;
+    for(int i = startX;i <= endX; i++)
+    {
+      startX += stepMoveValue;
+      startY += yM;
+      startZ += zM;
+      drawY = roundf(startY);
+      putPixelInMapIfPossible(startX,drawY,startZ,red,green,blue);
     }
+  } else {
+    float yDifference = endY - startY;
+    float xM = (endX - startX)/yDifference;
+    float zM = (endZ - startZ)/yDifference;
+    int drawX = roundf(startX);
+    putPixelInMapIfPossible(drawX,startY,startZ,red,green,blue);
+    float stepMoveValue = startY - endY > 0 ? -1 : +1;
+    for(int i=startY;i<=endY;i++){
+      startY += stepMoveValue;
+      startX += xM;
+      startZ += zM;
+      drawX = roundf(startX);
+      putPixelInMapIfPossible(drawX,startY,startZ,red,green,blue);
+    }
+  }
+}
+
+void Shape3d::putPixelInMapIfPossible(
+  int x,
+  int y,
+  float zValue,
+  float red,
+  float green,
+  float blue
+){
+  auto existingPixel = pixelMap.find({x,y});
+  if(existingPixel==pixelMap.end()){
+    DrawPixel pixel;
+    pixel.x = x;
+    pixel.y = y;
+    pixel.zValue = zValue;
+    pixel.red = red;
+    pixel.green = green;
+    pixel.blue = blue;
+    pixelMap[{x,y}] = {
+      x,
+      y,
+      zValue,
+      red,
+      green,
+      blue
+    };
+  }else if(existingPixel->second.zValue < zValue)
+  {
+    existingPixel->second.x = x;
+    existingPixel->second.y = y;
+    existingPixel->second.red = red;
+    existingPixel->second.green = green;
+    existingPixel->second.blue = blue;
+    existingPixel->second.zValue = zValue;
+  }
+}
+
+void Shape3d::render(){
+  if(pixelMap.size()>0){
+    glBegin(GL_POINTS);
+    for(auto pixel:pixelMap){
+      glColor3f(pixel.second.red,pixel.second.green,pixel.second.blue);
+      glVertex2f(pixel.second.x,pixel.second.y);
+    }
+    glEnd();
   }
 }
 

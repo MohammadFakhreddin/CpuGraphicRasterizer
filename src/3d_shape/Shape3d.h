@@ -1,25 +1,62 @@
 #pragma once
 
-#include "../date_types/MatrixTemplate.h"
+#include "../data_types/MatrixTemplate.h"
 #include <vector>
+#include <unordered_map>
 
-class Edge
+class ColorEdge
 {
 private:
-  int first;
-  int second;
+  int edge1;
+  int edge2;
+  int edge3;
+  bool fillSpaceBetween;
+  float red;
+  float green;
+  float blue;
 public:
-  Edge(int first,int second);
-  int getByIndex(int index);
-  int getFirst();
-  int getSecond();
+  ColorEdge(
+    int edge1,
+    int edge2,
+    int edge3,
+    bool fillSpaceBetween,
+    float red,
+    float green,
+    float blue
+  );
+  int getEdgeByIndex(int index);
+  float getColorByIndex(int index);
+  float getRed();
+  float getGreen();
+  float getBlue();
+  int getEdge1();
+  int getEdge2();
+  int getEdge3();
+  bool getFillSpaceBetween();
 };
 
 class Shape3d
 {
 private:
+  typedef std::pair<int,int> pixelPair;
+  struct DrawPixel{
+    int x;
+    int y;
+    float zValue;
+    float red;
+    float green;
+    float blue;
+  };
+  struct hash_pair { 
+    size_t operator()(const pixelPair& p) const
+    { 
+        auto hash1 = p.first; 
+        auto hash2 = p.second; 
+        return hash1 ^ hash2; 
+    } 
+  }; 
   std::vector<MatrixFloat> nodes;
-  std::vector<Edge>edges;
+  std::vector<ColorEdge>edges;
   std::vector<MatrixFloat> worldPoints;
   MatrixFloat transformMatrix;
   MatrixFloat rotationDegreeMatrix;
@@ -28,6 +65,22 @@ private:
   MatrixFloat rotationValueZMatrix;
   MatrixFloat scaleValueMatrix;
   MatrixFloat zScaleMatrix;
+  std::unordered_map<pixelPair,Shape3d::DrawPixel,hash_pair> pixelMap;
+  void drawLineBetweenPoints(
+    MatrixFloat point1,
+    MatrixFloat point2,
+    float red,
+    float green,
+    float blue
+  );
+  void putPixelInMapIfPossible(
+    int x,
+    int y,
+    float zValue,
+    float red,
+    float green,
+    float blue
+  );
 public:
   static std::unique_ptr<Shape3d> generate3DCube(
     float xWidth,
@@ -41,17 +94,20 @@ public:
     float rotationZ,
     float scale
   );
-  Shape3d(std::vector<MatrixFloat> nodes,std::vector<Edge> edges);
   Shape3d(
     std::vector<MatrixFloat> nodes,
-    std::vector<Edge> edges,
+    std::vector<ColorEdge> colorEdges
+  );
+  Shape3d(
+    std::vector<MatrixFloat> nodes,
+    std::vector<ColorEdge> colorEdges,
     float initialTransformX,
     float initialTransformY,
     float initialTransformZ
   );
   Shape3d(
     std::vector<MatrixFloat> nodes,
-    std::vector<Edge> edges,
+    std::vector<ColorEdge> colorEdges,
     float transformX,
     float transformY,
     float transformZ,
