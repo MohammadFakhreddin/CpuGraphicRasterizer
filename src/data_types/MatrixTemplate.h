@@ -79,6 +79,22 @@ class _Matrix{
       this = this * rhs;
       return *this;
     }
+    bool operator==(_Matrix<T> rhs){
+      if(rhs.width!=width || rhs.height!=height){
+        return false;
+      }
+      for(int i=0;i<width;i++){
+        for(int j=0;j<height;j++){
+          if(rhs.get(i,j)!=get(i,j)){
+            return false;
+          }
+        }
+      }
+      return true;
+    }
+    bool operator!=(_Matrix<T> rhs){
+      return !(this==rhs);
+    }
     int getWidth(){
       return width;
     }

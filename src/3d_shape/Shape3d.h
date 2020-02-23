@@ -3,6 +3,7 @@
 #include "../data_types/MatrixTemplate.h"
 #include <vector>
 #include <unordered_map>
+#include <iostream>
 
 class ColorEdge
 {
@@ -40,8 +41,8 @@ class Shape3d
 private:
   typedef std::pair<int,int> pixelPair;
   struct DrawPixel{
-    int x;
-    int y;
+    float x;
+    float y;
     float zValue;
     float red;
     float green;
@@ -67,15 +68,19 @@ private:
   MatrixFloat zScaleMatrix;
   std::unordered_map<pixelPair,Shape3d::DrawPixel,hash_pair> pixelMap;
   void drawLineBetweenPoints(
-    MatrixFloat point1,
-    MatrixFloat point2,
+    float startX,
+    float startY,
+    float startZ,
+    float endX,
+    float endY,
+    float endZ,
     float red,
     float green,
     float blue
   );
   void putPixelInMapIfPossible(
-    int x,
-    int y,
+    float x,
+    float y,
     float zValue,
     float red,
     float green,
