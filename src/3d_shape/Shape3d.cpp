@@ -63,18 +63,18 @@ std::unique_ptr<Shape3d> Shape3d::generate3DCube(
 		})
 	};
 	std::vector<ColorEdge> edgeList = {
-		ColorEdge(0,1,3,true,1,1,1),
-		ColorEdge(1,3,2,true,1,1,1),
-		ColorEdge(3,2,0,true,1,1,1),
-		ColorEdge(2,0,1,true,1,1,1),
-		ColorEdge(4,5,7,true,1,1,1),
-		ColorEdge(5,7,6,true,1,1,1),
-		ColorEdge(7,6,4,true,1,1,1),
-		ColorEdge(6,4,5,true,1,1,1),
-		ColorEdge(0,4,5,true,1,1,1),
-		ColorEdge(1,5,7,true,1,1,1),
-		ColorEdge(2,6,4,true,1,1,1),
-		ColorEdge(3,7,6,true,1,1,1)
+    ColorEdge(0,1,2,true,0,1,0),
+    ColorEdge(3,1,2,true,0,0,1),
+    ColorEdge(3,1,5,true,1,0,0),
+    ColorEdge(3,7,5,true,0,1,1),
+    ColorEdge(0,4,5,true,1,0,1),
+    ColorEdge(5,0,1,true,1,1,0),
+    ColorEdge(4,0,6,true,0,0.5,0),
+    ColorEdge(2,0,6,true,0,0,0.5),
+    ColorEdge(2,7,6,true,0.5,0,0), 
+    ColorEdge(2,7,3,true,0,0.5,0.5),
+    ColorEdge(4,5,7,true,0.5,0,0.5),
+    ColorEdge(4,6,7,true,0.5,0.5,0)  
 	};
 	return std::unique_ptr<Shape3d>(new Shape3d(
 		nodeList,
@@ -120,6 +120,7 @@ int ColorEdge::getEdgeByIndex(int index){
   case 2:
     return edge3;
   }
+  return -1;
 }
 
 int ColorEdge::getEdge1(){
@@ -146,6 +147,7 @@ float ColorEdge::getColorByIndex(int index){
   case 2:
     return blue;
   }
+  return -1;
 }
 
 float ColorEdge::getRed(){
@@ -390,112 +392,82 @@ void Shape3d::update(){
               }
             }
           }
+          float stepValue = 1;
           if(topEdges.size()==2){
-            drawLineBetweenPoints(
-              topEdges.at(1)->get(0,0),
-              topEdges.at(1)->get(1,0),
-              topEdges.at(1)->get(2,0),
-              bottomEdges.at(0)->get(0,0),
-              bottomEdges.at(0)->get(1,0),
-              bottomEdges.at(0)->get(2,0),
-              0,1,0
-            );
-            drawLineBetweenPoints(
-              topEdges.at(0)->get(0,0),
-              topEdges.at(0)->get(1,0),
-              topEdges.at(0)->get(2,0),
-              bottomEdges.at(0)->get(0,0),
-              bottomEdges.at(0)->get(1,0),
-              bottomEdges.at(0)->get(2,0),
-              0,1,0
-            );
-            // float currentY = topEdges.at(0)->get(1,0);
-            // float startX = topEdges.at(0)->get(0,0);
-            // float startZ = topEdges.at(0)->get(2,0);
-            // float endX = topEdges.at(1)->get(0,0);
-            // float endZ = topEdges.at(1)->get(2,0);
-            // float finalY = bottomEdges.at(0)->get(1,0);
-            // float finalX = bottomEdges.at(0)->get(0,0);
-            // float finalZ = bottomEdges.at(0)->get(2,0);
-            // float startXM = (startX - finalX)/(currentY - finalY);
-            // float startZM = (startZ - finalZ)/(currentY - finalY);
-            // float endXM = (endX - finalX)/(currentY - finalY);
-            // float endZM = (endZ - finalZ)/(currentY - finalY);
-            // drawLineBetweenPoints(
-            //   startX,currentY,startZ,
-            //   endX,currentY,endZ,
-            //   edge.getRed(),
-            //   edge.getGreen(),
-            //   edge.getBlue()
-            // );
-            // while (currentY>finalY)
-            // {
-            //   currentY-=1;
-            //   startX+=startXM;
-            //   startZ+=startZM;
-            //   endX+=endXM;
-            //   endZ+=endZM;
-            //   drawLineBetweenPoints(
-            //     startX,currentY,startZ,
-            //     endX,currentY,endZ,
-            //     edge.getRed(),
-            //     edge.getGreen(),
-            //     edge.getBlue()
-            //   );
-            // }
+            float currentY = topEdges.at(0)->get(1,0);
+            float startX = topEdges.at(0)->get(0,0);
+            float startZ = topEdges.at(0)->get(2,0);
+            float endX = topEdges.at(1)->get(0,0);
+            float endZ = topEdges.at(1)->get(2,0);
+            float finalY = bottomEdges.at(0)->get(1,0);
+            float finalX = bottomEdges.at(0)->get(0,0);
+            float finalZ = bottomEdges.at(0)->get(2,0);
+            float startXM = (startX - finalX)/(currentY - finalY);
+            float startZM = (startZ - finalZ)/(currentY - finalY);
+            float endXM = (endX - finalX)/(currentY - finalY);
+            float endZM = (endZ - finalZ)/(currentY - finalY);
+            if(abs(currentY-finalY)>stepValue){
+              drawLineBetweenPoints(
+                startX,currentY,startZ,
+                endX,currentY,endZ,
+                edge.getRed(),
+                edge.getGreen(),
+                edge.getBlue()
+              );
+              while (currentY>finalY)
+              {
+                currentY-=stepValue;
+                startX-=startXM * stepValue;
+                startZ-=startZM * stepValue;
+                endX-=endXM * stepValue;
+                endZ-=endZM * stepValue;
+                drawLineBetweenPoints(
+                  startX,currentY,startZ,
+                  endX,currentY,endZ,
+                  edge.getRed(),
+                  edge.getGreen(),
+                  edge.getBlue()
+                );
+              }
+            }
           }else if(bottomEdges.size()==2){
-            drawLineBetweenPoints(
-              topEdges.at(0)->get(0,0),
-              topEdges.at(0)->get(1,0),
-              topEdges.at(0)->get(2,0),
-              bottomEdges.at(0)->get(0,0),
-              bottomEdges.at(0)->get(1,0),
-              bottomEdges.at(0)->get(2,0),
-              0,1,0
-            );
-            drawLineBetweenPoints(
-              topEdges.at(0)->get(0,0),
-              topEdges.at(0)->get(1,0),
-              topEdges.at(0)->get(2,0),
-              bottomEdges.at(1)->get(0,0),
-              bottomEdges.at(1)->get(1,0),
-              bottomEdges.at(1)->get(2,0),
-              0,1,0
-            );
-            // float currentY = bottomEdges.at(0)->get(1,0);
-            // float startX = bottomEdges.at(0)->get(0,0);
-            // float startZ = bottomEdges.at(0)->get(2,0);
-            // float endX = bottomEdges.at(1)->get(0,0);
-            // float endZ = bottomEdges.at(1)->get(2,0);
-            // float finalY = topEdges.at(0)->get(1,0);
-            // float finalX = topEdges.at(0)->get(0,0);
-            // float finalZ = topEdges.at(0)->get(2,0);
-            // float startXM = (startX - finalX)/(currentY - finalY);
-            // float startZM = (startZ - finalZ)/(currentY - finalY);
-            // float endXM = (endX - finalX)/(currentY - finalY);
-            // float endZM = (endZ - finalZ)/(currentY - finalY);
-            // drawLineBetweenPoints(
-            //   startX,currentY,startZ,
-            //   endX,currentY,endZ,
-            //   edge.getRed(),
-            //   edge.getGreen(),
-            //   edge.getBlue()
-            // );
-            // while (currentY<finalY)
-            // {
-            //   currentY+=1;
-            //   startX+=startXM;
-            //   startZ+=startZM;
-            //   endX+=endXM;
-            //   endZ+=endZM;
-            //   drawLineBetweenPoints(
-            //     startX,currentY,startZ,
-            //     endX,currentY,endZ,
-            //     edge.getRed(),
-            //     edge.getGreen(),
-            //     edge.getBlue()
-            //   );
-            // }
+            float currentY = bottomEdges.at(0)->get(1,0);
+            float startX = bottomEdges.at(0)->get(0,0);
+            float startZ = bottomEdges.at(0)->get(2,0);
+            float endX = bottomEdges.at(1)->get(0,0);
+            float endZ = bottomEdges.at(1)->get(2,0);
+            float finalY = topEdges.at(0)->get(1,0);
+            float finalX = topEdges.at(0)->get(0,0);
+            float finalZ = topEdges.at(0)->get(2,0);
+            float yDifference = (currentY - finalY);
+            float startXM = (startX - finalX)/yDifference;
+            float startZM = (startZ - finalZ)/yDifference;
+            float endXM = (endX - finalX)/yDifference;
+            float endZM = (endZ - finalZ)/yDifference;
+            if(abs(currentY - finalY)>stepValue){
+              drawLineBetweenPoints(
+                startX,currentY,startZ,
+                endX,currentY,endZ,
+                edge.getRed(),
+                edge.getGreen(),
+                edge.getBlue()
+              );
+              while (currentY<finalY)
+              {
+                currentY+=stepValue;
+                startX+=startXM * stepValue;
+                startZ+=startZM * stepValue;
+                endX+=endXM * stepValue;
+                endZ+=endZM * stepValue;
+                drawLineBetweenPoints(
+                  startX,currentY,startZ,
+                  endX,currentY,endZ,
+                  edge.getRed(),
+                  edge.getGreen(),
+                  edge.getBlue()
+                );
+              }
+            }
           }else {
             assert(topEdges.size()==1);
             assert(middleEdges.size()==2);
@@ -505,132 +477,82 @@ void Shape3d::update(){
             assert(middleEdges.at(1)->get(1,0)<topEdges.at(0)->get(1,0));
             assert(middleEdges.at(1)->get(1,0)>bottomEdges.at(0)->get(1,0));
             assert(middleEdges.at(0)->get(1,0)==middleEdges.at(1)->get(1,0));
-            drawLineBetweenPoints(
-              topEdges.at(0)->get(0,0),
-              topEdges.at(0)->get(1,0),
-              topEdges.at(0)->get(2,0),
-              middleEdges.at(0)->get(0,0),
-              middleEdges.at(0)->get(1,0),
-              middleEdges.at(0)->get(2,0),
-              0,1,0
-            );
-            drawLineBetweenPoints(
-              topEdges.at(0)->get(0,0),
-              topEdges.at(0)->get(1,0),
-              topEdges.at(0)->get(2,0),
-              middleEdges.at(1)->get(0,0),
-              middleEdges.at(1)->get(1,0),
-              middleEdges.at(1)->get(2,0),
-              0,1,0
-            );
-            drawLineBetweenPoints(
-              bottomEdges.at(0)->get(0,0),
-              bottomEdges.at(0)->get(1,0),
-              bottomEdges.at(0)->get(2,0),
-              middleEdges.at(0)->get(0,0),
-              middleEdges.at(0)->get(1,0),
-              middleEdges.at(0)->get(2,0),
-              0,0,1
-            );
-            drawLineBetweenPoints(
-              bottomEdges.at(0)->get(0,0),
-              bottomEdges.at(0)->get(1,0),
-              bottomEdges.at(0)->get(2,0),
-              middleEdges.at(1)->get(0,0),
-              middleEdges.at(1)->get(1,0),
-              middleEdges.at(1)->get(2,0),
-              0,0,1
-            );
-            drawLineBetweenPoints(
-              middleEdges.at(0)->get(0,0),
-              middleEdges.at(0)->get(1,0),
-              middleEdges.at(0)->get(2,0),
-              middleEdges.at(1)->get(0,0),
-              middleEdges.at(1)->get(1,0),
-              middleEdges.at(1)->get(2,0),
-              1,0,0
-            );
-            drawLineBetweenPoints(
-              topEdges.at(0)->get(0,0),
-              topEdges.at(0)->get(1,0),
-              topEdges.at(0)->get(2,0),
-              bottomEdges.at(0)->get(0,0),
-              bottomEdges.at(0)->get(1,0),
-              bottomEdges.at(0)->get(2,0),
-              1,0,0
-            );
-            // {//From middle to top
-            //   float currentY = middleEdges.at(0)->get(1,0);
-            //   float startX = middleEdges.at(0)->get(0,0);
-            //   float startZ = middleEdges.at(0)->get(2,0);
-            //   float endX = middleEdges.at(1)->get(0,0);
-            //   float endZ = middleEdges.at(1)->get(2,0);
-            //   float finalY = topEdges.at(0)->get(1,0);
-            //   float finalX = topEdges.at(0)->get(0,0);
-            //   float finalZ = topEdges.at(0)->get(2,0);
-            //   float startXM = (startX - finalX)/(currentY - finalY);
-            //   float startZM = (startZ - finalZ)/(currentY - finalY);
-            //   float endXM = (endX - finalX)/(currentY - finalY);
-            //   float endZM = (endZ - finalZ)/(currentY - finalY);
-            //   drawLineBetweenPoints(
-            //     startX,currentY,startZ,
-            //     endX,currentY,endZ,
-            //     edge.getRed(),
-            //     edge.getGreen(),
-            //     edge.getBlue()
-            //   );
-            //   while (currentY<finalY)
-            //   {
-            //     currentY+=1;
-            //     startX+=startXM;
-            //     startZ+=startZM;
-            //     endX+=endXM;
-            //     endZ+=endZM;
-            //     drawLineBetweenPoints(
-            //       startX,currentY,startZ,
-            //       endX,currentY,endZ,
-            //       edge.getRed(),
-            //       edge.getGreen(),
-            //       edge.getBlue()
-            //     );
-            //   }
-            // }
-            // {//From middle to bottom
-            //   float currentY = middleEdges.at(0)->get(1,0);
-            //   float startX = middleEdges.at(0)->get(0,0);
-            //   float startZ = middleEdges.at(0)->get(2,0);
-            //   float endX = middleEdges.at(1)->get(0,0);
-            //   float endZ = middleEdges.at(1)->get(2,0);
-            //   float finalY = bottomEdges.at(0)->get(1,0);
-            //   float finalX = bottomEdges.at(0)->get(0,0);
-            //   float finalZ = bottomEdges.at(0)->get(2,0);
-            //   float startXM = (startX - finalX)/(currentY - finalY);
-            //   float startZM = (startZ - finalZ)/(currentY - finalY);
-            //   float endXM = (endX - finalX)/(currentY - finalY);
-            //   float endZM = (endZ - finalZ)/(currentY - finalY);
-            //   drawLineBetweenPoints(
-            //     startX,currentY,startZ,
-            //     endX,currentY,endZ,
-            //     edge.getRed(),
-            //     edge.getGreen(),
-            //     edge.getBlue()
-            //   );
-            //   while (currentY>finalY)
-            //   {
-            //     currentY-=1;
-            //     startX+=startXM;
-            //     startZ+=startZM;
-            //     endX+=endXM;
-            //     endZ+=endZM;
-            //     drawLineBetweenPoints(
-            //       startX,currentY,startZ,
-            //       endX,currentY,endZ,
-            //       edge.getRed(),
-            //       edge.getGreen(),
-            //       edge.getBlue()
-            //     );
-            //   }
-            // }
+            {//From middle to top
+              float currentY = middleEdges.at(0)->get(1,0);
+              float startX = middleEdges.at(0)->get(0,0);
+              float startZ = middleEdges.at(0)->get(2,0);
+              float endX = middleEdges.at(1)->get(0,0);
+              float endZ = middleEdges.at(1)->get(2,0);
+              float finalY = topEdges.at(0)->get(1,0);
+              float finalX = topEdges.at(0)->get(0,0);
+              float finalZ = topEdges.at(0)->get(2,0);
+              float startXM = (startX - finalX)/(currentY - finalY);
+              float startZM = (startZ - finalZ)/(currentY - finalY);
+              float endXM = (endX - finalX)/(currentY - finalY);
+              float endZM = (endZ - finalZ)/(currentY - finalY);
+              if(abs(currentY - finalY)>stepValue){
+                drawLineBetweenPoints(
+                  startX,currentY,startZ,
+                  endX,currentY,endZ,
+                  edge.getRed(),
+                  edge.getGreen(),
+                  edge.getBlue()
+                );
+                while (currentY<finalY)
+                {
+                  currentY+=stepValue;
+                  startX+=startXM * stepValue;
+                  startZ+=startZM * stepValue;
+                  endX+=endXM * stepValue;
+                  endZ+=endZM * stepValue;
+                  drawLineBetweenPoints(
+                    startX,currentY,startZ,
+                    endX,currentY,endZ,
+                    edge.getRed(),
+                    edge.getGreen(),
+                    edge.getBlue()
+                  );
+                }
+              }
+            }
+            {//From middle to bottom
+              float currentY = middleEdges.at(0)->get(1,0);
+              float startX = middleEdges.at(0)->get(0,0);
+              float startZ = middleEdges.at(0)->get(2,0);
+              float endX = middleEdges.at(1)->get(0,0);
+              float endZ = middleEdges.at(1)->get(2,0);
+              float finalY = bottomEdges.at(0)->get(1,0);
+              float finalX = bottomEdges.at(0)->get(0,0);
+              float finalZ = bottomEdges.at(0)->get(2,0);
+              float startXM = (startX - finalX)/(currentY - finalY);
+              float startZM = (startZ - finalZ)/(currentY - finalY);
+              float endXM = (endX - finalX)/(currentY - finalY);
+              float endZM = (endZ - finalZ)/(currentY - finalY);
+              if(abs(currentY - finalY) > stepValue){
+                drawLineBetweenPoints(
+                  startX,currentY,startZ,
+                  endX,currentY,endZ,
+                  edge.getRed(),
+                  edge.getGreen(),
+                  edge.getBlue()
+                );
+                while (currentY>finalY)
+                {
+                  currentY-= stepValue;
+                  startX-=startXM * stepValue;
+                  startZ-=startZM * stepValue;
+                  endX-=endXM * stepValue;
+                  endZ-=endZM * stepValue;
+                  drawLineBetweenPoints(
+                    startX,currentY,startZ,
+                    endX,currentY,endZ,
+                    edge.getRed(),
+                    edge.getGreen(),
+                    edge.getBlue()
+                  );
+                }
+              }
+            }
           }
         }
       }
@@ -659,11 +581,15 @@ void Shape3d::drawLineBetweenPoints(
     float zM = (endZ - startZ)/xDifference;
     putPixelInMapIfPossible(startX,startY,startZ,red,green,blue);
     float stepMoveValue = startX - endX > 0 ? -1 : +1;
-    for(int i = startX;i <= endX; i++)
+    for(
+      int i = startX;
+      (stepMoveValue>0 && startX<endX) || (stepMoveValue<0 && startX > endX); 
+      i+=stepMoveValue
+    )
     {
       startX += stepMoveValue;
-      startY += yM;
-      startZ += zM;
+      startY += yM * stepMoveValue;
+      startZ += zM * stepMoveValue;
       putPixelInMapIfPossible(startX,startY,startZ,red,green,blue);
     }
   } else {
@@ -672,10 +598,14 @@ void Shape3d::drawLineBetweenPoints(
     float zM = (endZ - startZ)/yDifference;
     putPixelInMapIfPossible(startX,startY,startZ,red,green,blue);
     float stepMoveValue = startY - endY > 0 ? -1 : +1;
-    for(int i=startY;i<=endY;i++){
+    for(
+      int i=startY;
+      (stepMoveValue>0 && startY<endY) || (stepMoveValue<0 && startY > endY); 
+      i+=stepMoveValue
+    ){
       startY += stepMoveValue;
-      startX += xM;
-      startZ += zM;
+      startX += xM * stepMoveValue;
+      startZ += zM * stepMoveValue;
       putPixelInMapIfPossible(startX,startY,startZ,red,green,blue);
     }
   }
@@ -706,7 +636,7 @@ void Shape3d::putPixelInMapIfPossible(
       green,
       blue
     };
-  }else if(existingPixel->second.zValue <= zValue)
+  }else if(existingPixel->second.zValue > zValue)
   {
     existingPixel->second.x = x;
     existingPixel->second.y = y;
