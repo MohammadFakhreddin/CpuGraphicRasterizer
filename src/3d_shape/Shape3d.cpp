@@ -251,7 +251,6 @@ bool Shape3d::checkForNodesValidation(){
 }
 
 void Shape3d::update(){
-  pixelMap.erase(pixelMap.begin(),pixelMap.end());
   if(nodes.size()>0){
     {
       MatrixFloat rotationAndScaleResult(3,1,0);
@@ -579,7 +578,7 @@ void Shape3d::drawLineBetweenPoints(
     float xDifference = endX - startX;
     float yM = (endY - startY)/xDifference;
     float zM = (endZ - startZ)/xDifference;
-    putPixelInMapIfPossible(startX,startY,startZ,red,green,blue);
+    Application::getInstance()->putPixelInMap(ceil(startX),ceil(startY),startZ,red,green,blue);
     float stepMoveValue = startX - endX > 0 ? -1 : +1;
     for(
       int i = startX;
@@ -590,13 +589,13 @@ void Shape3d::drawLineBetweenPoints(
       startX += stepMoveValue;
       startY += yM * stepMoveValue;
       startZ += zM * stepMoveValue;
-      putPixelInMapIfPossible(startX,startY,startZ,red,green,blue);
+      Application::getInstance()->putPixelInMap(int(ceil(startX)),int(ceil(startY)),startZ,red,green,blue);
     }
   } else {
     float yDifference = endY - startY;
     float xM = (endX - startX)/yDifference;
     float zM = (endZ - startZ)/yDifference;
-    putPixelInMapIfPossible(startX,startY,startZ,red,green,blue);
+    Application::getInstance()->putPixelInMap(int(ceil(startX)),int(ceil(startY)),startZ,red,green,blue);
     float stepMoveValue = startY - endY > 0 ? -1 : +1;
     for(
       int i=startY;
@@ -606,56 +605,8 @@ void Shape3d::drawLineBetweenPoints(
       startY += stepMoveValue;
       startX += xM * stepMoveValue;
       startZ += zM * stepMoveValue;
-      putPixelInMapIfPossible(startX,startY,startZ,red,green,blue);
+      Application::getInstance()->putPixelInMap(int(ceil(startX)),int(ceil(startY)),startZ,red,green,blue);
     }
-  }
-}
-
-void Shape3d::putPixelInMapIfPossible(
-  float x,
-  float y,
-  float zValue,
-  float red,
-  float green,
-  float blue
-){
-  //Pixel map is source of bad render time
-  auto existingPixel = pixelMap.find({x,y});
-  if(existingPixel==pixelMap.end()){
-    DrawPixel pixel;
-    pixel.x = x;
-    pixel.y = y;
-    pixel.zValue = zValue;
-    pixel.red = red;
-    pixel.green = green;
-    pixel.blue = blue;
-    pixelMap[{x,y}] = {
-      x,
-      y,
-      zValue,
-      red,
-      green,
-      blue
-    };
-  }else if(existingPixel->second.zValue > zValue)
-  {
-    existingPixel->second.x = x;
-    existingPixel->second.y = y;
-    existingPixel->second.red = red;
-    existingPixel->second.green = green;
-    existingPixel->second.blue = blue;
-    existingPixel->second.zValue = zValue;
-  }
-}
-//Optimized
-void Shape3d::render(){
-  if(pixelMap.size()>0){
-    glBegin(GL_POINTS);
-    for(auto pixel:pixelMap){
-      glColor3f(pixel.second.red,pixel.second.green,pixel.second.blue);
-      glVertex2f(pixel.second.x,pixel.second.y);
-    }
-    glEnd();
   }
 }
 

@@ -6,6 +6,12 @@
 
 class Application {
 public:
+  struct DrawPixel{
+    float zValue;
+    float red;
+    float green;
+    float blue;
+  };
 	enum Buttons
 	{
 		leftButton,
@@ -32,9 +38,12 @@ public:
 	void render();
 	void update();
 	void notifyKeyIsPressed(Application::Buttons);
+	void putPixelInMap(int x,int y,float zValue,float red,float green,float blue);
 	static Application* getInstance();
+	std::vector<std::vector<DrawPixel>> pixelMap;
 private:
 	std::unique_ptr<Shape3d> shape;
 	static Application* instance;
 	std::unordered_map<Application::Buttons,bool> keyEvents;
+	DrawPixel* currentPixel;
 };

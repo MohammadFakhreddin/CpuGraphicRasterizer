@@ -71,10 +71,50 @@ Application::Application()
 		0,
 		1
 	);
+	{//Creating pixelMap
+		for(int i=0;i<Constants::Window::screenWidth;i++){
+			std::vector<DrawPixel> innerMap;
+			pixelMap.emplace_back(innerMap);
+			for(int j=0;j<Constants::Window::screenHeight;j++){
+				DrawPixel drawPixel;
+				pixelMap.at(i).emplace_back(drawPixel);
+			}
+		}
+	}
 }
 
+void Application::putPixelInMap(int x,int y,float zValue,float red,float green,float blue){
+	//TODO Optimize and find better solution
+	if(x<0||x>=Constants::Window::screenWidth||y<0||y>=Constants::Window::screenHeight){
+		return;
+	}
+	assert(x<Constants::Window::screenWidth);
+	assert(y<Constants::Window::screenHeight);
+	currentPixel = &pixelMap.at(x).at(y);
+	if(currentPixel->zValue>zValue){
+		currentPixel->blue = blue;
+		currentPixel->green = green;
+		currentPixel->red = red;
+		currentPixel->zValue = zValue;
+	}
+} 
+
 void Application::render() {
-  shape->render();     
+	glBegin(GL_POINTS);
+	for(int i=0;i<Constants::Window::screenWidth;i++){
+		for(int j=0;j<Constants::Window::screenHeight;j++){
+			currentPixel = &pixelMap.at(i).at(j); 
+			if(currentPixel->blue!=0 || currentPixel->green!=0 || currentPixel->red!=0){
+				glColor3f(currentPixel->red,currentPixel->green,currentPixel->blue);
+				glVertex2i(i,j);
+				currentPixel->blue = 0;
+				currentPixel->red = 0;
+				currentPixel->green = 0;
+				currentPixel->zValue = maximumFov;
+			}
+		}
+	}
+	glEnd();
 }
 
 void Application::update() {

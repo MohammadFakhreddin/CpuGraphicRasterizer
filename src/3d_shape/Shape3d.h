@@ -40,14 +40,6 @@ class Shape3d
 {
 private:
   typedef std::pair<int,int> pixelPair;
-  struct DrawPixel{
-    float x;
-    float y;
-    float zValue;
-    float red;
-    float green;
-    float blue;
-  };
   struct hash_pair { 
     size_t operator()(const pixelPair& p) const
     { 
@@ -66,7 +58,6 @@ private:
   MatrixFloat rotationValueZMatrix;
   MatrixFloat scaleValueMatrix;
   MatrixFloat zScaleMatrix;
-  std::unordered_map<pixelPair,Shape3d::DrawPixel,hash_pair> pixelMap;
   void drawLineBetweenPoints(
     float startX,
     float startY,
@@ -74,14 +65,6 @@ private:
     float endX,
     float endY,
     float endZ,
-    float red,
-    float green,
-    float blue
-  );
-  void putPixelInMapIfPossible(
-    float x,
-    float y,
-    float zValue,
     float red,
     float green,
     float blue
@@ -123,7 +106,6 @@ public:
   );
   bool checkForNodesValidation();
   void update();
-  void render();
   void transformX(float x);
   void transformY(float y);
   void transformZ(float z);

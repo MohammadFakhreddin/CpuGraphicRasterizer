@@ -54,7 +54,7 @@ void timer(int value)
 /* Main function: GLUT runs as a console application starting at main()  */
 int main(int argc, char** argv) {
 	glutInit(&argc,argv);
-    glutInitDisplayMode ( GLUT_SINGLE | GLUT_RGB | GLUT_DEPTH);
+    glutInitDisplayMode ( GLUT_SINGLE | GLUT_RGB );
 #ifdef __DESKTOP__
     unsigned int realScreenHeight = 0;
 	unsigned int realScreenWidth = 0;
@@ -70,7 +70,7 @@ int main(int argc, char** argv) {
     glutCreateWindow(Constants::Window::appName);
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f); // Set background color to black and opaque
     glViewport(0,0,Constants::Window::screenWidth,Constants::Window::screenHeight);
-    glOrtho(0.0, Constants::Window::screenWidth, 0.0, Constants::Window::screenHeight, -1.0, 1.0);
+    glOrtho(-0.5f, Constants::Window::screenWidth-0.5f, -0.5f, Constants::Window::screenHeight-0.5f, -1.0, 1.0);
     application = std::unique_ptr<Application>(new Application());
     glutTimerFunc(0, timer, 0);
 	glutDisplayFunc(mainLoop);
