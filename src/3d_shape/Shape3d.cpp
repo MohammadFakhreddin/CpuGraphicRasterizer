@@ -619,6 +619,7 @@ void Shape3d::putPixelInMapIfPossible(
   float green,
   float blue
 ){
+  //Pixel map is source of bad render time
   auto existingPixel = pixelMap.find({x,y});
   if(existingPixel==pixelMap.end()){
     DrawPixel pixel;
@@ -646,7 +647,7 @@ void Shape3d::putPixelInMapIfPossible(
     existingPixel->second.zValue = zValue;
   }
 }
-
+//Optimized
 void Shape3d::render(){
   if(pixelMap.size()>0){
     glBegin(GL_POINTS);
