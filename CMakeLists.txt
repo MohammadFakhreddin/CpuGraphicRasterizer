@@ -6,7 +6,7 @@ project(3d-cube)
 
 set(CMAKE_CXX_STANDARD 14)
 
-FILE(GLOB_RECURSE USER_HEADER "src/.h")
+FILE(GLOB_RECURSE USER_HEADER "src/*.h")
 FILE(GLOB_RECURSE USER_CPP "src/*.cpp")
 
 set(APP_SOURCE)

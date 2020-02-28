@@ -5,8 +5,15 @@
 #include "application/Application.h"
 #include <iostream>
 #include "data_types/MatrixTemplate.h"
+#include <string>
 
 std::unique_ptr<Application> application;
+double lastTime = glutGet(GLUT_ELAPSED_TIME);
+double currentTime = 0;
+double targetFPS = 60;                    
+double timePerFrame = 1000 / targetFPS;
+double currentFps = 0;
+std::string fpsText = "";
 
 void update(){
 	application->update();
@@ -15,12 +22,27 @@ void update(){
 void render(){
     glClear( GL_COLOR_BUFFER_BIT);
     application->render();
+    {//FPSText
+        glColor3f(1,1,1);
+        glRasterPos2i(0,0);
+        fpsText = std::to_string(currentFps);
+        int len = fpsText.length();
+        for (int i = 0; i < len; i++)
+        {
+            glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24,fpsText[i]);
+        }
+    }
     glFlush();
 }
 
 void mainLoop() {
+    currentTime = glutGet(GLUT_ELAPSED_TIME);
+    
     update();
     render();
+
+    currentFps = 1000/(currentTime-lastTime);
+    lastTime = currentTime;
 }
 
 void timer(int value)
@@ -53,19 +75,5 @@ int main(int argc, char** argv) {
     glutTimerFunc(0, timer, 0);
 	glutDisplayFunc(mainLoop);
     glutMainLoop();
-    // MatrixInt matrix2(3,1,new int*[3]{
-    //     new int[1]{1},
-    //     new int[1]{2},
-    //     new int[1]{3},
-    // });
-    // matrix2.print();
-    // MatrixInt matrix1(3,3,new int*[3]{
-    //     new int[3]{1,2,3},
-    //     new int[3]{4,5,6},
-    //     new int[3]{7,8,9}
-    // });
-    // matrix1.print();
-    // auto matrix3 = matrix2 * matrix1;
-    // matrix3.print();
     return 0;
 }
