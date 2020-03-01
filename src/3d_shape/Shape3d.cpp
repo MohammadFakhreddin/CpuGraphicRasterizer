@@ -407,20 +407,7 @@ void Shape3d::update(){
             float endXM = (endX - finalX)/(currentY - finalY);
             float endZM = (endZ - finalZ)/(currentY - finalY);
             if(abs(currentY-finalY)>minimumDrawDistance){
-              drawLineBetweenPoints(
-                startX,currentY,startZ,
-                endX,currentY,endZ,
-                edge.getRed(),
-                edge.getGreen(),
-                edge.getBlue()
-              );
-              while (currentY>finalY)
-              {
-                currentY-=stepValue;
-                startX-=startXM * stepValue;
-                startZ-=startZM * stepValue;
-                endX-=endXM * stepValue;
-                endZ-=endZM * stepValue;
+              do{
                 drawLineBetweenPoints(
                   startX,currentY,startZ,
                   endX,currentY,endZ,
@@ -428,7 +415,12 @@ void Shape3d::update(){
                   edge.getGreen(),
                   edge.getBlue()
                 );
-              }
+                currentY-=stepValue;
+                startX-=startXM * stepValue;
+                startZ-=startZM * stepValue;
+                endX-=endXM * stepValue;
+                endZ-=endZM * stepValue;
+              } while (currentY>finalY+stepValue);
             }
           }else if(bottomEdges.size()==2){
             float currentY = bottomEdges.at(0)->get(1,0);
@@ -445,20 +437,7 @@ void Shape3d::update(){
             float endXM = (endX - finalX)/yDifference;
             float endZM = (endZ - finalZ)/yDifference;
             if(abs(currentY - finalY)>minimumDrawDistance){
-              drawLineBetweenPoints(
-                startX,currentY,startZ,
-                endX,currentY,endZ,
-                edge.getRed(),
-                edge.getGreen(),
-                edge.getBlue()
-              );
-              while (currentY<finalY)
-              {
-                currentY+=stepValue;
-                startX+=startXM * stepValue;
-                startZ+=startZM * stepValue;
-                endX+=endXM * stepValue;
-                endZ+=endZM * stepValue;
+              do{
                 drawLineBetweenPoints(
                   startX,currentY,startZ,
                   endX,currentY,endZ,
@@ -466,7 +445,12 @@ void Shape3d::update(){
                   edge.getGreen(),
                   edge.getBlue()
                 );
-              }
+                currentY+=stepValue;
+                startX+=startXM * stepValue;
+                startZ+=startZM * stepValue;
+                endX+=endXM * stepValue;
+                endZ+=endZM * stepValue;
+              } while (currentY<finalY-1);
             }
           }else {
             assert(topEdges.size()==1);
@@ -491,20 +475,7 @@ void Shape3d::update(){
               float endXM = (endX - finalX)/(currentY - finalY);
               float endZM = (endZ - finalZ)/(currentY - finalY);
               if(abs(currentY - finalY)>minimumDrawDistance){
-                drawLineBetweenPoints(
-                  startX,currentY,startZ,
-                  endX,currentY,endZ,
-                  edge.getRed(),
-                  edge.getGreen(),
-                  edge.getBlue()
-                );
-                while (currentY<finalY)
-                {
-                  currentY+=stepValue;
-                  startX+=startXM * stepValue;
-                  startZ+=startZM * stepValue;
-                  endX+=endXM * stepValue;
-                  endZ+=endZM * stepValue;
+                do{
                   drawLineBetweenPoints(
                     startX,currentY,startZ,
                     endX,currentY,endZ,
@@ -512,7 +483,12 @@ void Shape3d::update(){
                     edge.getGreen(),
                     edge.getBlue()
                   );
-                }
+                  currentY+=stepValue;
+                  startX+=startXM * stepValue;
+                  startZ+=startZM * stepValue;
+                  endX+=endXM * stepValue;
+                  endZ+=endZM * stepValue;
+                } while (currentY<finalY-1);
               }
             }
             {//From middle to bottom
@@ -529,20 +505,7 @@ void Shape3d::update(){
               float endXM = (endX - finalX)/(currentY - finalY);
               float endZM = (endZ - finalZ)/(currentY - finalY);
               if(abs(currentY - finalY) > minimumDrawDistance){
-                drawLineBetweenPoints(
-                  startX,currentY,startZ,
-                  endX,currentY,endZ,
-                  edge.getRed(),
-                  edge.getGreen(),
-                  edge.getBlue()
-                );
-                while (currentY>finalY)
-                {
-                  currentY-= stepValue;
-                  startX-=startXM * stepValue;
-                  startZ-=startZM * stepValue;
-                  endX-=endXM * stepValue;
-                  endZ-=endZM * stepValue;
+                do{
                   drawLineBetweenPoints(
                     startX,currentY,startZ,
                     endX,currentY,endZ,
@@ -550,7 +513,12 @@ void Shape3d::update(){
                     edge.getGreen(),
                     edge.getBlue()
                   );
-                }
+                  currentY-= stepValue;
+                  startX-=startXM * stepValue;
+                  startZ-=startZM * stepValue;
+                  endX-=endXM * stepValue;
+                  endZ-=endZM * stepValue;
+                } while (currentY>finalY+1);
               }
             }
           }
