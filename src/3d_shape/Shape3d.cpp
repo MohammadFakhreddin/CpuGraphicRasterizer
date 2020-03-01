@@ -63,18 +63,18 @@ std::unique_ptr<Shape3d> Shape3d::generate3DCube(
 		})
 	};
 	std::vector<ColorEdge> edgeList = {
-    ColorEdge(0,1,2,true,0,1,0),
-    ColorEdge(3,1,2,true,0,0,1),
-    ColorEdge(3,1,5,true,1,0,0),
-    ColorEdge(3,7,5,true,0,1,1),
-    ColorEdge(0,4,5,true,1,0,1),
-    ColorEdge(5,0,1,true,1,1,0),
-    ColorEdge(4,0,6,true,0,0.5,0),
-    ColorEdge(2,0,6,true,0,0,0.5),
-    ColorEdge(2,7,6,true,0.5,0,0), 
-    ColorEdge(2,7,3,true,0,0.5,0.5),
-    ColorEdge(4,5,7,true,0.5,0,0.5),
-    ColorEdge(4,6,7,true,0.5,0.5,0)  
+    ColorEdge(0,1,2,true,245.0f/255.0f, 144.0f/255.0f, 66.0f/255.0f),
+    ColorEdge(3,1,2,true,245.0f/255.0f, 144.0f/255.0f, 66.0f/255.0f),
+    ColorEdge(3,1,5,true,221.0f/255.0f, 245.0f/255.0f, 66.0f/255.0f),
+    ColorEdge(3,7,5,true,221.0f/255.0f, 245.0f/255.0f, 66.0f/255.0f),
+    ColorEdge(0,4,5,true,66.0f/255.0f, 245.0f/255.0f, 126.0f/255.0f),
+    ColorEdge(5,0,1,true,66.0f/255.0f, 245.0f/255.0f, 126.0f/255.0f),
+    ColorEdge(4,0,6,true,66.0f/255.0f, 194.0f/255.0f, 245.0f/255.0f),
+    ColorEdge(2,0,6,true,66.0f/255.0f, 194.0f/255.0f, 245.0f/255.0f),
+    ColorEdge(2,7,6,true,96.0f/255.0f, 66.0f/255.0f, 245.0f/255.0f), 
+    ColorEdge(2,7,3,true,96.0f/255.0f, 66.0f/255.0f, 245.0f/255.0f),
+    ColorEdge(4,5,7,true,245.0f/255.0f, 66.0f/255.0f, 123.0f/255.0f),
+    ColorEdge(4,6,7,true,245.0f/255.0f, 66.0f/255.0f, 123.0f/255.0f)  
 	};
 	return std::unique_ptr<Shape3d>(new Shape3d(
 		nodeList,
@@ -392,6 +392,7 @@ void Shape3d::update(){
             }
           }
           float stepValue = 1;
+          float minimumDrawDistance = 0.5;
           if(topEdges.size()==2){
             float currentY = topEdges.at(0)->get(1,0);
             float startX = topEdges.at(0)->get(0,0);
@@ -405,7 +406,7 @@ void Shape3d::update(){
             float startZM = (startZ - finalZ)/(currentY - finalY);
             float endXM = (endX - finalX)/(currentY - finalY);
             float endZM = (endZ - finalZ)/(currentY - finalY);
-            if(abs(currentY-finalY)>stepValue){
+            if(abs(currentY-finalY)>minimumDrawDistance){
               drawLineBetweenPoints(
                 startX,currentY,startZ,
                 endX,currentY,endZ,
@@ -443,7 +444,7 @@ void Shape3d::update(){
             float startZM = (startZ - finalZ)/yDifference;
             float endXM = (endX - finalX)/yDifference;
             float endZM = (endZ - finalZ)/yDifference;
-            if(abs(currentY - finalY)>stepValue){
+            if(abs(currentY - finalY)>minimumDrawDistance){
               drawLineBetweenPoints(
                 startX,currentY,startZ,
                 endX,currentY,endZ,
@@ -489,7 +490,7 @@ void Shape3d::update(){
               float startZM = (startZ - finalZ)/(currentY - finalY);
               float endXM = (endX - finalX)/(currentY - finalY);
               float endZM = (endZ - finalZ)/(currentY - finalY);
-              if(abs(currentY - finalY)>stepValue){
+              if(abs(currentY - finalY)>minimumDrawDistance){
                 drawLineBetweenPoints(
                   startX,currentY,startZ,
                   endX,currentY,endZ,
@@ -527,7 +528,7 @@ void Shape3d::update(){
               float startZM = (startZ - finalZ)/(currentY - finalY);
               float endXM = (endX - finalX)/(currentY - finalY);
               float endZM = (endZ - finalZ)/(currentY - finalY);
-              if(abs(currentY - finalY) > stepValue){
+              if(abs(currentY - finalY) > minimumDrawDistance){
                 drawLineBetweenPoints(
                   startX,currentY,startZ,
                   endX,currentY,endZ,
