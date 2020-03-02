@@ -77,6 +77,7 @@ Application::Application()
 			pixelMap.emplace_back(innerMap);
 			for(int j=0;j<Constants::Window::screenHeight;j++){
 				DrawPixel drawPixel;
+				drawPixel.zValue = maximumFov;
 				pixelMap.at(i).emplace_back(drawPixel);
 			}
 		}
@@ -99,7 +100,7 @@ void Application::putPixelInMap(int x,int y,float zValue,float red,float green,f
 	}
 } 
 
-void Application::render() {
+void Application::render(float deltaTime) {
 	glBegin(GL_POINTS);
 	for(int i=0;i<Constants::Window::screenWidth;i++){
 		for(int j=0;j<Constants::Window::screenHeight;j++){
@@ -117,65 +118,65 @@ void Application::render() {
 	glEnd();
 }
 
-void Application::update() {
+void Application::update(float deltaTime) {
 	if (keyEvents[leftButton]==true) {
-		shape->transformX(-1*Application::shapeTransformSpeed);
+		shape->transformX(-1 * Application::shapeTransformSpeed * deltaTime);
 		keyEvents[leftButton] = false;
 	}
 	if (keyEvents[rightButton]==true) {
-		shape->transformX(Application::shapeTransformSpeed);
+		shape->transformX(Application::shapeTransformSpeed * deltaTime);
 		keyEvents[rightButton] = false;
 	}
 	if (keyEvents[forwardButton] == true) {
-		shape->transformY(Application::shapeTransformSpeed);
+		shape->transformY(Application::shapeTransformSpeed * deltaTime);
 		keyEvents[forwardButton] = false;
 	}
 	if (keyEvents[backwardButton] == true) {
-		shape->transformY(-1 * Application::shapeTransformSpeed);
+		shape->transformY(-1 * Application::shapeTransformSpeed * deltaTime);
 		keyEvents[backwardButton] = false;
 	}
   //TODO Add transformZ (It must be like scale factor)
 	if (keyEvents[rotationZLeftButton] == true) {
-		shape->rotateZ(Application::shapeRotationSpeed);
+		shape->rotateZ(Application::shapeRotationSpeed * deltaTime);
 		keyEvents[rotationZLeftButton] = false;
 	}
 	if (keyEvents[rotationZRightButton]) {
-		shape->rotateZ(-1* Application::shapeRotationSpeed);
+		shape->rotateZ(-1* Application::shapeRotationSpeed * deltaTime);
 		keyEvents[rotationZRightButton] = false;
 	}
   if (keyEvents[rotationXLeftButton] == true) {
-		shape->rotateX(Application::shapeRotationSpeed);
+		shape->rotateX(Application::shapeRotationSpeed * deltaTime);
 		keyEvents[rotationXLeftButton] = false;
 	}
 	if (keyEvents[rotationXRightButton]) {
-		shape->rotateX(-1* Application::shapeRotationSpeed);
+		shape->rotateX(-1* Application::shapeRotationSpeed * deltaTime);
 		keyEvents[rotationXRightButton] = false;
 	}
   if (keyEvents[rotationYLeftButton] == true) {
-		shape->rotateY(Application::shapeRotationSpeed);
+		shape->rotateY(Application::shapeRotationSpeed * deltaTime);
 		keyEvents[rotationYLeftButton] = false;
 	}
 	if (keyEvents[rotationYRightButton]) {
-		shape->rotateY(-1* Application::shapeRotationSpeed);
+		shape->rotateY(-1* Application::shapeRotationSpeed * deltaTime);
 		keyEvents[rotationYRightButton] = false;
 	}
 	if (keyEvents[zoomInButton]) {
-		shape->scale(Application::shapeScaleSpeed);
+		shape->scale(Application::shapeScaleSpeed * deltaTime);
 		keyEvents[zoomInButton] = false;
 	}
 	if (keyEvents[zoomOutButton]) {
-		shape->scale(-1 * Application::shapeScaleSpeed);
+		shape->scale(-1 * Application::shapeScaleSpeed * deltaTime);
 		keyEvents[zoomOutButton] = false;
 	}
 	if(keyEvents[forwardZButton]){
-		shape->transformZ(Application::shapeTransformSpeed);
+		shape->transformZ(Application::shapeTransformSpeed * deltaTime);
 		keyEvents[forwardZButton] = false;
 	}
 	if(keyEvents[backwardZButton]){
-		shape->transformZ(-1 * Application::shapeTransformSpeed);
+		shape->transformZ(-1 * Application::shapeTransformSpeed * deltaTime);
 		keyEvents[backwardZButton] = false;
 	}
-	shape->update();
+	shape->update(deltaTime);
 }
 
 void Application::notifyKeyIsPressed(Application::Buttons keyEvent)

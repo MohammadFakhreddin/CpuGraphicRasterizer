@@ -7,6 +7,7 @@ CMakeFiles/3d-cube.dir/src/3d_shape/Shape3d.cpp.o
  /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/OpenGlHeaders.h
  /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/application/Application.h
  /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/data_types/MatrixTemplate.h
+ /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/fa_texture/FaTexture.h
 CMakeFiles/3d-cube.dir/src/application/Application.cpp.o
  /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/3d_shape/Shape3d.h
  /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/Constants.h
@@ -14,12 +15,19 @@ CMakeFiles/3d-cube.dir/src/application/Application.cpp.o
  /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/application/Application.cpp
  /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/application/Application.h
  /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/data_types/MatrixTemplate.h
+ /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/fa_texture/FaTexture.h
+CMakeFiles/3d-cube.dir/src/fa_texture/FaTexture.cpp.o
+ /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/fa_texture/FaTexture.cpp
+ /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/fa_texture/FaTexture.h
+ /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/fa_texture/stb_image.h
 CMakeFiles/3d-cube.dir/src/main.cpp.o
  /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/3d_shape/Shape3d.h
  /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/Constants.h
  /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/OpenGlHeaders.h
  /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/application/Application.h
  /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/data_types/MatrixTemplate.h
+ /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/fa_texture/FaTexture.h
+ /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/fa_texture/stb_image.h
  /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/main.cpp
  /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/utils/screen/ScreenSize.h
 CMakeFiles/3d-cube.dir/src/utils/screen/ScreenSize.cpp.o

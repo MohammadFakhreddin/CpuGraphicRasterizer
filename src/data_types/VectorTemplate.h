@@ -1,4 +1,5 @@
-#pragma once
+#ifndef VectorTemplate_class
+#define VectorTemplate_class
 
 template <typename T>
 class _Vec2d {
@@ -138,3 +139,5 @@ public:
 using Vec3DInt = _Vec3d<int>;
 using Vec3DFloat = _Vec3d<float>;
 using Vec3DDouble = _Vec3d<double>;
+
+#endif

@@ -177,6 +177,33 @@ src/application/Application.cpp.s:
 	$(MAKE) -f CMakeFiles/3d-cube.dir/build.make CMakeFiles/3d-cube.dir/src/application/Application.cpp.s
 .PHONY : src/application/Application.cpp.s
 
+src/fa_texture/FaTexture.o: src/fa_texture/FaTexture.cpp.o
+
+.PHONY : src/fa_texture/FaTexture.o
+
+# target to build an object file
+src/fa_texture/FaTexture.cpp.o:
+	$(MAKE) -f CMakeFiles/3d-cube.dir/build.make CMakeFiles/3d-cube.dir/src/fa_texture/FaTexture.cpp.o
+.PHONY : src/fa_texture/FaTexture.cpp.o
+
+src/fa_texture/FaTexture.i: src/fa_texture/FaTexture.cpp.i
+
+.PHONY : src/fa_texture/FaTexture.i
+
+# target to preprocess a source file
+src/fa_texture/FaTexture.cpp.i:
+	$(MAKE) -f CMakeFiles/3d-cube.dir/build.make CMakeFiles/3d-cube.dir/src/fa_texture/FaTexture.cpp.i
+.PHONY : src/fa_texture/FaTexture.cpp.i
+
+src/fa_texture/FaTexture.s: src/fa_texture/FaTexture.cpp.s
+
+.PHONY : src/fa_texture/FaTexture.s
+
+# target to generate assembly for a file
+src/fa_texture/FaTexture.cpp.s:
+	$(MAKE) -f CMakeFiles/3d-cube.dir/build.make CMakeFiles/3d-cube.dir/src/fa_texture/FaTexture.cpp.s
+.PHONY : src/fa_texture/FaTexture.cpp.s
+
 src/main.o: src/main.cpp.o
 
 .PHONY : src/main.o
@@ -246,6 +273,9 @@ help:
 	@echo "... src/application/Application.o"
 	@echo "... src/application/Application.i"
 	@echo "... src/application/Application.s"
+	@echo "... src/fa_texture/FaTexture.o"
+	@echo "... src/fa_texture/FaTexture.i"
+	@echo "... src/fa_texture/FaTexture.s"
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"

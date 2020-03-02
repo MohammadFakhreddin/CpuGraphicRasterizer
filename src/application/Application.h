@@ -1,8 +1,10 @@
-#pragma once
+#ifndef Application_class
+#define Application_class
 
 #include <memory>
 #include <unordered_map>
 #include "../3d_shape/Shape3d.h"
+#include "../fa_texture/FaTexture.h"
 
 class Application {
 public:
@@ -29,14 +31,14 @@ public:
 		zoomInButton,
 		zoomOutButton
 	};
-	static constexpr float shapeTransformSpeed = 20.0f;
-	static constexpr float shapeRotationSpeed = 0.1f;
+	static constexpr float shapeTransformSpeed = 1.0f;
+	static constexpr float shapeRotationSpeed = 0.01f;
 	static constexpr float cameraZLocation = 200.0f;
 	static constexpr float maximumFov = 200.0f;
 	static constexpr float shapeScaleSpeed = 0.1f;
 	Application();
-	void render();
-	void update();
+	void render(float deltaTime);
+	void update(float deltaTime);
 	void notifyKeyIsPressed(Application::Buttons);
 	void putPixelInMap(int x,int y,float zValue,float red,float green,float blue);
 	static Application* getInstance();
@@ -46,4 +48,7 @@ private:
 	static Application* instance;
 	std::unordered_map<Application::Buttons,bool> keyEvents;
 	DrawPixel* currentPixel;
+	FaTexture cubeTexture = FaTexture("src/assets/wood.png",1,1);
 };
+
+#endif

@@ -1,4 +1,5 @@
-#pragma once
+#ifndef Shape3d_class
+#define Shape3d_class
 
 #include "../data_types/MatrixTemplate.h"
 #include <vector>
@@ -40,14 +41,6 @@ class Shape3d
 {
 private:
   typedef std::pair<int,int> pixelPair;
-  struct hash_pair { 
-    size_t operator()(const pixelPair& p) const
-    { 
-        auto hash1 = p.first; 
-        auto hash2 = p.second; 
-        return hash1 ^ hash2; 
-    } 
-  }; 
   std::vector<MatrixFloat> nodes;
   std::vector<ColorEdge>edges;
   std::vector<MatrixFloat> worldPoints;
@@ -105,7 +98,7 @@ public:
     float scaleValue
   );
   bool checkForNodesValidation();
-  void update();
+  void update(float deltaTime);
   void transformX(float x);
   void transformY(float y);
   void transformZ(float z);
@@ -115,3 +108,4 @@ public:
   void rotateZ(float z);
 };
 
+#endif

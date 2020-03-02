@@ -1,4 +1,5 @@
-#pragma once
+#ifndef MatrixTemplate_class
+#define MatrixTemplate_class
 
 #include <assert.h>
 #include <iostream>
@@ -139,3 +140,5 @@ class _Matrix{
 using MatrixInt = _Matrix<int>;
 using MatrixFloat = _Matrix<float>;
 using MatrixDouble = _Matrix<double>;
+
+#endif

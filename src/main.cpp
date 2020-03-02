@@ -6,6 +6,8 @@
 #include <iostream>
 #include "data_types/MatrixTemplate.h"
 #include <string>
+#define STB_IMAGE_IMPLEMENTATION
+#include "fa_texture/stb_image.h"
 
 std::unique_ptr<Application> application;
 double lastTime = glutGet(GLUT_ELAPSED_TIME);
@@ -14,14 +16,15 @@ double targetFPS = 60;
 double timePerFrame = 1000 / targetFPS;
 double currentFps = 0;
 std::string fpsText = "";
+double deltaTime = 0;
 
-void update(){
-	application->update();
+void update(float deltaTime){
+	application->update(deltaTime);
 }
 
-void render(){
+void render(float deltaTime){
     glClear( GL_COLOR_BUFFER_BIT);
-    application->render();
+    application->render(deltaTime);
     {//FPSText
         glColor3f(1,1,1);
         glRasterPos2i(0,0);
@@ -37,11 +40,10 @@ void render(){
 
 void mainLoop() {
     currentTime = glutGet(GLUT_ELAPSED_TIME);
-    
-    update();
-    render();
-
-    currentFps = 1000/(currentTime-lastTime);
+    deltaTime = currentTime-lastTime;
+    update(deltaTime);
+    render(deltaTime);
+    currentFps = 1000.0f/deltaTime;
     lastTime = currentTime;
 }
 

@@ -6,6 +6,7 @@ CMakeFiles/3d-cube.dir/src/3d_shape/Shape3d.cpp.o: src/3d_shape/Shape3d.h
 CMakeFiles/3d-cube.dir/src/3d_shape/Shape3d.cpp.o: src/OpenGlHeaders.h
 CMakeFiles/3d-cube.dir/src/3d_shape/Shape3d.cpp.o: src/application/Application.h
 CMakeFiles/3d-cube.dir/src/3d_shape/Shape3d.cpp.o: src/data_types/MatrixTemplate.h
+CMakeFiles/3d-cube.dir/src/3d_shape/Shape3d.cpp.o: src/fa_texture/FaTexture.h
 
 CMakeFiles/3d-cube.dir/src/application/Application.cpp.o: src/3d_shape/Shape3d.h
 CMakeFiles/3d-cube.dir/src/application/Application.cpp.o: src/Constants.h
@@ -13,12 +14,19 @@ CMakeFiles/3d-cube.dir/src/application/Application.cpp.o: src/OpenGlHeaders.h
 CMakeFiles/3d-cube.dir/src/application/Application.cpp.o: src/application/Application.cpp
 CMakeFiles/3d-cube.dir/src/application/Application.cpp.o: src/application/Application.h
 CMakeFiles/3d-cube.dir/src/application/Application.cpp.o: src/data_types/MatrixTemplate.h
+CMakeFiles/3d-cube.dir/src/application/Application.cpp.o: src/fa_texture/FaTexture.h
+
+CMakeFiles/3d-cube.dir/src/fa_texture/FaTexture.cpp.o: src/fa_texture/FaTexture.cpp
+CMakeFiles/3d-cube.dir/src/fa_texture/FaTexture.cpp.o: src/fa_texture/FaTexture.h
+CMakeFiles/3d-cube.dir/src/fa_texture/FaTexture.cpp.o: src/fa_texture/stb_image.h
 
 CMakeFiles/3d-cube.dir/src/main.cpp.o: src/3d_shape/Shape3d.h
 CMakeFiles/3d-cube.dir/src/main.cpp.o: src/Constants.h
 CMakeFiles/3d-cube.dir/src/main.cpp.o: src/OpenGlHeaders.h
 CMakeFiles/3d-cube.dir/src/main.cpp.o: src/application/Application.h
 CMakeFiles/3d-cube.dir/src/main.cpp.o: src/data_types/MatrixTemplate.h
+CMakeFiles/3d-cube.dir/src/main.cpp.o: src/fa_texture/FaTexture.h
+CMakeFiles/3d-cube.dir/src/main.cpp.o: src/fa_texture/stb_image.h
 CMakeFiles/3d-cube.dir/src/main.cpp.o: src/main.cpp
 CMakeFiles/3d-cube.dir/src/main.cpp.o: src/utils/screen/ScreenSize.h
 

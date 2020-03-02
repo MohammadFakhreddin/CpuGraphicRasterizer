@@ -250,7 +250,7 @@ bool Shape3d::checkForNodesValidation(){
   return true;
 }
 
-void Shape3d::update(){
+void Shape3d::update(float deltaTime){
   if(nodes.size()>0){
     {
       MatrixFloat rotationAndScaleResult(3,1,0);
