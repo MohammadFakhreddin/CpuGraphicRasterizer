@@ -16,6 +16,9 @@ CMakeFiles/3d-cube.dir/src/application/Application.cpp.o: src/application/Applic
 CMakeFiles/3d-cube.dir/src/application/Application.cpp.o: src/data_types/MatrixTemplate.h
 CMakeFiles/3d-cube.dir/src/application/Application.cpp.o: src/fa_texture/FaTexture.h
 
+CMakeFiles/3d-cube.dir/src/fa_texture/FaTexture.cpp.o: src/3d_shape/Shape3d.h
+CMakeFiles/3d-cube.dir/src/fa_texture/FaTexture.cpp.o: src/application/Application.h
+CMakeFiles/3d-cube.dir/src/fa_texture/FaTexture.cpp.o: src/data_types/MatrixTemplate.h
 CMakeFiles/3d-cube.dir/src/fa_texture/FaTexture.cpp.o: src/fa_texture/FaTexture.cpp
 CMakeFiles/3d-cube.dir/src/fa_texture/FaTexture.cpp.o: src/fa_texture/FaTexture.h
 CMakeFiles/3d-cube.dir/src/fa_texture/FaTexture.cpp.o: src/fa_texture/stb_image.h
