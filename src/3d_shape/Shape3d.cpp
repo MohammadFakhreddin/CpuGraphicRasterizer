@@ -160,7 +160,7 @@ Shape3d::Shape3d(
   }
   if(edges.size()>0){
     for(auto edge:edges){
-      this->edges.emplace_back(edge);
+      this->edges.emplace_back(std::unique_ptr<BaseEdge>(edge));
     }
   }
   transformMatrix.set(0,0,transformX);
