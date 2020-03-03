@@ -42,13 +42,24 @@ public:
 	void notifyKeyIsPressed(Application::Buttons);
 	void putPixelInMap(int x,int y,float zValue,float red,float green,float blue);
 	static Application* getInstance();
-	std::vector<std::vector<DrawPixel>> pixelMap;
+	void drawLineBetweenPoints(
+		float startX,
+		float startY,
+		float startZ,
+		float endX,
+		float endY,
+		float endZ,
+		float red,
+		float green,
+		float blue
+	);
 private:
 	std::unique_ptr<Shape3d> shape;
 	static Application* instance;
 	std::unordered_map<Application::Buttons,bool> keyEvents;
 	DrawPixel* currentPixel;
 	FaTexture cubeTexture = FaTexture("src/assets/wood.png",1,1);
+	std::vector<std::vector<DrawPixel>> pixelMap;
 };
 
 #endif

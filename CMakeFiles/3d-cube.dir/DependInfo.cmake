@@ -5,6 +5,10 @@ set(CMAKE_DEPENDS_LANGUAGES
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
   "/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/3d_shape/Shape3d.cpp" "/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/CMakeFiles/3d-cube.dir/src/3d_shape/Shape3d.cpp.o"
+  "/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/3d_shape/edge/base_edge/BaseEdge.cpp" "/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/CMakeFiles/3d-cube.dir/src/3d_shape/edge/base_edge/BaseEdge.cpp.o"
+  "/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/3d_shape/edge/color_edge/ColorEdge.cpp" "/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/CMakeFiles/3d-cube.dir/src/3d_shape/edge/color_edge/ColorEdge.cpp.o"
+  "/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/3d_shape/edge/simple_edge/SimpleEdge.cpp" "/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/CMakeFiles/3d-cube.dir/src/3d_shape/edge/simple_edge/SimpleEdge.cpp.o"
+  "/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/3d_shape/edge/texture_edge/TextureEdge.cpp" "/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/CMakeFiles/3d-cube.dir/src/3d_shape/edge/texture_edge/TextureEdge.cpp.o"
   "/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/application/Application.cpp" "/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/CMakeFiles/3d-cube.dir/src/application/Application.cpp.o"
   "/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/fa_texture/FaTexture.cpp" "/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/CMakeFiles/3d-cube.dir/src/fa_texture/FaTexture.cpp.o"
   "/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/main.cpp" "/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/CMakeFiles/3d-cube.dir/src/main.cpp.o"

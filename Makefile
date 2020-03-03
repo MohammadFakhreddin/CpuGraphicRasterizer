@@ -150,6 +150,114 @@ src/3d_shape/Shape3d.cpp.s:
 	$(MAKE) -f CMakeFiles/3d-cube.dir/build.make CMakeFiles/3d-cube.dir/src/3d_shape/Shape3d.cpp.s
 .PHONY : src/3d_shape/Shape3d.cpp.s
 
+src/3d_shape/edge/base_edge/BaseEdge.o: src/3d_shape/edge/base_edge/BaseEdge.cpp.o
+
+.PHONY : src/3d_shape/edge/base_edge/BaseEdge.o
+
+# target to build an object file
+src/3d_shape/edge/base_edge/BaseEdge.cpp.o:
+	$(MAKE) -f CMakeFiles/3d-cube.dir/build.make CMakeFiles/3d-cube.dir/src/3d_shape/edge/base_edge/BaseEdge.cpp.o
+.PHONY : src/3d_shape/edge/base_edge/BaseEdge.cpp.o
+
+src/3d_shape/edge/base_edge/BaseEdge.i: src/3d_shape/edge/base_edge/BaseEdge.cpp.i
+
+.PHONY : src/3d_shape/edge/base_edge/BaseEdge.i
+
+# target to preprocess a source file
+src/3d_shape/edge/base_edge/BaseEdge.cpp.i:
+	$(MAKE) -f CMakeFiles/3d-cube.dir/build.make CMakeFiles/3d-cube.dir/src/3d_shape/edge/base_edge/BaseEdge.cpp.i
+.PHONY : src/3d_shape/edge/base_edge/BaseEdge.cpp.i
+
+src/3d_shape/edge/base_edge/BaseEdge.s: src/3d_shape/edge/base_edge/BaseEdge.cpp.s
+
+.PHONY : src/3d_shape/edge/base_edge/BaseEdge.s
+
+# target to generate assembly for a file
+src/3d_shape/edge/base_edge/BaseEdge.cpp.s:
+	$(MAKE) -f CMakeFiles/3d-cube.dir/build.make CMakeFiles/3d-cube.dir/src/3d_shape/edge/base_edge/BaseEdge.cpp.s
+.PHONY : src/3d_shape/edge/base_edge/BaseEdge.cpp.s
+
+src/3d_shape/edge/color_edge/ColorEdge.o: src/3d_shape/edge/color_edge/ColorEdge.cpp.o
+
+.PHONY : src/3d_shape/edge/color_edge/ColorEdge.o
+
+# target to build an object file
+src/3d_shape/edge/color_edge/ColorEdge.cpp.o:
+	$(MAKE) -f CMakeFiles/3d-cube.dir/build.make CMakeFiles/3d-cube.dir/src/3d_shape/edge/color_edge/ColorEdge.cpp.o
+.PHONY : src/3d_shape/edge/color_edge/ColorEdge.cpp.o
+
+src/3d_shape/edge/color_edge/ColorEdge.i: src/3d_shape/edge/color_edge/ColorEdge.cpp.i
+
+.PHONY : src/3d_shape/edge/color_edge/ColorEdge.i
+
+# target to preprocess a source file
+src/3d_shape/edge/color_edge/ColorEdge.cpp.i:
+	$(MAKE) -f CMakeFiles/3d-cube.dir/build.make CMakeFiles/3d-cube.dir/src/3d_shape/edge/color_edge/ColorEdge.cpp.i
+.PHONY : src/3d_shape/edge/color_edge/ColorEdge.cpp.i
+
+src/3d_shape/edge/color_edge/ColorEdge.s: src/3d_shape/edge/color_edge/ColorEdge.cpp.s
+
+.PHONY : src/3d_shape/edge/color_edge/ColorEdge.s
+
+# target to generate assembly for a file
+src/3d_shape/edge/color_edge/ColorEdge.cpp.s:
+	$(MAKE) -f CMakeFiles/3d-cube.dir/build.make CMakeFiles/3d-cube.dir/src/3d_shape/edge/color_edge/ColorEdge.cpp.s
+.PHONY : src/3d_shape/edge/color_edge/ColorEdge.cpp.s
+
+src/3d_shape/edge/simple_edge/SimpleEdge.o: src/3d_shape/edge/simple_edge/SimpleEdge.cpp.o
+
+.PHONY : src/3d_shape/edge/simple_edge/SimpleEdge.o
+
+# target to build an object file
+src/3d_shape/edge/simple_edge/SimpleEdge.cpp.o:
+	$(MAKE) -f CMakeFiles/3d-cube.dir/build.make CMakeFiles/3d-cube.dir/src/3d_shape/edge/simple_edge/SimpleEdge.cpp.o
+.PHONY : src/3d_shape/edge/simple_edge/SimpleEdge.cpp.o
+
+src/3d_shape/edge/simple_edge/SimpleEdge.i: src/3d_shape/edge/simple_edge/SimpleEdge.cpp.i
+
+.PHONY : src/3d_shape/edge/simple_edge/SimpleEdge.i
+
+# target to preprocess a source file
+src/3d_shape/edge/simple_edge/SimpleEdge.cpp.i:
+	$(MAKE) -f CMakeFiles/3d-cube.dir/build.make CMakeFiles/3d-cube.dir/src/3d_shape/edge/simple_edge/SimpleEdge.cpp.i
+.PHONY : src/3d_shape/edge/simple_edge/SimpleEdge.cpp.i
+
+src/3d_shape/edge/simple_edge/SimpleEdge.s: src/3d_shape/edge/simple_edge/SimpleEdge.cpp.s
+
+.PHONY : src/3d_shape/edge/simple_edge/SimpleEdge.s
+
+# target to generate assembly for a file
+src/3d_shape/edge/simple_edge/SimpleEdge.cpp.s:
+	$(MAKE) -f CMakeFiles/3d-cube.dir/build.make CMakeFiles/3d-cube.dir/src/3d_shape/edge/simple_edge/SimpleEdge.cpp.s
+.PHONY : src/3d_shape/edge/simple_edge/SimpleEdge.cpp.s
+
+src/3d_shape/edge/texture_edge/TextureEdge.o: src/3d_shape/edge/texture_edge/TextureEdge.cpp.o
+
+.PHONY : src/3d_shape/edge/texture_edge/TextureEdge.o
+
+# target to build an object file
+src/3d_shape/edge/texture_edge/TextureEdge.cpp.o:
+	$(MAKE) -f CMakeFiles/3d-cube.dir/build.make CMakeFiles/3d-cube.dir/src/3d_shape/edge/texture_edge/TextureEdge.cpp.o
+.PHONY : src/3d_shape/edge/texture_edge/TextureEdge.cpp.o
+
+src/3d_shape/edge/texture_edge/TextureEdge.i: src/3d_shape/edge/texture_edge/TextureEdge.cpp.i
+
+.PHONY : src/3d_shape/edge/texture_edge/TextureEdge.i
+
+# target to preprocess a source file
+src/3d_shape/edge/texture_edge/TextureEdge.cpp.i:
+	$(MAKE) -f CMakeFiles/3d-cube.dir/build.make CMakeFiles/3d-cube.dir/src/3d_shape/edge/texture_edge/TextureEdge.cpp.i
+.PHONY : src/3d_shape/edge/texture_edge/TextureEdge.cpp.i
+
+src/3d_shape/edge/texture_edge/TextureEdge.s: src/3d_shape/edge/texture_edge/TextureEdge.cpp.s
+
+.PHONY : src/3d_shape/edge/texture_edge/TextureEdge.s
+
+# target to generate assembly for a file
+src/3d_shape/edge/texture_edge/TextureEdge.cpp.s:
+	$(MAKE) -f CMakeFiles/3d-cube.dir/build.make CMakeFiles/3d-cube.dir/src/3d_shape/edge/texture_edge/TextureEdge.cpp.s
+.PHONY : src/3d_shape/edge/texture_edge/TextureEdge.cpp.s
+
 src/application/Application.o: src/application/Application.cpp.o
 
 .PHONY : src/application/Application.o
@@ -270,6 +378,18 @@ help:
 	@echo "... src/3d_shape/Shape3d.o"
 	@echo "... src/3d_shape/Shape3d.i"
 	@echo "... src/3d_shape/Shape3d.s"
+	@echo "... src/3d_shape/edge/base_edge/BaseEdge.o"
+	@echo "... src/3d_shape/edge/base_edge/BaseEdge.i"
+	@echo "... src/3d_shape/edge/base_edge/BaseEdge.s"
+	@echo "... src/3d_shape/edge/color_edge/ColorEdge.o"
+	@echo "... src/3d_shape/edge/color_edge/ColorEdge.i"
+	@echo "... src/3d_shape/edge/color_edge/ColorEdge.s"
+	@echo "... src/3d_shape/edge/simple_edge/SimpleEdge.o"
+	@echo "... src/3d_shape/edge/simple_edge/SimpleEdge.i"
+	@echo "... src/3d_shape/edge/simple_edge/SimpleEdge.s"
+	@echo "... src/3d_shape/edge/texture_edge/TextureEdge.o"
+	@echo "... src/3d_shape/edge/texture_edge/TextureEdge.i"
+	@echo "... src/3d_shape/edge/texture_edge/TextureEdge.s"
 	@echo "... src/application/Application.o"
 	@echo "... src/application/Application.i"
 	@echo "... src/application/Application.s"

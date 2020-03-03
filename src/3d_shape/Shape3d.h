@@ -3,65 +3,14 @@
 
 #include "../data_types/MatrixTemplate.h"
 #include <vector>
-#include <unordered_map>
 #include <iostream>
-
-class ColorEdge
-{
-private:
-  int edge1;
-  int edge2;
-  int edge3;
-  bool fillSpaceBetween;
-  float red;
-  float green;
-  float blue;
-public:
-  ColorEdge(
-    int edge1,
-    int edge2,
-    int edge3,
-    bool fillSpaceBetween,
-    float red,
-    float green,
-    float blue
-  );
-  int getEdgeByIndex(int index);
-  float getColorByIndex(int index);
-  float getRed();
-  float getGreen();
-  float getBlue();
-  int getEdge1();
-  int getEdge2();
-  int getEdge3();
-  bool getFillSpaceBetween();
-};
+#include "../fa_texture/FaTexture.h"
+#include "../data_types/VectorTemplate.h"
+#include "./edge/base_edge/BaseEdge.h"
+#include <memory>
 
 class Shape3d
 {
-private:
-  typedef std::pair<int,int> pixelPair;
-  std::vector<MatrixFloat> nodes;
-  std::vector<ColorEdge>edges;
-  std::vector<MatrixFloat> worldPoints;
-  MatrixFloat transformMatrix;
-  MatrixFloat rotationDegreeMatrix;
-  MatrixFloat rotationValueXMatrix;
-  MatrixFloat rotationValueYMatrix;
-  MatrixFloat rotationValueZMatrix;
-  MatrixFloat scaleValueMatrix;
-  MatrixFloat zScaleMatrix;
-  void drawLineBetweenPoints(
-    float startX,
-    float startY,
-    float startZ,
-    float endX,
-    float endY,
-    float endZ,
-    float red,
-    float green,
-    float blue
-  );
 public:
   static std::unique_ptr<Shape3d> generate3DCube(
     float xWidth,
@@ -77,18 +26,18 @@ public:
   );
   Shape3d(
     std::vector<MatrixFloat> nodes,
-    std::vector<ColorEdge> colorEdges
+    std::vector<BaseEdge*> edges
   );
   Shape3d(
     std::vector<MatrixFloat> nodes,
-    std::vector<ColorEdge> colorEdges,
+    std::vector<BaseEdge*> edges,
     float initialTransformX,
     float initialTransformY,
     float initialTransformZ
   );
   Shape3d(
     std::vector<MatrixFloat> nodes,
-    std::vector<ColorEdge> colorEdges,
+    std::vector<BaseEdge*> edges,
     float transformX,
     float transformY,
     float transformZ,
@@ -106,6 +55,19 @@ public:
   void rotateX(float x);
   void rotateY(float y);
   void rotateZ(float z);
+private:
+  std::vector<MatrixFloat> nodes;
+  std::vector<std::unique_ptr<BaseEdge>>edges;
+  std::vector<MatrixFloat> worldPoints;
+  MatrixFloat transformMatrix;
+  MatrixFloat rotationDegreeMatrix;
+  MatrixFloat rotationValueXMatrix;
+  MatrixFloat rotationValueYMatrix;
+  MatrixFloat rotationValueZMatrix;
+  MatrixFloat scaleValueMatrix;
+  MatrixFloat zScaleMatrix;
+  float zLocation = 0;
+  float scaleValue = 0;
 };
 
 #endif

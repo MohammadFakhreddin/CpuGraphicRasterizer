@@ -1,0 +1,46 @@
+#ifndef ColorEdge_class
+#define ColorEdge_class
+
+#include "../base_edge/BaseEdge.h"
+
+class ColorEdge : public BaseEdge
+{
+private:
+  int edge1;
+  int edge2;
+  int edge3;
+  float red;
+  float green;
+  float blue;
+  static constexpr float stepValue = 1;
+  static constexpr float minimumDrawDistance = 0.5;
+  MatrixFloat* currentWorldPoint;
+  std::vector<MatrixFloat*> topEdges;
+  std::vector<MatrixFloat*> bottomEdges;
+  std::vector<MatrixFloat*> middleEdges;
+  void assignToObject(ColorEdge const& other);
+public:
+  ColorEdge() = default;
+  ~ColorEdge() = default;
+  ColorEdge(ColorEdge const& other);
+  ColorEdge(ColorEdge && other) = delete;
+  ColorEdge& operator=(ColorEdge const& other);
+  ColorEdge& operator=(ColorEdge && other) = default;
+  ColorEdge(
+    int edge1,
+    int edge2,
+    int edge3,
+    float red,
+    float green,
+    float blue
+  );
+  MatrixFloat middlePoint = MatrixFloat(3,1,std::vector<std::vector<float>>{
+    std::vector<float>{0},
+    std::vector<float>{0},
+    std::vector<float>{0}
+  });
+  void render(std::vector<MatrixFloat>* worldPoints) override;
+  EdgeType getEdgeType() override;
+};
+
+#endif

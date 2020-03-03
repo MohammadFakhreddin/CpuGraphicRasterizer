@@ -84,6 +84,57 @@ Application::Application()
 	}
 }
 
+void Application::drawLineBetweenPoints(
+  float startX,
+  float startY,
+  float startZ,
+  float endX,
+  float endY,
+  float endZ,
+  float red,
+  float green,
+  float blue
+){
+  bool moveByX = true;
+  if(abs(startX-endX)<abs(startY-endY)){
+    moveByX = false;
+  }
+  if( moveByX == true ){
+    float xDifference = endX - startX;
+    float yM = (endY - startY)/xDifference;
+    float zM = (endZ - startZ)/xDifference;
+    putPixelInMap(ceil(startX),ceil(startY),startZ,red,green,blue);
+    float stepMoveValue = startX - endX > 0 ? -1 : +1;
+    for(
+      int i = startX;
+      (stepMoveValue>0 && startX<endX) || (stepMoveValue<0 && startX > endX); 
+      i+=stepMoveValue
+    )
+    {
+      startX += stepMoveValue;
+      startY += yM * stepMoveValue;
+      startZ += zM * stepMoveValue;
+      putPixelInMap(int(ceil(startX)),int(ceil(startY)),startZ,red,green,blue);
+    }
+  } else {
+    float yDifference = endY - startY;
+    float xM = (endX - startX)/yDifference;
+    float zM = (endZ - startZ)/yDifference;
+    putPixelInMap(int(ceil(startX)),int(ceil(startY)),startZ,red,green,blue);
+    float stepMoveValue = startY - endY > 0 ? -1 : +1;
+    for(
+      int i=startY;
+      (stepMoveValue>0 && startY<endY) || (stepMoveValue<0 && startY > endY); 
+      i+=stepMoveValue
+    ){
+      startY += stepMoveValue;
+      startX += xM * stepMoveValue;
+      startZ += zM * stepMoveValue;
+      putPixelInMap(int(ceil(startX)),int(ceil(startY)),startZ,red,green,blue);
+    }
+  }
+}
+
 void Application::putPixelInMap(int x,int y,float zValue,float red,float green,float blue){
 	//TODO Optimize and find better solution
 	if(x<0||x>=Constants::Window::screenWidth||y<0||y>=Constants::Window::screenHeight){
