@@ -24,8 +24,10 @@ public:
     float virtualImageHeight
   );
   ~FaTexture();
-  int getWidth();
-  int getHeight();
+  int getRealImageWidth();
+  int getRealImageHeight();
+  float getVirtualImageWidth();
+  float getVirtualImageHeight();
   int getNumberOfChannels();
   void getColorForPosition(
     float positionX,

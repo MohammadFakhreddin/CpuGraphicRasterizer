@@ -144,7 +144,7 @@ void ColorEdge::render(std::vector<MatrixFloat>* worldPoints){
         startZ+=startZM * stepValue;
         endX+=endXM * stepValue;
         endZ+=endZM * stepValue;
-      } while (currentY<finalY-1);
+      } while (currentY<finalY-stepValue);
     }
   }else {
     assert(topEdges.size()==1);
@@ -182,7 +182,7 @@ void ColorEdge::render(std::vector<MatrixFloat>* worldPoints){
           startZ+=startZM * stepValue;
           endX+=endXM * stepValue;
           endZ+=endZM * stepValue;
-        } while (currentY<finalY-1);
+        } while (currentY<finalY-stepValue);
       }
     }
     {//From middle to bottom
@@ -212,7 +212,7 @@ void ColorEdge::render(std::vector<MatrixFloat>* worldPoints){
           startZ-=startZM * stepValue;
           endX-=endXM * stepValue;
           endZ-=endZM * stepValue;
-        } while (currentY>finalY+1);
+        } while (currentY>finalY+stepValue);
       }
     }
   }

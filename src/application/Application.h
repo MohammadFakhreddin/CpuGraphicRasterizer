@@ -36,6 +36,11 @@ public:
 	static constexpr float cameraZLocation = 200.0f;
 	static constexpr float maximumFov = 200.0f;
 	static constexpr float shapeScaleSpeed = 0.1f;
+
+	static constexpr char* cubeTextureAddress = "src/assets/wood.png";
+	static constexpr float cubeTextureVirtualWidth = 100;
+	static constexpr float cubeTextureVirtualHeight = 100;
+
 	Application();
 	void render(float deltaTime);
 	void update(float deltaTime);
@@ -53,12 +58,31 @@ public:
 		float green,
 		float blue
 	);
+	void drawTextureBetweenPoints(
+		std::unique_ptr<FaTexture>& texture,
+		float triangleStartX,
+		float triangleStartY,
+		float triangleStartZ,
+		float triangleEndX,
+		float triangleEndY,
+		float triangleEndZ,
+		float textureStartX,
+		float textureStartY,
+		float textureEndX,
+		float textureEndY
+	);
 private:
 	std::unique_ptr<Shape3d> shape;
 	static Application* instance;
 	std::unordered_map<Application::Buttons,bool> keyEvents;
 	DrawPixel* currentPixel;
-	FaTexture cubeTexture = FaTexture("src/assets/wood.png",1,1);
+	std::unique_ptr<FaTexture> cubeTexture = std::unique_ptr<FaTexture>(
+		new FaTexture(
+			cubeTextureAddress,
+			cubeTextureVirtualWidth,
+			cubeTextureVirtualHeight
+		)
+	);
 	std::vector<std::vector<DrawPixel>> pixelMap;
 };
 

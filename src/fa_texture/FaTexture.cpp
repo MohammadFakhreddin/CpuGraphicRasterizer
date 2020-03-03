@@ -27,12 +27,20 @@ FaTexture::~FaTexture(){
   }
 }
 
-int FaTexture::getWidth(){
+int FaTexture::getRealImageWidth(){
   return width;
 };
 
-int FaTexture::getHeight(){
+int FaTexture::getRealImageHeight(){
   return height;
+}
+
+float FaTexture::getVirtualImageWidth(){
+  return virtualImageWidth;
+}
+
+float FaTexture::getVirtualImageHeight(){
+  return virtualImageHeight;
 }
 
 int FaTexture::getNumberOfChannels(){
