@@ -16,23 +16,12 @@ enum EdgeType{
 class BaseEdge
 {
 public:
-  BaseEdge() = default;
-  ~BaseEdge() = default;
-  BaseEdge(BaseEdge const& other);
-  BaseEdge(BaseEdge && other) = default;
-  BaseEdge& operator=(BaseEdge const& other);
-  BaseEdge& operator=(BaseEdge && other) = default;
   virtual void render(std::vector<MatrixFloat>* worldPoints);
   virtual EdgeType getEdgeType();
-private:
+protected:
   int edge1;
   int edge2;
   int edge3;
-  float red;
-  float green;
-  float blue;
-  void assignToObject(BaseEdge const& other);
-protected:
   int getEdgeByIndex(int index);
 };
 

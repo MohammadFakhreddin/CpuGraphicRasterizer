@@ -1,5 +1,6 @@
 #include "./BaseEdge.h"
 #include <iostream>
+#include <assert.h>
 
 int BaseEdge::getEdgeByIndex(int index){
   assert(index>-1);
@@ -21,23 +22,5 @@ EdgeType BaseEdge::getEdgeType(){
 }
 
 void BaseEdge::render(std::vector<MatrixFloat>* worldPoints){
-  std::cout<<"Rendering"<<std::endl;
+  assert(false);
 }
-
-  void BaseEdge::assignToObject(BaseEdge const& other){
-    edge1 = other.edge1;
-    edge2 = other.edge2;
-    edge3 = other.edge3;
-    red = other.red;
-    green = other.green;
-    blue = other.blue;
-  }
-
-  BaseEdge& BaseEdge::operator=(BaseEdge const& other) { 
-    assignToObject(other);
-    return *this; 
-  }
-
-  BaseEdge::BaseEdge(BaseEdge const& other) {
-    assignToObject(other);
-  }

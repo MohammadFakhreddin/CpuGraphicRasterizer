@@ -7,7 +7,6 @@
 #include "../fa_texture/FaTexture.h"
 #include "../data_types/VectorTemplate.h"
 #include "./edge/base_edge/BaseEdge.h"
-#include <memory>
 
 class Shape3d
 {
@@ -57,7 +56,7 @@ public:
   void rotateZ(float z);
 private:
   std::vector<MatrixFloat> nodes;
-  std::vector<std::unique_ptr<BaseEdge>>edges;
+  std::vector<BaseEdge*>edges;
   std::vector<MatrixFloat> worldPoints;
   MatrixFloat transformMatrix;
   MatrixFloat rotationDegreeMatrix;

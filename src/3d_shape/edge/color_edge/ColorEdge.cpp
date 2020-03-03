@@ -13,19 +13,19 @@ ColorEdge::ColorEdge(
   float blue
 )
 :
-  edge1(edge1),
-  edge2(edge2),
-  edge3(edge3),
   red(red),
   green(green),
   blue(blue)
-{}
+{
+  this->edge1 = edge1;
+  this->edge2 = edge2;
+  this->edge3 = edge3;
+}
 
 void ColorEdge::render(std::vector<MatrixFloat>* worldPoints){
   topEdges.erase(topEdges.begin(),topEdges.end());
   bottomEdges.erase(bottomEdges.begin(),bottomEdges.end());
   middleEdges.erase(middleEdges.begin(),middleEdges.end());
-  std::cout<<"rendering"<<std::endl;
   for(int i=0;i<3;i++){
     currentWorldPoint = &worldPoints->at(getEdgeByIndex(i));
     if(topEdges.size()==0){
@@ -220,22 +220,4 @@ void ColorEdge::render(std::vector<MatrixFloat>* worldPoints){
 
 EdgeType ColorEdge::getEdgeType(){
   return EdgeType::color;
-}
-
-ColorEdge::ColorEdge(ColorEdge const& other){
-  assignToObject(other);
-}
-
-ColorEdge& ColorEdge::operator=(ColorEdge const& other){
-  assignToObject(other);
-  return *this; 
-}
-
-void ColorEdge::assignToObject(ColorEdge const& other){
-  edge1 = other.edge1;
-  edge2 = other.edge2;
-  edge3 = other.edge3;
-  red = other.red;
-  green = other.green;
-  blue = other.blue;
 }

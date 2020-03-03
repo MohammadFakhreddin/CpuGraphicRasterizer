@@ -6,9 +6,6 @@
 class ColorEdge : public BaseEdge
 {
 private:
-  int edge1;
-  int edge2;
-  int edge3;
   float red;
   float green;
   float blue;
@@ -20,12 +17,6 @@ private:
   std::vector<MatrixFloat*> middleEdges;
   void assignToObject(ColorEdge const& other);
 public:
-  ColorEdge() = default;
-  ~ColorEdge() = default;
-  ColorEdge(ColorEdge const& other);
-  ColorEdge(ColorEdge && other) = delete;
-  ColorEdge& operator=(ColorEdge const& other);
-  ColorEdge& operator=(ColorEdge && other) = default;
   ColorEdge(
     int edge1,
     int edge2,

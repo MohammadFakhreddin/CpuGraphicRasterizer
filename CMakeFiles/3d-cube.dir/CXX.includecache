@@ -37,8 +37,6 @@ iostream
 /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/data_types/VectorTemplate.h
 ./edge/base_edge/BaseEdge.h
 /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/3d_shape/edge/base_edge/BaseEdge.h
-memory
--
 
 /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/3d_shape/edge/base_edge/BaseEdge.h
 ../../../data_types/MatrixTemplate.h
@@ -47,18 +45,6 @@ vector
 -
 ../../../data_types/VectorTemplate.h
 /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/data_types/VectorTemplate.h
-
-/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/3d_shape/edge/color_edge/ColorEdge.cpp
-./ColorEdge.h
-/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/3d_shape/edge/color_edge/ColorEdge.h
-assert.h
--
-math.h
--
-../../../application/Application.h
-/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/application/Application.h
-iostream
--
 
 /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/3d_shape/edge/color_edge/ColorEdge.h
 ../base_edge/BaseEdge.h

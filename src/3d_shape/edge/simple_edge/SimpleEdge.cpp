@@ -10,13 +10,14 @@ SimpleEdge::SimpleEdge(
   float blue
 )
 :
-  edge1(edge1),
-  edge2(edge2),
-  edge3(edge3),
   red(red),
   green(green),
   blue(blue)
-{}
+{
+  this->edge1 = edge1;
+  this->edge2 = edge2;
+  this->edge3 = edge3;
+}
 
 void SimpleEdge::render(std::vector<MatrixFloat>* worldPoints){
   for(int i=0;i<3;i++){
@@ -63,20 +64,3 @@ EdgeType SimpleEdge::getEdgeType(){
   return EdgeType::color;
 }
 
-SimpleEdge::SimpleEdge(SimpleEdge const& other){
-  assignToObject(other);
-}
-
-SimpleEdge& SimpleEdge::operator=(SimpleEdge const& other){
-  assignToObject(other);
-  return *this; 
-}
-
-void SimpleEdge::assignToObject(SimpleEdge const& other){
-  edge1 = other.edge1;
-  edge2 = other.edge2;
-  edge3 = other.edge3;
-  red = other.red;
-  green = other.green;
-  blue = other.blue;
-}

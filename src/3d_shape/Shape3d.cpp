@@ -160,7 +160,7 @@ Shape3d::Shape3d(
   }
   if(edges.size()>0){
     for(auto edge:edges){
-      this->edges.emplace_back(std::unique_ptr<BaseEdge>(edge));
+      this->edges.emplace_back(edge);
     }
   }
   transformMatrix.set(0,0,transformX);
@@ -207,8 +207,6 @@ void Shape3d::update(float deltaTime){
     }
     if(edges.size()>0){
       for(auto& edge:edges){
-        // std::cout<<"IsSame:"<<(typeid(edge)==typeid(ColorEdge))<<std::endl;
-        //TODO Avoid rendering objects that are out of FOV
         edge->render(&worldPoints);
       }
     }
