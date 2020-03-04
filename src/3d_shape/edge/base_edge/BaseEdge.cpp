@@ -24,3 +24,14 @@ EdgeType BaseEdge::getEdgeType(){
 void BaseEdge::render(std::vector<MatrixFloat>* worldPoints){
   assert(false);
 }
+
+bool BaseEdge::areEdgesDataValid(int nodesSize){
+  int currentEdge = -1;
+  for(int i=0;i<3;i++){
+    currentEdge = getEdgeByIndex(i);
+    if(currentEdge<0||currentEdge>=nodesSize){
+      return false;
+    }
+  }
+  return true;
+}

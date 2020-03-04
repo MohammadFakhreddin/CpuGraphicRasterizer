@@ -6,6 +6,7 @@ CMakeFiles/3d-cube.dir/src/3d_shape/Shape3d.cpp.o
  /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/3d_shape/Shape3d.h
  /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/3d_shape/edge/base_edge/BaseEdge.h
  /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/3d_shape/edge/color_edge/ColorEdge.h
+ /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/3d_shape/edge/texture_edge/TextureEdge.h
  /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/OpenGlHeaders.h
  /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/application/Application.h
  /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/data_types/MatrixTemplate.h
@@ -35,9 +36,11 @@ CMakeFiles/3d-cube.dir/src/3d_shape/edge/simple_edge/SimpleEdge.cpp.o
  /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/data_types/VectorTemplate.h
  /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/fa_texture/FaTexture.h
 CMakeFiles/3d-cube.dir/src/3d_shape/edge/texture_edge/TextureEdge.cpp.o
+ /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/3d_shape/Shape3d.h
  /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/3d_shape/edge/base_edge/BaseEdge.h
  /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/3d_shape/edge/texture_edge/TextureEdge.cpp
  /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/3d_shape/edge/texture_edge/TextureEdge.h
+ /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/application/Application.h
  /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/data_types/MatrixTemplate.h
  /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/data_types/VectorTemplate.h
  /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/fa_texture/FaTexture.h

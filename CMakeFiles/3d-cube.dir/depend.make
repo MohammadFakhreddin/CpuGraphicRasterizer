@@ -5,6 +5,7 @@ CMakeFiles/3d-cube.dir/src/3d_shape/Shape3d.cpp.o: src/3d_shape/Shape3d.cpp
 CMakeFiles/3d-cube.dir/src/3d_shape/Shape3d.cpp.o: src/3d_shape/Shape3d.h
 CMakeFiles/3d-cube.dir/src/3d_shape/Shape3d.cpp.o: src/3d_shape/edge/base_edge/BaseEdge.h
 CMakeFiles/3d-cube.dir/src/3d_shape/Shape3d.cpp.o: src/3d_shape/edge/color_edge/ColorEdge.h
+CMakeFiles/3d-cube.dir/src/3d_shape/Shape3d.cpp.o: src/3d_shape/edge/texture_edge/TextureEdge.h
 CMakeFiles/3d-cube.dir/src/3d_shape/Shape3d.cpp.o: src/OpenGlHeaders.h
 CMakeFiles/3d-cube.dir/src/3d_shape/Shape3d.cpp.o: src/application/Application.h
 CMakeFiles/3d-cube.dir/src/3d_shape/Shape3d.cpp.o: src/data_types/MatrixTemplate.h
@@ -34,9 +35,11 @@ CMakeFiles/3d-cube.dir/src/3d_shape/edge/simple_edge/SimpleEdge.cpp.o: src/data_
 CMakeFiles/3d-cube.dir/src/3d_shape/edge/simple_edge/SimpleEdge.cpp.o: src/data_types/VectorTemplate.h
 CMakeFiles/3d-cube.dir/src/3d_shape/edge/simple_edge/SimpleEdge.cpp.o: src/fa_texture/FaTexture.h
 
+CMakeFiles/3d-cube.dir/src/3d_shape/edge/texture_edge/TextureEdge.cpp.o: src/3d_shape/Shape3d.h
 CMakeFiles/3d-cube.dir/src/3d_shape/edge/texture_edge/TextureEdge.cpp.o: src/3d_shape/edge/base_edge/BaseEdge.h
 CMakeFiles/3d-cube.dir/src/3d_shape/edge/texture_edge/TextureEdge.cpp.o: src/3d_shape/edge/texture_edge/TextureEdge.cpp
 CMakeFiles/3d-cube.dir/src/3d_shape/edge/texture_edge/TextureEdge.cpp.o: src/3d_shape/edge/texture_edge/TextureEdge.h
+CMakeFiles/3d-cube.dir/src/3d_shape/edge/texture_edge/TextureEdge.cpp.o: src/application/Application.h
 CMakeFiles/3d-cube.dir/src/3d_shape/edge/texture_edge/TextureEdge.cpp.o: src/data_types/MatrixTemplate.h
 CMakeFiles/3d-cube.dir/src/3d_shape/edge/texture_edge/TextureEdge.cpp.o: src/data_types/VectorTemplate.h
 CMakeFiles/3d-cube.dir/src/3d_shape/edge/texture_edge/TextureEdge.cpp.o: src/fa_texture/FaTexture.h

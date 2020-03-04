@@ -6,19 +6,22 @@
 
 
 FaTexture::FaTexture(
-  std::string address,
+  const char* address,
   float virtualImageWidth,
   float virtualImageHeight
 )
 :
 virtualImageWidth(virtualImageWidth),
-virtualImageHeight(virtualImageHeight)
+virtualImageHeight(virtualImageHeight),
+address(address)
 {
   assert(virtualImageWidth>0);
   assert(virtualImageHeight>0);
-  data = stbi_load(address.c_str(), &width, &height, &numberOfChannels, STBI_rgb);
+  data = stbi_load(address, &width, &height, &numberOfChannels, STBI_rgb);
   assert(data);
   dataLength = width * height * numberOfChannels;
+  scaleX = float(width) / virtualImageWidth;
+  scaleY = float(height) / virtualImageHeight;
 };
 
 FaTexture::~FaTexture(){
@@ -54,13 +57,22 @@ void FaTexture::getColorForPosition(
   float* green,
   float* blue
 ){
+  // float normalizedPositionX = int(round(positionX)) % int(round(virtualImageWidth));
+  // float normalizedPositionY = int(round(positionY)) % int(round(virtualImageHeight));
+  if(
+    positionX<0 || 
+    positionX>=virtualImageWidth || 
+    positionY<0 || 
+    positionY>=virtualImageHeight
+  ){
+    return;
+  }
   assert(positionX<virtualImageWidth);
   assert(positionX>=0);
   assert(positionY<virtualImageHeight);
   assert(positionY>=0);
   float realPositionX = scaleX * positionX;
   float realPositionY = scaleY * positionY;
-  //TODO Create a filter for it
   int rawRed;
   int rawGreen;
   int rawBlue;

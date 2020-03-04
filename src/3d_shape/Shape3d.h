@@ -12,7 +12,20 @@
 class Shape3d
 {
 public:
-  static std::unique_ptr<Shape3d> generate3DCube(
+  static std::unique_ptr<Shape3d> generateColored3DCube(
+    float xWidth,
+    float yWidth,
+    float zWidth,
+    float transformX,
+    float transformY,
+    float transformZ,
+    float rotationX,
+    float rotationY,
+    float rotationZ,
+    float scale
+  );
+  static std::unique_ptr<Shape3d> generateTextured3DCube(
+    std::unique_ptr<FaTexture>& texture,
     float xWidth,
     float yWidth,
     float zWidth,

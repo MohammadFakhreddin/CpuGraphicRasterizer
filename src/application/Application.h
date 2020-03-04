@@ -37,9 +37,11 @@ public:
 	static constexpr float maximumFov = 200.0f;
 	static constexpr float shapeScaleSpeed = 0.1f;
 
-	static constexpr char* cubeTextureAddress = "src/assets/wood.png";
-	static constexpr float cubeTextureVirtualWidth = 100;
-	static constexpr float cubeTextureVirtualHeight = 100;
+	// static constexpr char* cubeTextureAddress = "src/assets/wood.png";
+	static constexpr char* cubeTextureAddress = "src/assets/sky.png";
+
+	static constexpr float cubeTextureVirtualWidth = 400;
+	static constexpr float cubeTextureVirtualHeight = 300;
 
 	Application();
 	void render(float deltaTime);

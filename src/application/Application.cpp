@@ -59,7 +59,8 @@ Application::Application()
 {
 	instance = this;
 	glutKeyboardFunc(handleKeyboardEvent);
-	shape = Shape3d::generate3DCube(
+	shape = Shape3d::generateTextured3DCube(
+		cubeTexture,
 		100,
 		100,
 		100,
@@ -77,7 +78,7 @@ Application::Application()
 			pixelMap.emplace_back(innerMap);
 			for(int j=0;j<Constants::Window::screenHeight;j++){
 				DrawPixel drawPixel;
-				drawPixel.zValue = maximumFov;
+				drawPixel.zValue = maximumFov * 2;
 				pixelMap.at(i).emplace_back(drawPixel);
 			}
 		}
@@ -101,37 +102,36 @@ void Application::drawLineBetweenPoints(
   }
   if( moveByX == true ){
     float xDifference = endX - startX;
+		assert(xDifference!=0);
     float yM = (endY - startY)/xDifference;
     float zM = (endZ - startZ)/xDifference;
     putPixelInMap(round(startX),round(startY),startZ,red,green,blue);
     float stepMoveValue = startX - endX > 0 ? -1 : +1;
-    for(
-      int i = startX;
-      (stepMoveValue>0 && startX<endX) || (stepMoveValue<0 && startX > endX); 
-      i+=stepMoveValue
-    )
-    {
-      startX += stepMoveValue;
+		do{
+ 			startX += stepMoveValue;
       startY += yM * stepMoveValue;
       startZ += zM * stepMoveValue;
       putPixelInMap(int(round(startX)),int(round(startY)),startZ,red,green,blue);
-    }
+		}while (
+			( stepMoveValue > 0 && startX + stepMoveValue < endX ) || 
+			( stepMoveValue < 0 && startX - stepMoveValue > endX )
+		);
   } else {
     float yDifference = endY - startY;
+		assert(yDifference!=0);
     float xM = (endX - startX)/yDifference;
     float zM = (endZ - startZ)/yDifference;
     putPixelInMap(int(round(startX)),int(round(startY)),startZ,red,green,blue);
     float stepMoveValue = startY - endY > 0 ? -1 : +1;
-    for(
-      int i=startY;
-      (stepMoveValue>0 && startY<endY) || (stepMoveValue<0 && startY > endY); 
-      i+=stepMoveValue
-    ){
-      startY += stepMoveValue;
+		do{
+			startY += stepMoveValue;
       startX += xM * stepMoveValue;
       startZ += zM * stepMoveValue;
       putPixelInMap(int(round(startX)),int(round(startY)),startZ,red,green,blue);
-    }
+		}while (
+      ( stepMoveValue > 0 && startY + stepMoveValue < endY ) || 
+			( stepMoveValue <0 && startY - stepMoveValue > endY )
+    );
   }
 }
 
@@ -148,59 +148,63 @@ void Application::drawTextureBetweenPoints(
 	float textureEndX,
 	float textureEndY
 ){
-	bool moveByX = true;
-  if(abs(triangleStartX-triangleEndX)<abs(triangleStartY-triangleEndY)){
-    moveByX = false;
-  }
+
+	float triangleTotalStepCount = 0;
+	float triangleXStepValue = 0;
+	float traingleYStepValue = 0;
+	float triangleZStepValue = 0;
+	{//TriangleStepValue
+		if(abs(triangleEndX - triangleStartX) > abs(triangleEndY - triangleStartY)){
+			float xDifference = triangleEndX - triangleStartX;
+			assert(xDifference!=0);
+			triangleXStepValue = xDifference>0 ? 1:-1;
+			triangleTotalStepCount = abs(xDifference);
+			assert(triangleTotalStepCount!=0);
+			traingleYStepValue = ((triangleEndY - triangleStartY)/xDifference) * triangleXStepValue;
+			triangleZStepValue = ((triangleEndZ - triangleStartZ)/xDifference) * triangleXStepValue;
+		}else{
+			float yDifference = triangleEndY - triangleStartY;
+			assert(yDifference!=0);
+			triangleTotalStepCount = abs(yDifference);
+			assert(triangleTotalStepCount!=0);
+			traingleYStepValue = yDifference>0 ? 1:-1;
+			triangleXStepValue = ((triangleEndX - triangleStartX)/yDifference) * traingleYStepValue;
+			triangleZStepValue = ((triangleEndZ - triangleStartZ)/yDifference) * traingleYStepValue;
+		}
+	}
+
+	float textureXStepValue = 0;
+	float textureYStepValue = 0;
+	{//TextureStepValue
+		if(abs(textureEndX - textureStartX)>abs(textureEndY - textureStartY)){
+			float xDifference = textureEndX - textureStartX;
+			assert(xDifference!=0);
+			textureXStepValue = xDifference/triangleTotalStepCount;
+			textureYStepValue = ((textureEndY - textureStartY)/xDifference) * textureXStepValue;
+		}else
+		{
+			float yDifference = textureEndY - textureStartY;
+			assert(yDifference!=0);
+			textureYStepValue = yDifference/triangleTotalStepCount;
+			textureXStepValue = ((textureEndX - textureStartX)/yDifference) * textureYStepValue;
+		}
+	}
+	
 	float red = 0;
 	float green = 0;
 	float blue = 0;
-  if( moveByX == true ){
-    float triangleXDifference = triangleEndX - triangleStartX;
-    float triangleYM = (triangleEndY - triangleStartY)/triangleXDifference;
-    float triangleZM = (triangleEndZ - triangleStartZ)/triangleXDifference;
-		float textureYM = (textureEndY - textureStartY)/(textureEndX - textureStartX);
-		texture->getColorForPosition(round(textureStartX),round(textureStartY),&red,&green,&blue);
-    putPixelInMap(round(triangleStartX),round(triangleStartY),triangleStartZ,red,green,blue);
-    float triangleStepMoveValue = triangleStartX - triangleEndX > 0 ? -1 : +1;
-		float textureStepMoveValue = textureStartX - textureEndX > 0 ? -1 : +1;
-    for(
-      int i = triangleStartX;
-      (triangleStepMoveValue>0 && triangleStartX < triangleEndX) || (triangleStepMoveValue < 0 && triangleStartX > triangleEndX); 
-      i+=triangleStepMoveValue
-    )
-    {
-      triangleStartX += triangleStepMoveValue;
-      triangleStartY += triangleYM * triangleStepMoveValue;
-      triangleStartZ += triangleZM * triangleStepMoveValue;
-			textureStartX += textureStepMoveValue;
-			textureStartY += textureYM * textureStepMoveValue;
-			texture->getColorForPosition(round(textureStartX),round(textureStartY),&red,&green,&blue);
-      putPixelInMap(int(round(triangleStartX)),int(round(triangleStartY)),triangleStartZ,red,green,blue);
-    }
-  } else {
-    float triangleYDifference = triangleEndY - triangleStartY;
-    float triangleXM = (triangleEndX - triangleStartX)/triangleYDifference;
-    float triangleZM = (triangleEndZ - triangleStartZ)/triangleYDifference;
-		float textureXM = (textureEndX - textureStartX)/(textureEndY - textureStartY);
-		texture->getColorForPosition(round(textureStartX),round(textureStartY),&red,&green,&blue);
-    putPixelInMap(int(round(triangleStartX)),int(round(triangleStartY)),triangleStartZ,red,green,blue);
-    float triangleStepMoveValue = triangleStartY - triangleEndY > 0 ? -1 : +1;
-		float textureStepMoveValue = textureStartY - textureEndY > 0 ? -1 : +1;
-    for(
-      int i=triangleStartY;
-      (triangleStepMoveValue>0 && triangleStartY<triangleEndY) || (triangleStepMoveValue<0 && triangleStartY > triangleEndY); 
-      i+=triangleStepMoveValue
-    ){
-      triangleStartY += triangleStepMoveValue;
-      triangleStartX += triangleXM * triangleStepMoveValue;
-      triangleStartZ += triangleZM * triangleStepMoveValue;
-			textureStartY+= textureStepMoveValue;
-			textureStartX += textureXM * textureStepMoveValue;
-			texture->getColorForPosition(round(textureStartX),round(textureStartY),&red,&green,&blue);
-      putPixelInMap(int(round(triangleStartX)),int(round(triangleStartY)),triangleStartZ,red,green,blue);
-    }
-  }
+
+	texture->getColorForPosition(textureStartX,textureStartY,&red,&green,&blue);
+	putPixelInMap(int(floor(triangleStartX)),int(floor(triangleStartY)),triangleStartZ,red,green,blue);
+	for(int i=0;i<triangleTotalStepCount;i++){
+		triangleStartX += triangleXStepValue;
+		triangleStartY += traingleYStepValue;
+		triangleStartZ += triangleZStepValue;
+		textureStartX += textureXStepValue;
+		textureStartY += textureYStepValue;
+		texture->getColorForPosition(textureStartX,textureStartY,&red,&green,&blue);
+		putPixelInMap(int(floor(triangleStartX)),int(floor(triangleStartY)),triangleStartZ,red,green,blue);
+	}
 }
 
 void Application::putPixelInMap(int x,int y,float zValue,float red,float green,float blue){
@@ -230,10 +234,11 @@ void Application::render(float deltaTime) {
 				currentPixel->blue = 0;
 				currentPixel->red = 0;
 				currentPixel->green = 0;
-				currentPixel->zValue = maximumFov;
+				currentPixel->zValue = maximumFov * 2;
 			}
 		}
 	}
+	cubeTexture->render();
 	glEnd();
 }
 
