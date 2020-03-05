@@ -39,6 +39,8 @@ public:
 	static constexpr float cameraZLocation = 200.0f;
 	static constexpr float maximumFov = 200.0f;
 	static constexpr float shapeScaleSpeed = 0.1f;
+	
+	static constexpr float drawStepValue = 0.5;
 
 	Application();
 	void render(float deltaTime);

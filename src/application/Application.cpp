@@ -159,17 +159,17 @@ void Application::drawTextureBetweenPoints(
 		if(abs(triangleEndX - triangleStartX) > abs(triangleEndY - triangleStartY)){
 			float xDifference = triangleEndX - triangleStartX;
 			assert(xDifference!=0);
-			triangleXStepValue = xDifference>0 ? 1:-1;
-			triangleTotalStepCount = abs(xDifference);
+			triangleXStepValue = (xDifference>0 ? 1:-1) * drawStepValue;
+			triangleTotalStepCount = abs(xDifference/Application::drawStepValue);
 			assert(triangleTotalStepCount!=0);
 			traingleYStepValue = ((triangleEndY - triangleStartY)/xDifference) * triangleXStepValue;
 			triangleZStepValue = ((triangleEndZ - triangleStartZ)/xDifference) * triangleXStepValue;
 		}else{
 			float yDifference = triangleEndY - triangleStartY;
 			assert(yDifference!=0);
-			triangleTotalStepCount = abs(yDifference);
+			triangleTotalStepCount = abs(yDifference/Application::drawStepValue);
 			assert(triangleTotalStepCount!=0);
-			traingleYStepValue = yDifference>0 ? 1:-1;
+			traingleYStepValue = (yDifference>0 ? 1:-1) * drawStepValue;
 			triangleXStepValue = ((triangleEndX - triangleStartX)/yDifference) * traingleYStepValue;
 			triangleZStepValue = ((triangleEndZ - triangleStartZ)/yDifference) * traingleYStepValue;
 		}
@@ -197,7 +197,14 @@ void Application::drawTextureBetweenPoints(
 	float blue = 0;
 
 	texture->getColorForPosition(textureStartX,textureStartY,&red,&green,&blue);
-	putPixelInMap(int(round(triangleStartX)),int(round(triangleStartY)),triangleStartZ,red,green,blue);
+	putPixelInMap(
+		int(floor(triangleStartX)),
+		int(floor(triangleStartY)),
+		triangleStartZ,
+		red,
+		green,
+		blue
+	);
 	for(int i=0;i<triangleTotalStepCount;i++){
 		triangleStartX += triangleXStepValue;
 		triangleStartY += traingleYStepValue;
@@ -205,7 +212,14 @@ void Application::drawTextureBetweenPoints(
 		textureStartX += textureXStepValue;
 		textureStartY += textureYStepValue;
 		texture->getColorForPosition(textureStartX,textureStartY,&red,&green,&blue);
-		putPixelInMap(int(round(triangleStartX)),int(round(triangleStartY)),triangleStartZ,red,green,blue);
+		putPixelInMap(
+			int(floor(triangleStartX)),
+			int(floor(triangleStartY)),
+			triangleStartZ,
+			red,
+			green,
+			blue
+		);
 	}
 }
 

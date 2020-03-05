@@ -82,8 +82,8 @@ void TextureEdge::render(std::vector<MatrixFloat>* worldPoints)
     if(abs(triangleStartX - trianglePoint3X)>abs(triangleStartY - trianglePoint3Y)){
       float xDifference = trianglePoint3X - triangleStartX;
       assert(xDifference!=0);
-      triangleStartStepValueX = xDifference > 0 ? 1 : -1;
-      totalStepCount = ceil(abs(xDifference));
+      triangleStartStepValueX = (xDifference > 0 ? 1 : -1) * Application::drawStepValue;
+      totalStepCount = ceil(abs(xDifference/Application::drawStepValue));
       assert(totalStepCount!=0);
       triangleStartStepValueY = ((trianglePoint3Y - triangleStartY)/xDifference) * triangleStartStepValueX;
       triangleStartStepValueZ = ((trianglePoint3Z - triangleStartZ)/xDifference) * triangleStartStepValueX;
@@ -91,8 +91,8 @@ void TextureEdge::render(std::vector<MatrixFloat>* worldPoints)
     {
       float yDifference = trianglePoint3Y - triangleStartY;
       assert(yDifference!=0);
-      triangleStartStepValueY = yDifference > 0 ? 1 : -1;
-      totalStepCount = ceil(abs(yDifference));
+      triangleStartStepValueY = (yDifference > 0 ? 1 : -1) * Application::drawStepValue;
+      totalStepCount = ceil(abs(yDifference/Application::drawStepValue));
       assert(totalStepCount!=0);
       triangleStartStepValueX = ((trianglePoint3X - triangleStartX)/yDifference) * triangleStartStepValueY;
       triangleStartStepValueZ = ((trianglePoint3Z - triangleStartZ)/yDifference) * triangleStartStepValueY;
