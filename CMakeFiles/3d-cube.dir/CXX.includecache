@@ -54,6 +54,18 @@ vector
 ../../../data_types/VectorTemplate.h
 /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/data_types/VectorTemplate.h
 
+/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/3d_shape/edge/texture_edge/TextureEdge.cpp
+./TextureEdge.h
+/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/3d_shape/edge/texture_edge/TextureEdge.h
+assert.h
+-
+math.h
+-
+../../../application/Application.h
+/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/application/Application.h
+iostream
+-
+
 /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/3d_shape/edge/texture_edge/TextureEdge.h
 ../../../fa_texture/FaTexture.h
 /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/fa_texture/FaTexture.h

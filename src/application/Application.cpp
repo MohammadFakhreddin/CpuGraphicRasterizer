@@ -197,7 +197,7 @@ void Application::drawTextureBetweenPoints(
 	float blue = 0;
 
 	texture->getColorForPosition(textureStartX,textureStartY,&red,&green,&blue);
-	putPixelInMap(int(floor(triangleStartX)),int(floor(triangleStartY)),triangleStartZ,red,green,blue);
+	putPixelInMap(int(round(triangleStartX)),int(round(triangleStartY)),triangleStartZ,red,green,blue);
 	for(int i=0;i<triangleTotalStepCount;i++){
 		triangleStartX += triangleXStepValue;
 		triangleStartY += traingleYStepValue;
@@ -205,7 +205,7 @@ void Application::drawTextureBetweenPoints(
 		textureStartX += textureXStepValue;
 		textureStartY += textureYStepValue;
 		texture->getColorForPosition(textureStartX,textureStartY,&red,&green,&blue);
-		putPixelInMap(int(floor(triangleStartX)),int(floor(triangleStartY)),triangleStartZ,red,green,blue);
+		putPixelInMap(int(round(triangleStartX)),int(round(triangleStartY)),triangleStartZ,red,green,blue);
 	}
 }
 
