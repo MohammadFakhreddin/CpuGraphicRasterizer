@@ -6,7 +6,7 @@
 
 
 FaTexture::FaTexture(
-  const char* address,
+  std::string address,
   float virtualImageWidth,
   float virtualImageHeight
 )
@@ -17,7 +17,7 @@ address(address)
 {
   assert(virtualImageWidth>0);
   assert(virtualImageHeight>0);
-  data = stbi_load(address, &width, &height, &numberOfChannels, STBI_rgb);
+  data = stbi_load(address.c_str(), &width, &height, &numberOfChannels, STBI_rgb);
   assert(data);
   dataLength = width * height * numberOfChannels;
   scaleX = float(width) / virtualImageWidth;
@@ -57,8 +57,6 @@ void FaTexture::getColorForPosition(
   float* green,
   float* blue
 ){
-  // float normalizedPositionX = int(round(positionX)) % int(round(virtualImageWidth));
-  // float normalizedPositionY = int(round(positionY)) % int(round(virtualImageHeight));
   if(
     positionX<0 || 
     positionX>=virtualImageWidth || 
@@ -128,4 +126,8 @@ void FaTexture::render(){
       );
     }
   }
+}
+
+std::string FaTexture::getAddress(){
+  return address;
 }

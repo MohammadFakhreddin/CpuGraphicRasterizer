@@ -3,6 +3,7 @@
 #include "../Constants.h"
 #include "../OpenGlHeaders.h"
 #include <vector>
+#include "../3d_shape/Shape3d.h"
 
 Application* Application::instance;
 
@@ -60,7 +61,8 @@ Application::Application()
 	instance = this;
 	glutKeyboardFunc(handleKeyboardEvent);
 	shape = Shape3d::generateTextured3DCube(
-		cubeTexture,
+		dice.diceCubeTexture,
+		dice.diceCubeEdgeList,
 		100,
 		100,
 		100,
@@ -238,7 +240,7 @@ void Application::render(float deltaTime) {
 			}
 		}
 	}
-	cubeTexture->render();
+	// dice.diceCubeTexture->render();
 	glEnd();
 }
 

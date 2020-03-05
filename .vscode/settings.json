@@ -2,6 +2,7 @@
   "files.associations": {
     "functional": "cpp",
     "locale": "cpp",
-    "memory": "cpp"
+    "memory": "cpp",
+    "vector": "cpp"
   },
 }

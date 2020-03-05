@@ -3,8 +3,11 @@
 
 #include <memory>
 #include <unordered_map>
+#include "../3d_shape/edge/texture_edge/TextureEdge.h"
+#include "./../3d_models/Wood.h"
+#include "./../3d_models/Sky.h"
+#include "./../3d_models/Dice.h"
 #include "../3d_shape/Shape3d.h"
-#include "../fa_texture/FaTexture.h"
 
 class Application {
 public:
@@ -36,12 +39,6 @@ public:
 	static constexpr float cameraZLocation = 200.0f;
 	static constexpr float maximumFov = 200.0f;
 	static constexpr float shapeScaleSpeed = 0.1f;
-
-	// static constexpr char* cubeTextureAddress = "src/assets/wood.png";
-	static constexpr char* cubeTextureAddress = "src/assets/sky.png";
-
-	static constexpr float cubeTextureVirtualWidth = 400;
-	static constexpr float cubeTextureVirtualHeight = 300;
 
 	Application();
 	void render(float deltaTime);
@@ -78,13 +75,13 @@ private:
 	static Application* instance;
 	std::unordered_map<Application::Buttons,bool> keyEvents;
 	DrawPixel* currentPixel;
-	std::unique_ptr<FaTexture> cubeTexture = std::unique_ptr<FaTexture>(
-		new FaTexture(
-			cubeTextureAddress,
-			cubeTextureVirtualWidth,
-			cubeTextureVirtualHeight
-		)
-	);
+
+  Wood wood;
+
+	Sky sky;
+
+	Dice dice;
+
 	std::vector<std::vector<DrawPixel>> pixelMap;
 };
 

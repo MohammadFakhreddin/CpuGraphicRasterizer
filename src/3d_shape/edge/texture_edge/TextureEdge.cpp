@@ -2,6 +2,7 @@
 #include <assert.h>
 #include <math.h>
 #include "../../../application/Application.h"
+#include <iostream>
 
 TextureEdge::TextureEdge(
   int edge1,
@@ -21,6 +22,15 @@ edge3TexturePoint(edge3TexturePoint)
   this->edge1 = edge1;
   this->edge2 = edge2;
   this->edge3 = edge3;
+  // std::cout<<"virtualImageAddress:"<<textureReference->getAddress()<<std::endl;
+  // std::cout<<"virtualImageWidth:"<<textureReference->getVirtualImageWidth()<<std::endl;
+  // std::cout<<"virtualImageHeight:"<<textureReference->getVirtualImageHeight()<<std::endl;
+  // std::cout<<"edge1TexturePoint.getX:"<<edge1TexturePoint.getX()<<std::endl;
+  // std::cout<<"edge1TexturePoint.getY:"<<edge1TexturePoint.getY()<<std::endl;
+  // std::cout<<"edge2TexturePoint.getX:"<<edge2TexturePoint.getX()<<std::endl;
+  // std::cout<<"edge2TexturePoint.getY:"<<edge2TexturePoint.getY()<<std::endl;
+  // std::cout<<"edge3TexturePoint.getX:"<<edge3TexturePoint.getX()<<std::endl;
+  // std::cout<<"edge3TexturePoint.getY:"<<edge3TexturePoint.getY()<<std::endl;
   assert(textureReference->getVirtualImageWidth()>0);
   assert(textureReference->getVirtualImageHeight()>0);
   assert(textureReference->getRealImageWidth()>0);

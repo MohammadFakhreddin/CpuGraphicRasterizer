@@ -26,6 +26,7 @@ public:
   );
   static std::unique_ptr<Shape3d> generateTextured3DCube(
     std::unique_ptr<FaTexture>& texture,
+    std::vector<BaseEdge*> edgeList,
     float xWidth,
     float yWidth,
     float zWidth,

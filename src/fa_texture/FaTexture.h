@@ -10,7 +10,7 @@ private:
   int height;
   int numberOfChannels;
   unsigned int dataLength;
-  const char* address;
+  std::string address;
   unsigned char* data;
   float virtualImageWidth;
   float virtualImageHeight;
@@ -19,7 +19,7 @@ float scaleY;
   void getPixelForPosition(int x,int y,int *red,int *green,int *blue);
 public:
   FaTexture(
-    const char* address,
+    std::string address,
     float virtualImageWidth,
     float virtualImageHeight
   );
@@ -37,6 +37,7 @@ public:
     float* blue
   );
   void render();
+  std::string getAddress();
 };
 
 #endif

@@ -10,6 +10,7 @@
 
 std::unique_ptr<Shape3d> Shape3d::generateTextured3DCube(
   std::unique_ptr<FaTexture>& texture,
+  std::vector<BaseEdge*> edgeList,
   float w,
   float h,
   float d,
@@ -66,87 +67,6 @@ std::unique_ptr<Shape3d> Shape3d::generateTextured3DCube(
 			std::vector<float>{z+d}
 		})
 	};
-  // float textureVirtualWidth = texture->getVirtualImageWidth()-1;
-  // float textureVirtualHeight = texture->getVirtualImageHeight()-1;
-	// std::vector<BaseEdge*> edgeList = {
-  //   new TextureEdge(0,1,2,texture,{0,0}, Vec2DFloat(0,textureVirtualWidth), Vec2DFloat(textureVirtualWidth,textureVirtualHeight)),
-  //   new TextureEdge(3,1,2,texture,{0,0}, Vec2DFloat(textureVirtualHeight,0), Vec2DFloat(textureVirtualWidth,textureVirtualHeight)),
-  //   new TextureEdge(3,1,5,texture,{0,0}, Vec2DFloat(0,textureVirtualWidth), Vec2DFloat(textureVirtualWidth,textureVirtualHeight)),
-  //   new TextureEdge(3,7,5,texture,{0,0}, Vec2DFloat(textureVirtualHeight,0), Vec2DFloat(textureVirtualWidth,textureVirtualHeight)),
-  //   new TextureEdge(0,4,5,texture,{0,0}, Vec2DFloat(0,textureVirtualWidth), Vec2DFloat(textureVirtualWidth,textureVirtualHeight)),
-  //   new TextureEdge(5,0,1,texture,{0,0}, Vec2DFloat(textureVirtualHeight,0), Vec2DFloat(textureVirtualWidth,textureVirtualHeight)),
-  //   new TextureEdge(4,0,6,texture,{0,0}, Vec2DFloat(0,textureVirtualWidth), Vec2DFloat(textureVirtualWidth,textureVirtualHeight)),
-  //   new TextureEdge(2,0,6,texture,{0,0}, Vec2DFloat(textureVirtualHeight,0), Vec2DFloat(textureVirtualWidth,textureVirtualHeight)),
-  //   new TextureEdge(2,7,6,texture,{0,0}, Vec2DFloat(0,textureVirtualWidth), Vec2DFloat(textureVirtualWidth,textureVirtualHeight)), 
-  //   new TextureEdge(2,7,3,texture,{0,0}, Vec2DFloat(textureVirtualHeight,0), Vec2DFloat(textureVirtualWidth,textureVirtualHeight)),
-  //   new TextureEdge(4,5,7,texture,{0,0}, Vec2DFloat(0,textureVirtualWidth), Vec2DFloat(textureVirtualWidth,textureVirtualHeight)),
-  //   new TextureEdge(4,6,7,texture,{0,0}, Vec2DFloat(textureVirtualHeight,0), Vec2DFloat(textureVirtualWidth,textureVirtualHeight))  
-	// };
-  float textureVirtualWidth = texture->getVirtualImageWidth()/4;
-  float textureVirtualHeight = texture->getVirtualImageHeight()/3;
-  std::vector<BaseEdge*> edgeList = {
-    new TextureEdge(0,1,2,
-      texture,
-      Vec2DFloat(textureVirtualWidth,0), 
-      Vec2DFloat(textureVirtualWidth * 2,0), 
-      Vec2DFloat(textureVirtualWidth,textureVirtualHeight)
-    ),
-    new TextureEdge(3,1,2,texture,
-      Vec2DFloat(textureVirtualWidth,textureVirtualHeight), 
-      Vec2DFloat(textureVirtualWidth * 2,0), 
-      Vec2DFloat(textureVirtualWidth * 2,textureVirtualHeight)
-    ),
-    new TextureEdge(3,1,5,texture,
-      Vec2DFloat(0,textureVirtualHeight * 1), 
-      Vec2DFloat(textureVirtualWidth,textureVirtualHeight), 
-      Vec2DFloat(0,textureVirtualHeight * 2)
-    ),
-    new TextureEdge(3,7,5,texture,
-      Vec2DFloat(textureVirtualWidth,textureVirtualHeight), 
-      Vec2DFloat(0,textureVirtualHeight * 2), 
-      Vec2DFloat(textureVirtualWidth * 1,textureVirtualHeight * 2)
-    ),
-    new TextureEdge(0,4,5,texture,
-      Vec2DFloat(textureVirtualWidth,textureVirtualHeight), 
-      Vec2DFloat(textureVirtualWidth * 2,textureVirtualHeight), 
-      Vec2DFloat(textureVirtualWidth,textureVirtualHeight * 2)
-    ),
-    new TextureEdge(5,0,1,texture,
-      Vec2DFloat(textureVirtualWidth,textureVirtualHeight * 2), 
-      Vec2DFloat(textureVirtualWidth * 2,textureVirtualHeight * 1), 
-      Vec2DFloat(textureVirtualWidth * 2,textureVirtualHeight * 2)
-    ),
-    new TextureEdge(4,0,6,texture,
-      Vec2DFloat(textureVirtualWidth,textureVirtualHeight * 2), 
-      Vec2DFloat(textureVirtualWidth * 2,textureVirtualHeight * 2), 
-      Vec2DFloat(textureVirtualWidth * 1,textureVirtualHeight * 3 - 1)
-    ),
-    new TextureEdge(2,0,6,texture,
-      Vec2DFloat(textureVirtualWidth * 2,textureVirtualHeight * 3 - 1),
-      Vec2DFloat(textureVirtualWidth * 1,textureVirtualHeight * 3 - 1), 
-      Vec2DFloat(textureVirtualWidth * 2,textureVirtualHeight * 2)
-    ),
-    new TextureEdge(2,7,6,texture,
-      Vec2DFloat(textureVirtualWidth * 2,textureVirtualHeight * 2),
-      Vec2DFloat(textureVirtualWidth * 3,textureVirtualHeight * 1), 
-      Vec2DFloat(textureVirtualWidth * 2,textureVirtualHeight * 1) 
-    ),
-    new TextureEdge(2,7,3,texture,
-      Vec2DFloat(textureVirtualWidth * 3,textureVirtualHeight * 2),
-      Vec2DFloat(textureVirtualWidth * 3,textureVirtualHeight * 1),
-      Vec2DFloat(textureVirtualWidth * 2,textureVirtualHeight * 2)
-    ),
-    new TextureEdge(4,5,7,texture,
-      Vec2DFloat(textureVirtualWidth * 3,textureVirtualHeight * 1), 
-      Vec2DFloat(textureVirtualWidth * 4 - 1,textureVirtualHeight * 1), 
-      Vec2DFloat(textureVirtualWidth * 3,textureVirtualHeight * 2)
-    ),
-    new TextureEdge(4,6,7,texture,
-      Vec2DFloat(textureVirtualWidth * 4 - 1,textureVirtualHeight * 1),
-      Vec2DFloat(textureVirtualWidth * 3,textureVirtualHeight * 2),
-      Vec2DFloat(textureVirtualWidth * 4 - 1,textureVirtualHeight * 2) 
-    ),
-  };
 	return std::unique_ptr<Shape3d>(new Shape3d(
 		nodeList,
 		edgeList,
