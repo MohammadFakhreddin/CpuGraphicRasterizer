@@ -1,5 +1,3 @@
-#define STB_IMAGE_IMPLEMENTATION
-#include "../fa_texture/stb_image.h"
 #include "Application.h"
 #include <memory>
 #include "../Constants.h"

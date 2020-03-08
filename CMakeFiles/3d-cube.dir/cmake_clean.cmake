@@ -10,6 +10,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/3d-cube.dir/src/application/Application.cpp.o"
   "CMakeFiles/3d-cube.dir/src/fa_texture/FaTexture.cpp.o"
   "CMakeFiles/3d-cube.dir/src/open_gl/OpenGl.cpp.o"
+  "CMakeFiles/3d-cube.dir/src/utils/path/Path.cpp.o"
 )
 
 # Per-language clean rules from dependency scanning.

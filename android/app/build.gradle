@@ -22,7 +22,7 @@ android {
     }
 
     sourceSets.main {
-        assets.srcDir "../../src/assets"
+        assets.srcDir "../../assets/"
     }
 
     buildTypes {

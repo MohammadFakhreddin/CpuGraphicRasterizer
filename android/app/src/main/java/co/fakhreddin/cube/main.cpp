@@ -1,13 +1,18 @@
+#define STB_IMAGE_IMPLEMENTATION
+#include "../../../../../../../../src/fa_texture/stb_image_headers.h"
+
 #include <memory>
 #include <jni.h>
 #include "../../../../../../../../src/open_gl/OpenGl.h"
 #include "../../../../../../../../src/application/Application.h"
 #include "../../../../../../../../src/Constants.h"
+#include "./AndroidEnvironment.h"
 //
 // Created by mohammad.fakhreddin on 3/7/20.
 //
 
 std::unique_ptr<Application> application;
+std::unique_ptr<AndroidEnvironment> androidEnvironment;
 
 extern "C" {
     JNIEXPORT void JNICALL Java_co_fakhreddin_cube_Fa3dCube_init(
@@ -31,6 +36,9 @@ JNIEXPORT void JNICALL Java_co_fakhreddin_cube_Fa3dCube_init(
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f); // Set background color to black and opaque
     glViewport(0,0,Constants::Window::screenWidth,Constants::Window::screenHeight);
     // glOrtho(-0.5f, Constants::Window::screenWidth-0.5f, -0.5f, Constants::Window::screenHeight-0.5f, -1.0, 1.0);
+    androidEnvironment = std::unique_ptr<AndroidEnvironment>(
+        new AndroidEnvironment(env)
+    );
     application = std::unique_ptr<Application>(new Application(
         Application::Platform::Mac,
         phyiscalScreenWidth,

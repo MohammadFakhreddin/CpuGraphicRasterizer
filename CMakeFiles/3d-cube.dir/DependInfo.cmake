@@ -13,6 +13,7 @@ set(CMAKE_DEPENDS_CHECK_CXX
   "/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/application/Application.cpp" "/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/CMakeFiles/3d-cube.dir/src/application/Application.cpp.o"
   "/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/fa_texture/FaTexture.cpp" "/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/CMakeFiles/3d-cube.dir/src/fa_texture/FaTexture.cpp.o"
   "/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/open_gl/OpenGl.cpp" "/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/CMakeFiles/3d-cube.dir/src/open_gl/OpenGl.cpp.o"
+  "/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/utils/path/Path.cpp" "/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/CMakeFiles/3d-cube.dir/src/utils/path/Path.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "AppleClang")
 

@@ -1,10 +1,14 @@
+#ifndef Dice_class
+#define Dice_class
+
 #include "./../data_types/VectorTemplate.h"
 #include "../3d_shape/edge/texture_edge/TextureEdge.h"
 #include <string>
+#include "../utils/path/Path.h"
 
 class Dice{
 public:
-  const std::string diceTextureAddress = "src/assets/dice_texture.png";
+  const std::string diceTextureAddress = Path::generateAssetPath("dice_texture.png");
 	const float diceCubeWidth = 300;
 	const float diceCubeHeight = 200;
 	const float diceCubeSquare = 100;
@@ -93,3 +97,5 @@ public:
     )
   };
 };
+
+#endif

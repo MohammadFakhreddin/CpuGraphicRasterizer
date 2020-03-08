@@ -1,6 +1,6 @@
 #include "FaTexture.h"
 #include <iostream>
-#include "stb_image.h"
+#include "stb_image_headers.h"
 #include <assert.h>
 #include "../application/Application.h"
 
@@ -17,7 +17,7 @@ address(address)
 {
   assert(virtualImageWidth>0);
   assert(virtualImageHeight>0);
-  data = stbi_load(address.c_str(), &width, &height, &numberOfChannels, STBI_rgb);
+  data = STBImageHelper::loadTexture(address.c_str(), &width, &height, &numberOfChannels);
   assert(data);
   dataLength = width * height * numberOfChannels;
   scaleX = float(width) / virtualImageWidth;

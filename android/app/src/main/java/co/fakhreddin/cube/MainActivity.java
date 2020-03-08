@@ -7,8 +7,15 @@ public class MainActivity extends AppCompatActivity {
 
     GL2JNIView mView;
 
+    private static MainActivity instance;
+
+    public static MainActivity getInstance(){
+        return instance;
+    }
+
     @Override protected void onCreate(Bundle icicle) {
         super.onCreate(icicle);
+        instance = this;
         mView = new GL2JNIView(getApplication());
         setContentView(mView);
     }

@@ -293,11 +293,11 @@ class GL2JNIView extends GLSurfaceView {
 
     private static class Renderer implements GLSurfaceView.Renderer {
         public void onDrawFrame(GL10 gl) {
-            Fa3dCube.step();
+            co.fakhreddin.cube.Fa3dCube.step();
         }
 
         public void onSurfaceChanged(GL10 gl, int width, int height) {
-            Fa3dCube.init(width, height);
+            co.fakhreddin.cube.Fa3dCube.init(width, height);
         }
 
         public void onSurfaceCreated(GL10 gl, EGLConfig config) {

@@ -6,7 +6,15 @@
 
 #IncludeRegexTransform: 
 
+/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/android/app/src/main/java/co/fakhreddin/cube/AndroidEnvironment.h
+jni.h
+-
+memory
+-
+
 /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/mac/main.cpp
+../src/fa_texture/stb_image_headers.h
+/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/fa_texture/stb_image_headers.h
 ../src/Constants.h
 /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/Constants.h
 ../src/open_gl/OpenGl.h
@@ -29,6 +37,8 @@ CoreGraphics/CGDisplayConfiguration.h
 /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/3d_shape/edge/texture_edge/TextureEdge.h
 string
 -
+../utils/path/Path.h
+/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/utils/path/Path.h
 
 /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/3d_models/Sky.h
 ./../data_types/VectorTemplate.h
@@ -37,6 +47,8 @@ string
 /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/3d_shape/edge/texture_edge/TextureEdge.h
 string
 -
+../utils/path/Path.h
+/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/utils/path/Path.h
 
 /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/3d_models/Wood.h
 ./../data_types/VectorTemplate.h
@@ -45,26 +57,8 @@ string
 /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/3d_shape/edge/texture_edge/TextureEdge.h
 string
 -
-
-/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/3d_shape/Shape3d.cpp
-./Shape3d.h
-/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/3d_shape/Shape3d.h
-assert.h
--
-../open_gl/OpenGl.h
-/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/open_gl/OpenGl.h
-math.h
--
-iostream
--
-../application/Application.h
-/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/application/Application.h
-./edge/base_edge/BaseEdge.h
-/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/3d_shape/edge/base_edge/BaseEdge.h
-./edge/color_edge/ColorEdge.h
-/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/3d_shape/edge/color_edge/ColorEdge.h
-./edge/texture_edge/TextureEdge.h
-/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/3d_shape/edge/texture_edge/TextureEdge.h
+../utils/path/Path.h
+/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/utils/path/Path.h
 
 /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/3d_shape/Shape3d.h
 ../data_types/MatrixTemplate.h
@@ -90,46 +84,6 @@ vector
 ../../../data_types/VectorTemplate.h
 /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/data_types/VectorTemplate.h
 
-/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/3d_shape/edge/color_edge/ColorEdge.cpp
-./ColorEdge.h
-/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/3d_shape/edge/color_edge/ColorEdge.h
-assert.h
--
-math.h
--
-../../../application/Application.h
-/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/application/Application.h
-iostream
--
-
-/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/3d_shape/edge/color_edge/ColorEdge.h
-../base_edge/BaseEdge.h
-/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/3d_shape/edge/base_edge/BaseEdge.h
-
-/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/3d_shape/edge/simple_edge/SimpleEdge.cpp
-./SimpleEdge.h
-/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/3d_shape/edge/simple_edge/SimpleEdge.h
-./../../../application/Application.h
-/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/application/Application.h
-
-/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/3d_shape/edge/simple_edge/SimpleEdge.h
-../base_edge/BaseEdge.h
-/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/3d_shape/edge/base_edge/BaseEdge.h
-../../../data_types/MatrixTemplate.h
-/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/data_types/MatrixTemplate.h
-
-/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/3d_shape/edge/texture_edge/TextureEdge.cpp
-./TextureEdge.h
-/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/3d_shape/edge/texture_edge/TextureEdge.h
-assert.h
--
-math.h
--
-../../../application/Application.h
-/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/application/Application.h
-iostream
--
-
 /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/3d_shape/edge/texture_edge/TextureEdge.h
 ../../../fa_texture/FaTexture.h
 /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/fa_texture/FaTexture.h
@@ -143,22 +97,6 @@ math.h
 -
 TargetConditionals.h
 -
-
-/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/application/Application.cpp
-../fa_texture/stb_image.h
-/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/fa_texture/stb_image.h
-Application.h
-/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/application/Application.h
-memory
--
-../Constants.h
-/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/Constants.h
-../open_gl/OpenGl.h
-/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/open_gl/OpenGl.h
-vector
--
-../3d_shape/Shape3d.h
-/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/3d_shape/Shape3d.h
 
 /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/application/Application.h
 memory
@@ -195,8 +133,8 @@ FaTexture.h
 /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/fa_texture/FaTexture.h
 iostream
 -
-stb_image.h
-/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/fa_texture/stb_image.h
+stb_image_headers.h
+/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/fa_texture/stb_image_headers.h
 assert.h
 -
 ../application/Application.h
@@ -206,7 +144,7 @@ assert.h
 string
 -
 
-/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/fa_texture/stb_image.h
+/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/fa_texture/open_gl_stb_image.h
 stb_image.h
 /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/fa_texture/stb_image.h
 stdio.h
@@ -238,15 +176,29 @@ intrin.h
 arm_neon.h
 -
 
-/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/open_gl/OpenGl.cpp
-./OpenGl.h
-/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/open_gl/OpenGl.h
+/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/fa_texture/stb_image_headers.h
+./../../android/app/src/main/java/co/fakhreddin/cube/AndroidEnvironment.h
+/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/android/app/src/main/java/co/fakhreddin/cube/AndroidEnvironment.h
+jni.h
+/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/fa_texture/jni.h
+./open_gl_stb_image.h
+/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/fa_texture/open_gl_stb_image.h
+string
+-
+assert.h
+-
+iostream
+-
 
 /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/open_gl/OpenGl.h
 string
 -
 GLUT/glut.h
 -
-GLES3/gl3.h
+GLES2/gl2.h
+-
+
+/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/utils/path/Path.h
+string
 -
 

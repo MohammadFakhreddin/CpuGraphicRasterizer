@@ -1,3 +1,6 @@
+#define STB_IMAGE_IMPLEMENTATION
+#include "../src/fa_texture/stb_image_headers.h"
+
 #include "../src/Constants.h"
 #include "../src/open_gl/OpenGl.h"
 #include <memory>

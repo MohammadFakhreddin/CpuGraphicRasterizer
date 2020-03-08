@@ -366,6 +366,33 @@ src/open_gl/OpenGl.cpp.s:
 	$(MAKE) -f CMakeFiles/3d-cube.dir/build.make CMakeFiles/3d-cube.dir/src/open_gl/OpenGl.cpp.s
 .PHONY : src/open_gl/OpenGl.cpp.s
 
+src/utils/path/Path.o: src/utils/path/Path.cpp.o
+
+.PHONY : src/utils/path/Path.o
+
+# target to build an object file
+src/utils/path/Path.cpp.o:
+	$(MAKE) -f CMakeFiles/3d-cube.dir/build.make CMakeFiles/3d-cube.dir/src/utils/path/Path.cpp.o
+.PHONY : src/utils/path/Path.cpp.o
+
+src/utils/path/Path.i: src/utils/path/Path.cpp.i
+
+.PHONY : src/utils/path/Path.i
+
+# target to preprocess a source file
+src/utils/path/Path.cpp.i:
+	$(MAKE) -f CMakeFiles/3d-cube.dir/build.make CMakeFiles/3d-cube.dir/src/utils/path/Path.cpp.i
+.PHONY : src/utils/path/Path.cpp.i
+
+src/utils/path/Path.s: src/utils/path/Path.cpp.s
+
+.PHONY : src/utils/path/Path.s
+
+# target to generate assembly for a file
+src/utils/path/Path.cpp.s:
+	$(MAKE) -f CMakeFiles/3d-cube.dir/build.make CMakeFiles/3d-cube.dir/src/utils/path/Path.cpp.s
+.PHONY : src/utils/path/Path.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -402,6 +429,9 @@ help:
 	@echo "... src/open_gl/OpenGl.o"
 	@echo "... src/open_gl/OpenGl.i"
 	@echo "... src/open_gl/OpenGl.s"
+	@echo "... src/utils/path/Path.o"
+	@echo "... src/utils/path/Path.i"
+	@echo "... src/utils/path/Path.s"
 .PHONY : help
 
 

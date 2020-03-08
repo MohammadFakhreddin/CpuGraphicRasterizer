@@ -1,10 +1,14 @@
+#ifndef Sky_class
+#define Sky_class
+
 #include "./../data_types/VectorTemplate.h"
 #include "../3d_shape/edge/texture_edge/TextureEdge.h"
 #include <string>
+#include "../utils/path/Path.h"
 
 class Sky{
 public:
-  const std::string skyCubeTextureAddress = "src/assets/sky.png";
+  const std::string skyCubeTextureAddress = Path::generateAssetPath("sky.png");
 	const float skyCubeWidth = 400;
 	const float skyCubeHeight = 300;
 	const float skyCubeSquare = 100;
@@ -79,3 +83,5 @@ public:
     )
   };
 };
+
+#endif

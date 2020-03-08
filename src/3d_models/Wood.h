@@ -1,11 +1,15 @@
+#ifndef Wood_class
+#define Wood_class
+
 #include "./../data_types/VectorTemplate.h"
 #include "../3d_shape/edge/texture_edge/TextureEdge.h"
 #include <string>
+#include "../utils/path/Path.h"
 
 class Wood
 {
 public:
-	const std::string woodCubeTextureAddress = "src/assets/wood.png";
+	const std::string woodCubeTextureAddress = Path::generateAssetPath("wood.png");
 	const float woodCubeVirtualWidthAndHeight = 100;
 public:
 	std::unique_ptr<FaTexture> woodCubeTexture = std::unique_ptr<FaTexture>(
@@ -31,3 +35,5 @@ public:
 		new TextureEdge(4,6,7,woodCubeTexture,Vec2DFloat(0,0), Vec2DFloat(woodCubeVirtualWidthAndHeight-1,0), Vec2DFloat(woodCubeVirtualWidthAndHeight-1,woodCubeVirtualWidthAndHeight-1))  
 	};
 };
+
+#endif
