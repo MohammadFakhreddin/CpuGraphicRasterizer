@@ -11,28 +11,17 @@
 
 GLint64 currentTime = 0;
 
-void OpenGL::begin(){
-  // #ifdef __OPENGL__
-    glClear( GL_COLOR_BUFFER_BIT);
-
-  // #else
-  //   glClear( GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
-  // #endif
+void OpenGL::clear(){
+  glClear( GL_COLOR_BUFFER_BIT);
 }
 
-void OpenGL::end(){
+void OpenGL::flush(){
   glFlush();
 }
 
 void OpenGL::drawPixel(int x,int y,float red,float green,float blue){
-  // #ifdef __OPENGL__
-    glColor3f(red,green,blue);
-    glVertex2i(x,y);
-  // #else
-  //   glColorMask(red,green,blue,1);
-  //   glUniform2i(0,x,y);
-  //   glDrawArrays(GL_POINTS, 0, 1);
-  // #endif
+  glColor3f(red,green,blue);
+  glVertex2i(x,y);
 }
 
 void OpenGL::drawText(int x,int y,std::string text,float red,float green,float blue){
@@ -46,6 +35,14 @@ void OpenGL::drawText(int x,int y,std::string text,float red,float green,float b
   #elif defined(__GLES__)
     //TODO
   #endif
+}
+
+void OpenGL::beginDrawingPoints(){
+  glBegin(GL_POINTS);
+}
+
+void OpenGL::end(){
+  glEnd();
 }
 
 double OpenGL::getElapsedTime(){

@@ -18,7 +18,9 @@ class OpenGL{
     static void drawPixel(int x,int y,float red,float green,float blue);
     static void drawText(int x,int y,std::string text,float red,float green,float blue);
     static double getElapsedTime();
-    static void begin();
+    static void clear();
+    static void flush();
+    static void beginDrawingPoints();
     static void end();
 };
 
