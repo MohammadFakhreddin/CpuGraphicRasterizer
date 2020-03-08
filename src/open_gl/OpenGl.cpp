@@ -1,4 +1,5 @@
 #include "./OpenGl.h"
+#include <iostream>
 
 #if defined(__OPENGL__)
   GLint64 lastTime = glutGet(GLUT_ELAPSED_TIME);
@@ -11,41 +12,34 @@
 GLint64 currentTime = 0;
 
 void OpenGL::begin(){
-  #ifdef __OPENGL__
+  // #ifdef __OPENGL__
     glClear( GL_COLOR_BUFFER_BIT);
-	  glBegin(GL_POINTS);
-  #else
-    glClearColor(0.0f , 0.0f , 0.0f , 1.0f);
-    glClear( GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
-  #endif
+
+  // #else
+  //   glClear( GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
+  // #endif
 }
 
 void OpenGL::end(){
-  #ifdef __OPENGL__
-    glEnd();
-    glFlush();
-  #else
-    glFlush();
-  #endif
+  glFlush();
 }
 
 void OpenGL::drawPixel(int x,int y,float red,float green,float blue){
-  #ifdef __OPENGL__
+  // #ifdef __OPENGL__
     glColor3f(red,green,blue);
     glVertex2i(x,y);
-  #else
-    glColorMask(red,green,blue,1);
-    glUniform2i(0,x,y);
-    glDrawArrays(GL_POINTS, 0, 1);
-  #endif
+  // #else
+  //   glColorMask(red,green,blue,1);
+  //   glUniform2i(0,x,y);
+  //   glDrawArrays(GL_POINTS, 0, 1);
+  // #endif
 }
 
 void OpenGL::drawText(int x,int y,std::string text,float red,float green,float blue){
   #if defined(__OPENGL__)
     glColor3f(red,green,blue);
     glRasterPos2i(x,y);
-    int len = text.length();
-    for (int i = 0; i < len; i++)
+    for (int i = 0; i < text.length(); i++)
     {
       glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24,text[i]);
     }

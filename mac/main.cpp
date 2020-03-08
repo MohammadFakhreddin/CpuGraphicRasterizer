@@ -74,7 +74,7 @@ void timer(int value)
 int main(int argc, char** argv) {
 	glutInit(&argc,argv);
   glutInitDisplayMode ( GLUT_SINGLE | GLUT_RGB );
-  auto mainDisplayId = CGMainDisplayID();
+	auto mainDisplayId = CGMainDisplayID();
   unsigned int realScreenWidth = CGDisplayPixelsWide(mainDisplayId);
   unsigned int realScreenHeight = CGDisplayPixelsHigh(mainDisplayId);
   glutInitWindowSize(Constants::Window::screenWidth,Constants::Window::screenHeight);

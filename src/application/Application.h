@@ -116,6 +116,8 @@ private:
 	Dice dice;
 
 	std::vector<std::vector<DrawPixel>> pixelMap;
+
+	GLenum openGLError;
 };
 
 #endif

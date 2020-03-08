@@ -5,7 +5,7 @@ import android.os.Bundle;
 
 public class MainActivity extends AppCompatActivity {
 
-    GL2JNIView mView;
+    co.fakhreddin.cube.GL2JNIView mView;
 
     private static MainActivity instance;
 
@@ -16,7 +16,7 @@ public class MainActivity extends AppCompatActivity {
     @Override protected void onCreate(Bundle icicle) {
         super.onCreate(icicle);
         instance = this;
-        mView = new GL2JNIView(getApplication());
+        mView = new co.fakhreddin.cube.GL2JNIView(getApplication());
         setContentView(mView);
     }
 

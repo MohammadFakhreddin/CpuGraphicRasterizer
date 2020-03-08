@@ -198,6 +198,7 @@ void Application::putPixelInMap(int x,int y,float zValue,float red,float green,f
 void Application::render(float deltaTime) {
 	OpenGL::begin();
 	{//Drawing screen
+		glBegin(GL_POINTS);
 		for(unsigned int i=0;i<Constants::Window::screenWidth;i++){
 			for(unsigned int j=0;j<Constants::Window::screenHeight;j++){
 				currentPixel = &pixelMap.at(i).at(j); 
@@ -216,9 +217,10 @@ void Application::render(float deltaTime) {
 				}
 			}
 		}
+		glEnd();
 	}
 	{//FPSText
-		OpenGL::drawText(0,0,std::to_string(currentFps),1,1,1);
+		OpenGL::drawText(0,0,std::to_string(currentFps),1.0f,1.0f,1.0f);
 	}
 	// dice.diceCubeTexture->render();
 	OpenGL::end();
@@ -302,6 +304,12 @@ void Application::mainLoop(){
 	if(deltaTime>0){
 		currentFps = 1000.0f/deltaTime;
 	}
+	#ifdef __APPLE__
+		while((openGLError = glGetError()) != GL_NO_ERROR)
+		{
+			std::cout<<"OpenGLError"<<std::endl<<openGLError<<std::endl;
+		}
+	#endif
 }
 
 Application* Application::instance;
