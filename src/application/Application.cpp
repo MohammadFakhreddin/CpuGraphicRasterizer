@@ -1,65 +1,23 @@
+#define STB_IMAGE_IMPLEMENTATION
+#include "../fa_texture/stb_image.h"
 #include "Application.h"
 #include <memory>
 #include "../Constants.h"
-#include "../OpenGlHeaders.h"
+#include "../open_gl/OpenGl.h"
 #include <vector>
 #include "../3d_shape/Shape3d.h"
 
-Application* Application::instance;
-
-void handleKeyboardEvent(unsigned char key, int x, int y)
-{
-	if (!Application::getInstance()) {
-		return;
-	}
-	if (key == 'a' || key == 'A') {
-		Application::getInstance()->notifyKeyIsPressed(Application::Buttons::leftButton);
-	}
-	if (key == 'd' || key == 'D') {
-		Application::getInstance()->notifyKeyIsPressed(Application::Buttons::rightButton);
-	}
-	if (key == 'w' || key == 'W') {
-		Application::getInstance()->notifyKeyIsPressed(Application::Buttons::forwardButton);
-	}
-	if (key == 's' || key == 'S') {
-		Application::getInstance()->notifyKeyIsPressed(Application::Buttons::backwardButton);
-	}
-	if (key == 'e' || key == 'E') {
-		Application::getInstance()->notifyKeyIsPressed(Application::Buttons::rotationZRightButton);
-	}
-	if (key == 'q' || key == 'Q') {
-		Application::getInstance()->notifyKeyIsPressed(Application::Buttons::rotationZLeftButton);
-	}
-  if (key == 'r' || key == 'R') {
-		Application::getInstance()->notifyKeyIsPressed(Application::Buttons::rotationXRightButton);
-	}
-	if (key == 't' || key == 'T') {
-		Application::getInstance()->notifyKeyIsPressed(Application::Buttons::rotationXLeftButton);
-	}
-  if (key == 'f' || key == 'F') {
-		Application::getInstance()->notifyKeyIsPressed(Application::Buttons::rotationYRightButton);
-	}
-	if (key == 'g' || key == 'G') {
-		Application::getInstance()->notifyKeyIsPressed(Application::Buttons::rotationYLeftButton);
-	}
-	if (key == 'x' || key == 'X') {
-		Application::getInstance()->notifyKeyIsPressed(Application::Buttons::zoomInButton);
-	}
-	if (key == 'c' || key == 'C') {
-		Application::getInstance()->notifyKeyIsPressed(Application::Buttons::zoomOutButton);
-	}
-	if(key == 'v' || key == 'V'){
-		Application::getInstance()->notifyKeyIsPressed(Application::Buttons::forwardZButton);
-	}
-	if(key == 'b' || key == 'B'){
-		Application::getInstance()->notifyKeyIsPressed(Application::Buttons::backwardZButton);
-	}
-}
-
-Application::Application()
+Application::Application(
+	Application::Platform platform,
+	unsigned int physicalScreenWidth,
+	unsigned int physicalScreenHeight
+)
+	:
+	platform(platform),
+	physicalScreenWidth(physicalScreenWidth),
+	physicalScreenHeight(physicalScreenHeight)
 {
 	instance = this;
-	glutKeyboardFunc(handleKeyboardEvent);
 	shape = Shape3d::generateTextured3DCube(
 		dice.diceCubeTexture,
 		dice.diceCubeEdgeList,
@@ -240,22 +198,32 @@ void Application::putPixelInMap(int x,int y,float zValue,float red,float green,f
 } 
 
 void Application::render(float deltaTime) {
-	glBegin(GL_POINTS);
-	for(int i=0;i<Constants::Window::screenWidth;i++){
-		for(int j=0;j<Constants::Window::screenHeight;j++){
-			currentPixel = &pixelMap.at(i).at(j); 
-			if(currentPixel->blue!=0 || currentPixel->green!=0 || currentPixel->red!=0){
-				glColor3f(currentPixel->red,currentPixel->green,currentPixel->blue);
-				glVertex2i(i,j);
-				currentPixel->blue = 0;
-				currentPixel->red = 0;
-				currentPixel->green = 0;
-				currentPixel->zValue = maximumFov * 2;
+	OpenGL::begin();
+	{//Drawing screen
+		for(unsigned int i=0;i<Constants::Window::screenWidth;i++){
+			for(unsigned int j=0;j<Constants::Window::screenHeight;j++){
+				currentPixel = &pixelMap.at(i).at(j); 
+				if(currentPixel->blue!=0 || currentPixel->green!=0 || currentPixel->red!=0){
+					OpenGL::drawPixel(
+						i,
+						j,
+						currentPixel->red,
+						currentPixel->green,
+						currentPixel->blue
+					);
+					currentPixel->blue = 0;
+					currentPixel->red = 0;
+					currentPixel->green = 0;
+					currentPixel->zValue = maximumFov * 2;
+				}
 			}
 		}
 	}
+	{//FPSText
+		OpenGL::drawText(0,0,std::to_string(currentFps),1,1,1);
+	}
 	// dice.diceCubeTexture->render();
-	glEnd();
+	OpenGL::end();
 }
 
 void Application::update(float deltaTime) {
@@ -328,3 +296,14 @@ Application* Application::getInstance()
 {
 	return Application::instance;
 }
+
+void Application::mainLoop(){
+	deltaTime = OpenGL::getElapsedTime();
+	update(deltaTime);
+	render(deltaTime);
+	if(deltaTime>0){
+		currentFps = 1000.0f/deltaTime;
+	}
+}
+
+Application* Application::instance;

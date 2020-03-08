@@ -3,7 +3,8 @@
         {
             "name": "Mac",
             "includePath": [
-                "${workspaceFolder}/**"
+                "${workspaceFolder}/**",
+                "/Users/mohammad.fakhreddin/Documents/v22SDK/android-ndk-r19b/**"
             ],
             "defines": [],
             "macFrameworkPath": [

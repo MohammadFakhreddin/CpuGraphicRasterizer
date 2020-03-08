@@ -123,6 +123,33 @@ depend:
 	$(MAKE) -f CMakeFiles/3d-cube.dir/build.make CMakeFiles/3d-cube.dir/build
 .PHONY : 3d-cube/fast
 
+mac/main.o: mac/main.cpp.o
+
+.PHONY : mac/main.o
+
+# target to build an object file
+mac/main.cpp.o:
+	$(MAKE) -f CMakeFiles/3d-cube.dir/build.make CMakeFiles/3d-cube.dir/mac/main.cpp.o
+.PHONY : mac/main.cpp.o
+
+mac/main.i: mac/main.cpp.i
+
+.PHONY : mac/main.i
+
+# target to preprocess a source file
+mac/main.cpp.i:
+	$(MAKE) -f CMakeFiles/3d-cube.dir/build.make CMakeFiles/3d-cube.dir/mac/main.cpp.i
+.PHONY : mac/main.cpp.i
+
+mac/main.s: mac/main.cpp.s
+
+.PHONY : mac/main.s
+
+# target to generate assembly for a file
+mac/main.cpp.s:
+	$(MAKE) -f CMakeFiles/3d-cube.dir/build.make CMakeFiles/3d-cube.dir/mac/main.cpp.s
+.PHONY : mac/main.cpp.s
+
 src/3d_shape/Shape3d.o: src/3d_shape/Shape3d.cpp.o
 
 .PHONY : src/3d_shape/Shape3d.o
@@ -312,59 +339,32 @@ src/fa_texture/FaTexture.cpp.s:
 	$(MAKE) -f CMakeFiles/3d-cube.dir/build.make CMakeFiles/3d-cube.dir/src/fa_texture/FaTexture.cpp.s
 .PHONY : src/fa_texture/FaTexture.cpp.s
 
-src/main.o: src/main.cpp.o
+src/open_gl/OpenGl.o: src/open_gl/OpenGl.cpp.o
 
-.PHONY : src/main.o
-
-# target to build an object file
-src/main.cpp.o:
-	$(MAKE) -f CMakeFiles/3d-cube.dir/build.make CMakeFiles/3d-cube.dir/src/main.cpp.o
-.PHONY : src/main.cpp.o
-
-src/main.i: src/main.cpp.i
-
-.PHONY : src/main.i
-
-# target to preprocess a source file
-src/main.cpp.i:
-	$(MAKE) -f CMakeFiles/3d-cube.dir/build.make CMakeFiles/3d-cube.dir/src/main.cpp.i
-.PHONY : src/main.cpp.i
-
-src/main.s: src/main.cpp.s
-
-.PHONY : src/main.s
-
-# target to generate assembly for a file
-src/main.cpp.s:
-	$(MAKE) -f CMakeFiles/3d-cube.dir/build.make CMakeFiles/3d-cube.dir/src/main.cpp.s
-.PHONY : src/main.cpp.s
-
-src/utils/screen/ScreenSize.o: src/utils/screen/ScreenSize.cpp.o
-
-.PHONY : src/utils/screen/ScreenSize.o
+.PHONY : src/open_gl/OpenGl.o
 
 # target to build an object file
-src/utils/screen/ScreenSize.cpp.o:
-	$(MAKE) -f CMakeFiles/3d-cube.dir/build.make CMakeFiles/3d-cube.dir/src/utils/screen/ScreenSize.cpp.o
-.PHONY : src/utils/screen/ScreenSize.cpp.o
+src/open_gl/OpenGl.cpp.o:
+	$(MAKE) -f CMakeFiles/3d-cube.dir/build.make CMakeFiles/3d-cube.dir/src/open_gl/OpenGl.cpp.o
+.PHONY : src/open_gl/OpenGl.cpp.o
 
-src/utils/screen/ScreenSize.i: src/utils/screen/ScreenSize.cpp.i
+src/open_gl/OpenGl.i: src/open_gl/OpenGl.cpp.i
 
-.PHONY : src/utils/screen/ScreenSize.i
+.PHONY : src/open_gl/OpenGl.i
 
 # target to preprocess a source file
-src/utils/screen/ScreenSize.cpp.i:
-	$(MAKE) -f CMakeFiles/3d-cube.dir/build.make CMakeFiles/3d-cube.dir/src/utils/screen/ScreenSize.cpp.i
-.PHONY : src/utils/screen/ScreenSize.cpp.i
+src/open_gl/OpenGl.cpp.i:
+	$(MAKE) -f CMakeFiles/3d-cube.dir/build.make CMakeFiles/3d-cube.dir/src/open_gl/OpenGl.cpp.i
+.PHONY : src/open_gl/OpenGl.cpp.i
 
-src/utils/screen/ScreenSize.s: src/utils/screen/ScreenSize.cpp.s
+src/open_gl/OpenGl.s: src/open_gl/OpenGl.cpp.s
 
-.PHONY : src/utils/screen/ScreenSize.s
+.PHONY : src/open_gl/OpenGl.s
 
 # target to generate assembly for a file
-src/utils/screen/ScreenSize.cpp.s:
-	$(MAKE) -f CMakeFiles/3d-cube.dir/build.make CMakeFiles/3d-cube.dir/src/utils/screen/ScreenSize.cpp.s
-.PHONY : src/utils/screen/ScreenSize.cpp.s
+src/open_gl/OpenGl.cpp.s:
+	$(MAKE) -f CMakeFiles/3d-cube.dir/build.make CMakeFiles/3d-cube.dir/src/open_gl/OpenGl.cpp.s
+.PHONY : src/open_gl/OpenGl.cpp.s
 
 # Help Target
 help:
@@ -375,6 +375,9 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
 	@echo "... 3d-cube"
+	@echo "... mac/main.o"
+	@echo "... mac/main.i"
+	@echo "... mac/main.s"
 	@echo "... src/3d_shape/Shape3d.o"
 	@echo "... src/3d_shape/Shape3d.i"
 	@echo "... src/3d_shape/Shape3d.s"
@@ -396,12 +399,9 @@ help:
 	@echo "... src/fa_texture/FaTexture.o"
 	@echo "... src/fa_texture/FaTexture.i"
 	@echo "... src/fa_texture/FaTexture.s"
-	@echo "... src/main.o"
-	@echo "... src/main.i"
-	@echo "... src/main.s"
-	@echo "... src/utils/screen/ScreenSize.o"
-	@echo "... src/utils/screen/ScreenSize.i"
-	@echo "... src/utils/screen/ScreenSize.s"
+	@echo "... src/open_gl/OpenGl.o"
+	@echo "... src/open_gl/OpenGl.i"
+	@echo "... src/open_gl/OpenGl.s"
 .PHONY : help
 
 

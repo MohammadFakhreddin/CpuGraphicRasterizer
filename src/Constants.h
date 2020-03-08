@@ -14,8 +14,8 @@ namespace Constants {
 	};
 	namespace Window {
 		static constexpr char appName[] = "3D CUBE";
-		static constexpr int screenWidth = 800;
-		static constexpr int screenHeight = 600;
+		static int screenWidth = 800;
+		static int screenHeight = 600;
 	};
 	namespace System {
 #if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)

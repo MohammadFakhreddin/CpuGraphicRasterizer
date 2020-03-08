@@ -148,31 +148,31 @@ CMakeFiles/3d-cube.dir/src/fa_texture/FaTexture.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/3d-cube.dir/src/fa_texture/FaTexture.cpp.s"
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/fa_texture/FaTexture.cpp -o CMakeFiles/3d-cube.dir/src/fa_texture/FaTexture.cpp.s
 
-CMakeFiles/3d-cube.dir/src/main.cpp.o: CMakeFiles/3d-cube.dir/flags.make
-CMakeFiles/3d-cube.dir/src/main.cpp.o: src/main.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/3d-cube.dir/src/main.cpp.o"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/3d-cube.dir/src/main.cpp.o -c /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/main.cpp
+CMakeFiles/3d-cube.dir/src/open_gl/OpenGl.cpp.o: CMakeFiles/3d-cube.dir/flags.make
+CMakeFiles/3d-cube.dir/src/open_gl/OpenGl.cpp.o: src/open_gl/OpenGl.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/3d-cube.dir/src/open_gl/OpenGl.cpp.o"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/3d-cube.dir/src/open_gl/OpenGl.cpp.o -c /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/open_gl/OpenGl.cpp
 
-CMakeFiles/3d-cube.dir/src/main.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/3d-cube.dir/src/main.cpp.i"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/main.cpp > CMakeFiles/3d-cube.dir/src/main.cpp.i
+CMakeFiles/3d-cube.dir/src/open_gl/OpenGl.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/3d-cube.dir/src/open_gl/OpenGl.cpp.i"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/open_gl/OpenGl.cpp > CMakeFiles/3d-cube.dir/src/open_gl/OpenGl.cpp.i
 
-CMakeFiles/3d-cube.dir/src/main.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/3d-cube.dir/src/main.cpp.s"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/main.cpp -o CMakeFiles/3d-cube.dir/src/main.cpp.s
+CMakeFiles/3d-cube.dir/src/open_gl/OpenGl.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/3d-cube.dir/src/open_gl/OpenGl.cpp.s"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/open_gl/OpenGl.cpp -o CMakeFiles/3d-cube.dir/src/open_gl/OpenGl.cpp.s
 
-CMakeFiles/3d-cube.dir/src/utils/screen/ScreenSize.cpp.o: CMakeFiles/3d-cube.dir/flags.make
-CMakeFiles/3d-cube.dir/src/utils/screen/ScreenSize.cpp.o: src/utils/screen/ScreenSize.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/3d-cube.dir/src/utils/screen/ScreenSize.cpp.o"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/3d-cube.dir/src/utils/screen/ScreenSize.cpp.o -c /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/utils/screen/ScreenSize.cpp
+CMakeFiles/3d-cube.dir/mac/main.cpp.o: CMakeFiles/3d-cube.dir/flags.make
+CMakeFiles/3d-cube.dir/mac/main.cpp.o: mac/main.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/3d-cube.dir/mac/main.cpp.o"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/3d-cube.dir/mac/main.cpp.o -c /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/mac/main.cpp
 
-CMakeFiles/3d-cube.dir/src/utils/screen/ScreenSize.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/3d-cube.dir/src/utils/screen/ScreenSize.cpp.i"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/utils/screen/ScreenSize.cpp > CMakeFiles/3d-cube.dir/src/utils/screen/ScreenSize.cpp.i
+CMakeFiles/3d-cube.dir/mac/main.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/3d-cube.dir/mac/main.cpp.i"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/mac/main.cpp > CMakeFiles/3d-cube.dir/mac/main.cpp.i
 
-CMakeFiles/3d-cube.dir/src/utils/screen/ScreenSize.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/3d-cube.dir/src/utils/screen/ScreenSize.cpp.s"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/utils/screen/ScreenSize.cpp -o CMakeFiles/3d-cube.dir/src/utils/screen/ScreenSize.cpp.s
+CMakeFiles/3d-cube.dir/mac/main.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/3d-cube.dir/mac/main.cpp.s"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/mac/main.cpp -o CMakeFiles/3d-cube.dir/mac/main.cpp.s
 
 # Object files for target 3d-cube
 3d__cube_OBJECTS = \
@@ -183,8 +183,8 @@ CMakeFiles/3d-cube.dir/src/utils/screen/ScreenSize.cpp.s: cmake_force
 "CMakeFiles/3d-cube.dir/src/3d_shape/edge/texture_edge/TextureEdge.cpp.o" \
 "CMakeFiles/3d-cube.dir/src/application/Application.cpp.o" \
 "CMakeFiles/3d-cube.dir/src/fa_texture/FaTexture.cpp.o" \
-"CMakeFiles/3d-cube.dir/src/main.cpp.o" \
-"CMakeFiles/3d-cube.dir/src/utils/screen/ScreenSize.cpp.o"
+"CMakeFiles/3d-cube.dir/src/open_gl/OpenGl.cpp.o" \
+"CMakeFiles/3d-cube.dir/mac/main.cpp.o"
 
 # External object files for target 3d-cube
 3d__cube_EXTERNAL_OBJECTS =
@@ -196,8 +196,8 @@ CMakeFiles/3d-cube.dir/src/utils/screen/ScreenSize.cpp.s: cmake_force
 3d-cube: CMakeFiles/3d-cube.dir/src/3d_shape/edge/texture_edge/TextureEdge.cpp.o
 3d-cube: CMakeFiles/3d-cube.dir/src/application/Application.cpp.o
 3d-cube: CMakeFiles/3d-cube.dir/src/fa_texture/FaTexture.cpp.o
-3d-cube: CMakeFiles/3d-cube.dir/src/main.cpp.o
-3d-cube: CMakeFiles/3d-cube.dir/src/utils/screen/ScreenSize.cpp.o
+3d-cube: CMakeFiles/3d-cube.dir/src/open_gl/OpenGl.cpp.o
+3d-cube: CMakeFiles/3d-cube.dir/mac/main.cpp.o
 3d-cube: CMakeFiles/3d-cube.dir/build.make
 3d-cube: CMakeFiles/3d-cube.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Linking CXX executable 3d-cube"

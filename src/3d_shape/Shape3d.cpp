@@ -1,6 +1,6 @@
 #include "./Shape3d.h"
 #include <assert.h>
-#include "../OpenGlHeaders.h"
+#include "../open_gl/OpenGl.h"
 #include <math.h>
 #include <iostream>
 #include "../application/Application.h"

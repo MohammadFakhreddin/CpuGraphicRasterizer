@@ -8,6 +8,7 @@
 #include "./../3d_models/Sky.h"
 #include "./../3d_models/Dice.h"
 #include "../3d_shape/Shape3d.h"
+#include "../open_gl/OpenGl.h"
 
 class Application {
 public:
@@ -17,6 +18,12 @@ public:
     float green;
     float blue;
   };
+	enum Platform{
+		Windows,
+		Mac,
+		Iphone,
+		Android
+	};
 	enum Buttons
 	{
 		leftButton,
@@ -42,9 +49,12 @@ public:
 	
 	static constexpr float drawStepValue = 0.5;
 
-	Application();
-	void render(float deltaTime);
-	void update(float deltaTime);
+	Application(
+		Application::Platform platform,
+		unsigned int physicalScreenWidth,
+		unsigned int physicalScreenHeight
+	);
+	void mainLoop();
 	void notifyKeyIsPressed(Application::Buttons);
 	void putPixelInMap(int x,int y,float zValue,float red,float green,float blue);
 	static Application* getInstance();
@@ -72,10 +82,31 @@ public:
 		float textureEndX,
 		float textureEndY
 	);
-private:
-	std::unique_ptr<Shape3d> shape;
+
 	static Application* instance;
+
+private:
+
+	void render(float deltaTime);
+	void update(float deltaTime);
+	
+	double targetFPS = 60;                    
+	double timePerFrame = 1000 / targetFPS;
+	double currentFps = 0;
+	std::string fpsText = "";
+	double deltaTime = 0;
+
+private:
+
+	unsigned int physicalScreenWidth;
+	unsigned int physicalScreenHeight;
+
+	Application::Platform platform;
+
+	std::unique_ptr<Shape3d> shape;
+
 	std::unordered_map<Application::Buttons,bool> keyEvents;
+
 	DrawPixel* currentPixel;
 
   Wood wood;

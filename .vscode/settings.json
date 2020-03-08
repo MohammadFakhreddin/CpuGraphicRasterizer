@@ -5,4 +5,8 @@
     "memory": "cpp",
     "vector": "cpp"
   },
+  "cSpell.words": [
+    "GLES",
+    "OPENGL"
+  ],
 }
