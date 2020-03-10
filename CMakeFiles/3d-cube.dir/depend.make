@@ -115,6 +115,7 @@ CMakeFiles/3d-cube.dir/src/fa_texture/FaTexture.cpp.o: src/fa_texture/stb_image_
 CMakeFiles/3d-cube.dir/src/fa_texture/FaTexture.cpp.o: src/open_gl/OpenGl.h
 CMakeFiles/3d-cube.dir/src/fa_texture/FaTexture.cpp.o: src/utils/path/Path.h
 
+CMakeFiles/3d-cube.dir/src/open_gl/OpenGl.cpp.o: src/Constants.h
 CMakeFiles/3d-cube.dir/src/open_gl/OpenGl.cpp.o: src/open_gl/OpenGl.cpp
 CMakeFiles/3d-cube.dir/src/open_gl/OpenGl.cpp.o: src/open_gl/OpenGl.h
 

@@ -62,16 +62,20 @@ else()
    add_executable(${PROJECT_NAME} ${APP_HEADER} ${APP_SOURCE})
 endif()
 
-include_directories( ${OPENGL_INCLUDE_DIRS} )
-include_directories( ${GLUT_INCLUDE_DIRS} )
 if(ANDROID)
    find_library(EGL REQUIRED)
    find_library(GLESv2 REQUIRED)
    target_link_libraries( ${PROJECT_NAME} EGL GLESv2)
-else()
+elseif(MACOSX)
+   # # add extra include directories
+   include_directories(/usr/local/include)
+   # # add extra lib directories
+   link_directories(/usr/local/lib)
+   include_directories( ${OPENGL_INCLUDE_DIRS} )
+   include_directories( ${GLUT_INCLUDE_DIRS} )
    find_package(OpenGL REQUIRED)
    find_package(GLUT REQUIRED)
-   target_link_libraries( ${PROJECT_NAME} ${OPENGL_LIBRARIES} ${GLUT_LIBRARIES})
+   target_link_libraries( ${PROJECT_NAME} ${GLUT_LIBRARY} ${OPENGL_LIBRARIES})
 endif()
 
 

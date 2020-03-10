@@ -16,20 +16,22 @@ Application::Application(
 	physicalScreenHeight(physicalScreenHeight)
 {
 	instance = this;
-	shape = Shape3d::generateTextured3DCube(
-		dice.diceCubeTexture,
-		dice.diceCubeEdgeList,
-		100,
-		100,
-		100,
-		Constants::Window::screenWidth/2,
-		Constants::Window::screenHeight/2,
-		0,
-		0,
-		0,
-		0,
-		1
-	);
+	{//Shape
+		shape = Shape3d::generateTextured3DCube(
+			dice.diceCubeTexture,
+			dice.diceCubeEdgeList,
+			100,
+			100,
+			100,
+			Constants::Window::screenWidth/2,
+			Constants::Window::screenHeight/2,
+			0,
+			0,
+			0,
+			0,
+			1
+		);
+	}
 	{//Creating pixelMap
 		for(int i=0;i<Constants::Window::screenWidth;i++){
 			std::vector<DrawPixel> innerMap;
@@ -196,14 +198,14 @@ void Application::putPixelInMap(int x,int y,float zValue,float red,float green,f
 } 
 
 void Application::render(float deltaTime) {
-	OpenGL::clear();
+	openGLInstance.clear();
 	{//Drawing screen
-		OpenGL::beginDrawingPoints();
+		openGLInstance.beginDrawingPoints();
 		for(unsigned int i=0;i<Constants::Window::screenWidth;i++){
 			for(unsigned int j=0;j<Constants::Window::screenHeight;j++){
 				currentPixel = &pixelMap.at(i).at(j); 
 				if(currentPixel->blue!=0 || currentPixel->green!=0 || currentPixel->red!=0){
-					OpenGL::drawPixel(
+					openGLInstance.drawPixel(
 						i,
 						j,
 						currentPixel->red,
@@ -217,13 +219,13 @@ void Application::render(float deltaTime) {
 				}
 			}
 		}
-		OpenGL::end();
+		openGLInstance.resetProgram();
 	}
 	{//FPSText
-		OpenGL::drawText(0,0,std::to_string(currentFps),1.0f,1.0f,1.0f);
+		openGLInstance.drawText(0,0,std::to_string(currentFps),1.0f,1.0f,1.0f);
 	}
 	// dice.diceCubeTexture->render();
-	OpenGL::flush();
+	openGLInstance.flush();
 }
 
 void Application::update(float deltaTime) {
@@ -297,19 +299,16 @@ Application* Application::getInstance()
 	return Application::instance;
 }
 
-void Application::mainLoop(){
-	deltaTime = OpenGL::getElapsedTime();
+void Application::mainLoop(float deltaTime){
 	update(deltaTime);
 	render(deltaTime);
 	if(deltaTime>0){
 		currentFps = 1000.0f/deltaTime;
 	}
-	#ifdef __APPLE__
-		while((openGLError = glGetError()) != GL_NO_ERROR)
-		{
-			std::cout<<"OpenGLError"<<std::endl<<openGLError<<std::endl;
-		}
-	#endif
+	while((openGLError = glGetError()) != GL_NO_ERROR)
+	{
+		std::cout<<"OpenGLError:"<<std::endl<<openGLError<<std::endl;
+	}
 }
 
 Application* Application::instance;

@@ -60,8 +60,15 @@ void handleKeyboardEvent(unsigned char key, int x, int y)
 	}
 }
 
+double currentTime = 0;
+double lastTime = glutGet(GLUT_ELAPSED_TIME);
+double deltaTime = 0;
+
 void mainLoop() {
-  application->mainLoop();
+	currentTime = glutGet(GLUT_ELAPSED_TIME);
+	deltaTime = currentTime - lastTime;
+	lastTime = currentTime;
+  application->mainLoop(deltaTime);
 }
 
 void timer(int value)
@@ -83,8 +90,8 @@ int main(int argc, char** argv) {
           (int)(realScreenHeight/2 - Constants::Window::screenHeight/2));
   glutCreateWindow(Constants::Window::appName);
   glClearColor(0.0f, 0.0f, 0.0f, 1.0f); // Set background color to black and opaque
-  glViewport(0,0,Constants::Window::screenWidth,Constants::Window::screenHeight);
-  glOrtho(-0.5f, Constants::Window::screenWidth-0.5f, -0.5f, Constants::Window::screenHeight-0.5f, -1.0, 1.0);
+  // glViewport(0,0,Constants::Window::screenWidth,Constants::Window::screenHeight);
+  // glOrtho(-0.5f, Constants::Window::screenWidth-0.5f, -0.5f, Constants::Window::screenHeight-0.5f, -1.0, 1.0);
   application = std::unique_ptr<Application>(new Application(
       Application::Platform::Mac,
       realScreenWidth,

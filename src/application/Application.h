@@ -54,7 +54,7 @@ public:
 		unsigned int physicalScreenWidth,
 		unsigned int physicalScreenHeight
 	);
-	void mainLoop();
+	void mainLoop(float deltaTime);
 	void notifyKeyIsPressed(Application::Buttons);
 	void putPixelInMap(int x,int y,float zValue,float red,float green,float blue);
 	static Application* getInstance();
@@ -96,6 +96,8 @@ private:
 	std::string fpsText = "";
 	double deltaTime = 0;
 
+	OpenGL openGLInstance;
+
 private:
 
 	unsigned int physicalScreenWidth;
@@ -116,8 +118,8 @@ private:
 	Dice dice;
 
 	std::vector<std::vector<DrawPixel>> pixelMap;
-
 	GLenum openGLError;
+
 };
 
 #endif

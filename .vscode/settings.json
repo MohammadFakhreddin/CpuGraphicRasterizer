@@ -3,7 +3,9 @@
     "functional": "cpp",
     "locale": "cpp",
     "memory": "cpp",
-    "vector": "cpp"
+    "vector": "cpp",
+    "freeglut_internal.h": "c",
+    "xatom.h": "c"
   },
   "cSpell.words": [
     "GLES",
