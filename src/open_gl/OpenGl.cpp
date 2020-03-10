@@ -78,6 +78,8 @@ OpenGL::OpenGL(){
 OpenGL::~OpenGL(){
 }
 
+#ifdef GLES
+
 GLuint OpenGL::loadShader(GLenum shaderType, const char* shaderSource){
   GLuint shader = glCreateShader(shaderType);
   if (shader)
@@ -147,6 +149,8 @@ GLuint OpenGL::createProgram(const char* vertexSource, const char * fragmentSour
   }
   return program;
 }
+
+#endif // GLES
 
 void OpenGL::clear(){
   glClear( GL_COLOR_BUFFER_BIT);

@@ -1,5 +1,6 @@
 #ifndef STB_image_header
 #define STB_image_header
+#include "./../Constants.h"
 
 #ifdef __ANDROID__
   #include "./../../android/app/src/main/java/co/fakhreddin/cube/AndroidEnvironment.h"
@@ -19,7 +20,8 @@ public:
     int* height,
     int* numberOfChannels
   ){
-    #if defined(__APPLE__)
+    #if defined(__APPLE__) || defined(__PLATFORM_WIN__)
+      std::cout<<"Loading image:"<<textureAddress<<std::endl;
       return stbi_load(textureAddress.c_str(), width, height, numberOfChannels, STBI_rgb);
     #elif defined(__ANDROID__)
       auto& environment = AndroidEnvironment::getInstance()->getEnv();

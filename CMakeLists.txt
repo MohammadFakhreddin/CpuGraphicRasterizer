@@ -35,7 +35,6 @@ endif()
 if(MACOSX)
    FILE(GLOB_RECURSE MAC_USER_HEADER "mac/*.h")
    FILE(GLOB_RECURSE MAC_USER_CPP "mac/*.cpp")
-   # for MacOS X or iOS, watchOS, tvOS (since 3.10.3)
    list(
       APPEND APP_SOURCE
       ${MAC_USER_CPP}
@@ -43,6 +42,19 @@ if(MACOSX)
    list(
       APPEND APP_HEADER
       ${MAC_USER_HEADER}
+   )
+endif()
+
+if(WIN32)
+   FILE(GLOB_RECURSE WINDOWS_USER_HEADER "windows/*.h")
+   FILE(GLOB_RECURSE WINDOWS_USER_CPP "windows/*.cpp")
+   list(
+      APPEND APP_SOURCE
+      ${WINDOWS_USER_CPP}
+   )
+   list(
+      APPEND APP_HEADER
+      ${WINDOWS_USER_HEADER}
    )
 endif()
 
@@ -76,6 +88,13 @@ elseif(MACOSX)
    find_package(OpenGL REQUIRED)
    find_package(GLUT REQUIRED)
    target_link_libraries( ${PROJECT_NAME} ${GLUT_LIBRARY} ${OPENGL_LIBRARIES})
+elseif(WIN32)
+	include_directories( ${OPENGL_INCLUDE_DIRS} )
+	include_directories( ${FREEGLUT_INCLUDE_DIRS} )
+	find_package(OpenGL REQUIRED)
+	find_package(GLUT REQUIRED)
+	target_link_libraries(${PROJECT_NAME} GLUT::GLUT)
+	target_link_libraries(${PROJECT_NAME} ${OPENGL_LIBRARIES})
 endif()
 
 

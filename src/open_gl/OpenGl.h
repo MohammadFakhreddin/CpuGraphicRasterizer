@@ -1,6 +1,7 @@
 #ifndef OpenGl_class
 #define OpenGl_class
 
+#include "../Constants.h"
 #include <string>
 
 #if defined(__APPLE__) 
@@ -11,6 +12,9 @@
 #elif defined(__ANDROID__)
   #define __GLES__
   #include <GLES3/gl3.h>
+#elif defined(__PLATFORM_WIN__)
+	#define __OPENGL__
+	#include <GL/freeglut.h>
 #endif
 // #include <GLES3/gl3.h>
 // #define __GLES__
@@ -23,12 +27,12 @@ public:
   void drawText(int x,int y,std::string text,float red,float green,float blue);
   void clear();
   void flush();
-  void beginDrawPoint();
-  void endDrawPoint();
   void beginDrawingPoints();
   void resetProgram();
+#ifdef GLES
   GLuint loadShader(GLenum shaderType, const char* shaderSource);
   GLuint createProgram(const char* vertexSource, const char * fragmentSource);
+#endif // GLES
 private:
   GLuint programObject;
   GLint colorParamLocation = 0;

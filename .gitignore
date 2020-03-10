@@ -64,3 +64,12 @@ settings.json
 3d-cube
 
 .vscode
+
+out/*
+
+package.json
+
+.ninja_deps
+.ninja_log
+x64/*
+x64
