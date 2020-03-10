@@ -67,7 +67,8 @@ settings.json
 
 out/*
 
-package.json
+# TODO Make package.json platform independant
+# package.json
 
 .ninja_deps
 .ninja_log

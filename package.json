@@ -1,0 +1,10 @@
+{
+    "name": "root",
+    "version": "0.0.1",
+    "private": true,
+    "scripts": {
+        "cmake":"cmake . -GNinja -DCMAKE_TOOLCHAIN_FILE=C:/Projects/vcpkg/scripts/buildsystems/vcpkg.cmake",
+        "make":"ninja",
+        "start":"npm run cmake && npm run make && 3d-cube.exe"
+    }
+}
