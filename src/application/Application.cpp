@@ -22,12 +22,13 @@ Application::Application(
 {
 	instance = this;
 	{//Shape
+		auto width = appScreenWidth/4;
 		// shape = Shape3d::generateTextured3DCube(
 		// 	dice.diceCubeTexture,
 		// 	dice.diceCubeEdgeList,
-		// 	100,
-		// 	100,
-		// 	100,
+		// 	width,
+		// 	width,
+		// 	width,
 		// 	appScreenWidth/2,
 		// 	appScreenHeight/2,
 		// 	0,
@@ -36,7 +37,6 @@ Application::Application(
 		// 	0,
 		// 	1
 		// );
-		auto width = appScreenWidth/4;
 		shape = Shape3d::generateColored3DCube(
             width,
             width,

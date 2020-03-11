@@ -22,7 +22,7 @@ physicalScreenHeight(physicalScreenHeight)
     "varying vec4 vColor;\n"
     "void main(){\n"
       "vColor=aVertexColor;\n"
-      "gl_PointSize = 20.0;\n"
+      "gl_PointSize = 15.0;\n"
       "gl_Position = aVertexPosition;\n"
     "}\n";
 
