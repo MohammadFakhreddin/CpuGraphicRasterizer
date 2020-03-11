@@ -51,8 +51,10 @@ public:
 
 	Application(
 		Application::Platform platform,
-		unsigned int physicalScreenWidth,
-		unsigned int physicalScreenHeight
+		unsigned int appScreenWidth,
+		unsigned int appScreenHeight,
+		unsigned int physicalDeviceScreenWidth,
+		unsigned int physicalDeviceScreenHeight
 	);
 	void mainLoop(float deltaTime);
 	void notifyKeyIsPressed(Application::Buttons);
@@ -85,6 +87,11 @@ public:
 
 	static Application* instance;
 
+	unsigned int getAppScreenWidth();
+	unsigned int getAppScreenHeight();
+	unsigned int getPhysicalScreenWidth();
+	unsigned int getPhysicalScreenHeight();
+
 private:
 
 	void render(float deltaTime);
@@ -102,6 +109,8 @@ private:
 
 	unsigned int physicalScreenWidth;
 	unsigned int physicalScreenHeight;
+	unsigned int appScreenWidth;
+	unsigned int appScreenHeight;
 
 	Application::Platform platform;
 
@@ -111,13 +120,14 @@ private:
 
 	DrawPixel* currentPixel;
 
-  Wood wood;
+	// Wood wood;
 
-	Sky sky;
+	// Sky sky;
 
-	Dice dice;
+	// Dice dice;
 
 	std::vector<std::vector<DrawPixel>> pixelMap;
+
 	GLenum openGLError;
 
 };

@@ -1,8 +1,13 @@
 #include "./OpenGl.h"
 #include <iostream>
+#include <assert.h>
 #include "./../Constants.h"
 
-OpenGL::OpenGL(){
+OpenGL::OpenGL(unsigned int appScreenWidth,unsigned int appScreenHeight)
+:
+appScreenWidth(appScreenWidth),
+appScreenHeight(appScreenHeight)
+{
 
 #ifdef __GLES__
   int nrAttributes;
@@ -10,16 +15,17 @@ OpenGL::OpenGL(){
   std::cout << "Maximum nr of vertex attributes supported: " << nrAttributes << std::endl;
 
   const char* vShaderStr = 
-    "uniform vec4 aVertexPosition;\n"
-    "uniform vec4 aVertexColor;\n"
+    "attribute vec4 aVertexPosition;\n"
+    "attribute vec4 aVertexColor;\n"
     "varying vec4 vColor;\n"
     "void main(){\n"
       "vColor=aVertexColor;\n"
-      "gl_PointSize = 100.0;\n"
+      "gl_PointSize = 1000.0;\n"
       "gl_Position = aVertexPosition;\n"
     "}\n";
 
   const char*  fShaderStr =
+    "precision mediump float;\n"
     "varying vec4 vColor;\n"
     "void main(){\n"
       "gl_FragColor=vColor;\n"
@@ -48,7 +54,7 @@ OpenGL::OpenGL(){
     if(infoLen > 1)
     {
       char* infoLog = new char[infoLen];
-      glGetProgramInfoLog(programObject, infoLen, NULL, infoLog);
+      glGetProgramInfoLog(programObject, infoLen, nullptr, infoLog);
       std::cout<<"Error linking program:\n"<<infoLog<<std::endl;
       free(infoLog);
     }
@@ -60,25 +66,27 @@ OpenGL::OpenGL(){
   glDeleteShader(vertexShader);
   glDeleteShader(fragmentShader); 
 
-  pointParamLocation = glGetUniformLocation(programObject,"aVertexPosition");
+  glBindAttribLocation(programObject,0,"aVertexPosition");
+  pointParamLocation = glGetAttribLocation(programObject,"aVertexPosition");
   assert(pointParamLocation>=0);
 
-  colorParamLocation = glGetUniformLocation(programObject,"aVertexColor");
+  glBindAttribLocation(programObject,1,"aVertexColor");
+  colorParamLocation = glGetAttribLocation(programObject,"aVertexColor");
   assert(colorParamLocation>=0);
-#endif
 
+#endif
   glClearColor(0.0f, 0.0f, 0.0f, 1.0f); // Set background color to black and opaque
-  glViewport(0,0,Constants::Window::screenWidth,Constants::Window::screenHeight);
-#ifdef __OPENGL__
-  glOrtho(-0.5f, Constants::Window::screenWidth-0.5f, -0.5f, Constants::Window::screenHeight-0.5f, -1.0, 1.0);
-#endif 
+  glViewport(0,0,appScreenWidth,appScreenHeight);
+#if defined(__OPENGL__)
+  glOrtho(-0.5f, appScreenWidth-0.5f, -0.5f, appScreenHeight-0.5f, -1.0, 1.0);
+#endif
 
 }
 
 OpenGL::~OpenGL(){
 }
 
-#ifdef GLES
+#ifdef __GLES__
 
 GLuint OpenGL::loadShader(GLenum shaderType, const char* shaderSource){
   GLuint shader = glCreateShader(shaderType);
@@ -108,6 +116,10 @@ GLuint OpenGL::loadShader(GLenum shaderType, const char* shaderSource){
   }
   return shader;
 }
+
+#endif // GLES
+
+#ifdef __GLES__
 
 GLuint OpenGL::createProgram(const char* vertexSource, const char * fragmentSource)
 {
@@ -153,7 +165,7 @@ GLuint OpenGL::createProgram(const char* vertexSource, const char * fragmentSour
 #endif // GLES
 
 void OpenGL::clear(){
-  glClear( GL_COLOR_BUFFER_BIT);
+  glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
 void OpenGL::flush(){
@@ -161,21 +173,47 @@ void OpenGL::flush(){
 }
 
 void OpenGL::drawPixel(int x,int y,float red,float green,float blue){
+
+    assert(x>=0 && x<appScreenWidth);
+    assert(y>=0 && y<appScreenHeight);
+    assert(red>=0 && red<=1.0f);
+    assert(green>=0 && green<=1.0f);
+    assert(blue>=0 && blue<=1.0f);
+
 #ifdef __OPENGL__
   glColor3f(red,green,blue);
   glVertex2i(x,y);
 #else
+  //TODO Try using  buffers
+//    {
+//        glColorMask(red,green,blue,false);
+//          position[0] = x;
+//          position[1] = y;
+//        glEnableVertexAttribArray(0);
+//        glVertexAttribPointer(0,4,GL_FLOAT,GL_FALSE,0,position);
+//    }
   {
-    glEnableVertexAttribArray(pointParamLocation);
-    glUniform4f(pointParamLocation,x,y,0,1);
+      position[0] = x - appScreenWidth;
+      position[1] = y - appScreenHeight;
+      glEnableVertexAttribArray((GLuint)pointParamLocation);
+      assert(glGetError()==GL_NO_ERROR);
+      glVertexAttribPointer((GLuint)pointParamLocation,4,GL_FLOAT,GL_FALSE,0,position);
+      assert(glGetError()==GL_NO_ERROR);
   }
   {
-    glEnableVertexAttribArray(colorParamLocation);
-    glUniform4f(colorParamLocation,red,green,blue,1.0f);
+      color[0] = red;
+      color[1] = green;
+      color[2] = blue;
+      glEnableVertexAttribArray((GLuint)colorParamLocation);
+      assert(glGetError()==GL_NO_ERROR);
+      glVertexAttribPointer((GLuint)colorParamLocation,4,GL_FLOAT,GL_FALSE,0,color);
+      assert(glGetError()==GL_NO_ERROR);
   }
   glDrawArrays(GL_POINTS,0,1);
-  glDisableVertexAttribArray(pointParamLocation);
-  glDisableVertexAttribArray(colorParamLocation);
+  assert(glGetError()==GL_NO_ERROR);
+  glDisableVertexAttribArray((GLuint)pointParamLocation);
+  glDisableVertexAttribArray((GLuint)colorParamLocation);
+
 #endif
 }
 

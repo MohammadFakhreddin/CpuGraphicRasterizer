@@ -31,20 +31,22 @@ JNIEXPORT void JNICALL Java_co_fakhreddin_cube_Fa3dCube_init(
     jint phyiscalScreenHeight
 )
 {
-    float screenRatio = phyiscalScreenWidth/phyiscalScreenHeight;
-    Constants::Window::screenHeight = screenRatio * Constants::Window::screenWidth;
+    unsigned int deviceScreenWidth = (unsigned int)phyiscalScreenWidth;
+    unsigned int deviceScreenHeight = (unsigned int)phyiscalScreenHeight;
     androidEnvironment = std::unique_ptr<AndroidEnvironment>(
         new AndroidEnvironment(env)
     );
     application = std::unique_ptr<Application>(new Application(
-        Application::Platform::Mac,
-        phyiscalScreenWidth,
-        phyiscalScreenHeight
+        Application::Platform::Android,
+        deviceScreenWidth,
+        deviceScreenHeight,
+        deviceScreenWidth,
+        deviceScreenHeight
     ));
 }
 
 JNIEXPORT void JNICALL Java_co_fakhreddin_cube_Fa3dCube_step(JNIEnv * env, jobject obj)
 {
     //TODO calculate delta time
-    application->mainLoop(0);
+    application->mainLoop(1);
 }

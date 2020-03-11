@@ -1,4 +1,5 @@
-#pragma once
+#ifndef Constants_class
+#define Constants_class
 //
 // Created by mohammad.fakhreddin on 1/3/20.
 //
@@ -14,8 +15,6 @@ namespace Constants {
 	};
 	namespace Window {
 		static constexpr char appName[] = "3D CUBE";
-		static int screenWidth = 800;
-		static int screenHeight = 600;
 	};
 	namespace System {
 #if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
@@ -71,3 +70,5 @@ namespace Constants {
 #endif
 	};
 };
+
+#endif

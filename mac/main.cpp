@@ -80,26 +80,30 @@ void timer(int value)
 /* Main function: GLUT runs as a console application starting at main()  */
 int main(int argc, char** argv) {
 	glutInit(&argc,argv);
-  glutInitDisplayMode ( GLUT_SINGLE | GLUT_RGB );
+  	glutInitDisplayMode ( GLUT_SINGLE | GLUT_RGB );
 	auto mainDisplayId = CGMainDisplayID();
-  unsigned int realScreenWidth = CGDisplayPixelsWide(mainDisplayId);
-  unsigned int realScreenHeight = CGDisplayPixelsHigh(mainDisplayId);
-  glutInitWindowSize(Constants::Window::screenWidth,Constants::Window::screenHeight);
-  glutInitWindowPosition(
-          (int)(realScreenWidth/2 - Constants::Window::screenWidth/2),
-          (int)(realScreenHeight/2 - Constants::Window::screenHeight/2));
-  glutCreateWindow(Constants::Window::appName);
-  glClearColor(0.0f, 0.0f, 0.0f, 1.0f); // Set background color to black and opaque
-  // glViewport(0,0,Constants::Window::screenWidth,Constants::Window::screenHeight);
-  // glOrtho(-0.5f, Constants::Window::screenWidth-0.5f, -0.5f, Constants::Window::screenHeight-0.5f, -1.0, 1.0);
-  application = std::unique_ptr<Application>(new Application(
-      Application::Platform::Mac,
-      realScreenWidth,
-      realScreenHeight
-  ));
-  glutKeyboardFunc(handleKeyboardEvent);
-  glutTimerFunc(0, timer, 0);
-  glutDisplayFunc(mainLoop);
-  glutMainLoop();
-  return 0;
+
+	unsigned int appScreenWidth = 800;
+	unsigned int appScreenHeight = 600;
+	unsigned int realScreenWidth = CGDisplayPixelsWide(mainDisplayId);
+	unsigned int realScreenHeight = CGDisplayPixelsHigh(mainDisplayId);
+
+	glutInitWindowSize(appScreenWidth,appScreenHeight);
+	glutInitWindowPosition(
+			(int)(realScreenWidth/2 - appScreenWidth/2),
+			(int)(realScreenHeight/2 - appScreenHeight/2));
+	glutCreateWindow(Constants::Window::appName);
+	glClearColor(0.0f, 0.0f, 0.0f, 1.0f); // Set background color to black and opaque
+	application = std::unique_ptr<Application>(new Application(
+		Application::Platform::Mac,
+		appScreenWidth,
+		appScreenHeight,
+		realScreenWidth,
+		realScreenHeight
+	));
+	glutKeyboardFunc(handleKeyboardEvent);
+	glutTimerFunc(0, timer, 0);
+	glutDisplayFunc(mainLoop);
+	glutMainLoop();
+	return 0;
 }

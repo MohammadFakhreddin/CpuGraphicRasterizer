@@ -85,14 +85,18 @@ int main(int argc, char** argv) {
     glutInitDisplayMode ( GLUT_SINGLE | GLUT_RGB );
     unsigned int realScreenWidth = (int)GetSystemMetrics(SM_CXSCREEN);
     unsigned int realScreenHeight = (int)GetSystemMetrics(SM_CYSCREEN);
-    glutInitWindowSize(Constants::Window::screenWidth,Constants::Window::screenHeight);
+	unsigned int appScreenWidth = 800;
+	unsigned int appScreenHeight = 600;
+    glutInitWindowSize(appScreenWidth,appScreenHeight);
     glutInitWindowPosition(
-            (int)(realScreenWidth/2 - Constants::Window::screenWidth/2),
-            (int)(realScreenHeight/2 - Constants::Window::screenHeight/2));
+            (int)(realScreenWidth/2 - appScreenWidth/2),
+            (int)(realScreenHeight/2 - appScreenHeight/2));
     glutCreateWindow(Constants::Window::appName);
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f); // Set background color to black and opaque
     application = std::unique_ptr<Application>(new Application(
         Application::Platform::Windows,
+		appScreenWidth,
+		appScreenHeight,
         realScreenWidth,
         realScreenHeight
     ));

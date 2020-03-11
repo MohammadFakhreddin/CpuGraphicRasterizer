@@ -7,24 +7,41 @@
 
 Application::Application(
 	Application::Platform platform,
-	unsigned int physicalScreenWidth,
-	unsigned int physicalScreenHeight
+	unsigned int paramAppScreenWidth,
+	unsigned int paramAppScreenHeight,
+	unsigned int physicalDeviceScreenWidth,
+	unsigned int physicalDeviceScreenHeight
 )
 	:
 	platform(platform),
-	physicalScreenWidth(physicalScreenWidth),
-	physicalScreenHeight(physicalScreenHeight)
+	physicalScreenWidth(physicalDeviceScreenWidth),
+	physicalScreenHeight(physicalDeviceScreenHeight),
+	appScreenWidth(paramAppScreenWidth),
+	appScreenHeight(paramAppScreenHeight),
+	openGLInstance(paramAppScreenWidth,paramAppScreenHeight)
 {
 	instance = this;
 	{//Shape
-		shape = Shape3d::generateTextured3DCube(
-			dice.diceCubeTexture,
-			dice.diceCubeEdgeList,
+		// shape = Shape3d::generateTextured3DCube(
+		// 	dice.diceCubeTexture,
+		// 	dice.diceCubeEdgeList,
+		// 	100,
+		// 	100,
+		// 	100,
+		// 	appScreenWidth/2,
+		// 	appScreenHeight/2,
+		// 	0,
+		// 	0,
+		// 	0,
+		// 	0,
+		// 	1
+		// );
+		shape = Shape3d::generateColored3DCube(
 			100,
 			100,
 			100,
-			Constants::Window::screenWidth/2,
-			Constants::Window::screenHeight/2,
+			appScreenWidth/2,
+			appScreenHeight/2,
 			0,
 			0,
 			0,
@@ -33,12 +50,15 @@ Application::Application(
 		);
 	}
 	{//Creating pixelMap
-		for(int i=0;i<Constants::Window::screenWidth;i++){
+		for(int i=0;i<appScreenWidth;i++){
 			std::vector<DrawPixel> innerMap;
 			pixelMap.emplace_back(innerMap);
-			for(int j=0;j<Constants::Window::screenHeight;j++){
+			for(int j=0;j<appScreenHeight;j++){
 				DrawPixel drawPixel;
 				drawPixel.zValue = maximumFov * 2;
+				drawPixel.blue = 0;
+				drawPixel.green = 0;
+				drawPixel.red = 0;
 				pixelMap.at(i).emplace_back(drawPixel);
 			}
 		}
@@ -183,11 +203,11 @@ void Application::drawTextureBetweenPoints(
 
 void Application::putPixelInMap(int x,int y,float zValue,float red,float green,float blue){
 	//TODO Optimize and find better solution
-	if(x<0||x>=Constants::Window::screenWidth||y<0||y>=Constants::Window::screenHeight){
+	if(x<0||x>=appScreenWidth||y<0||y>=appScreenHeight){
 		return;
 	}
-	assert(x<Constants::Window::screenWidth);
-	assert(y<Constants::Window::screenHeight);
+	assert(x<appScreenWidth);
+	assert(y<appScreenHeight);
 	currentPixel = &pixelMap.at(x).at(y);
 	if(currentPixel->zValue>zValue){
 		currentPixel->blue = blue;
@@ -201,8 +221,8 @@ void Application::render(float deltaTime) {
 	openGLInstance.clear();
 	{//Drawing screen
 		openGLInstance.beginDrawingPoints();
-		for(unsigned int i=0;i<Constants::Window::screenWidth;i++){
-			for(unsigned int j=0;j<Constants::Window::screenHeight;j++){
+		for(unsigned int i=0;i<appScreenWidth;i++){
+			for(unsigned int j=0;j<appScreenHeight;j++){
 				currentPixel = &pixelMap.at(i).at(j); 
 				if(currentPixel->blue!=0 || currentPixel->green!=0 || currentPixel->red!=0){
 					openGLInstance.drawPixel(
@@ -312,3 +332,19 @@ void Application::mainLoop(float deltaTime){
 }
 
 Application* Application::instance;
+
+unsigned int Application::getAppScreenHeight(){
+	return appScreenHeight;
+}
+
+unsigned int Application::getAppScreenWidth(){
+	return appScreenWidth;
+}
+
+unsigned int Application::getPhysicalScreenWidth(){
+	return physicalScreenWidth;
+}
+
+unsigned int Application::getPhysicalScreenHeight(){
+	return physicalScreenHeight;
+}
