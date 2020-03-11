@@ -33,13 +33,15 @@ JNIEXPORT void JNICALL Java_co_fakhreddin_cube_Fa3dCube_init(
 {
     unsigned int deviceScreenWidth = (unsigned int)phyiscalScreenWidth;
     unsigned int deviceScreenHeight = (unsigned int)phyiscalScreenHeight;
+    unsigned int appScreenWidth = (unsigned int)(float(deviceScreenWidth)/10.0f);
+    unsigned int appScreenHeight = (unsigned int)(float(appScreenWidth) * (float(deviceScreenHeight)/float(deviceScreenWidth)));
     androidEnvironment = std::unique_ptr<AndroidEnvironment>(
         new AndroidEnvironment(env)
     );
     application = std::unique_ptr<Application>(new Application(
         Application::Platform::Android,
-        deviceScreenWidth,
-        deviceScreenHeight,
+        appScreenWidth,
+        appScreenHeight,
         deviceScreenWidth,
         deviceScreenHeight
     ));

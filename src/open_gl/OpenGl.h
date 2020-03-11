@@ -21,7 +21,7 @@
 
 class OpenGL{
 public:
-  OpenGL(unsigned int appScreenWidth,unsigned int appScreenHeight);
+  OpenGL(unsigned int appScreenWidth,unsigned int appScreenHeight,unsigned int physicalScreenWidth,unsigned int physicalScreenHeight);
   ~OpenGL();
   void drawPixel(int x,int y,float red,float green,float blue);
   void drawText(int x,int y,std::string text,float red,float green,float blue);
@@ -34,7 +34,8 @@ public:
   GLuint createProgram(const char* vertexSource, const char * fragmentSource);
   GLfloat color[4] = {0,0,0,1.0f};
   GLfloat position[4] = {0,0,0.0f,1.0f};
-
+  GLfloat projMat[16];
+  void glesOrtho(float left, float right, float top, float bottom, float near, float far);
 #endif // GLES
 private:
   GLuint programObject;
@@ -42,6 +43,8 @@ private:
   GLint pointParamLocation = 0;
   unsigned int appScreenWidth = 0;
   unsigned int appScreenHeight = 0;
+  unsigned int physicalScreenWidth = 0;
+  unsigned int physicalScreenHeight = 0;
 };
 
 #endif

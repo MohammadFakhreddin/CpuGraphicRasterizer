@@ -18,7 +18,7 @@ Application::Application(
 	physicalScreenHeight(physicalDeviceScreenHeight),
 	appScreenWidth(paramAppScreenWidth),
 	appScreenHeight(paramAppScreenHeight),
-	openGLInstance(paramAppScreenWidth,paramAppScreenHeight)
+	openGLInstance(paramAppScreenWidth,paramAppScreenHeight,physicalDeviceScreenWidth,physicalDeviceScreenHeight)
 {
 	instance = this;
 	{//Shape
@@ -36,10 +36,11 @@ Application::Application(
 		// 	0,
 		// 	1
 		// );
+		auto width = appScreenWidth/4;
 		shape = Shape3d::generateColored3DCube(
-			100,
-			100,
-			100,
+            width,
+            width,
+            width,
 			appScreenWidth/2,
 			appScreenHeight/2,
 			0,
@@ -82,8 +83,10 @@ void Application::drawLineBetweenPoints(
   }
   if( moveByX == true ){
     float xDifference = endX - startX;
-		assert(xDifference!=0);
-    float yM = (endY - startY)/xDifference;
+	if(xDifference==0){
+		return;
+	}
+	float yM = (endY - startY)/xDifference;
     float zM = (endZ - startZ)/xDifference;
     putPixelInMap(round(startX),round(startY),startZ,red,green,blue);
     float stepMoveValue = startX - endX > 0 ? -1 : +1;
@@ -98,7 +101,9 @@ void Application::drawLineBetweenPoints(
 		);
   } else {
     float yDifference = endY - startY;
-		assert(yDifference!=0);
+	if(yDifference==0){
+		return;
+	}
     float xM = (endX - startX)/yDifference;
     float zM = (endZ - startZ)/yDifference;
     putPixelInMap(int(round(startX)),int(round(startY)),startZ,red,green,blue);
@@ -282,7 +287,7 @@ void Application::update(float deltaTime) {
 		shape->rotateX(-1* Application::shapeRotationSpeed * deltaTime);
 		keyEvents[rotationXRightButton] = false;
 	}
-  if (keyEvents[rotationYLeftButton] == true) {
+	if (keyEvents[rotationYLeftButton] == true) {
 		shape->rotateY(Application::shapeRotationSpeed * deltaTime);
 		keyEvents[rotationYLeftButton] = false;
 	}
@@ -305,6 +310,11 @@ void Application::update(float deltaTime) {
 	if(keyEvents[backwardZButton]){
 		shape->transformZ(-1 * Application::shapeTransformSpeed * deltaTime);
 		keyEvents[backwardZButton] = false;
+	}
+	{//Temporary code for auto rotation
+		shape->rotateY(-1 * Application::shapeRotationSpeed * 4);
+		shape->rotateX(-1 * Application::shapeRotationSpeed * 4);
+		shape->rotateZ(-1 * Application::shapeRotationSpeed * 4);
 	}
 	shape->update(deltaTime);
 }

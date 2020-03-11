@@ -3,10 +3,12 @@
 #include <assert.h>
 #include "./../Constants.h"
 
-OpenGL::OpenGL(unsigned int appScreenWidth,unsigned int appScreenHeight)
+OpenGL::OpenGL(unsigned int appScreenWidth,unsigned int appScreenHeight,unsigned int physicalScreenWidth,unsigned int physicalScreenHeight)
 :
 appScreenWidth(appScreenWidth),
-appScreenHeight(appScreenHeight)
+appScreenHeight(appScreenHeight),
+physicalScreenWidth(physicalScreenWidth),
+physicalScreenHeight(physicalScreenHeight)
 {
 
 #ifdef __GLES__
@@ -20,7 +22,7 @@ appScreenHeight(appScreenHeight)
     "varying vec4 vColor;\n"
     "void main(){\n"
       "vColor=aVertexColor;\n"
-      "gl_PointSize = 1000.0;\n"
+      "gl_PointSize = 20.0;\n"
       "gl_Position = aVertexPosition;\n"
     "}\n";
 
@@ -76,9 +78,15 @@ appScreenHeight(appScreenHeight)
 
 #endif
   glClearColor(0.0f, 0.0f, 0.0f, 1.0f); // Set background color to black and opaque
-  glViewport(0,0,appScreenWidth,appScreenHeight);
 #if defined(__OPENGL__)
-  glOrtho(-0.5f, appScreenWidth-0.5f, -0.5f, appScreenHeight-0.5f, -1.0, 1.0);
+    glViewport(0,0,appScreenWidth,appScreenHeight);
+    glOrtho(-0.5f, appScreenWidth-0.5f, -0.5f, appScreenHeight-0.5f, -1.0, 1.0);
+#else
+    float doubleScreenWidth = physicalScreenWidth * 2;
+    float doubleScreenHeight = physicalScreenHeight * 2;
+    float startPointX = -1 * int(float(doubleScreenWidth)/2.0f);
+    float startPointY = -1 * int(float(doubleScreenHeight)/2.0f);
+    glViewport(int(startPointX),int(startPointY),int(doubleScreenWidth),int(doubleScreenHeight));
 #endif
 
 }
@@ -87,6 +95,31 @@ OpenGL::~OpenGL(){
 }
 
 #ifdef __GLES__
+
+//Not using right now
+void OpenGL::glesOrtho(float left, float right, float top, float bottom, float near, float far){
+
+    float tx = ((right+left)/(right-left))*-1;
+    float ty = ((top+bottom)/(top-bottom))*-1;
+    float tz = ((far+near)/(far-near))*-1;
+
+    projMat[0] = GLfloat(2.0 / (right - left));
+    projMat[1] = 0.0;
+    projMat[2] = 0.0;
+    projMat[3] = 0.0;
+    projMat[4] = 0.0;
+    projMat[5] = GLfloat(2.0 / (top - bottom));
+    projMat[6] = 0.0;
+    projMat[7] = 0.0;
+    projMat[8] = 0.0;
+    projMat[9] = 0.0;
+    projMat[10] = (1.0f / (near - far));
+    projMat[11] = 0.0;
+    projMat[12] = ((left + right) / (left - right));
+    projMat[13] = ((top + bottom) / (bottom - top));
+    projMat[14] = (near / (near - far));
+    projMat[15] = 1;
+}
 
 GLuint OpenGL::loadShader(GLenum shaderType, const char* shaderSource){
   GLuint shader = glCreateShader(shaderType);
@@ -193,20 +226,20 @@ void OpenGL::drawPixel(int x,int y,float red,float green,float blue){
 //        glVertexAttribPointer(0,4,GL_FLOAT,GL_FALSE,0,position);
 //    }
   {
-      position[0] = x - appScreenWidth;
-      position[1] = y - appScreenHeight;
-      glEnableVertexAttribArray((GLuint)pointParamLocation);
-      assert(glGetError()==GL_NO_ERROR);
+      position[0] = ((x - appScreenWidth/4) * (2.0f / (appScreenWidth)));
+      position[1] = ((y - appScreenHeight/4) * (2.0f / (appScreenHeight)));
       glVertexAttribPointer((GLuint)pointParamLocation,4,GL_FLOAT,GL_FALSE,0,position);
+      assert(glGetError()==GL_NO_ERROR);
+      glEnableVertexAttribArray((GLuint)pointParamLocation);
       assert(glGetError()==GL_NO_ERROR);
   }
   {
       color[0] = red;
       color[1] = green;
       color[2] = blue;
-      glEnableVertexAttribArray((GLuint)colorParamLocation);
-      assert(glGetError()==GL_NO_ERROR);
       glVertexAttribPointer((GLuint)colorParamLocation,4,GL_FLOAT,GL_FALSE,0,color);
+      assert(glGetError()==GL_NO_ERROR);
+      glEnableVertexAttribArray((GLuint)colorParamLocation);
       assert(glGetError()==GL_NO_ERROR);
   }
   glDrawArrays(GL_POINTS,0,1);
@@ -236,7 +269,7 @@ void OpenGL::resetProgram(){
 void OpenGL::drawText(int x,int y,std::string text,float red,float green,float blue){
 #if defined(__OPENGL__)
   glColor3f(red,green,blue);
-  glRasterPos2i(x,y);
+  glRasterPos2i(x ,y);
   for (int i = 0; i < text.length(); i++)
   {
     glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24,text[i]);
