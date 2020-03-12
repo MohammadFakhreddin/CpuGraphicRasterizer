@@ -40,14 +40,15 @@ public:
       auto imageDataFieldId = environment->GetFieldID(imageInformationClass,"image", "Ljava/lang/Object;");
       
       auto success = environment->GetBooleanField(imageInformation,successFieldId);
-      assert(success==true);
+      assert(success);
 
-      *width = environment->GetIntField(imageInformation,widthFieldId);
-      *height = environment->GetIntField(imageInformation,heightFieldId);
-      auto hasAlphaChannel = environment->GetBooleanField(imageInformation,hasAlphaChannelFieldId);
-      *numberOfChannels = hasAlphaChannel ? 4 : 3;
+      *width = (int)environment->GetIntField(imageInformation,widthFieldId);
+      *height = (int)environment->GetIntField(imageInformation,heightFieldId);
+      auto hasAlphaChannel = (bool)environment->GetBooleanField(imageInformation,hasAlphaChannelFieldId);
+      *numberOfChannels = 4;//hasAlphaChannel ? 4 : 3;
       auto rawImageObject = environment->GetObjectField(imageInformation,imageDataFieldId);
       unsigned char* data = (unsigned char *)environment->GetDirectBufferAddress(rawImageObject);
+      //assert((sizeof(data)/sizeof(unsigned char))==((*width) * (*height) * (*numberOfChannels)));
       
       return data;
 

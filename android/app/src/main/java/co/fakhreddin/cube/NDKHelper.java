@@ -47,7 +47,8 @@ public class NDKHelper {
         object.alphaChannel = bitmap.hasAlpha();
         object.originalWidth = bitmap.getWidth();
         object.originalHeight = bitmap.getHeight();
-        int iBytes = bitmap.getWidth() * bitmap.getHeight() * 4;
+        int numberOfChannels = 4;//bitmap.hasAlpha() ? 4 : 3;
+        int iBytes = bitmap.getWidth() * bitmap.getHeight() * numberOfChannels;
         ByteBuffer buffer = ByteBuffer.allocateDirect(iBytes);
         bitmap.copyPixelsToBuffer(buffer);
         object.image = buffer;
