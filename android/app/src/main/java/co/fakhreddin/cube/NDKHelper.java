@@ -9,7 +9,7 @@ import java.io.FileInputStream;
 import java.nio.ByteBuffer;
 
 public class NDKHelper {
-    private static final String tagName = "NDKHelper";
+    private static final String tagName = "3dCube-NDKHelper";
     public static class TextureInformation{
         boolean success;
         boolean alphaChannel;
@@ -47,7 +47,8 @@ public class NDKHelper {
         object.alphaChannel = bitmap.hasAlpha();
         object.originalWidth = bitmap.getWidth();
         object.originalHeight = bitmap.getHeight();
-        int numberOfChannels = 4;//bitmap.hasAlpha() ? 4 : 3;
+        //Currently alpha is not working. My guess is that bitmap always have alpha
+        int numberOfChannels = 4;
         int iBytes = bitmap.getWidth() * bitmap.getHeight() * numberOfChannels;
         ByteBuffer buffer = ByteBuffer.allocateDirect(iBytes);
         bitmap.copyPixelsToBuffer(buffer);
@@ -55,5 +56,8 @@ public class NDKHelper {
         object.success = true;
 
         return object;
+    }
+    public static void log(String log){
+        Log.d(NDKHelper.tagName,log);
     }
 }

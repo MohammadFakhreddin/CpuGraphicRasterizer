@@ -4,7 +4,7 @@
 #include "../Constants.h"
 #include <string>
 
-#if defined(__APPLE__) 
+#if defined(__PLATFORM_MAC__) 
   #define GL_SILENCE_DEPRECATION
   /* Defined before OpenGL and GLUT includes to avoid deprecation messages */
   #define __OPENGL__

@@ -19,7 +19,7 @@ address(address)
   assert(virtualImageHeight>0);
   data = STBImageHelper::loadTexture(address.c_str(), &width, &height, &numberOfChannels);
   assert(data);
-  dataLength = width * height * numberOfChannels;
+  dataLength = (unsigned int)(width * height * numberOfChannels);
   scaleX = float(width) / virtualImageWidth;
   scaleY = float(height) / virtualImageHeight;
 };

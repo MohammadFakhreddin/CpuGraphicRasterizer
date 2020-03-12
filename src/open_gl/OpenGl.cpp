@@ -1,7 +1,8 @@
 #include "./OpenGl.h"
-#include <iostream>
 #include <assert.h>
 #include "./../Constants.h"
+#include "./../utils/log/Logger.h"
+#include <string>
 
 OpenGL::OpenGL(unsigned int appScreenWidth,unsigned int appScreenHeight,unsigned int physicalScreenWidth,unsigned int physicalScreenHeight)
 :
@@ -14,7 +15,7 @@ physicalScreenHeight(physicalScreenHeight)
 #ifdef __GLES__
   int nrAttributes;
   glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &nrAttributes);
-  std::cout << "Maximum nr of vertex attributes supported: " << nrAttributes << std::endl;
+  Logger::log("Maximum nr of vertex attributes supported:"+std::to_string(nrAttributes));
 
   const char* vShaderStr = 
     "attribute vec4 aVertexPosition;\n"
@@ -57,14 +58,14 @@ physicalScreenHeight(physicalScreenHeight)
     {
       char* infoLog = new char[infoLen];
       glGetProgramInfoLog(programObject, infoLen, nullptr, infoLog);
-      std::cout<<"Error linking program:\n"<<infoLog<<std::endl;
+      Logger::log("Error linking program:\n"+std::string(infoLog));
       free(infoLog);
     }
     glDeleteProgram(programObject);
   }
   assert(linked);
 
-  // delete the shaders as they're linked into our program now and no longer necessery
+  // delete the shaders as they're linked into our program now and no longer necessary
   glDeleteShader(vertexShader);
   glDeleteShader(fragmentShader); 
 
@@ -139,7 +140,7 @@ GLuint OpenGL::loadShader(GLenum shaderType, const char* shaderSource){
         if (buf)
         {
           glGetShaderInfoLog(shader, infoLen, NULL, buf);
-          std::cout<<"Could not Compile Shader "<<shaderType<<"  Buffer:"<<buf<<std::endl;
+          Logger::log("Could not Compile Shader:"+std::to_string(shaderType)+"\nBuffer:"+std::string(buf));
           free(buf);
         }
         glDeleteShader(shader);
@@ -184,7 +185,7 @@ GLuint OpenGL::createProgram(const char* vertexSource, const char * fragmentSour
         if (buf)
         {
           glGetProgramInfoLog(program, bufLength, NULL, buf);
-          std::cout<<"Could not link program:\n"<<buf<<std::endl;
+          Logger::log("Could not link program:\n"+std::string(buf));
           free(buf);
         }
       }
