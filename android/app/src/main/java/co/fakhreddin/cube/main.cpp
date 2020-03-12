@@ -3,10 +3,8 @@
 
 #include <memory>
 #include <jni.h>
-#include "../../../../../../../../src/open_gl/OpenGl.h"
+
 #include "../../../../../../../../src/application/Application.h"
-#include "../../../../../../../../src/Constants.h"
-#include "./AndroidEnvironment.h"
 //
 // Created by mohammad.fakhreddin on 3/7/20.
 //

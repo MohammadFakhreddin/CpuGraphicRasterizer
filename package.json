@@ -5,6 +5,7 @@
     "scripts": {
         "cmake":"cmake . -GNinja -DCMAKE_TOOLCHAIN_FILE=C:/Projects/vcpkg/scripts/buildsystems/vcpkg.cmake",
         "make":"ninja",
-        "start":"npm run cmake && npm run make && 3d-cube.exe"
+        "start":"npm run cmake && npm run make && 3d-cube.exe",
+        "release":"cmake . -GNinja -DCMAKE_TOOLCHAIN_FILE=C:/Projects/vcpkg/scripts/buildsystems/vcpkg.cmake -DCMAKE_BUILD_TYPE=Release && npm run make"
     }
 }
