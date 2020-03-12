@@ -48,10 +48,8 @@ public:
       *numberOfChannels = 4;//hasAlphaChannel ? 4 : 3;
       auto rawImageObject = environment->GetObjectField(imageInformation,imageDataFieldId);
       unsigned char* data = (unsigned char *)environment->GetDirectBufferAddress(rawImageObject);
-      //assert((sizeof(data)/sizeof(unsigned char))==((*width) * (*height) * (*numberOfChannels)));
       
       return data;
-
     #endif
     return NULL;
   };

@@ -6,6 +6,7 @@
 ### Drawing 3d-cube with texture
 ![Alt Text](dice.gif)
 ### Android port
-<img src="android-port.png" height="500">
+<img src="android-texture1.png" height="500">
+<img src="android-texture2.png" height="500">
 
 #3d #OpenGL #c++ #mac #windows #ubuntu #android
