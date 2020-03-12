@@ -1,6 +1,14 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        release {
+            storeFile file('C:\\Projects\\3d-cube\\android\\cube.jks')
+            storePassword 'darkknight1375'
+            keyAlias = 'key0'
+            keyPassword 'darkknight1375'
+        }
+    }
     compileSdkVersion 28
     defaultConfig {
         applicationId "co.fakhreddin.a3d_cube"
@@ -19,6 +27,7 @@ android {
         ndk {
             abiFilters "armeabi-v7a","arm64-v8a","x86","x86_64"
         }
+        signingConfig signingConfigs.release
     }
 
     compileOptions {

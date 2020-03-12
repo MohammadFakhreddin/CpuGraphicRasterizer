@@ -6,7 +6,7 @@
 #include "../utils/log/Logger.h"
 #include <string>
 #ifdef __ANDROID__
-#include "./../../android/app/src/main/java/co/fakhreddin/cube/AndroidEnvironment.h"
+#include "./../../android/app/src/main/cpp/AndroidEnvironment.h"
 #endif
 #include <assert.h>
 #include <iostream>

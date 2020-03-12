@@ -72,8 +72,8 @@ if(WIN32)
 endif()
 
 if(ANDROID)
-   FILE(GLOB_RECURSE ANDROID_USER_HEADER "android/app/src/main/java/co/fakhreddin/cube/*.h")
-   FILE(GLOB_RECURSE ANDROID_USER_CPP "android/app/src/main/java/co/fakhreddin/cube/*.cpp")
+   FILE(GLOB_RECURSE ANDROID_USER_HEADER "android/app/src/main/cpp/*.h")
+   FILE(GLOB_RECURSE ANDROID_USER_CPP "android/app/src/main/cpp/*.cpp")
    list(
       APPEND APP_SOURCE
       ${ANDROID_USER_CPP}

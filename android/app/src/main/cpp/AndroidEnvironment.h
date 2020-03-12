@@ -14,7 +14,9 @@ private:
   jmethodID loadImageMethodId;
   jmethodID logMethodId;
 public:
-  static AndroidEnvironment* getInstance();
+  static AndroidEnvironment* getInstance(){
+    return instance;
+  };
   std::unique_ptr<JNIEnv>& getEnv();
   unsigned char * loadImage(
     std::string textureAddress,
@@ -23,8 +25,11 @@ public:
     int* numberOfChannels
   );
   void log(
-    std::string
-  );
+    std::string text
+  ){
+    auto jText = env->NewStringUTF(text.c_str());
+    env->CallStaticVoidMethod(ndkClass,logMethodId,jText);
+  };
   AndroidEnvironment(JNIEnv * env);
 };
 

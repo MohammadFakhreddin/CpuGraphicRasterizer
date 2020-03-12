@@ -1,10 +1,11 @@
 #define STB_IMAGE_IMPLEMENTATION
-#include "../../../../../../../../src/fa_texture/stb_image_headers.h"
+#include "../../../../../src/fa_texture/stb_image_headers.h"
 
 #include <memory>
 #include <jni.h>
 
-#include "../../../../../../../../src/application/Application.h"
+#include "./AndroidEnvironment.h"
+#include "../../../../../src/application/Application.h"
 //
 // Created by mohammad.fakhreddin on 3/7/20.
 //

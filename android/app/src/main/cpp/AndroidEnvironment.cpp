@@ -23,10 +23,6 @@ std::unique_ptr<JNIEnv>& AndroidEnvironment::getEnv(){
   return env;
 }
 
-AndroidEnvironment* AndroidEnvironment::getInstance(){
-  return instance;
-}
-
 unsigned char * AndroidEnvironment::loadImage(
   std::string textureAddress,
   int* width,
@@ -56,11 +52,4 @@ unsigned char * AndroidEnvironment::loadImage(
   unsigned char* data = (unsigned char *)env->GetDirectBufferAddress(rawImageObject);
   
   return data;
-}
-
-void AndroidEnvironment::log(std::string text){
-
-  auto jText = env->NewStringUTF(text.c_str());
-  env->CallStaticVoidMethod(ndkClass,logMethodId,jText);
-  
 }
