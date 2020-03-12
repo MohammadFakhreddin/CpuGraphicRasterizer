@@ -74,3 +74,6 @@ out/*
 .ninja_log
 x64/*
 x64
+
+rules.ninja
+build.ninja
