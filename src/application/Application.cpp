@@ -4,6 +4,7 @@
 #include "../open_gl/OpenGl.h"
 #include <vector>
 #include "../3d_shape/Shape3d.h"
+#include "../utils/log/Logger.h"
 
 Application::Application(
 	Application::Platform platform,
@@ -337,7 +338,7 @@ void Application::mainLoop(float deltaTime){
 	}
 	while((openGLError = glGetError()) != GL_NO_ERROR)
 	{
-		std::cout<<"OpenGLError:"<<std::endl<<openGLError<<std::endl;
+		Logger::log("OpenGLError:\n"+std::to_string(openGLError));
 	}
 }
 
