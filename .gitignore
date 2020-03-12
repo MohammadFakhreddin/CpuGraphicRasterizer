@@ -77,3 +77,6 @@ x64
 
 rules.ninja
 build.ninja
+
+output/*
+output
