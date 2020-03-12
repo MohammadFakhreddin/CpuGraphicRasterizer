@@ -8,7 +8,7 @@
 
 #import "ViewController.h"
 #import <GLKit/GLKit.h>
-#include "../../../src/application/Application.cpp"
+#include <memory>
 
 @interface ViewController ()
 
@@ -21,12 +21,11 @@
 {
 
     self.context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
-
     if (!self.context) {
-
         NSLog(@"Failed to create ES context");
-
     }
+    
+    CGSize viewSize = self.view.frame.size;
 
     GLKView *view = (GLKView *)self.view;
 
@@ -47,6 +46,8 @@
         [EAGLContext setCurrentContext:nil];
 
     }
+    
+    delete self.application;
 
 }
 
@@ -54,20 +55,28 @@
 
 {
 
-[EAGLContext setCurrentContext:self.context];
-
-    on_surface_created();
-
-    on_surface_changed();
+    [EAGLContext setCurrentContext:self.context];
+    
+    unsigned int realScreenWidth = viewSize.width;
+    unsigned int realScreenHeight = viewSize.height;
+    unsigned int appScreenWidth = int(float(realScreenWidth)/5.0f);
+    unsigned int appScreenHeight = int(float(appScreenWidth) * (float(realScreenHeight) / float(realScreenWidth)));
+    
+    self.application = new Application(
+                                        Application::Platform::Iphone,
+                                        appScreenWidth,
+                                        appScreenHeight,
+                                        realScreenWidth,
+                                        realScreenHeight
+                                    );
 
 }
 
 - (void)glkView:(GLKView *)view drawInRect:(CGRect)rect
 
 {
-
-    on_draw_frame();
-
+    //TODO Calculate delta time
+    self.application->mainLoop(1);
 }
 
 

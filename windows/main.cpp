@@ -94,11 +94,11 @@ int main(int argc, char** argv) {
     glutCreateWindow(Constants::Window::appName);
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f); // Set background color to black and opaque
     application = std::unique_ptr<Application>(new Application(
-        Application::Platform::Windows,
-		appScreenWidth,
-		appScreenHeight,
-        realScreenWidth,
-        realScreenHeight
+			Application::Platform::Windows,
+			appScreenWidth,
+			appScreenHeight,
+			realScreenWidth,
+			realScreenHeight
     ));
     glutKeyboardFunc(handleKeyboardEvent);
     glutTimerFunc(0, timer, 0);

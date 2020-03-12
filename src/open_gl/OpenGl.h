@@ -9,6 +9,9 @@
   /* Defined before OpenGL and GLUT includes to avoid deprecation messages */
   #define __OPENGL__
   #include <GLUT/glut.h>
+#elif defined(__IOS__)
+  #define __GLES__
+  #include <GLKit/GLKit.h>
 #elif defined(__ANDROID__)
   #define __GLES__
   #include <GLES2/gl2.h>

@@ -24,24 +24,12 @@ Application::Application(
 	instance = this;
 	{//Shape
 		auto width = appScreenWidth/5;
-		shape = Shape3d::generateTextured3DCube(
-			dice.diceCubeTexture,
-			dice.diceCubeEdgeList,
-			width,
-			width,
-			width,
-			appScreenWidth/2,
-			appScreenHeight/2,
-			0,
-			0,
-			0,
-			0,
-			1
-		);
-		// shape = Shape3d::generateColored3DCube(
-        //     width,
-        //     width,
-        //     width,
+		// shape = Shape3d::generateTextured3DCube(
+		// 	dice.diceCubeTexture,
+		// 	dice.diceCubeEdgeList,
+		// 	width,
+		// 	width,
+		// 	width,
 		// 	appScreenWidth/2,
 		// 	appScreenHeight/2,
 		// 	0,
@@ -50,6 +38,18 @@ Application::Application(
 		// 	0,
 		// 	1
 		// );
+		shape = Shape3d::generateColored3DCube(
+            width,
+            width,
+            width,
+			appScreenWidth/2,
+			appScreenHeight/2,
+			0,
+			0,
+			0,
+			0,
+			1
+		);
 	}
 	{//Creating pixelMap
 		for(int i=0;i<appScreenWidth;i++){

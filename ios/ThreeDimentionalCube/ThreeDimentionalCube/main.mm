@@ -8,7 +8,10 @@
 
 #import <UIKit/UIKit.h>
 #import "AppDelegate.h"
+
+#ifndef macroGL_SILENCE_DEPRECATION
 #define GL_SILENCE_DEPRECATION
+#endif
 
 int main(int argc, char * argv[]) {
     NSString * appDelegateClassName;
