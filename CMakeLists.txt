@@ -45,6 +45,19 @@ if(MACOSX)
    )
 endif()
 
+if(IPHONE)
+   FILE(GLOB_RECURSE IPHONE_USER_HEADER "ios/*.h")
+   FILE(GLOB_RECURSE IPHONE_USER_CPP "ios/*.cpp")
+   list(
+      APPEND APP_SOURCE
+      ${IPHONE_USER_CPP}
+   )
+   list(
+      APPEND APP_HEADER
+      ${IPHONE_USER_HEADER}
+   )
+endif()
+
 if(WIN32)
    FILE(GLOB_RECURSE WINDOWS_USER_HEADER "windows/*.h")
    FILE(GLOB_RECURSE WINDOWS_USER_CPP "windows/*.cpp")
