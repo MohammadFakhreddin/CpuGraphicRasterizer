@@ -11,5 +11,5 @@ public class Fa3dCube {
      * @param physicalDeviceHeight the current view height
      */
     public static native void init(int physicalDeviceWidth, int physicalDeviceHeight);
-    public static native void step();
+    public static native void step(long deltaTime);
 }

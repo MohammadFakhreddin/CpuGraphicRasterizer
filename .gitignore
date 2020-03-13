@@ -80,3 +80,5 @@ build.ninja
 
 output/*
 output
+
+CmakeLists.txt.user

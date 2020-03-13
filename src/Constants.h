@@ -34,7 +34,9 @@ namespace Constants {
 		// iOS Simulator
 		// iOS device
 	#define __MOBILE__
-	#define __IOS__
+    #ifndef __IOS__
+        #define __IOS__
+    #endif
 #elif TARGET_OS_MAC
 		// Other kinds of Mac OS
 	#define __DESKTOP__

@@ -25,8 +25,6 @@
         NSLog(@"Failed to create ES context");
     }
     
-    CGSize viewSize = self.view.frame.size;
-
     GLKView *view = (GLKView *)self.view;
 
     view.context = self.context;
@@ -57,9 +55,10 @@
 
     [EAGLContext setCurrentContext:self.context];
     
+    CGSize viewSize = self.view.frame.size;
     unsigned int realScreenWidth = viewSize.width;
     unsigned int realScreenHeight = viewSize.height;
-    unsigned int appScreenWidth = int(float(realScreenWidth)/5.0f);
+    unsigned int appScreenWidth = int(float(realScreenWidth)/1.0f);
     unsigned int appScreenHeight = int(float(appScreenWidth) * (float(realScreenHeight) / float(realScreenWidth)));
     
     self.application = new Application(

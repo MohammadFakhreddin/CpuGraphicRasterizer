@@ -32,19 +32,19 @@ Application::Application(
 		// 	width,
 		// 	appScreenWidth/2,
 		// 	appScreenHeight/2,
-		// 	0,
+		// 	-maximumFov/2,
 		// 	0,
 		// 	0,
 		// 	0,
 		// 	1
 		// );
 		shape = Shape3d::generateColored3DCube(
-            width,
-            width,
-            width,
+			width,
+			width,
+			width,
 			appScreenWidth/2,
 			appScreenHeight/2,
-			0,
+			-maximumFov/2,
 			0,
 			0,
 			0,
@@ -223,7 +223,7 @@ void Application::putPixelInMap(int x,int y,float zValue,float red,float green,f
 	}
 } 
 
-void Application::render(float deltaTime) {
+void Application::render(int deltaTime) {
 	openGLInstance.clear();
 	{//Drawing screen
 		openGLInstance.beginDrawingPoints();
@@ -254,7 +254,7 @@ void Application::render(float deltaTime) {
 	openGLInstance.flush();
 }
 
-void Application::update(float deltaTime) {
+void Application::update(int deltaTime) {
 	if (keyEvents[leftButton]==true) {
 		shape->transformX(-1 * Application::shapeTransformSpeed * deltaTime);
 		keyEvents[leftButton] = false;
@@ -313,9 +313,9 @@ void Application::update(float deltaTime) {
 		keyEvents[backwardZButton] = false;
 	}
 	{//Temporary code for auto rotation
-		shape->rotateY(-1 * Application::shapeRotationSpeed * 4);
-		shape->rotateX(-1 * Application::shapeRotationSpeed * 4);
-		shape->rotateZ(-1 * Application::shapeRotationSpeed * 4);
+		shape->rotateY(-1.0f * Application::shapeRotationSpeed * 4);
+		shape->rotateX(-1.0f * Application::shapeRotationSpeed * 4);
+		shape->rotateZ(-1.0f * Application::shapeRotationSpeed * 4);
 	}
 	shape->update(deltaTime);
 }
@@ -330,11 +330,11 @@ Application* Application::getInstance()
 	return Application::instance;
 }
 
-void Application::mainLoop(float deltaTime){
+void Application::mainLoop(int deltaTime){
 	update(deltaTime);
 	render(deltaTime);
 	if(deltaTime>0){
-		currentFps = 1000.0f/deltaTime;
+		currentFps = 1000.0f/float(deltaTime);
 	}
 	while((openGLError = glGetError()) != GL_NO_ERROR)
 	{

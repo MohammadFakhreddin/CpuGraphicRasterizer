@@ -60,9 +60,9 @@ void handleKeyboardEvent(unsigned char key, int x, int y)
 	}
 }
 
-double currentTime = 0;
-double lastTime = glutGet(GLUT_ELAPSED_TIME);
-double deltaTime = 0;
+int currentTime = 0;
+int lastTime = glutGet(GLUT_ELAPSED_TIME);
+int deltaTime = 0;
 
 void mainLoop() {
 	currentTime = glutGet(GLUT_ELAPSED_TIME);

@@ -20,7 +20,7 @@ extern "C" {
         jint phyiscalScreenWidth, 
         jint phyiscalScreenHeight
     );
-    JNIEXPORT void JNICALL Java_co_fakhreddin_cube_Fa3dCube_step(JNIEnv * env, jobject obj);
+    JNIEXPORT void JNICALL Java_co_fakhreddin_cube_Fa3dCube_step(JNIEnv * env, jobject obj,jlong deltaTime);
 };
 
 JNIEXPORT void JNICALL Java_co_fakhreddin_cube_Fa3dCube_init(
@@ -46,8 +46,8 @@ JNIEXPORT void JNICALL Java_co_fakhreddin_cube_Fa3dCube_init(
     ));
 }
 
-JNIEXPORT void JNICALL Java_co_fakhreddin_cube_Fa3dCube_step(JNIEnv * env, jobject obj)
+JNIEXPORT void JNICALL Java_co_fakhreddin_cube_Fa3dCube_step(JNIEnv * env, jobject obj,jlong deltaTime)
 {
     //TODO calculate delta time
-    application->mainLoop(1);
+    application->mainLoop((int)deltaTime);
 }
