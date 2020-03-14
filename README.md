@@ -9,4 +9,10 @@
 <img src="android-texture1.png" height="500">
 <img src="android-texture2.png" height="500">
 
+### IOS port
+<img src="iphone.gif" height="500">
+
+## How to run project ?
+Coming soon
+
 #3d #OpenGL #c++ #mac #windows #ubuntu #android
