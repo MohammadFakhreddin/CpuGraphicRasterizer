@@ -108,7 +108,7 @@ physicalScreenHeight(physicalScreenHeight)
   projectionY = 2.0f / float(appScreenHeight);
 #endif
 #if defined(__ANDROID__)
-  glViewport(startPointX,startPointY,viewPortWidth,viewPortHeight);
+  glViewport(viewPortStartX,viewPortStartY,viewPortWidth,viewPortHeight);
 #endif
 }
 
