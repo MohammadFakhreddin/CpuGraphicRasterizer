@@ -22,6 +22,7 @@
 @property (strong) IPhoneHelper* iphoneHelper;
 @property IPhoneHelperAbstraction* iphoneHelperAbstraction;
 @property Application* application;
+@property (strong) GLKView *view;
 
 - (void)setupGL;
 

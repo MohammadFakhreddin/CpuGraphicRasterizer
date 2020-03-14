@@ -25,11 +25,11 @@
         NSLog(@"Failed to create ES context");
     }
     
-    GLKView *view = (GLKView *)self.view;
+    self.view = (GLKView *)self.view;
+    
+    self.view.context = self.context;
 
-    view.context = self.context;
-
-    view.drawableDepthFormat = GLKViewDrawableDepthFormat24;
+    self.view.drawableDepthFormat = GLKViewDrawableDepthFormat24;
 
     [self setupGL];
 
@@ -58,10 +58,13 @@
     [EAGLContext setCurrentContext:self.context];
     
     CGSize viewSize = self.view.frame.size;
-    unsigned int realScreenWidth = viewSize.width;
-    unsigned int realScreenHeight = viewSize.height;
-    unsigned int appScreenWidth = int(float(realScreenWidth)/1.0f);
-    unsigned int appScreenHeight = int(float(appScreenWidth) * (float(realScreenHeight) / float(realScreenWidth)));
+    
+    self.view.contentScaleFactor = 1.0f;
+    
+    unsigned int realScreenWidth = (unsigned int)viewSize.width;
+    unsigned int realScreenHeight = (unsigned int)viewSize.height;
+    unsigned int appScreenWidth = (unsigned int)(float(realScreenWidth)/1.5f);
+    unsigned int appScreenHeight = (unsigned int)(appScreenWidth * (float(realScreenHeight)/float(realScreenWidth)));
     
     self.iphoneHelper = [[IPhoneHelper alloc] init];
     

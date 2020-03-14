@@ -23,7 +23,12 @@ physicalScreenHeight(physicalScreenHeight)
     "varying vec4 vColor;\n"
     "void main(){\n"
       "vColor=aVertexColor;\n"
+      #ifdef __ANDROID__
       "gl_PointSize = 14.1;\n"
+      #endif
+      #ifdef __IOS__
+      "gl_PointSize = 3.0;\n"
+      #endif
       "gl_Position = aVertexPosition;\n"
     "}\n";
 
@@ -83,15 +88,28 @@ physicalScreenHeight(physicalScreenHeight)
   glPointSize(1.2f);
   glViewport(0,0,appScreenWidth,appScreenHeight);
   glOrtho(-0.5f, appScreenWidth - 0.5f, -0.5f, appScreenHeight - 0.5f, -1.0, 1.0);
-#else
-  //TODO Start from here work on IOS port
-  float doubleScreenWidth = physicalScreenWidth * 2;
-  float doubleScreenHeight = physicalScreenHeight * 2;
-  float startPointX = -1 * int(float(doubleScreenWidth)/2.0f);
-  float startPointY = -1 * int(float(doubleScreenHeight)/2.0f);
-  glViewport(int(startPointX),int(startPointY),int(doubleScreenWidth),int(doubleScreenHeight));
 #endif
+#if defined(__GLES__)
+  #ifdef __ANDROID__
+  viewPortWidth = physicalScreenWidth * 2;
+  viewPortHeight = physicalScreenHeight * 2;
+  #endif
+  #ifdef __IOS__
+  viewPortWidth = physicalScreenWidth * 2;
+  viewPortHeight = physicalScreenHeight * 2;
+  #endif
 
+  viewPortStartX = int(-1 * (float(viewPortWidth)/2.0f));
+  viewPortStartY = int(-1 * (float(viewPortHeight)/2.0f));
+  
+  xDifValue = float(appScreenWidth)/4.0f;
+  yDifValue = float(appScreenHeight)/4.0f;
+  projectionX = 2.0f / float(appScreenWidth);
+  projectionY = 2.0f / float(appScreenHeight);
+#endif
+#if defined(__ANDROID__)
+  glViewport(startPointX,startPointY,viewPortWidth,viewPortHeight);
+#endif
 }
 
 OpenGL::~OpenGL(){
@@ -101,10 +119,6 @@ OpenGL::~OpenGL(){
 
 //Not using right now
 void OpenGL::glesOrtho(float left, float right, float top, float bottom, float near, float far){
-
-    float tx = ((right+left)/(right-left))*-1;
-    float ty = ((top+bottom)/(top-bottom))*-1;
-    float tz = ((far+near)/(far-near))*-1;
 
     projMat[0] = GLfloat(2.0 / (right - left));
     projMat[1] = 0.0;
@@ -220,17 +234,9 @@ void OpenGL::drawPixel(int x,int y,float red,float green,float blue){
   glColor3f(red,green,blue);
   glVertex2i(x,y);
 #else
-  //TODO Try using  buffers
-//    {
-//        glColorMask(red,green,blue,false);
-//          position[0] = x;
-//          position[1] = y;
-//        glEnableVertexAttribArray(0);
-//        glVertexAttribPointer(0,4,GL_FLOAT,GL_FALSE,0,position);
-//    }
   {
-      position[0] = ((x - appScreenWidth/4) * (2.0f / (appScreenWidth)));
-      position[1] = ((y - appScreenHeight/4) * (2.0f / (appScreenHeight)));
+      position[0] = (x - xDifValue) * projectionX;
+      position[1] = (y - yDifValue) * projectionY;
       glVertexAttribPointer((GLuint)pointParamLocation,4,GL_FLOAT,GL_FALSE,0,position);
       assert(glGetError()==GL_NO_ERROR);
       glEnableVertexAttribArray((GLuint)pointParamLocation);
@@ -256,6 +262,9 @@ void OpenGL::drawPixel(int x,int y,float red,float green,float blue){
 void OpenGL::beginDrawingPoints(){
 #if defined(__GLES__)
   glUseProgram(programObject);
+#if defined(__IOS__)
+  glViewport(viewPortStartX,viewPortStartY,viewPortWidth,viewPortHeight);
+#endif
 #else
   glBegin(GL_POINTS);
 #endif

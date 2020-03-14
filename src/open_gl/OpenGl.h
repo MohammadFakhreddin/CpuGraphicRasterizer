@@ -48,6 +48,16 @@ private:
   unsigned int appScreenHeight = 0;
   unsigned int physicalScreenWidth = 0;
   unsigned int physicalScreenHeight = 0;
+  #if defined(__GLES__)
+  int viewPortWidth = 0;
+  int viewPortHeight = 0;
+  int viewPortStartX = 0;
+  int viewPortStartY = 0;
+  float xDifValue = 0;
+  float yDifValue = 0;
+  float projectionX = 0;
+  float projectionY = 0;
+  #endif
 };
 
 #endif
