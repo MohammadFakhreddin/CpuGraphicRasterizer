@@ -27,7 +27,7 @@ physicalScreenHeight(physicalScreenHeight)
       "gl_PointSize = 14.1;\n"
       #endif
       #ifdef __IOS__
-      "gl_PointSize = 3.0;\n"
+      "gl_PointSize = 5.0;\n"
       #endif
       "gl_Position = aVertexPosition;\n"
     "}\n";
