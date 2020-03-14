@@ -8,7 +8,7 @@
 
 class Dice{
 public:
-  const std::string diceTextureAddress = Path::generateAssetPath("dice_texture.png");
+  const std::string diceTextureAddress = Path::generateAssetPath("dice_texture",".png");
 	const float diceCubeWidth = 300;
 	const float diceCubeHeight = 200;
 	const float diceCubeSquare = 100;

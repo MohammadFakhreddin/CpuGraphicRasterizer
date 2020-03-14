@@ -6,11 +6,13 @@
 
 class Path {
 public:
-  static std::string generateAssetPath(std::string address){
+  static std::string generateAssetPath(std::string address,std::string extension){
     #if defined(__ANDROID__)
-      return address;
+      return address + extension;
     #elif defined(__DESKTOP__)
-      return "./assets/" + address;
+      return "assets/" + address + extension;
+    #elif defined(__IOS__)
+      return address;
     #endif
     return "";
   };

@@ -8,7 +8,7 @@
 
 class Sky{
 public:
-  const std::string skyCubeTextureAddress = Path::generateAssetPath("sky.png");
+  const std::string skyCubeTextureAddress = Path::generateAssetPath("sky",".png");
 	const float skyCubeWidth = 400;
 	const float skyCubeHeight = 300;
 	const float skyCubeSquare = 100;

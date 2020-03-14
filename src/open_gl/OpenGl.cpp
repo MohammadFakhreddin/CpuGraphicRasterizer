@@ -80,15 +80,16 @@ physicalScreenHeight(physicalScreenHeight)
 #endif
   glClearColor(0.0f, 0.0f, 0.0f, 1.0f); // Set background color to black and opaque
 #if defined(__OPENGL__)
-    glPointSize(1.2f);
-    glViewport(0,0,appScreenWidth,appScreenHeight);
-    glOrtho(-0.5f, appScreenWidth-0.5f, -0.5f, appScreenHeight-0.5f, -1.0, 1.0);
+  glPointSize(1.2f);
+  glViewport(0,0,appScreenWidth,appScreenHeight);
+  glOrtho(-0.5f, appScreenWidth - 0.5f, -0.5f, appScreenHeight - 0.5f, -1.0, 1.0);
 #else
-    float doubleScreenWidth = physicalScreenWidth * 2;
-    float doubleScreenHeight = physicalScreenHeight * 2;
-    float startPointX = -1 * int(float(doubleScreenWidth)/2.0f);
-    float startPointY = -1 * int(float(doubleScreenHeight)/2.0f);
-    glViewport(int(startPointX),int(startPointY),int(doubleScreenWidth),int(doubleScreenHeight));
+  //TODO Start from here work on IOS port
+  float doubleScreenWidth = physicalScreenWidth * 2;
+  float doubleScreenHeight = physicalScreenHeight * 2;
+  float startPointX = -1 * int(float(doubleScreenWidth)/2.0f);
+  float startPointY = -1 * int(float(doubleScreenHeight)/2.0f);
+  glViewport(int(startPointX),int(startPointY),int(doubleScreenWidth),int(doubleScreenHeight));
 #endif
 
 }

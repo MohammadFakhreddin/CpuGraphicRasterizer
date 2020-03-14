@@ -24,21 +24,10 @@ Application::Application(
 	instance = this;
 	{//Shape
 		auto width = appScreenWidth/5;
-		// shape = Shape3d::generateTextured3DCube(
-		// 	dice.diceCubeTexture,
-		// 	dice.diceCubeEdgeList,
-		// 	width,
-		// 	width,
-		// 	width,
-		// 	appScreenWidth/2,
-		// 	appScreenHeight/2,
-		// 	-maximumFov/2,
-		// 	0,
-		// 	0,
-		// 	0,
-		// 	1
-		// );
-		shape = Shape3d::generateColored3DCube(
+		Logger::log("Creating shape object");
+		shape = Shape3d::generateTextured3DCube(
+			dice.diceCubeTexture,
+			dice.diceCubeEdgeList,
 			width,
 			width,
 			width,
@@ -50,8 +39,22 @@ Application::Application(
 			0,
 			1
 		);
+		// shape = Shape3d::generateColored3DCube(
+		// 	width,
+		// 	width,
+		// 	width,
+		// 	appScreenWidth/2,
+		// 	appScreenHeight/2,
+		// 	-maximumFov/2,
+		// 	0,
+		// 	0,
+		// 	0,
+		// 	1
+		// );
+		Logger::log("Creating shape was successful");
 	}
 	{//Creating pixelMap
+		Logger::log("Initiating pixel map:");
 		for(int i=0;i<appScreenWidth;i++){
 			std::vector<DrawPixel> innerMap;
 			pixelMap.emplace_back(innerMap);
@@ -64,7 +67,9 @@ Application::Application(
 				pixelMap.at(i).emplace_back(drawPixel);
 			}
 		}
+		Logger::log("Pixel map is ready");
 	}
+	Logger::log("Ready for rendering page:");
 }
 
 void Application::drawLineBetweenPoints(
@@ -313,9 +318,9 @@ void Application::update(int deltaTime) {
 		keyEvents[backwardZButton] = false;
 	}
 	{//Temporary code for auto rotation
-		shape->rotateY(-1.0f * Application::shapeRotationSpeed * 4);
-		shape->rotateX(-1.0f * Application::shapeRotationSpeed * 4);
-		shape->rotateZ(-1.0f * Application::shapeRotationSpeed * 4);
+		shape->rotateY(-1.0f * Application::shapeRotationSpeed * 1);
+		shape->rotateX(-1.0f * Application::shapeRotationSpeed * 1);
+		shape->rotateZ(-1.0f * Application::shapeRotationSpeed * 1);
 	}
 	shape->update(deltaTime);
 }

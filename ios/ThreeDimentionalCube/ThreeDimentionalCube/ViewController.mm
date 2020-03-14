@@ -44,9 +44,11 @@
         [EAGLContext setCurrentContext:nil];
 
     }
-    
+
     delete self.application;
 
+    delete self.iphoneHelperAbstraction;
+        
 }
 
 - (void)setupGL
@@ -61,6 +63,10 @@
     unsigned int appScreenWidth = int(float(realScreenWidth)/1.0f);
     unsigned int appScreenHeight = int(float(appScreenWidth) * (float(realScreenHeight) / float(realScreenWidth)));
     
+    self.iphoneHelper = [[IPhoneHelper alloc] init];
+    
+    self.iphoneHelperAbstraction = new IPhoneHelperAbstraction((__bridge void *)(self.iphoneHelper));
+
     self.application = new Application(
                                         Application::Platform::Iphone,
                                         appScreenWidth,
@@ -68,7 +74,6 @@
                                         realScreenWidth,
                                         realScreenHeight
                                     );
-
 }
 
 - (void)glkView:(GLKView *)view drawInRect:(CGRect)rect

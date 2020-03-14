@@ -6,7 +6,7 @@
 #include <string>
 
 class AndroidEnvironment{
-public:
+private:
   static AndroidEnvironment* instance;
 private:
   std::unique_ptr<JNIEnv> env;

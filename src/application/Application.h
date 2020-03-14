@@ -120,11 +120,11 @@ private:
 
 	DrawPixel* currentPixel;
 
-	// Wood wood;
+	Wood wood;
 
-	// Sky sky;
+	Sky sky;
 
-	// Dice dice;
+	Dice dice;
 
 	std::vector<std::vector<DrawPixel>> pixelMap;
 

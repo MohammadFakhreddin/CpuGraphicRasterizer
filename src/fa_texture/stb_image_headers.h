@@ -8,6 +8,9 @@
 #ifdef __ANDROID__
 #include "./../../android/app/src/main/cpp/AndroidEnvironment.h"
 #endif
+#ifdef __IOS__
+#include "./../../ios/ThreeDimentionalCube/ThreeDimentionalCube/IPhoneHelperAbstraction.h"
+#endif
 #include <assert.h>
 #include <iostream>
 
@@ -29,6 +32,13 @@ public:
                   height,
                   numberOfChannels
           );
+      #elif defined(__IOS__)
+        return IPhoneHelperAbstraction::getInstance()->callObjectiveCToLoadImage(
+          textureAddress,
+          width,
+          height,
+          numberOfChannels
+        );
       #endif
       return NULL;
   }

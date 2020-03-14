@@ -9,7 +9,7 @@
 class Wood
 {
 public:
-	const std::string woodCubeTextureAddress = Path::generateAssetPath("wood.png");
+	const std::string woodCubeTextureAddress = Path::generateAssetPath("wood",".png");
 	const float woodCubeVirtualWidthAndHeight = 100;
 public:
 	std::unique_ptr<FaTexture> woodCubeTexture = std::unique_ptr<FaTexture>(

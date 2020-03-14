@@ -7,6 +7,9 @@
 #ifdef __ANDROID__
 #include "../../../android/app/src/main/cpp/AndroidEnvironment.h"
 #endif
+#ifdef __IOS__
+#include "../../../ios/ThreeDimentionalCube/ThreeDimentionalCube/IPhoneHelperAbstraction.h"
+#endif
 
 class Logger{
 public:
@@ -15,6 +18,8 @@ public:
     std::cout<<text<<std::endl;  
 #elif defined(__ANDROID__)
     AndroidEnvironment::getInstance()->log(text);
+#elif defined(__IOS__)
+    IPhoneHelperAbstraction::getInstance()->callObjectiveCToLog(text);
 #endif
   }
 };
