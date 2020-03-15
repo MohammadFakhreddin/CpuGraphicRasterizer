@@ -18,6 +18,9 @@
 #elif defined(__PLATFORM_WIN__)
 	#define __OPENGL__
 	#include <GL/freeglut.h>
+#elif defined(__PLATFORM_LINUX__)
+  #define __OPENGL__
+  #include <GL/freeglut.h>
 #endif
 
 class OpenGL{

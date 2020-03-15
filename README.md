@@ -50,6 +50,24 @@ Run project:
 cmake . && make && ./3d-cube
 ``` 
 
+For all desktop apps you can add -DCMAKE_BUILD_TYPE=Release to build for release mode
+
+### Linux:
+Install VCPKG and cmake
+
+in VCPKG folder install following librarys
+```
+vcpkg install OpenGL
+vcpkg install FreeGlut
+```
+
+Run project
+```
+cmake . -DCMAKE_TOOLCHAIN_FILE=<Vcpkg toolchain file address> 
+make
+./3d-cube
+```
+
 ### IOS
 Open xcode project and set your team id bundle identifier and then run project.
 

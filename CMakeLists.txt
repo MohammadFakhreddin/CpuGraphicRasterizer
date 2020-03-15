@@ -32,6 +32,10 @@ if(APPLE)
    endif()
 endif()
 
+if(UNIX AND NOT APPLE)
+   set(LINUX TRUE)
+endif()
+
 if(MACOSX)
    FILE(GLOB_RECURSE MAC_USER_HEADER "mac/*.h")
    FILE(GLOB_RECURSE MAC_USER_CPP "mac/*.cpp")
@@ -68,6 +72,19 @@ if(WIN32)
    list(
       APPEND APP_HEADER
       ${WINDOWS_USER_HEADER}
+   )
+endif()
+
+if(LINUX)
+   FILE(GLOB_RECURSE LINUX_USER_HEADER "linux/*.h")
+   FILE(GLOB_RECURSE LINUX_USER_CPP "linux/*.cpp")
+   list(
+      APPEND APP_SOURCE
+      ${LINUX_USER_CPP}
+   )
+   list(
+      APPEND APP_HEADER
+      ${LINUX_USER_HEADER}
    )
 endif()
 
@@ -109,6 +126,19 @@ elseif(WIN32)
    find_package(GLUT REQUIRED)
    include_directories(${OPENGL_INCLUDE_DIRS})
    include_directories( ${GLUT_INCLUDE_DIRS} )
+   target_link_libraries(${PROJECT_NAME} GLUT::GLUT)
+   target_link_libraries(${PROJECT_NAME} ${OPENGL_LIBRARIES})
+   set(CMAKE_BINARY_DIR ".")
+   set(LIBRARY_OUTPUT_PATH ${CMAKE_BINARY_DIR})
+   set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR})
+elseif(LINUX)
+   find_package(OpenGL REQUIRED)
+   find_package(GLUT REQUIRED)
+   find_package(X11 REQUIRED)
+   include_directories(${OPENGL_INCLUDE_DIRS})
+   include_directories( ${GLUT_INCLUDE_DIRS} )
+   include_directories(${X11_INCLUDE_DIRS})
+   target_link_libraries(${PROJECT_NAME} X11)
    target_link_libraries(${PROJECT_NAME} GLUT::GLUT)
    target_link_libraries(${PROJECT_NAME} ${OPENGL_LIBRARIES})
    set(CMAKE_BINARY_DIR ".")
