@@ -19,8 +19,6 @@
 	#define __OPENGL__
 	#include <GL/freeglut.h>
 #endif
-// #include <GLES3/gl3.h>
-// #define __GLES__
 
 class OpenGL{
 public:

@@ -1,9 +1,8 @@
 #include "./TextureEdge.h"
-#include <assert.h>
-#include <math.h>
+#include <cassert>
+#include <cmath>
 #include "../../../application/Application.h"
 #include "./../../../utils/log/Logger.h"
-#include <iostream>
 #include <string>
 
 bool DEBUG_MODE = false;

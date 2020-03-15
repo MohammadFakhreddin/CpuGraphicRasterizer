@@ -40,7 +40,7 @@ public:
           numberOfChannels
         );
       #endif
-      return NULL;
+      return nullptr;
   }
 };
 

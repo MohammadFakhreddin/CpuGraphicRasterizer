@@ -87,7 +87,7 @@ physicalScreenHeight(physicalScreenHeight)
 #if defined(__OPENGL__)
   glPointSize(1.2f);
   glViewport(0,0,appScreenWidth,appScreenHeight);
-  glOrtho(-0.5f, appScreenWidth - 0.5f, -0.5f, appScreenHeight - 0.5f, -1.0, 1.0);
+  glOrtho(-0.5f, float(appScreenWidth) - 0.5f, -0.5f, float(appScreenHeight) - 0.5f, -1.0, 1.0);
 #endif
 #if defined(__GLES__)
   #ifdef __ANDROID__

@@ -1,7 +1,6 @@
 #include "FaTexture.h"
-#include <iostream>
 #include "stb_image_headers.h"
-#include <assert.h>
+#include <cassert>
 #include "../application/Application.h"
 
 
@@ -17,7 +16,7 @@ address(address)
 {
   assert(virtualImageWidth>0);
   assert(virtualImageHeight>0);
-  data = STBImageHelper::loadTexture(address.c_str(), &width, &height, &numberOfChannels);
+  data = STBImageHelper::loadTexture(address, &width, &height, &numberOfChannels);
   assert(data);
   dataLength = (unsigned int)(width * height * numberOfChannels);
   scaleX = float(width) / virtualImageWidth;
@@ -69,8 +68,8 @@ void FaTexture::getColorForPosition(
   assert(positionX>=0);
   assert(positionY<virtualImageHeight);
   assert(positionY>=0);
-  float realPositionX = scaleX * positionX;
-  float realPositionY = scaleY * positionY;
+  int realPositionX = int(scaleX * positionX);
+  int realPositionY = int(scaleY * positionY);
   int rawRed;
   int rawGreen;
   int rawBlue;

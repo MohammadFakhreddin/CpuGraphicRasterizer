@@ -15,7 +15,6 @@ private:
   std::vector<MatrixFloat*> topEdges;
   std::vector<MatrixFloat*> bottomEdges;
   std::vector<MatrixFloat*> middleEdges;
-  void assignToObject(ColorEdge const& other);
 public:
   ColorEdge(
     int edge1,

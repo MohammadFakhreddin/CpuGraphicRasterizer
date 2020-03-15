@@ -1,11 +1,8 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include "../src/fa_texture/stb_image_headers.h"
 
-#include "../src/Constants.h"
 #include "../src/open_gl/OpenGl.h"
 #include <memory>
-#include <iostream>
-#include <string>
 #include <CoreGraphics/CGDisplayConfiguration.h>
 #include "../src/application/Application.h"
 
@@ -61,20 +58,20 @@ void handleKeyboardEvent(unsigned char key, int x, int y)
 }
 
 int currentTime = 0;
-int lastTime = glutGet(GLUT_ELAPSED_TIME);
+int lastTime = 0;
 int deltaTime = 0;
 
 void mainLoop() {
-	currentTime = glutGet(GLUT_ELAPSED_TIME);
-	deltaTime = currentTime - lastTime;
-	lastTime = currentTime;
-  application->mainLoop(deltaTime);
+    currentTime = glutGet(GLUT_ELAPSED_TIME);
+    deltaTime = currentTime - lastTime;
+    lastTime = currentTime;
+    application->mainLoop(deltaTime);
 }
 
 void timer(int value)
 {
-  glutTimerFunc(16, timer, 0);
-  glutPostRedisplay();
+	glutTimerFunc(16, timer, 0);
+	glutPostRedisplay();
 }
 
 /* Main function: GLUT runs as a console application starting at main()  */
@@ -83,8 +80,8 @@ int main(int argc, char** argv) {
   	glutInitDisplayMode ( GLUT_SINGLE | GLUT_RGB );
 	auto mainDisplayId = CGMainDisplayID();
 
-	unsigned int appScreenWidth = 800;
-	unsigned int appScreenHeight = 600;
+	int appScreenWidth = 800;
+	int appScreenHeight = 600;
 	unsigned int realScreenWidth = CGDisplayPixelsWide(mainDisplayId);
 	unsigned int realScreenHeight = CGDisplayPixelsHigh(mainDisplayId);
 
@@ -94,13 +91,13 @@ int main(int argc, char** argv) {
 			(int)(realScreenHeight/2 - appScreenHeight/2));
 	glutCreateWindow(Constants::Window::appName);
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f); // Set background color to black and opaque
-	application = std::unique_ptr<Application>(new Application(
+	application = std::make_unique<Application>(
 		Application::Platform::Mac,
 		appScreenWidth,
 		appScreenHeight,
 		realScreenWidth,
 		realScreenHeight
-	));
+	);
 	glutKeyboardFunc(handleKeyboardEvent);
 	glutTimerFunc(0, timer, 0);
 	glutDisplayFunc(mainLoop);

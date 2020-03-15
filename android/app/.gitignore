@@ -2,3 +2,8 @@
 
 rules.ninja
 build.ninja
+
+*.apk
+
+release/*
+release

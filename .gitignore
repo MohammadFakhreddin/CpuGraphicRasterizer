@@ -49,8 +49,6 @@ cmake_install.cmake
 .vs
 Debug/*
 3d-cube.dir/*
-.idea/*
-.idea
 Win32/*
 Win32
 Makefile
@@ -58,8 +56,6 @@ Makefile
 settings.json
 
 .DS_Store
-
-*.o
 
 3d-cube
 

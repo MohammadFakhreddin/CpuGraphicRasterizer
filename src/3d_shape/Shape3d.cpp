@@ -3,6 +3,7 @@
 #include "../open_gl/OpenGl.h"
 #include <math.h>
 #include <iostream>
+#include <memory>
 #include "../application/Application.h"
 #include "./edge/base_edge/BaseEdge.h"
 #include "./edge/color_edge/ColorEdge.h"
@@ -67,7 +68,7 @@ std::unique_ptr<Shape3d> Shape3d::generateTextured3DCube(
 			std::vector<float>{z+d}
 		})
 	};
-	return std::unique_ptr<Shape3d>(new Shape3d(
+	return std::make_unique<Shape3d>(
 		nodeList,
 		edgeList,
 		transformX,
@@ -77,7 +78,7 @@ std::unique_ptr<Shape3d> Shape3d::generateTextured3DCube(
     rotationY,
     rotationZ,
     scale
-	));
+	);
 }
 
 std::unique_ptr<Shape3d> Shape3d::generateColored3DCube(
@@ -92,7 +93,7 @@ std::unique_ptr<Shape3d> Shape3d::generateColored3DCube(
   float rotationZ,
   float scale
 ){
-  float x = -w/2;
+    float x = -w/2;
 	float y = -h/2;
 	float z = -d/2;
 	std::vector<MatrixFloat> nodeList = {

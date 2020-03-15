@@ -1,8 +1,7 @@
 #include "./ColorEdge.h"
-#include <assert.h>
-#include <math.h>
+#include <cassert>
+#include <cmath>
 #include "../../../application/Application.h" 
-#include <iostream>
 
 ColorEdge::ColorEdge(
   int edge1,

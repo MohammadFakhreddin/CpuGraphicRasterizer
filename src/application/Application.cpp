@@ -158,7 +158,7 @@ void Application::drawTextureBetweenPoints(
 			assert(yDifference!=0);
 			triangleTotalStepCount = abs(yDifference/Application::drawStepValue);
 			assert(triangleTotalStepCount!=0);
-			traingleYStepValue = (yDifference>0 ? 1:-1) * drawStepValue;
+			traingleYStepValue = ( yDifference > 0 ? 1.0f : -1.0f ) * drawStepValue;
 			triangleXStepValue = ((triangleEndX - triangleStartX)/yDifference) * traingleYStepValue;
 			triangleZStepValue = ((triangleEndZ - triangleStartZ)/yDifference) * traingleYStepValue;
 		}

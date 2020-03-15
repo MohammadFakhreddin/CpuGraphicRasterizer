@@ -12,8 +12,6 @@ private:
   Vec2DFloat edge2TexturePoint;
   Vec2DFloat edge3TexturePoint;
   std::unique_ptr<FaTexture>& textureReference;
-  float textureVirtualWidth;
-  float textureVirtualHeight;
 public:
   TextureEdge(
     int edge1,
