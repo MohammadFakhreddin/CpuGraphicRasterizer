@@ -14,6 +14,7 @@
 		D64E1721241A837C000C5ECF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D64E1720241A837C000C5ECF /* Assets.xcassets */; };
 		D64E1724241A837C000C5ECF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D64E1722241A837C000C5ECF /* LaunchScreen.storyboard */; };
 		D64E1727241A837C000C5ECF /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = D64E1726241A837C000C5ECF /* main.mm */; };
+		D68678C0241E5D180088C933 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D68678BF241E5D180088C933 /* QuartzCore.framework */; };
 		D6BFF6B1241AE0E500A2A40A /* FaTexture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D6BFF692241AE0E500A2A40A /* FaTexture.cpp */; };
 		D6BFF6B2241AE0E500A2A40A /* BaseEdge.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D6BFF69D241AE0E500A2A40A /* BaseEdge.cpp */; };
 		D6BFF6B3241AE0E500A2A40A /* TextureEdge.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D6BFF6A0241AE0E500A2A40A /* TextureEdge.cpp */; };
@@ -44,6 +45,7 @@
 		D64E1723241A837C000C5ECF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D64E1725241A837C000C5ECF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D64E1726241A837C000C5ECF /* main.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = main.mm; sourceTree = "<group>"; };
+		D68678BF241E5D180088C933 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		D6BFF68A241AE0E500A2A40A /* Wood.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Wood.h; sourceTree = "<group>"; };
 		D6BFF68B241AE0E500A2A40A /* Dice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Dice.h; sourceTree = "<group>"; };
 		D6BFF68C241AE0E500A2A40A /* Sky.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Sky.h; sourceTree = "<group>"; };
@@ -87,6 +89,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D68678C0241E5D180088C933 /* QuartzCore.framework in Frameworks */,
 				D6F279A0241BD34C008F4200 /* CoreGraphics.framework in Frameworks */,
 				D6BFF6BC241AE52B00A2A40A /* OpenGLES.framework in Frameworks */,
 				D6BFF6C3241AE59B00A2A40A /* UIKit.framework in Frameworks */,
@@ -288,6 +291,7 @@
 		D6BFF6B9241AE52600A2A40A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D68678BF241E5D180088C933 /* QuartzCore.framework */,
 				D6F2799F241BD34B008F4200 /* CoreGraphics.framework */,
 				D6BFF6C1241AE58400A2A40A /* GLKit.framework */,
 				D6BFF6BF241AE55400A2A40A /* UIKit.framework */,

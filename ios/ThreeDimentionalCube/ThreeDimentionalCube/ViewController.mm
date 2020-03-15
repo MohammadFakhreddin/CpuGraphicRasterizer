@@ -80,11 +80,15 @@
                                     );
 }
 
+CFTimeInterval lastTime = CACurrentMediaTime();
+CFTimeInterval currentTime = 0;
+
 - (void)glkView:(GLKView *)view drawInRect:(CGRect)rect
 
 {
-    //TODO Calculate delta time
-    self.application->mainLoop(1);
+    currentTime = CACurrentMediaTime();
+    self.application->mainLoop(currentTime - lastTime);
+    lastTime = currentTime;
 }
 
 
