@@ -32,7 +32,7 @@ if(APPLE)
    endif()
 endif()
 
-if(UNIX AND NOT APPLE)
+if(UNIX AND NOT APPLE AND NOT ANDROID)
    set(LINUX TRUE)
 endif()
 

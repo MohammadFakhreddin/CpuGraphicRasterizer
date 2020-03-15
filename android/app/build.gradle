@@ -9,10 +9,10 @@ android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "co.fakhreddin.a3d_cube"
-        minSdkVersion 16
+        minSdkVersion 14
         targetSdkVersion 28
-        versionCode 1
-        versionName "1.0"
+        versionCode 2
+        versionName "1.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         externalNativeBuild {
             cmake {
