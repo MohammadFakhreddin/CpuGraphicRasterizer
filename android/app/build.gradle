@@ -4,9 +4,6 @@ android {
     signingConfigs {
         release {
             storeFile file('..\\cube.jks')
-            storePassword 'darkknight1375'
-            keyAlias = 'key0'
-            keyPassword 'darkknight1375'
         }
     }
     compileSdkVersion 28
