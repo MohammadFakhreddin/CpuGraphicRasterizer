@@ -34,30 +34,27 @@ void OpenGL::init(){
   glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &nrAttributes);
   Logger::log("Maximum nr of vertex attributes supported:"+std::to_string(nrAttributes));
 
-  const char* vShaderStr = 
+  float pointSize = (float(physicalScreenWidth)/float(appScreenWidth)) * 2.0f + 0.5f;
+  
+  const std::string vShaderStr =
     "attribute vec4 aVertexPosition;\n"
     "attribute vec4 aVertexColor;\n"
     "varying vec4 vColor;\n"
     "void main(){\n"
       "vColor=aVertexColor;\n"
-      #ifdef __ANDROID__
-      "gl_PointSize = 14.1;\n"
-      #endif
-      #ifdef __IOS__
-      "gl_PointSize = 5.0;\n"
-      #endif
+      "gl_PointSize = "+std::to_string(pointSize)+";\n"
       "gl_Position = aVertexPosition;\n"
     "}\n";
 
-  const char*  fShaderStr =
+  const std::string fShaderStr =
     "precision mediump float;\n"
     "varying vec4 vColor;\n"
     "void main(){\n"
       "gl_FragColor=vColor;\n"
     "}\n";
 
-  auto vertexShader = loadShader(GL_VERTEX_SHADER, vShaderStr);
-  auto fragmentShader = loadShader(GL_FRAGMENT_SHADER, fShaderStr);
+  auto vertexShader = loadShader(GL_VERTEX_SHADER, vShaderStr.c_str());
+  auto fragmentShader = loadShader(GL_FRAGMENT_SHADER, fShaderStr.c_str());
 
   // Create the program object
   programObject = glCreateProgram();

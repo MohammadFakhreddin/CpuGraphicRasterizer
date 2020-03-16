@@ -63,9 +63,6 @@ settings.json
 
 out/*
 
-# TODO Make package.json platform independant
-# package.json
-
 .ninja_deps
 .ninja_log
 x64/*
@@ -79,3 +76,6 @@ output
 
 CmakeLists.txt.user
 CMakeSettings.json
+
+
+package.json
