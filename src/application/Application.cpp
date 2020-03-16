@@ -354,9 +354,12 @@ void Application::update(int deltaTime) {
 		keyEvents[backwardZButton] = false;
 	}
 	{//Temporary code for auto rotation
-		shape->rotateY(-1.0f * Application::shapeRotationSpeed * 1);
-		shape->rotateX(-1.0f * Application::shapeRotationSpeed * 1);
-		shape->rotateZ(-1.0f * Application::shapeRotationSpeed * 1);
+		// shape->rotateY(-1.0f * Application::shapeRotationSpeed * 1);
+		// shape->rotateX(-1.0f * Application::shapeRotationSpeed * 1);
+		// shape->rotateZ(-1.0f * Application::shapeRotationSpeed * 1);
+		shape->rotateY(-1.0f * Application::shapeRotationSpeed * deltaTime * 0.1f);
+		shape->rotateX(-1.0f * Application::shapeRotationSpeed * deltaTime * 0.1f);
+		shape->rotateZ(-1.0f * Application::shapeRotationSpeed * deltaTime * 0.1f);
 	}
 	shape->update(deltaTime);
 }
