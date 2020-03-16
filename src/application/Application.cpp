@@ -33,7 +33,7 @@ Application::Application(
 			width,
 			appScreenWidth/2,
 			appScreenHeight/2,
-			width + 500,
+			width + (maximumFov/2),
 			0,
 			0,
 			0,
@@ -236,7 +236,6 @@ void Application::drawTextureBetweenPoints(
 }
 
 void Application::putPixelInMap(int x,int y,float zValue,float red,float green,float blue){
-	//TODO Optimize and find better solution
 	if(
 		zValue <= cameraZLocation || 
 		zValue >= maximumFov ||  
