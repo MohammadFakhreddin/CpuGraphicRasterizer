@@ -53,23 +53,46 @@ Application::Application(
 		// );
 		Logger::log("Creating shape was successful");
 	}
-	{//Creating pixelMap
-		Logger::log("Initiating pixel map:");
-		for(int i=0;i<appScreenWidth;i++){
-			std::vector<DrawPixel> innerMap;
-			pixelMap.emplace_back(innerMap);
-			for(int j=0;j<appScreenHeight;j++){
-				DrawPixel drawPixel;
-				drawPixel.zValue = maximumFov * 2;
-				drawPixel.blue = 0;
-				drawPixel.green = 0;
-				drawPixel.red = 0;
-				pixelMap.at(i).emplace_back(drawPixel);
-			}
-		}
-		Logger::log("Pixel map is ready");
-	}
+	
+	initPixelMap();
+
 	Logger::log("Ready for rendering page:");
+}
+
+void Application::notifyScreenSurfaceChanged(
+	unsigned int appScreenWidth,
+	unsigned int appScreenHeight,
+	unsigned int physicalScreenWidth,
+	unsigned int physicalScreenHeight
+){
+	Logger::log("Surface has changed");
+
+	this->appScreenWidth = appScreenWidth;
+	this->appScreenHeight = appScreenHeight;
+	this->physicalScreenWidth = physicalScreenWidth;
+	this->physicalScreenHeight = physicalScreenHeight;
+
+	openGLInstance.notifyScreenSurfaceChanged(appScreenWidth,appScreenHeight,physicalScreenWidth,physicalScreenHeight);
+
+	pixelMap.erase(pixelMap.begin(),pixelMap.end());
+	initPixelMap();
+}
+
+void Application::initPixelMap(){
+	Logger::log("Initiating pixel map:");
+	for(int i=0;i<appScreenWidth;i++){
+		std::vector<DrawPixel> innerMap;
+		pixelMap.emplace_back(innerMap);
+		for(int j=0;j<appScreenHeight;j++){
+			DrawPixel drawPixel;
+			drawPixel.zValue = maximumFov * 2;
+			drawPixel.blue = 0;
+			drawPixel.green = 0;
+			drawPixel.red = 0;
+			pixelMap.at(i).emplace_back(drawPixel);
+		}
+	}
+	Logger::log("Pixel map is ready");
 }
 
 void Application::drawLineBetweenPoints(
@@ -87,14 +110,14 @@ void Application::drawLineBetweenPoints(
   if(abs(startX-endX)<abs(startY-endY)){
     moveByX = false;
   }
-  if( moveByX == true ){
+  if(moveByX){
     float xDifference = endX - startX;
 	if(xDifference==0){
 		return;
 	}
 	float yM = (endY - startY)/xDifference;
     float zM = (endZ - startZ)/xDifference;
-    putPixelInMap(round(startX),round(startY),startZ,red,green,blue);
+    putPixelInMap(static_cast<int>(round(startX)), static_cast<int>(round(startY)), startZ, red, green, blue);
     float stepMoveValue = startX - endX > 0 ? -1 : +1;
 		do{
  			startX += stepMoveValue;
@@ -114,14 +137,14 @@ void Application::drawLineBetweenPoints(
     float zM = (endZ - startZ)/yDifference;
     putPixelInMap(int(round(startX)),int(round(startY)),startZ,red,green,blue);
     float stepMoveValue = startY - endY > 0 ? -1 : +1;
-		do{
-			startY += stepMoveValue;
-      startX += xM * stepMoveValue;
-      startZ += zM * stepMoveValue;
-      putPixelInMap(int(round(startX)),int(round(startY)),startZ,red,green,blue);
-		}while (
-      ( stepMoveValue > 0 && startY + stepMoveValue < endY ) || 
-			( stepMoveValue <0 && startY - stepMoveValue > endY )
+	do{
+		startY += stepMoveValue;
+      	startX += xM * stepMoveValue;
+      	startZ += zM * stepMoveValue;
+      	putPixelInMap(int(round(startX)),int(round(startY)),startZ,red,green,blue);
+	}while (
+      	(stepMoveValue > 0 && startY + stepMoveValue < endY) ||
+		( stepMoveValue <0 && startY - stepMoveValue > endY )
     );
   }
 }
@@ -341,10 +364,7 @@ void Application::mainLoop(int deltaTime){
 	if(deltaTime>0){
 		currentFps = 1000.0f/float(deltaTime);
 	}
-	while((openGLError = glGetError()) != GL_NO_ERROR)
-	{
-		Logger::log("OpenGLError:\n"+std::to_string(openGLError));
-	}
+	assert(openGLInstance.checkForOpenGlError());
 }
 
 Application* Application::instance;

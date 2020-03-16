@@ -36,6 +36,8 @@ class GL2JNIView extends GLSurfaceView {
     private static String TAG = "GL2JNIView";
     private static final boolean DEBUG = false;
 
+    private Renderer renderer;
+
     public GL2JNIView(Context context) {
         super(context);
         init(false, 0, 0);
@@ -71,8 +73,9 @@ class GL2JNIView extends GLSurfaceView {
                 new ConfigChooser(8, 8, 8, 8, depth, stencil) :
                 new ConfigChooser(5, 6, 5, 0, depth, stencil) );
 
+        renderer = new Renderer();
         /* Set the renderer responsible for frame rendering */
-        setRenderer(new Renderer());
+        setRenderer(renderer);
     }
 
     private static class ContextFactory implements GLSurfaceView.EGLContextFactory {

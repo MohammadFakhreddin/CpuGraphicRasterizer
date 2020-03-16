@@ -1,5 +1,5 @@
 #include "./OpenGl.h"
-#include <assert.h>
+#include <cassert>
 #include "./../Constants.h"
 #include "./../utils/log/Logger.h"
 #include <string>
@@ -11,7 +11,24 @@ appScreenHeight(appScreenHeight),
 physicalScreenWidth(physicalScreenWidth),
 physicalScreenHeight(physicalScreenHeight)
 {
+  init();
+}
 
+void OpenGL::notifyScreenSurfaceChanged(
+  unsigned int appScreenWidth,
+  unsigned int appScreenHeight,
+  unsigned int physicalScreenWidth,
+  unsigned int physicalScreenHeight
+){
+  this->appScreenWidth = appScreenWidth;
+  this->appScreenHeight = appScreenHeight;
+  this->physicalScreenWidth = physicalScreenWidth;
+  this->physicalScreenHeight = physicalScreenHeight;
+
+  init();
+}
+
+void OpenGL::init(){
 #ifdef __GLES__
   int nrAttributes;
   glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &nrAttributes);
@@ -110,9 +127,6 @@ physicalScreenHeight(physicalScreenHeight)
 #if defined(__ANDROID__)
   glViewport(viewPortStartX,viewPortStartY,viewPortWidth,viewPortHeight);
 #endif
-}
-
-OpenGL::~OpenGL(){
 }
 
 #ifdef __GLES__
@@ -238,21 +252,21 @@ void OpenGL::drawPixel(int x,int y,float red,float green,float blue){
       position[0] = (x - xDifValue) * projectionX;
       position[1] = (y - yDifValue) * projectionY;
       glVertexAttribPointer((GLuint)pointParamLocation,4,GL_FLOAT,GL_FALSE,0,position);
-      assert(glGetError()==GL_NO_ERROR);
+      assert(checkForOpenGlError());
       glEnableVertexAttribArray((GLuint)pointParamLocation);
-      assert(glGetError()==GL_NO_ERROR);
+      assert(checkForOpenGlError());
   }
   {
       color[0] = red;
       color[1] = green;
       color[2] = blue;
       glVertexAttribPointer((GLuint)colorParamLocation,4,GL_FLOAT,GL_FALSE,0,color);
-      assert(glGetError()==GL_NO_ERROR);
+      assert(checkForOpenGlError());
       glEnableVertexAttribArray((GLuint)colorParamLocation);
-      assert(glGetError()==GL_NO_ERROR);
+      assert(checkForOpenGlError());
   }
   glDrawArrays(GL_POINTS,0,1);
-  assert(glGetError()==GL_NO_ERROR);
+  assert(checkForOpenGlError());
   glDisableVertexAttribArray((GLuint)pointParamLocation);
   glDisableVertexAttribArray((GLuint)colorParamLocation);
 
@@ -289,4 +303,20 @@ void OpenGL::drawText(int x,int y,std::string text,float red,float green,float b
 #elif defined(__GLES__)
     //TODO
 #endif
+}
+
+bool OpenGL::checkForOpenGlError(){
+  auto error = glGetError();
+  if(error==GL_NO_ERROR){
+    return true;
+  }
+  
+  Logger::log("OpenGLError:\n"+std::to_string(error));
+  
+  while ((error = glGetError())!=GL_NO_ERROR)
+  {
+    Logger::log("OpenGLError:\n"+std::to_string(error));
+  };
+  
+  return false;
 }

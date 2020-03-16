@@ -16,16 +16,23 @@ address(address)
 {
   assert(virtualImageWidth>0);
   assert(virtualImageHeight>0);
-  data = STBImageHelper::loadTexture(address, &width, &height, &numberOfChannels);
-  assert(data);
+  
+  auto tempData = STBImageHelper::loadTexture(address, &width, &height, &numberOfChannels);
+  assert(tempData);
+  //For data protection we copy temp data so external events won't effect data
   dataLength = (unsigned int)(width * height * numberOfChannels);
+  data = new float[dataLength];
+  for(int i=0;i<dataLength;i++){
+    data[i] = float(tempData[i])/255.0f;
+  }
+
   scaleX = float(width) / virtualImageWidth;
   scaleY = float(height) / virtualImageHeight;
 };
 
 FaTexture::~FaTexture(){
   if(data){
-    delete data;
+    delete[] data;
   }
 }
 
@@ -56,6 +63,7 @@ void FaTexture::getColorForPosition(
   float* green,
   float* blue
 ){
+  assert(data);
   if(
     positionX<0 || 
     positionX>=virtualImageWidth || 
@@ -70,27 +78,21 @@ void FaTexture::getColorForPosition(
   assert(positionY>=0);
   int realPositionX = int(scaleX * positionX);
   int realPositionY = int(scaleY * positionY);
-  int rawRed;
-  int rawGreen;
-  int rawBlue;
   getPixelForPosition(
     realPositionX,
     realPositionY,
-    &rawRed,
-    &rawGreen,
-    &rawBlue
+    red,
+    green,
+    blue
   );
-  *red = float(rawRed)/255.0f;
-  *green = float(rawGreen)/255.0f;
-  *blue = float(rawBlue)/255.0f;
 }
 
 void FaTexture::getPixelForPosition(
   int positionX,
   int positionY,
-  int* red,
-  int* green,
-  int* blue
+  float* red,
+  float* green,
+  float* blue
 ){
   int index = numberOfChannels * (positionY * width + positionX);
   assert(index+numberOfChannels<=dataLength);
@@ -99,10 +101,14 @@ void FaTexture::getPixelForPosition(
   *blue = data[index + 2];
 }
 
+/**
+ * This method is currently for debug purposes
+ * We need spritesheet in future
+*/
 void FaTexture::render(){
-  int red = 0;
-  int green = 0;
-  int blue = 0;
+  float red = 0;
+  float green = 0;
+  float blue = 0;
   for(int i=0;i<width;i++){
     for(int j=0;j<height;j++){
       getPixelForPosition(

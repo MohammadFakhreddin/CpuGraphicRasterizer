@@ -56,6 +56,15 @@ public:
 		unsigned int physicalDeviceScreenWidth,
 		unsigned int physicalDeviceScreenHeight
 	);
+	/**
+	 * Currently this event is only for android
+	*/
+	void notifyScreenSurfaceChanged(
+		unsigned int appScreenWidth,
+		unsigned int appScreenHeight,
+		unsigned int physicalDeviceScreenWidth,
+		unsigned int physicalDeviceScreenHeight
+	);
 	void mainLoop(int deltaTime);
 	void notifyKeyIsPressed(Application::Buttons);
 	void putPixelInMap(int x,int y,float zValue,float red,float green,float blue);
@@ -96,13 +105,9 @@ private:
 
 	void render(int deltaTime);
 	void update(int deltaTime);
+	void initPixelMap();
 	
-	double targetFPS = 60;                    
-	double timePerFrame = 1000 / targetFPS;
 	double currentFps = 0;
-	std::string fpsText = "";
-	double deltaTime = 0;
-
 	OpenGL openGLInstance;
 
 private:

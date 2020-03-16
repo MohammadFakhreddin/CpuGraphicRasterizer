@@ -2,25 +2,30 @@
 
 #include <string>
 #include <jni.h>
-#include <assert.h>
+#include <cassert>
 
 AndroidEnvironment* AndroidEnvironment::instance = nullptr;
 
 AndroidEnvironment::AndroidEnvironment(JNIEnv * env)
   :
-    env(std::unique_ptr<JNIEnv>(env))
+    env(env)
 {
-  ndkClass = env->FindClass("co/fakhreddin/cube/NDKHelper");
-  assert(ndkClass);
-  loadImageMethodId = env->GetStaticMethodID(ndkClass, "loadImage", "(Ljava/lang/String;)Ljava/lang/Object;");
-  assert(loadImageMethodId);
-  logMethodId = env->GetStaticMethodID(ndkClass,"log", "(Ljava/lang/String;)V");
-  assert(logMethodId);
-  instance = this;
+    init();
+    instance = this;
 };
 
-std::unique_ptr<JNIEnv>& AndroidEnvironment::getEnv(){
-  return env;
+void AndroidEnvironment::replaceEnv(JNIEnv *env) {
+    this->env = env;
+    init();
+}
+
+void AndroidEnvironment::init(){
+    ndkClass = env->FindClass("co/fakhreddin/cube/NDKHelper");
+    assert(ndkClass);
+    loadImageMethodId = env->GetStaticMethodID(ndkClass, "loadImage", "(Ljava/lang/String;)Ljava/lang/Object;");
+    assert(loadImageMethodId);
+    logMethodId = env->GetStaticMethodID(ndkClass,"log", "(Ljava/lang/String;)V");
+    assert(logMethodId);
 }
 
 unsigned char * AndroidEnvironment::loadImage(
@@ -45,10 +50,12 @@ unsigned char * AndroidEnvironment::loadImage(
 
   *width = (int)env->GetIntField(imageInformation,widthFieldId);
   *height = (int)env->GetIntField(imageInformation,heightFieldId);
+  //TODO Remove this field from data
   //Unused field because all of android bitmaps have 4 channels
   auto hasAlphaChannel = (bool)env->GetBooleanField(imageInformation,hasAlphaChannelFieldId);
   *numberOfChannels = 4;
   auto rawImageObject = env->GetObjectField(imageInformation,imageDataFieldId);
+  //TODO This is a memory leak do something about it
   unsigned char* data = (unsigned char *)env->GetDirectBufferAddress(rawImageObject);
   
   return data;

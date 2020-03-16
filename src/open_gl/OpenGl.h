@@ -26,13 +26,21 @@
 class OpenGL{
 public:
   OpenGL(unsigned int appScreenWidth,unsigned int appScreenHeight,unsigned int physicalScreenWidth,unsigned int physicalScreenHeight);
-  ~OpenGL();
+  void notifyScreenSurfaceChanged(
+    unsigned int appScreenWidth,
+    unsigned int appScreenHeight,
+    unsigned int physicalScreenWidth,
+    unsigned int physicalScreenHeight
+  );
+  void init();
   void drawPixel(int x,int y,float red,float green,float blue);
   void drawText(int x,int y,std::string text,float red,float green,float blue);
   void clear();
   void flush();
   void beginDrawingPoints();
   void resetProgram();
+  //We use this method for both assertion in debug and printing existing errors
+  bool checkForOpenGlError();
 #ifdef __GLES__
   GLuint loadShader(GLenum shaderType, const char* shaderSource);
   GLuint createProgram(const char* vertexSource, const char * fragmentSource);

@@ -8,8 +8,9 @@
 class AndroidEnvironment{
 private:
   static AndroidEnvironment* instance;
+  void init();
 private:
-  std::unique_ptr<JNIEnv> env;
+  JNIEnv* env;
   jclass ndkClass;
   jmethodID loadImageMethodId;
   jmethodID logMethodId;
@@ -17,7 +18,6 @@ public:
   static AndroidEnvironment* getInstance(){
     return instance;
   };
-  std::unique_ptr<JNIEnv>& getEnv();
   unsigned char * loadImage(
     std::string textureAddress,
     int* width,
@@ -31,6 +31,7 @@ public:
     env->CallStaticVoidMethod(ndkClass,logMethodId,jText);
   };
   AndroidEnvironment(JNIEnv * env);
+  void replaceEnv(JNIEnv * env);
 };
 
 #endif 
