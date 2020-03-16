@@ -26,6 +26,11 @@
 class OpenGL{
 public:
   OpenGL(unsigned int appScreenWidth,unsigned int appScreenHeight,unsigned int physicalScreenWidth,unsigned int physicalScreenHeight);
+  /**
+   * 
+   * Called when orientation is changed or app re-gaines focus
+   * 
+  */
   void notifyScreenSurfaceChanged(
     unsigned int appScreenWidth,
     unsigned int appScreenHeight,
