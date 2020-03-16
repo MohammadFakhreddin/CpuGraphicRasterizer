@@ -13,7 +13,8 @@ class _Matrix{
     int height;
     std::vector<std::vector<T>> cells;
   public:
-    _Matrix(int width,int height,T cellDefaultValue)
+    template <typename A>
+    _Matrix(int width,int height,A cellDefaultValue)
       :
       width(width),
       height(height)
@@ -22,43 +23,71 @@ class _Matrix{
       for(i=0;i<width;i++){
         cells.emplace_back(std::vector<T>());
         for(j=0;j<height;j++){
-          cells.at(i).emplace_back(cellDefaultValue);
+          cells.at(i).emplace_back(T(cellDefaultValue));
         }
       }
     }
-    _Matrix(int width,int height,std::vector<std::vector<T>> initialCellValue)
+    template <typename A>
+    _Matrix(int width,int height,std::vector<std::vector<A>> initialCellValue)
       :
       width(width),
       height(height)
     {
       this->cells = initialCellValue;
     }
-    _Matrix<T>& operator=(_Matrix<T> rhs){
+    template <typename A>
+    _Matrix<T>& operator=(_Matrix<A> rhs){
       width = rhs.width;
       height = rhs.height;
       cells.erase(cells.begin(),cells.end());
       for(int i=0;i<width;i++){
         cells.emplace_back(std::vector<T>());
         for(int j=0;j<height;j++){
-          cells.at(i).emplace_back(rhs.cells.at(i).at(j));
+          cells.at(i).emplace_back(T(rhs.cells.at(i).at(j)));
         }
       }
       return *this;
     }
-    _Matrix<T> operator+(_Matrix<T> rhs){
+    template <typename A>
+    _Matrix<T> operator+(_Matrix<A> rhs){
       assert(rhs.width==width);
       assert(rhs.height==height);
       std::vector<std::vector<T>> resultsCell;
       for(int i=0;i<width;i++){
         resultsCell.emplace_back(std::vector<T>());
         for(int j=0;j<height;j++){
-          resultsCell.at(i).emplace_back(rhs.cells.at(i).at(j) + cells.at(i).at(j));
+          resultsCell.at(i).emplace_back(T(rhs.cells.at(i).at(j)) + cells.at(i).at(j));
         }
       }
       _Matrix<T> result(width,height,resultsCell);
       return result;
     }
-    _Matrix<T> operator*(_Matrix<T> rhs){
+    template <typename A>
+    _Matrix<T>& operator+=(_Matrix<A> rhs){
+      this = this + rhs;
+      return *this;
+    }
+    template <typename A>
+    _Matrix<T> operator-(_Matrix<A> rhs){
+      assert(rhs.width==width);
+      assert(rhs.height==height);
+      std::vector<std::vector<T>> resultsCell;
+      for(int i=0;i<width;i++){
+        resultsCell.emplace_back(std::vector<T>());
+        for(int j=0;j<height;j++){
+          resultsCell.at(i).emplace_back(cells.at(i).at(j) - T(rhs.cells.at(i).at(j)));
+        }
+      }
+      _Matrix<T> result(width,height,resultsCell);
+      return result;
+    }
+    template <typename A>
+    _Matrix<T>& operator-=(_Matrix<A> rhs){
+      this = this - rhs;
+      return *this;
+    }
+    template <typename A>
+    _Matrix<T> operator*(_Matrix<A> rhs){
       assert(rhs.height==width);
       auto finalWidth = rhs.width;
       auto finalHeight = height;
@@ -69,14 +98,15 @@ class _Matrix{
          for(j=0;j<finalHeight;j++){
           resultCells.at(i).emplace_back(0);
           for(k=0,p=0;k<width;k++,p++){
-            resultCells.at(i).at(j) += cells.at(k).at(j) * rhs.cells.at(i).at(p); 
+            resultCells.at(i).at(j) += cells.at(k).at(j) * T(rhs.cells.at(i).at(p)); 
           }
         }
       }
       _Matrix<T> resultMatrix(finalWidth,finalHeight,resultCells);
       return resultMatrix;
     }
-    _Matrix<T>& operator*=(_Matrix<T> rhs){
+    template <typename A>
+    _Matrix<T>& operator*=(_Matrix<A> rhs){
       this = this * rhs;
       return *this;
     }

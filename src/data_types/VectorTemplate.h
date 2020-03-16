@@ -3,6 +3,8 @@
 
 #include "../utils/log/Logger.h"
 
+//TODO Add N factor as argument
+
 template <typename T>
 class _Vec2d {
 private:

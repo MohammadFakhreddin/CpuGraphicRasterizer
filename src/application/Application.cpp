@@ -312,8 +312,7 @@ void Application::update(int deltaTime) {
 		shape->transformY(-1 * Application::shapeTransformSpeed * deltaTime);
 		keyEvents[backwardButton] = false;
 	}
-  //TODO Add transformZ (It must be like scale factor)
-	if (keyEvents[rotationZLeftButton] == true) {
+  	if (keyEvents[rotationZLeftButton] == true) {
 		shape->rotateZ(Application::shapeRotationSpeed * deltaTime);
 		keyEvents[rotationZLeftButton] = false;
 	}
@@ -321,7 +320,7 @@ void Application::update(int deltaTime) {
 		shape->rotateZ(-1* Application::shapeRotationSpeed * deltaTime);
 		keyEvents[rotationZRightButton] = false;
 	}
-  if (keyEvents[rotationXLeftButton] == true) {
+  	if (keyEvents[rotationXLeftButton] == true) {
 		shape->rotateX(Application::shapeRotationSpeed * deltaTime);
 		keyEvents[rotationXLeftButton] = false;
 	}
@@ -354,9 +353,6 @@ void Application::update(int deltaTime) {
 		keyEvents[backwardZButton] = false;
 	}
 	{//Temporary code for auto rotation
-		// shape->rotateY(-1.0f * Application::shapeRotationSpeed * 1);
-		// shape->rotateX(-1.0f * Application::shapeRotationSpeed * 1);
-		// shape->rotateZ(-1.0f * Application::shapeRotationSpeed * 1);
 		shape->rotateY(-1.0f * Application::shapeRotationSpeed * deltaTime * 0.1f);
 		shape->rotateX(-1.0f * Application::shapeRotationSpeed * deltaTime * 0.1f);
 		shape->rotateZ(-1.0f * Application::shapeRotationSpeed * deltaTime * 0.1f);
