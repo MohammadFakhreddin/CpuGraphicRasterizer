@@ -272,7 +272,8 @@ void Shape3d::update(float deltaTime){
         );
         zComparisionMatrix = rotationAndScaleResult + transformMatrix;
         zLocation = zComparisionMatrix.get(2,0);
-        scaleValue = (Application::cameraZLocation - zLocation) / Application::maximumFov;
+        //TODO ZLocation might be equal to cameraZLocation
+        scaleValue = (Application::maximumFov - Application::cameraZLocation) /  (zLocation - Application::cameraZLocation);
         zScaleMatrix.set(0,0,scaleValue);
         zScaleMatrix.set(1,1,scaleValue);
         worldPoints.at(i) = rotationAndScaleResult *

@@ -42,9 +42,13 @@ public:
 		zoomOutButton
 	};
 	static constexpr float shapeTransformSpeed = 1.0f;
+
 	static constexpr float shapeRotationSpeed = 0.01f;
-	static constexpr float cameraZLocation = 200.0f;
-	static constexpr float maximumFov = 200.0f;
+	
+	static constexpr float cameraZLocation = 0.0f;
+	
+	static constexpr float maximumFov = 1000.0f;
+	
 	static constexpr float shapeScaleSpeed = 0.1f;
 	
 	static constexpr float drawStepValue = 0.5;

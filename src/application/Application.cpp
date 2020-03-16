@@ -33,7 +33,7 @@ Application::Application(
 			width,
 			appScreenWidth/2,
 			appScreenHeight/2,
-			-maximumFov/2,
+			width + 500,
 			0,
 			0,
 			0,
@@ -85,7 +85,7 @@ void Application::initPixelMap(){
 		pixelMap.emplace_back(innerMap);
 		for(int j=0;j<appScreenHeight;j++){
 			DrawPixel drawPixel;
-			drawPixel.zValue = maximumFov * 2;
+			drawPixel.zValue = cameraZLocation;
 			drawPixel.blue = 0;
 			drawPixel.green = 0;
 			drawPixel.red = 0;
@@ -237,13 +237,20 @@ void Application::drawTextureBetweenPoints(
 
 void Application::putPixelInMap(int x,int y,float zValue,float red,float green,float blue){
 	//TODO Optimize and find better solution
-	if(x<0||x>=appScreenWidth||y<0||y>=appScreenHeight){
+	if(
+		zValue <= cameraZLocation || 
+		zValue >= maximumFov ||  
+		x < 0 ||
+		x >= appScreenWidth ||
+		y < 0 ||
+		y >= appScreenHeight
+	){
 		return;
 	}
 	assert(x<appScreenWidth);
 	assert(y<appScreenHeight);
 	currentPixel = &pixelMap.at(x).at(y);
-	if(currentPixel->zValue>zValue){
+	if(currentPixel->zValue == 0 || currentPixel->zValue > zValue){
 		currentPixel->blue = blue;
 		currentPixel->green = green;
 		currentPixel->red = red;
@@ -269,7 +276,7 @@ void Application::render(int deltaTime) {
 					currentPixel->blue = 0;
 					currentPixel->red = 0;
 					currentPixel->green = 0;
-					currentPixel->zValue = maximumFov * 2;
+					currentPixel->zValue = cameraZLocation;
 				}
 			}
 		}
