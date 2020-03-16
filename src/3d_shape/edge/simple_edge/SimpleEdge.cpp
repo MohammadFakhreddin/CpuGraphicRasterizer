@@ -19,7 +19,15 @@ SimpleEdge::SimpleEdge(
   this->edge3 = edge3;
 }
 
-void SimpleEdge::render(std::vector<MatrixFloat>* worldPoints){
+void SimpleEdge::render(
+  std::vector<MatrixFloat>* worldPoints,
+  Vec3DFloat& cameraLocation,
+  unsigned int appScreenWidth,
+  unsigned int appScreenHeight,
+  float transformX,
+  float transformY,
+  float transformZ
+){
   for(int i=0;i<3;i++){
     firstEdge = &worldPoints->at(getEdgeByIndex((i)%3));
     secondEdge = &worldPoints->at(getEdgeByIndex((i+1)%3));

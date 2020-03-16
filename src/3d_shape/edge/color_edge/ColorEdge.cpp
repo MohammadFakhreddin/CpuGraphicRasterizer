@@ -21,7 +21,26 @@ ColorEdge::ColorEdge(
   this->edge3 = edge3;
 }
 
-void ColorEdge::render(std::vector<MatrixFloat>* worldPoints){
+void ColorEdge::render(
+  std::vector<MatrixFloat>* worldPoints,
+  Vec3DFloat& cameraLocation,
+  unsigned int appScreenWidth,
+  unsigned int appScreenHeight,
+  float transformX,
+  float transformY,
+  float transformZ
+){ 
+  if(isVisibleToCamera(
+    worldPoints,
+    cameraLocation,
+    appScreenWidth,
+    appScreenHeight,
+    transformX,
+    transformY,
+    transformZ
+  )==false){
+    return;
+  }
   topEdges.erase(topEdges.begin(),topEdges.end());
   bottomEdges.erase(bottomEdges.begin(),bottomEdges.end());
   middleEdges.erase(middleEdges.begin(),middleEdges.end());

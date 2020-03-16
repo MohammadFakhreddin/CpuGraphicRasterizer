@@ -54,9 +54,7 @@ Application::Application(
 		Logger::log("Creating shape was successful");
 	}
 	
-	initPixelMap();
-
-	Logger::log("Ready for rendering page:");
+	init();
 }
 
 void Application::notifyScreenSurfaceChanged(
@@ -75,24 +73,32 @@ void Application::notifyScreenSurfaceChanged(
 	openGLInstance.notifyScreenSurfaceChanged(appScreenWidth,appScreenHeight,physicalScreenWidth,physicalScreenHeight);
 
 	pixelMap.erase(pixelMap.begin(),pixelMap.end());
-	initPixelMap();
+
+	init();
 }
 
-void Application::initPixelMap(){
-	Logger::log("Initiating pixel map:");
-	for(int i=0;i<appScreenWidth;i++){
-		std::vector<DrawPixel> innerMap;
-		pixelMap.emplace_back(innerMap);
-		for(int j=0;j<appScreenHeight;j++){
-			DrawPixel drawPixel;
-			drawPixel.zValue = cameraZLocation;
-			drawPixel.blue = 0;
-			drawPixel.green = 0;
-			drawPixel.red = 0;
-			pixelMap.at(i).emplace_back(drawPixel);
-		}
+void Application::init(){
+	{
+		cameraLocation.setX(float(appScreenWidth)/2.0f);
+		cameraLocation.setY(float(appScreenHeight)/2.0f);
 	}
-	Logger::log("Pixel map is ready");
+	{
+		Logger::log("Initiating pixel map:");
+		for(int i=0;i<appScreenWidth;i++){
+			std::vector<DrawPixel> innerMap;
+			pixelMap.emplace_back(innerMap);
+			for(int j=0;j<appScreenHeight;j++){
+				DrawPixel drawPixel;
+				drawPixel.zValue = cameraZLocation;
+				drawPixel.blue = 0;
+				drawPixel.green = 0;
+				drawPixel.red = 0;
+				pixelMap.at(i).emplace_back(drawPixel);
+			}
+		}
+		Logger::log("Pixel map is ready");
+	}
+	Logger::log("Ready for rendering page:");
 }
 
 void Application::drawLineBetweenPoints(
@@ -390,4 +396,8 @@ unsigned int Application::getPhysicalScreenWidth(){
 
 unsigned int Application::getPhysicalScreenHeight(){
 	return physicalScreenHeight;
+}
+
+Vec3DFloat& Application::getCameraLocation(){
+	return cameraLocation;
 }

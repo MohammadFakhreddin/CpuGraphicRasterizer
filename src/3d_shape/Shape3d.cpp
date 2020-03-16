@@ -283,7 +283,15 @@ void Shape3d::update(float deltaTime){
     }
     if(edges.size()>0){
       for(auto& edge:edges){
-        edge->render(&worldPoints);
+        edge->render(
+          &worldPoints,
+          Application::getInstance()->getCameraLocation(),
+          Application::getInstance()->getAppScreenWidth(),
+          Application::getInstance()->getAppScreenHeight(),
+          transformMatrix.get(0,0),
+          transformMatrix.get(1,0),
+          transformMatrix.get(2,0)
+        );
       }
     }
   }

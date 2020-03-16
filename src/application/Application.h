@@ -105,16 +105,19 @@ public:
 	unsigned int getPhysicalScreenWidth();
 	unsigned int getPhysicalScreenHeight();
 
+	Vec3DFloat& getCameraLocation();
+
 private:
 
 	void render(int deltaTime);
 	void update(int deltaTime);
-	void initPixelMap();
-	
+	void init();
+
 	double currentFps = 0;
+
 	OpenGL openGLInstance;
 
-private:
+	Vec3DFloat cameraLocation = Vec3DFloat(0,0,cameraZLocation);
 
 	unsigned int physicalScreenWidth;
 	unsigned int physicalScreenHeight;
