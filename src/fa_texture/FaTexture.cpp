@@ -1,8 +1,11 @@
-#include "FaTexture.h"
+#include "./FaTexture.h"
+
 #include "stb_image_headers.h"
 #include <cassert>
-#include "../application/Application.h"
+#include <memory>
 
+#include "../camera/Camera.h"
+#include "./../data_types/FaObject.h"
 
 FaTexture::FaTexture(
   std::string address,
@@ -21,24 +24,20 @@ address(address)
   assert(tempData);
   //For data protection we copy temp data so external events won't effect data
   dataLength = (unsigned int)(width * height * numberOfChannels);
-  data = new float[dataLength];
+  data = std::unique_ptr<FaObject<float>[]>(new FaObject<float>[dataLength]);
   for(int i=0;i<dataLength;i++){
-    data[i] = float(tempData[i])/255.0f;
+    data[i].setValue(float(tempData[i])/255.0f);
   }
+  //Removing temporary data
+  delete[] tempData;
 
   scaleX = float(width) / virtualImageWidth;
   scaleY = float(height) / virtualImageHeight;
-};
-
-FaTexture::~FaTexture(){
-  if(data){
-    delete[] data;
-  }
 }
 
 int FaTexture::getRealImageWidth(){
   return width;
-};
+}
 
 int FaTexture::getRealImageHeight(){
   return height;
@@ -96,42 +95,43 @@ void FaTexture::getPixelForPosition(
 ){
   int index = numberOfChannels * (positionY * width + positionX);
   assert(index+numberOfChannels<=dataLength);
-  *red = data[index + 0];
-  *green = data[index + 1];
-  *blue = data[index + 2];
+  *red = data[index + 0].getValue();
+  *green = data[index + 1].getValue();
+  *blue = data[index + 2].getValue();
 }
 
 /**
  * This method is currently for debug purposes
  * We need spritesheet in future
 */
-void FaTexture::render(){
-  float red = 0;
-  float green = 0;
-  float blue = 0;
-  for(int i=0;i<width;i++){
-    for(int j=0;j<height;j++){
-      getPixelForPosition(
-        i,
-        j,
-        &red,
-        &green,
-        &blue
-      );
-      assert(red>=0&&red<=255);
-      assert(blue>=0&&blue<=255);
-      assert(green>=0&&green<=255);
-      Application::getInstance()->putPixelInMap(
-        i,
-        j,
-        -100,
-        float(red)/255.0f,
-        float(green)/255.0f,
-        float(blue)/255.0f
-      );
-    }
-  }
-}
+//TODO Move this code for spritesheet
+// void FaTexture::render(double deltaTime,Camera& cameraInstance){
+//   float red = 0;
+//   float green = 0;
+//   float blue = 0;
+//   for(int i=0;i<width;i++){
+//     for(int j=0;j<height;j++){
+//       getPixelForPosition(
+//         i,
+//         j,
+//         &red,
+//         &green,
+//         &blue
+//       );
+//       assert( red>=0 && red<=255 );
+//       assert( blue>=0 && blue<=255 );
+//       assert( green>=0 && green<=255 );
+//       cameraInstance.putPixelInMap(
+//         i,
+//         j,
+//         -100,
+//         red,
+//         green,
+//         blue
+//       );
+//     }
+//   }
+// }
 
 std::string FaTexture::getAddress(){
   return address;

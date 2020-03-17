@@ -45,7 +45,8 @@ JNIEXPORT void JNICALL Java_co_fakhreddin_cube_Fa3dCube_init(
         application->notifyScreenSurfaceChanged(appScreenWidth,
                                                appScreenHeight,
                                                deviceScreenWidth,
-                                               deviceScreenHeight);
+                                               deviceScreenHeight,
+                                               false);
 
     } else {
 

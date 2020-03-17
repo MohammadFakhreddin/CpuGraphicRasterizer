@@ -2,6 +2,9 @@
 #define FaTexture_class
 
 #include <string>
+#include <memory>
+
+#include "./../data_types/FaObject.h"
 
 class FaTexture
 {
@@ -11,11 +14,11 @@ private:
   int numberOfChannels;
   unsigned int dataLength;
   std::string address;
-  float * data;
+  std::unique_ptr<FaObject<float>[]> data;
   float virtualImageWidth;
   float virtualImageHeight;
   float scaleX;
-float scaleY;
+  float scaleY;
   void getPixelForPosition(int x,int y,float *red,float *green,float *blue);
 public:
   FaTexture(
@@ -23,7 +26,6 @@ public:
     float virtualImageWidth,
     float virtualImageHeight
   );
-  ~FaTexture();
   int getRealImageWidth();
   int getRealImageHeight();
   float getVirtualImageWidth();
@@ -36,7 +38,6 @@ public:
     float* green,
     float* blue
   );
-  void render();
   std::string getAddress();
 };
 

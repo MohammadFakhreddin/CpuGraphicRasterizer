@@ -1,9 +1,11 @@
 #include "./TextureEdge.h"
+
 #include <cassert>
 #include <cmath>
-#include "../../../application/Application.h"
-#include "./../../../utils/log/Logger.h"
 #include <string>
+
+#include "./../../../utils/log/Logger.h"
+#include "../../../camera/Camera.h"
 
 bool DEBUG_MODE = false;
 
@@ -49,13 +51,11 @@ edge3TexturePoint(edge3TexturePoint)
 }
 
 void TextureEdge::render(
+  Camera& cameraInstance,
   std::vector<MatrixFloat>* worldPoints,
-  Vec3DFloat& cameraLocation,
-  unsigned int appScreenWidth,
-  unsigned int appScreenHeight,
-  float transformX,
-  float transformY,
-  float transformZ
+  float shapeCenterX,
+  float shapeCenterY,
+  float shapeCenterZ
 )
 {
   assert(edge1<worldPoints->size() && edge1>=0);
@@ -63,13 +63,11 @@ void TextureEdge::render(
   assert(edge3<worldPoints->size() && edge3>=0);
 
   if(isVisibleToCamera(
+    cameraInstance,
     worldPoints,
-    cameraLocation,
-    appScreenWidth,
-    appScreenHeight,
-    transformX,
-    transformY,
-    transformZ
+    shapeCenterX,
+    shapeCenterY,
+    shapeCenterZ
   )==false){
     return;
   }
@@ -107,8 +105,8 @@ void TextureEdge::render(
     if(abs(triangleStartX - trianglePoint3X)>abs(triangleStartY - trianglePoint3Y)){
       float xDifference = trianglePoint3X - triangleStartX;
       assert(xDifference!=0);
-      triangleStartStepValueX = (xDifference > 0 ? 1 : -1) * Application::drawStepValue;
-      totalStepCount = ceil(abs(xDifference/Application::drawStepValue));
+      triangleStartStepValueX = cameraInstance.calculateStepValue(xDifference);
+      totalStepCount = cameraInstance.calculateStepCount(xDifference);
       assert(totalStepCount!=0);
       triangleStartStepValueY = ((trianglePoint3Y - triangleStartY)/xDifference) * triangleStartStepValueX;
       triangleStartStepValueZ = ((trianglePoint3Z - triangleStartZ)/xDifference) * triangleStartStepValueX;
@@ -116,8 +114,8 @@ void TextureEdge::render(
     {
       float yDifference = trianglePoint3Y - triangleStartY;
       assert(yDifference!=0);
-      triangleStartStepValueY = (yDifference > 0 ? 1 : -1) * Application::drawStepValue;
-      totalStepCount = ceil(abs(yDifference/Application::drawStepValue));
+      triangleStartStepValueY = cameraInstance.calculateStepValue(yDifference);
+      totalStepCount = cameraInstance.calculateStepCount(yDifference);
       assert(totalStepCount!=0);
       triangleStartStepValueX = ((trianglePoint3X - triangleStartX)/yDifference) * triangleStartStepValueY;
       triangleStartStepValueZ = ((trianglePoint3Z - triangleStartZ)/yDifference) * triangleStartStepValueY;
@@ -189,7 +187,7 @@ void TextureEdge::render(
   
   for(int i=0;i<totalStepCount;i++){
     
-    Application::getInstance()->drawTextureBetweenPoints(
+    cameraInstance.drawTextureBetweenPoints(
       textureReference,
       triangleStartX,
       triangleStartY,

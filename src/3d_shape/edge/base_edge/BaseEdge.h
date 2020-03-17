@@ -1,10 +1,11 @@
 #ifndef BaseEdge_class
 #define BaseEdge_class
 
-#include "../../../data_types/MatrixTemplate.h"
 #include <vector>
-#include "../../../data_types/VectorTemplate.h"
 
+#include "../../../data_types/MatrixTemplate.h"
+#include "../../../data_types/VectorTemplate.h"
+#include "../../../camera/Camera.h"
 
 enum EdgeType{
   color,
@@ -17,13 +18,11 @@ class BaseEdge
 {
 public:
   virtual void render(
+    Camera& cameraInstance,
     std::vector<MatrixFloat>* worldPoints,
-    Vec3DFloat& cameraLocation,
-    unsigned int appScreenWidth,
-    unsigned int appScreenHeight,
-    float shapeTransformX,
-    float shapeTransformY,
-    float shapeTransformZ
+    float shapeCenterX,
+    float shapeCenterY,
+    float shapeCenterZ
   );
   virtual EdgeType getEdgeType();
   int getEdgeByIndex(int index);
@@ -33,13 +32,11 @@ protected:
   int edge2;
   int edge3;
   bool isVisibleToCamera(
+    Camera& cameraInstance,
     std::vector<MatrixFloat>* worldPoints,
-    Vec3DFloat& cameraLocation,
-    unsigned int appScreenWidth,
-    unsigned int appScreenHeight,
-    float shapeTransformX,
-    float shapeTransformY,
-    float shapeTransformZ
+    float shapeCenterX,
+    float shapeCenterY,
+    float shapeCenterZ
   );
 private:
   Vec3DFloat cameraVector = Vec3DFloat(0.0f,0.0f,0.0f);

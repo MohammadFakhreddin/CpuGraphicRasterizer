@@ -1,13 +1,15 @@
 #ifndef Shape3d_class
 #define Shape3d_class
 
-#include "../data_types/MatrixTemplate.h"
 #include <vector>
 #include <iostream>
+#include <memory>
+
+#include "../data_types/MatrixTemplate.h"
 #include "../fa_texture/FaTexture.h"
 #include "../data_types/VectorTemplate.h"
 #include "./edge/base_edge/BaseEdge.h"
-#include <memory>
+#include "./../camera/Camera.h"
 
 class Shape3d
 {
@@ -61,7 +63,7 @@ public:
     float scaleValue
   );
   bool checkForNodesValidation();
-  void update(double deltaTime);
+  void update(double deltaTime,Camera& cameraInstance);
   void transformX(float x);
   void transformY(float y);
   void transformZ(float z);
@@ -82,6 +84,9 @@ private:
   MatrixFloat zScaleMatrix;
   float zLocation = 0;
   float scaleValue = 0;
+private:
+  MatrixFloat rotationAndScaleResult = MatrixFloat(0.0f,0.0f,0.0f);
+  MatrixFloat zComparisionMatrix = MatrixFloat(0.0f,0.0f,0.0f);
 };
 
 #endif

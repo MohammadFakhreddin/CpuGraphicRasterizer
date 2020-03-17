@@ -1,7 +1,9 @@
 #include "./ColorEdge.h"
+
 #include <cassert>
 #include <cmath>
-#include "../../../application/Application.h" 
+
+#include "./../../../camera/Camera.h"
 
 ColorEdge::ColorEdge(
   int edge1,
@@ -22,22 +24,18 @@ ColorEdge::ColorEdge(
 }
 
 void ColorEdge::render(
+  Camera& cameraInstance,
   std::vector<MatrixFloat>* worldPoints,
-  Vec3DFloat& cameraLocation,
-  unsigned int appScreenWidth,
-  unsigned int appScreenHeight,
-  float transformX,
-  float transformY,
-  float transformZ
+  float transformCenterX,
+  float transformCenterY,
+  float transformCenterZ
 ){ 
   if(isVisibleToCamera(
+    cameraInstance,
     worldPoints,
-    cameraLocation,
-    appScreenWidth,
-    appScreenHeight,
-    transformX,
-    transformY,
-    transformZ
+    transformCenterX,
+    transformCenterY,
+    transformCenterZ
   )==false){
     return;
   }
@@ -120,7 +118,7 @@ void ColorEdge::render(
     float endZM = (endZ - finalZ)/(currentY - finalY);
     if(abs(currentY-finalY)>minimumDrawDistance){
       do{
-        Application::getInstance()->drawLineBetweenPoints(
+        cameraInstance.drawLineBetweenPoints(
           startX,currentY,startZ,
           endX,currentY,endZ,
           red,
@@ -150,7 +148,7 @@ void ColorEdge::render(
     float endZM = (endZ - finalZ)/yDifference;
     if(abs(currentY - finalY)>minimumDrawDistance){
       do{
-        Application::getInstance()->drawLineBetweenPoints(
+        cameraInstance.drawLineBetweenPoints(
           startX,currentY,startZ,
           endX,currentY,endZ,
           red,
@@ -188,7 +186,7 @@ void ColorEdge::render(
       float endZM = (endZ - finalZ)/(currentY - finalY);
       if(abs(currentY - finalY)>minimumDrawDistance){
         do{
-          Application::getInstance()->drawLineBetweenPoints(
+          cameraInstance.drawLineBetweenPoints(
             startX,currentY,startZ,
             endX,currentY,endZ,
             red,
@@ -218,7 +216,7 @@ void ColorEdge::render(
       float endZM = (endZ - finalZ)/(currentY - finalY);
       if(abs(currentY - finalY) > minimumDrawDistance){
         do{
-          Application::getInstance()->drawLineBetweenPoints(
+          cameraInstance.drawLineBetweenPoints(
             startX,currentY,startZ,
             endX,currentY,endZ,
             red,

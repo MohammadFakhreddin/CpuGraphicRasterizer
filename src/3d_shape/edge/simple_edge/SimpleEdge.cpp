@@ -1,5 +1,5 @@
 #include "./SimpleEdge.h"
-#include "./../../../application/Application.h"
+#include "./../../../camera/Camera.h"
 
 SimpleEdge::SimpleEdge(
   int edge1,
@@ -20,19 +20,17 @@ SimpleEdge::SimpleEdge(
 }
 
 void SimpleEdge::render(
+  Camera& cameraInstance,
   std::vector<MatrixFloat>* worldPoints,
-  Vec3DFloat& cameraLocation,
-  unsigned int appScreenWidth,
-  unsigned int appScreenHeight,
-  float transformX,
-  float transformY,
-  float transformZ
+  float transformCenterX,
+  float transformCenterY,
+  float transformCenterZ
 ){
   for(int i=0;i<3;i++){
     firstEdge = &worldPoints->at(getEdgeByIndex((i)%3));
     secondEdge = &worldPoints->at(getEdgeByIndex((i+1)%3));
     thirdEdge = &worldPoints->at(getEdgeByIndex((i+2)%3));
-    Application::getInstance()->drawLineBetweenPoints(
+    cameraInstance.drawLineBetweenPoints(
       firstEdge->get(0,0),
       firstEdge->get(1,0),
       firstEdge->get(2,0),
@@ -43,7 +41,7 @@ void SimpleEdge::render(
       green,
       blue
     );
-    Application::getInstance()->drawLineBetweenPoints(
+    cameraInstance.drawLineBetweenPoints(
       firstEdge->get(0,0),
       firstEdge->get(1,0),
       firstEdge->get(2,0),
@@ -54,7 +52,7 @@ void SimpleEdge::render(
       green,
       blue
     );
-    Application::getInstance()->drawLineBetweenPoints(
+    cameraInstance.drawLineBetweenPoints(
       thirdEdge->get(0,0),
       thirdEdge->get(1,0),
       thirdEdge->get(2,0),

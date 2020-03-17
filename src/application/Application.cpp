@@ -20,7 +20,18 @@ Application::Application(
 	physicalScreenHeight(physicalDeviceScreenHeight),
 	appScreenWidth(paramAppScreenWidth),
 	appScreenHeight(paramAppScreenHeight),
-	openGLInstance(paramAppScreenWidth,paramAppScreenHeight,physicalDeviceScreenWidth,physicalDeviceScreenHeight)
+	openGLInstance(paramAppScreenWidth,paramAppScreenHeight,physicalDeviceScreenWidth,physicalDeviceScreenHeight),
+	cameraInstance(
+		openGLInstance,
+		cameraInitialZLocation,
+		cameraInitialMaximumFov,
+		0,
+		appScreenWidth,
+		0,
+		appScreenHeight,
+		appScreenWidth,
+		appScreenHeight
+	)
 {
 	instance = this;
 	{//Shape
@@ -40,252 +51,48 @@ Application::Application(
 			0,
 			1
 		);
-		// shape = Shape3d::generateColored3DCube(
-		// 	width,
-		// 	width,
-		// 	width,
-		// 	appScreenWidth/2,
-		// 	appScreenHeight/2,
-		// 	-maximumFov/2,
-		// 	0,
-		// 	0,
-	:
 		Logger::log("Creating shape was successful");
 	}
-	
-	init();
 }
 
 void Application::notifyScreenSurfaceChanged(
 	unsigned int appScreenWidth,
 	unsigned int appScreenHeight,
 	unsigned int physicalScreenWidth,
-	unsigned int physicalScreenHeight
+	unsigned int physicalScreenHeight,
+	bool forceNewAppScreenWidthAndHeight
 ){
 	Logger::log("Surface has changed");
 
-	this->appScreenWidth = appScreenWidth;
-	this->appScreenHeight = appScreenHeight;
+	if(forceNewAppScreenWidthAndHeight==true){
+		this->appScreenWidth = appScreenWidth;
+		this->appScreenHeight = appScreenHeight;
+		cameraInstance.notifyScreenSurfaceIsChanged(
+			0,
+			appScreenWidth,
+			0,
+			appScreenHeight,
+			appScreenWidth,
+			appScreenHeight
+		);
+	}
+
 	this->physicalScreenWidth = physicalScreenWidth;
 	this->physicalScreenHeight = physicalScreenHeight;
 
-	openGLInstance.notifyScreenSurfaceChanged(appScreenWidth,appScreenHeight,physicalScreenWidth,physicalScreenHeight);
-
-	pixelMap.erase(pixelMap.begin(),pixelMap.end());
-
-	init();
-}
-
-void Application::init(){
-	{
-		cameraLocation.setX(float(appScreenWidth)/2.0f);
-		cameraLocation.setY(float(appScreenHeight)/2.0f);
-	}
-	{
-		Logger::log("Initiating pixel map:");
-		for(int i=0;i<appScreenWidth;i++){
-			std::vector<DrawPixel> innerMap;
-			pixelMap.emplace_back(innerMap);
-			for(int j=0;j<appScreenHeight;j++){
-				DrawPixel drawPixel;
-				drawPixel.zValue = cameraZLocation;
-				drawPixel.blue = 0;
-				drawPixel.green = 0;
-				drawPixel.red = 0;
-				pixelMap.at(i).emplace_back(drawPixel);
-			}
-		}
-		Logger::log("Pixel map is ready");
-	}
-	Logger::log("Ready for rendering page:");
-}
-
-void Application::drawLineBetweenPoints(
-  float startX,
-  float startY,
-  float startZ,
-  float endX,
-  float endY,
-  float endZ,
-  float red,
-  float green,
-  float blue
-){
-  bool moveByX = true;
-  if(abs(startX-endX)<abs(startY-endY)){
-    moveByX = false;
-  }
-  if(moveByX){
-    float xDifference = endX - startX;
-	if(xDifference==0){
-		return;
-	}
-	float yM = (endY - startY)/xDifference;
-    float zM = (endZ - startZ)/xDifference;
-    putPixelInMap(static_cast<int>(round(startX)), static_cast<int>(round(startY)), startZ, red, green, blue);
-    float stepMoveValue = startX - endX > 0 ? -1 : +1;
-	do{
-		startX += stepMoveValue;
-		startY += yM * stepMoveValue;
-		startZ += zM * stepMoveValue;
-		putPixelInMap(int(round(startX)),int(round(startY)),startZ,red,green,blue);
-	}while (
-		( stepMoveValue > 0 && startX + stepMoveValue < endX ) || 
-		( stepMoveValue < 0 && startX - stepMoveValue > endX )
+	openGLInstance.notifyScreenSurfaceChanged(
+		appScreenWidth,
+		appScreenHeight,
+		physicalScreenWidth,
+		physicalScreenHeight
 	);
-  } else {
-    float yDifference = endY - startY;
-	if(yDifference==0){
-		return;
-	}
-    float xM = (endX - startX)/yDifference;
-    float zM = (endZ - startZ)/yDifference;
-    putPixelInMap(int(round(startX)),int(round(startY)),startZ,red,green,blue);
-    float stepMoveValue = startY - endY > 0 ? -1 : +1;
-	do{
-		startY += stepMoveValue;
-      	startX += xM * stepMoveValue;
-      	startZ += zM * stepMoveValue;
-      	putPixelInMap(int(round(startX)),int(round(startY)),startZ,red,green,blue);
-	}while (
-      	(stepMoveValue > 0 && startY + stepMoveValue < endY) ||
-		( stepMoveValue <0 && startY - stepMoveValue > endY )
-    );
-  }
 }
 
-void Application::drawTextureBetweenPoints(
-	std::unique_ptr<FaTexture>& texture,
-	float triangleStartX,
-	float triangleStartY,
-	float triangleStartZ,
-	float triangleEndX,
-	float triangleEndY,
-	float triangleEndZ,
-	float textureStartX,
-	float textureStartY,
-	float textureEndX,
-	float textureEndY
-){
 
-	float triangleTotalStepCount = 0;
-	float triangleXStepValue = 0;
-	float triangleYStepValue = 0;
-	float triangleZStepValue = 0;
-	{//TriangleStepValue
-		if(abs(triangleEndX - triangleStartX) > abs(triangleEndY - triangleStartY)){
-			float xDifference = triangleEndX - triangleStartX;
-			assert(xDifference!=0);
-			triangleXStepValue = (xDifference>0 ? 1.0f:-1.0f) * drawStepValue;
-			triangleTotalStepCount = abs(xDifference/Application::drawStepValue);
-			assert(triangleTotalStepCount!=0);
-            triangleYStepValue = ((triangleEndY - triangleStartY) / xDifference) * triangleXStepValue;
-			triangleZStepValue = ((triangleEndZ - triangleStartZ)/xDifference) * triangleXStepValue;
-		}else{
-			float yDifference = triangleEndY - triangleStartY;
-			assert(yDifference!=0);
-			triangleTotalStepCount = abs(yDifference/Application::drawStepValue);
-			assert(triangleTotalStepCount!=0);
-            triangleYStepValue = (yDifference > 0 ? 1.0f : -1.0f ) * drawStepValue;
-			triangleXStepValue = ((triangleEndX - triangleStartX)/yDifference) * triangleYStepValue;
-			triangleZStepValue = ((triangleEndZ - triangleStartZ)/yDifference) * triangleYStepValue;
-		}
-	}
-
-	float textureXStepValue = 0;
-	float textureYStepValue = 0;
-	{//TextureStepValue
-		if(abs(textureEndX - textureStartX)>abs(textureEndY - textureStartY)){
-			float xDifference = textureEndX - textureStartX;
-			assert(xDifference!=0);
-			textureXStepValue = xDifference/triangleTotalStepCount;
-			textureYStepValue = ((textureEndY - textureStartY)/xDifference) * textureXStepValue;
-		}else
-		{
-			float yDifference = textureEndY - textureStartY;
-			assert(yDifference!=0);
-			textureYStepValue = yDifference/triangleTotalStepCount;
-			textureXStepValue = ((textureEndX - textureStartX)/yDifference) * textureYStepValue;
-		}
-	}
-	
-	float red = 0;
-	float green = 0;
-	float blue = 0;
-
-	texture->getColorForPosition(textureStartX,textureStartY,&red,&green,&blue);
-	putPixelInMap(
-		int(floor(triangleStartX)),
-		int(floor(triangleStartY)),
-		triangleStartZ,
-		red,
-		green,
-		blue
-	);
-	for(int i=0;i<triangleTotalStepCount;i++){
-		triangleStartX += triangleXStepValue;
-		triangleStartY += triangleYStepValue;
-		triangleStartZ += triangleZStepValue;
-		textureStartX += textureXStepValue;
-		textureStartY += textureYStepValue;
-		texture->getColorForPosition(textureStartX,textureStartY,&red,&green,&blue);
-		putPixelInMap(
-			int(floor(triangleStartX)),
-			int(floor(triangleStartY)),
-			triangleStartZ,
-			red,
-			green,
-			blue
-		);
-	}
-}
-
-void Application::putPixelInMap(int x,int y,float zValue,float red,float green,float blue){
-	if(
-		zValue <= cameraZLocation || 
-		zValue >= maximumFov ||  
-		x < 0 ||
-		x >= appScreenWidth ||
-		y < 0 ||
-		y >= appScreenHeight
-	){
-		return;
-	}
-	assert(x<appScreenWidth);
-	assert(y<appScreenHeight);
-	currentPixel = &pixelMap.at(x).at(y);
-	if(currentPixel->zValue == 0 || currentPixel->zValue > zValue){
-		currentPixel->blue = blue;
-		currentPixel->green = green;
-		currentPixel->red = red;
-		currentPixel->zValue = zValue;
-	}
-} 
 
 void Application::render(double deltaTime) {
 	openGLInstance.clear();
-	{//Drawing screen
-		openGLInstance.beginDrawingPoints();
-		for(unsigned int i=0;i<appScreenWidth;i++){
-			for(unsigned int j=0;j<appScreenHeight;j++){
-				currentPixel = &pixelMap.at(i).at(j); 
-				if(currentPixel->blue!=0 || currentPixel->green!=0 || currentPixel->red!=0){
-					openGLInstance.drawPixel(
-						i,
-						j,
-						currentPixel->red,
-						currentPixel->green,
-						currentPixel->blue
-					);
-					currentPixel->blue = 0;
-					currentPixel->red = 0;
-					currentPixel->green = 0;
-					currentPixel->zValue = cameraZLocation;
-				}
-			}
-		}
-		openGLInstance.resetProgram();
-	}
+	cameraInstance.render(deltaTime);
 	{//FPSText
 		openGLInstance.drawText(0,0,std::to_string(currentFps),1.0f,1.0f,1.0f);
 	}
@@ -355,7 +162,7 @@ void Application::update(double deltaTime) {
 		shape->rotateX(float(-1.0f * Application::shapeRotationSpeed * deltaTime * 0.1f));
 		shape->rotateZ(float(-1.0f * Application::shapeRotationSpeed * deltaTime * 0.1f));
 	}
-	shape->update(deltaTime);
+	shape->update(deltaTime,cameraInstance);
 }
 
 void Application::notifyKeyIsPressed(Application::Buttons keyEvent)
@@ -394,8 +201,4 @@ unsigned int Application::getPhysicalScreenWidth(){
 
 unsigned int Application::getPhysicalScreenHeight(){
 	return physicalScreenHeight;
-}
-
-Vec3DFloat& Application::getCameraLocation(){
-	return cameraLocation;
 }

@@ -1,6 +1,9 @@
 #include "./BaseEdge.h"
+
 #include <cassert>
+
 #include "../../../utils/math/Math.h"
+#include "./../../../camera/Camera.h"
 
 int BaseEdge::getEdgeByIndex(int index) {
     assert(index > -1);
@@ -21,13 +24,11 @@ EdgeType BaseEdge::getEdgeType() {
 }
 
 void BaseEdge::render(
-        std::vector<MatrixFloat> *worldPoints,
-        Vec3DFloat &cameraLocation,
-        unsigned int appScreenWidth,
-        unsigned int appScreenHeight,
-        float shapeTransformX,
-        float shapeTransformY,
-        float shapeTransformZ
+    Camera& cameraInstance,
+    std::vector<MatrixFloat> *worldPoints,
+    float shapeCenterX,
+    float shapeCenterY,
+    float shapeCenterZ
 ) {
     assert(false);
 }
@@ -44,13 +45,11 @@ bool BaseEdge::areEdgesDataValid(int nodesSize) {
 }
 
 bool BaseEdge::isVisibleToCamera(
-        std::vector<MatrixFloat> *worldPoints,
-        Vec3DFloat &cameraLocation,
-        unsigned int appScreenWidth,
-        unsigned int appScreenHeight,
-        float shapeTransformX,
-        float shapeTransformY,
-        float shapeTransformZ
+    Camera& cameraInstance,
+    std::vector<MatrixFloat> *worldPoints,
+    float shapeCenterX,
+    float shapeCenterY,
+    float shapeCenterZ
 ) {
     //Calculating center of triangle
     triangleCenter.setX((
@@ -68,19 +67,21 @@ bool BaseEdge::isVisibleToCamera(
         worldPoints->at(edge3).get(2, 0)
     ) / 3.0f);
     //Making camera vector
-    cameraVector.setX(Math::clamp(
-        shapeTransformX,
-        cameraLocation.getX() - (float(appScreenWidth) / 2.0f),
-        cameraLocation.getX() + (float(appScreenWidth) / 2.0f)) - shapeTransformX
+    cameraVector.setX(
+        Math::clamp(
+            triangleCenter.getX(),
+            cameraInstance.getLeft(),
+            cameraInstance.getRight()
+        ) - triangleCenter.getX()
     );
     cameraVector.setY(
         Math::clamp(
-            shapeTransformY,
-            cameraLocation.getY() - (float(appScreenHeight) / 2.0f),
-            cameraLocation.getY() + (float(appScreenHeight) / 2.0f)
-        ) - shapeTransformY
+            triangleCenter.getY(),
+            cameraInstance.getTop(),
+            cameraInstance.getBottom()
+        ) - triangleCenter.getY()
     );
-    cameraVector.setZ(triangleCenter.getZ() - cameraLocation.getZ());
+    cameraVector.setZ(triangleCenter.getZ() - cameraInstance.getCameraZLocation());
     //Creating edge vectors for normal vector computing
     edge1To2Vector.setX(worldPoints->at(edge2).get(0, 0) - worldPoints->at(edge1).get(0, 0));
     edge1To2Vector.setY(worldPoints->at(edge2).get(1, 0) - worldPoints->at(edge1).get(1, 0));
@@ -96,9 +97,9 @@ bool BaseEdge::isVisibleToCamera(
     //Normal vector being reverse
     if (normalVectorExtraDirectionFactor == 0) {
 
-        triangleCenterToPolygonCenterPoint.setX(shapeTransformX - triangleCenter.getX());
-        triangleCenterToPolygonCenterPoint.setY(shapeTransformY - triangleCenter.getY());
-        triangleCenterToPolygonCenterPoint.setZ(shapeTransformZ - triangleCenter.getZ());
+        triangleCenterToPolygonCenterPoint.setX(shapeCenterX - triangleCenter.getX());
+        triangleCenterToPolygonCenterPoint.setY(shapeCenterY - triangleCenter.getY());
+        triangleCenterToPolygonCenterPoint.setZ(shapeCenterZ - triangleCenter.getZ());
 
         dotProductValue = triangleCenterToPolygonCenterPoint.dotProduct(normalVector);
         normalVectorExtraDirectionFactor = dotProductValue > 0 ? -1 : +1;

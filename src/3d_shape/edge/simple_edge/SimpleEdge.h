@@ -1,6 +1,8 @@
 #ifndef SimpleEdge_class
 #define SimpleEdge_class
 
+#include <vector>
+
 #include "../base_edge/BaseEdge.h"
 #include "../../../data_types/MatrixTemplate.h"
 
@@ -23,13 +25,11 @@ public:
     float blue
   );
   void render(
+    Camera& cameraInstance,
     std::vector<MatrixFloat>* worldPoints,
-    Vec3DFloat& cameraLocation,
-    unsigned int appScreenWidth,
-    unsigned int appScreenHeight,
-    float transformX,
-    float transformY,
-    float transformZ
+    float transformCenterX,
+    float transformCenterY,
+    float transformCenterZ
   ) override;
   EdgeType getEdgeType() override;
 };

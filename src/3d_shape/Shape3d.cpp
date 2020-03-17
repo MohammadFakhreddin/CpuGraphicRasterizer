@@ -180,7 +180,17 @@ Shape3d::Shape3d(
         float initialTransformZ
 )
         :
-        Shape3d(nodes, edges, initialTransformX, initialTransformY, initialTransformZ, 0, 0, 0, 1) {}
+        Shape3d(
+                nodes, 
+                edges, 
+                initialTransformX, 
+                initialTransformY, 
+                initialTransformZ, 
+                0, 
+                0, 
+                0, 
+                1
+        ) {}
 
 Shape3d::Shape3d(
         std::vector<MatrixFloat> nodes,
@@ -254,11 +264,9 @@ bool Shape3d::checkForNodesValidation() {
     return true;
 }
 
-void Shape3d::update(double deltaTime) {
+void Shape3d::update(double deltaTime,Camera& cameraInstance) {
     if (nodes.empty()==false) {
         {
-            MatrixFloat rotationAndScaleResult(3, 1, 0);
-            MatrixFloat zComparisionMatrix(3, 1, 0);
             for (int i = 0; i < nodes.size(); i++) {
                 rotationAndScaleResult = (
                         nodes[i] *
@@ -269,9 +277,7 @@ void Shape3d::update(double deltaTime) {
                 );
                 zComparisionMatrix = rotationAndScaleResult + transformMatrix;
                 zLocation = zComparisionMatrix.get(2, 0);
-                //TODO ZLocation might be equal to cameraZLocation
-                scaleValue = (Application::maximumFov - Application::cameraZLocation) /
-                             (zLocation - Application::cameraZLocation);
+                scaleValue = cameraInstance.scaleBasedOnZDistance(zLocation); 
                 zScaleMatrix.set(0, 0, scaleValue);
                 zScaleMatrix.set(1, 1, scaleValue);
                 worldPoints.at(i) = rotationAndScaleResult *
@@ -282,10 +288,8 @@ void Shape3d::update(double deltaTime) {
         if (edges.empty()==false) {
             for (auto &edge:edges) {
                 edge->render(
+                        cameraInstance,
                         &worldPoints,
-                        Application::getInstance()->getCameraLocation(),
-                        Application::getInstance()->getAppScreenWidth(),
-                        Application::getInstance()->getAppScreenHeight(),
                         transformMatrix.get(0, 0),
                         transformMatrix.get(1, 0),
                         transformMatrix.get(2, 0)
@@ -296,43 +300,43 @@ void Shape3d::update(double deltaTime) {
 }
 
 void Shape3d::transformX(float x) {
-    transformMatrix.set(0, 0, transformMatrix.get(0, 0) + x);
+        transformMatrix.set(0, 0, transformMatrix.get(0, 0) + x);
 }
 
 void Shape3d::transformY(float y) {
-    transformMatrix.set(1, 0, transformMatrix.get(1, 0) + y);
+        transformMatrix.set(1, 0, transformMatrix.get(1, 0) + y);
 }
 
 void Shape3d::transformZ(float z) {
-    transformMatrix.set(2, 0, transformMatrix.get(2, 0) + z);
+        transformMatrix.set(2, 0, transformMatrix.get(2, 0) + z);
 }
 
 void Shape3d::scale(float value) {
-    scaleValueMatrix.set(0, 0, scaleValueMatrix.get(0, 0) + value);
-    scaleValueMatrix.set(1, 1, scaleValueMatrix.get(1, 1) + value);
-    scaleValueMatrix.set(2, 2, scaleValueMatrix.get(2, 2) + value);
+        scaleValueMatrix.set(0, 0, scaleValueMatrix.get(0, 0) + value);
+        scaleValueMatrix.set(1, 1, scaleValueMatrix.get(1, 1) + value);
+        scaleValueMatrix.set(2, 2, scaleValueMatrix.get(2, 2) + value);
 }
 
 void Shape3d::rotateX(float x) {
-    rotationDegreeMatrix.set(0, 0, rotationDegreeMatrix.get(0, 0) + x);
-    rotationValueXMatrix.set(0, 0, cosf(rotationDegreeMatrix.get(0, 0)));
-    rotationValueXMatrix.set(0, 1, -sinf(rotationDegreeMatrix.get(0, 0)));
-    rotationValueXMatrix.set(1, 0, sinf(rotationDegreeMatrix.get(0, 0)));
-    rotationValueXMatrix.set(1, 1, cosf(rotationDegreeMatrix.get(0, 0)));
+        rotationDegreeMatrix.set(0, 0, rotationDegreeMatrix.get(0, 0) + x);
+        rotationValueXMatrix.set(0, 0, cosf(rotationDegreeMatrix.get(0, 0)));
+        rotationValueXMatrix.set(0, 1, -sinf(rotationDegreeMatrix.get(0, 0)));
+        rotationValueXMatrix.set(1, 0, sinf(rotationDegreeMatrix.get(0, 0)));
+        rotationValueXMatrix.set(1, 1, cosf(rotationDegreeMatrix.get(0, 0)));
 }
 
 void Shape3d::rotateY(float y) {
-    rotationDegreeMatrix.set(1, 0, rotationDegreeMatrix.get(1, 0) + y);
-    rotationValueYMatrix.set(0, 0, cosf(rotationDegreeMatrix.get(1, 0)));
-    rotationValueYMatrix.set(0, 2, sinf(rotationDegreeMatrix.get(1, 0)));
-    rotationValueYMatrix.set(2, 0, -sinf(rotationDegreeMatrix.get(1, 0)));
-    rotationValueYMatrix.set(2, 2, cosf(rotationDegreeMatrix.get(1, 0)));
+        rotationDegreeMatrix.set(1, 0, rotationDegreeMatrix.get(1, 0) + y);
+        rotationValueYMatrix.set(0, 0, cosf(rotationDegreeMatrix.get(1, 0)));
+        rotationValueYMatrix.set(0, 2, sinf(rotationDegreeMatrix.get(1, 0)));
+        rotationValueYMatrix.set(2, 0, -sinf(rotationDegreeMatrix.get(1, 0)));
+        rotationValueYMatrix.set(2, 2, cosf(rotationDegreeMatrix.get(1, 0)));
 }
 
 void Shape3d::rotateZ(float z) {
-    rotationDegreeMatrix.set(2, 0, rotationDegreeMatrix.get(2, 0) + z);
-    rotationValueZMatrix.set(1, 1, cosf(rotationDegreeMatrix.get(2, 0)));
-    rotationValueZMatrix.set(1, 2, sinf(rotationDegreeMatrix.get(2, 0)));
-    rotationValueZMatrix.set(2, 1, -sinf(rotationDegreeMatrix.get(2, 0)));
-    rotationValueZMatrix.set(2, 2, cosf(rotationDegreeMatrix.get(2, 0)));
+        rotationDegreeMatrix.set(2, 0, rotationDegreeMatrix.get(2, 0) + z);
+        rotationValueZMatrix.set(1, 1, cosf(rotationDegreeMatrix.get(2, 0)));
+        rotationValueZMatrix.set(1, 2, sinf(rotationDegreeMatrix.get(2, 0)));
+        rotationValueZMatrix.set(2, 1, -sinf(rotationDegreeMatrix.get(2, 0)));
+        rotationValueZMatrix.set(2, 2, cosf(rotationDegreeMatrix.get(2, 0)));
 }

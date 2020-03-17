@@ -23,13 +23,11 @@ public:
     Vec2DFloat edge3TexturePoint
   );
   void render(
+    Camera& cameraInstance,
     std::vector<MatrixFloat>* worldPoints,
-    Vec3DFloat& cameraLocation,
-    unsigned int appScreenWidth,
-    unsigned int appScreenHeight,
-    float transformX,
-    float transformY,
-    float transformZ
+    float transformCenterX,
+    float transformCenterY,
+    float transformCenterZ
   ) override;
   EdgeType getEdgeType() override;
 };

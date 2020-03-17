@@ -2,15 +2,16 @@
 #define ColorEdge_class
 
 #include "../base_edge/BaseEdge.h"
+#include "./../../../camera/Camera.h"
 
 class ColorEdge : public BaseEdge
 {
 private:
+  static constexpr float stepValue = 1;
+  static constexpr float minimumDrawDistance = 0.5;
   float red;
   float green;
   float blue;
-  static constexpr float stepValue = 1;
-  static constexpr float minimumDrawDistance = 0.5;
   MatrixFloat* currentWorldPoint;
   std::vector<MatrixFloat*> topEdges;
   std::vector<MatrixFloat*> bottomEdges;
@@ -30,13 +31,11 @@ public:
     std::vector<float>{0}
   });
   void render(
+    Camera& cameraInstance,
     std::vector<MatrixFloat>* worldPoints,
-    Vec3DFloat& cameraLocation,
-    unsigned int appScreenWidth,
-    unsigned int appScreenHeight,
-    float transformX,
-    float transformY,
-    float transformZ
+    float transformCenterX,
+    float transformCenterY,
+    float transformCenterZ
   ) override;
   EdgeType getEdgeType() override;
 };
