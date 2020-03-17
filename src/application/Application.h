@@ -69,7 +69,7 @@ public:
 		unsigned int physicalDeviceScreenWidth,
 		unsigned int physicalDeviceScreenHeight
 	);
-	void mainLoop(int deltaTime);
+	void mainLoop(double deltaTime);
 	void notifyKeyIsPressed(Application::Buttons);
 	void putPixelInMap(int x,int y,float zValue,float red,float green,float blue);
 	static Application* getInstance();
@@ -109,8 +109,8 @@ public:
 
 private:
 
-	void render(int deltaTime);
-	void update(int deltaTime);
+	void render(double deltaTime);
+	void update(double deltaTime);
 	void init();
 
 	double currentFps = 0;

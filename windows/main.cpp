@@ -70,13 +70,13 @@ void mainLoop() {
 	currentTime = glutGet(GLUT_ELAPSED_TIME);
 	deltaTime = currentTime - lastTime;
 	lastTime = currentTime;
-  application->mainLoop(deltaTime);
+  	application->mainLoop(deltaTime);
 }
 
 void timer(int value)
 {
-  glutTimerFunc(16, timer, 0);
-  glutPostRedisplay();
+	glutTimerFunc(16, timer, 0);
+	glutPostRedisplay();
 }
 
 /* Main function: GLUT runs as a console application starting at main()  */

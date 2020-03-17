@@ -17,6 +17,11 @@
 
 @implementation ViewController
 
+GLKView *view;
+double lastTime = 0;
+double currentTime = 0;
+double deltaTime = 0;
+
 - (void)viewDidLoad
 
 {
@@ -26,11 +31,11 @@
         NSLog(@"Failed to create ES context");
     }
     
-    self.view = (GLKView *)self.view;
+    view = (GLKView *)self.view;
     
-    self.view.context = self.context;
+    view.context = self.context;
 
-    self.view.drawableDepthFormat = GLKViewDrawableDepthFormat24;
+    view.drawableDepthFormat = GLKViewDrawableDepthFormat24;
 
     [self setupGL];
 
@@ -78,18 +83,23 @@
                                         realScreenWidth,
                                         realScreenHeight
                                     );
+    //To prevent overflow in numbers for first frame
+    lastTime = [self currentTimeInMilliseconds];
+    currentTime = [self currentTimeInMilliseconds];
 }
 
-CFTimeInterval lastTime = CACurrentMediaTime();
-CFTimeInterval currentTime = 0;
+- (double)currentTimeInMilliseconds {
+    NSDate *date = [NSDate date];
+    return [date timeIntervalSince1970]*1000;
+}
 
 - (void)glkView:(GLKView *)view drawInRect:(CGRect)rect
 
 {
-    currentTime = CACurrentMediaTime();
-    self.application->mainLoop(currentTime - lastTime);
+    currentTime = ([self currentTimeInMilliseconds]);
+    deltaTime = (currentTime - lastTime);
     lastTime = currentTime;
+    self.application->mainLoop(deltaTime);
 }
-
 
 @end

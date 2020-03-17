@@ -31,13 +31,13 @@ void handleKeyboardEvent(unsigned char key, int x, int y)
 	if (key == 'q' || key == 'Q') {
 		Application::getInstance()->notifyKeyIsPressed(Application::Buttons::rotationZLeftButton);
 	}
-  if (key == 'r' || key == 'R') {
+  	if (key == 'r' || key == 'R') {
 		Application::getInstance()->notifyKeyIsPressed(Application::Buttons::rotationXRightButton);
 	}
 	if (key == 't' || key == 'T') {
 		Application::getInstance()->notifyKeyIsPressed(Application::Buttons::rotationXLeftButton);
 	}
-  if (key == 'f' || key == 'F') {
+  	if (key == 'f' || key == 'F') {
 		Application::getInstance()->notifyKeyIsPressed(Application::Buttons::rotationYRightButton);
 	}
 	if (key == 'g' || key == 'G') {

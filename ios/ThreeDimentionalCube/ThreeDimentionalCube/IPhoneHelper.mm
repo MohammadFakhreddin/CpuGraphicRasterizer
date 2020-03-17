@@ -51,8 +51,8 @@ void log( void * self, std::string logName ){
     NSUInteger bitsPerComponent = 8;
     auto pixelCount = data.width * data.height;
     auto pixelMapSize = data.numberOfChannels * pixelCount;
-    data.pixels = new unsigned char[pixelMapSize];
     
+    data.pixels = new unsigned char[pixelMapSize];
     CGContextRef context = CGBitmapContextCreate(data.pixels,
                                                  data.width,
                                                  data.height,

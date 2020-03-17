@@ -49,7 +49,7 @@ private:
   Vec3DFloat triangleCenter = Vec3DFloat(0.0f,0.0f,0.0f);
   Vec3DFloat triangleCenterToPolygonCenterPoint = Vec3DFloat(0.0f,0.0f,0.0f);
   float dotProductValue = 0;
-  int normalVectorExtraDirectionFactor = 0;
+  float normalVectorExtraDirectionFactor = 0;
 };
 
 #endif
