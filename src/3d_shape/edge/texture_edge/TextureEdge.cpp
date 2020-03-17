@@ -48,11 +48,31 @@ edge3TexturePoint(edge3TexturePoint)
   assert(edge3TexturePoint.getY()>=0 && edge3TexturePoint.getY()<textureReference->getVirtualImageHeight());
 }
 
-void TextureEdge::render(std::vector<MatrixFloat>* worldPoints)
+void TextureEdge::render(
+  std::vector<MatrixFloat>* worldPoints,
+  Vec3DFloat& cameraLocation,
+  unsigned int appScreenWidth,
+  unsigned int appScreenHeight,
+  float transformX,
+  float transformY,
+  float transformZ
+)
 {
   assert(edge1<worldPoints->size() && edge1>=0);
   assert(edge2<worldPoints->size() && edge2>=0);
   assert(edge3<worldPoints->size() && edge3>=0);
+
+  if(isVisibleToCamera(
+    worldPoints,
+    cameraLocation,
+    appScreenWidth,
+    appScreenHeight,
+    transformX,
+    transformY,
+    transformZ
+  )==false){
+    return;
+  }
   
   MatrixFloat* point1 = &worldPoints->at(edge1);
   MatrixFloat* point2 = &worldPoints->at(edge2);

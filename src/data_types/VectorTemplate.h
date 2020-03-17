@@ -1,6 +1,10 @@
 #ifndef VectorTemplate_class
 #define VectorTemplate_class
 
+#include "../utils/log/Logger.h"
+
+//TODO Add N factor as argument
+
 template <typename T>
 class _Vec2d {
 private:
@@ -31,33 +35,55 @@ public:
 		const double size = this->size();
 		return _Vec2d<double>(double(this->x) / size, double(this->y) / size);
 	}
-	_Vec2d& operator+=(const _Vec2d<T>& rhs) {
-		this->x += rhs.getX();
-		this->y += rhs.getY();
+	template <typename A>
+	_Vec2d& operator+=(const _Vec2d<A>& rhs) {
+		this->x += T(rhs.getX());
+		this->y += T(rhs.getY());
 		return *this;
 	}
-	_Vec2d<T> operator+(const _Vec2d<T>& rhs) {
-		return _Vec2d<T>(this->x + rhs.getX(), this->y + rhs.getY());
+	template <typename A>
+	_Vec2d<T> operator+(const _Vec2d<A>& rhs) {
+		return _Vec2d<T>(this->x + T(rhs.getX()), this->y + T(rhs.getY()));
 	}
-	_Vec2d<T> operator-(const _Vec2d<T>& rhs) const {
-		return _Vec2d<T>(this->x - rhs.getX(), this->y - rhs.getY());
+	template <typename A>
+	_Vec2d<T> operator-(_Vec2d<A>& rhs) {
+		return _Vec2d<T>(this->x - T(rhs.getX()), this->y - T(rhs.getY()));
 	}
-	double operator*(const _Vec2d<T>& rhs) {
-		return double(this->x) * double(rhs.getX()) + double(this->y) * double(rhs.getY());
+	template <typename A>
+	_Vec2d<T>& operator-=(_Vec2d<A>& rhs) {
+		this->x -= T(rhs.getX()); 
+		this->y -= T(rhs.getY());
 	}
-	_Vec2d<T>& operator*(const int value) {
-		this->x *= value;
-		this->y *= value;
+	template <typename A>
+	_Vec2d<T>& operator*=(const A value) {
+		this->x *= T(value);
+		this->y *= T(value);
 		return *this;
 	}
-	_Vec2d<T>& operator=(const _Vec2d<T>& rhs) {
-		this->x = rhs.x;
-		this->y = rhs.y;
+	template <typename A>
+	_Vec2d<T> operator*(const A value){
+		return _Vec2d<T>(
+			this->x * T(value),
+			this->y * T(value)
+		);
+	}
+	template <typename A>
+	_Vec2d<T>& operator=(const _Vec2d<A>& rhs) {
+		this->x = T(rhs.x);
+		this->y = T(rhs.y);
 		return *this;
 	}
 	template <typename A>
 	explicit operator _Vec2d<A>() const {
 		return _Vec2d<A>(A(this->x), A(this->y));
+	}
+	void print(){
+		Logger::log(
+			"Vector ---------------------"
+			"X:"+std::to_string(x)+
+			"Y:"+std::to_string(y)+
+			"End ------------------------"
+		);
 	}
 };
 
@@ -87,14 +113,17 @@ public:
 	const T getZ() const {
 		return this->z;
 	};
-	void setX(T x) {
-		this->x = x;
+	template <typename A>
+	void setX(A x) {
+		this->x = T(x);
 	}
-	void setY(T y) {
-		this->y = y;
+	template <typename A>
+	void setY(A y) {
+		this->y = T(y);
 	}
-	void setZ(T z) {
-		this->z = z;
+	template <typename A>
+	void setZ(A z) {
+		this->z = T(z);
 	}
 	const double size() const {
 		return sqrt(this->x * this->x + this->y * this->y + this->z * this->z);
@@ -103,36 +132,77 @@ public:
 		const double size = this->size();
 		return _Vec3d<double>(double(this->x) / size, double(this->y) / size, double(this->z) / size);
 	}
-	_Vec3d& operator+=(const _Vec3d<T>& rhs) {
-		this->x += rhs.getX();
-		this->y += rhs.getY();
-		this->z += rhs.getZ();
+	template <typename A>
+	_Vec3d<T>& operator+=(const _Vec3d<A>& rhs) {
+		this->x += T(rhs.getX());
+		this->y += T(rhs.getY());
+		this->z += T(rhs.getZ());
 		return *this;
 	}
-	_Vec3d<T> operator+(const _Vec3d<T>& rhs) {
-		return _Vec2d<T>(this->x + rhs.getX(), this->y + rhs.getY(), this->z + rhs.getZ());
+	template <typename A>
+	_Vec3d<T> operator+(const _Vec3d<A>& rhs) {
+		return _Vec3d<T>(this->x + T(rhs.getX()), this->y + T(rhs.getY()), this->z + T(rhs.getZ()));
 	}
-	_Vec3d<T> operator-(const _Vec3d<T>& rhs) const {
-		return _Vec3d<T>(this->x - rhs.getX(), this->y - rhs.getY(), this->z - rhs.getZ());
+	template <typename A>
+	_Vec3d<T>& operator-=(const _Vec3d<A>& rhs) const {
+		this->x -= T(rhs.getX()); 
+		this->y -= T(rhs.getY()); 
+		this->z -= T(rhs.getZ());
 	}
-	double operator*(const _Vec3d<T>& rhs) {
-		return double(this->x) * double(rhs.getX()) + double(this->y) * double(rhs.getY() + double(this->z) * double(this->z));
+	template <typename A>
+	_Vec3d<T> operator-(const _Vec3d<A>& rhs) const {
+		return _Vec3d<T>(this->x - T(rhs.getX()), this->y - T(rhs.getY()), this->z - T(rhs.getZ()));
 	}
-	_Vec3d<T>& operator*(const int value) {
-		this->x *= value;
-		this->y *= value;
-		this->z *= value;
+	template <typename A>
+	_Vec3d<T>& operator*=(const A value) {
+		this->x *= T(value);
+		this->y *= T(value);
+		this->z *= T(value);
 		return *this;
 	}
-	_Vec3d<T>& operator=(const _Vec3d<T>& rhs) {
-		this->x = rhs.x;
-		this->y = rhs.y;
-		this->z = rhs.z;
+	template <typename A>
+	_Vec3d<T> operator*(const A value) {
+		return _Vec3d<T>(
+			this->x * T(value),
+			this->y * T(value),
+			this->z * T(value)
+		);
+	}
+	template <typename A>
+	_Vec3d<T>& operator=(const _Vec3d<A>& rhs) {
+		this->x = T(rhs.x);
+		this->y = T(rhs.y);
+		this->z = T(rhs.z);
 		return *this;
 	}
 	template <typename A>
 	explicit operator _Vec3d<A>() const {
 		return _Vec3d<A>(A(this->x), A(this->y), A(this->z));
+	}
+	template <typename A,typename B>
+	_Vec3d<T>& crossProduct(_Vec3d<A>& vec1,_Vec3d<B>& vec2){
+		x = T(vec1.y) * T(vec2.z) - T(vec1.z) * T(vec2.y),
+		y = T(vec1.z) * T(vec2.x) - T(vec1.x) * T(vec2.z),
+		z = T(vec1.x) * T(vec2.y) - T(vec1.y) * T(vec2.x);
+		return *this;
+	}
+	template <typename A>
+	T dotProduct(_Vec3d<A>& rhs){
+		return (this->x * T(rhs.x)) + (this->y * T(rhs.y)) + (this->z * T(rhs.z));
+	}
+	template <typename A>
+	_Vec3d<T> crossProduct(_Vec3d<A>& rhs){
+		_Vec3d<T> result;
+		result.crossProduct(this,rhs);
+		return result;
+	}
+	void print(){
+		Logger::log(
+			"Vector ---------------------"
+			"X:"+std::to_string(x)+
+			"Y:"+std::to_string(y)+
+			"Z:"+std::to_string(z)
+		);
 	}
 };
 

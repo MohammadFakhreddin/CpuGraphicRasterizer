@@ -69,7 +69,7 @@ public:
 		unsigned int physicalDeviceScreenWidth,
 		unsigned int physicalDeviceScreenHeight
 	);
-	void mainLoop(int deltaTime);
+	void mainLoop(double deltaTime);
 	void notifyKeyIsPressed(Application::Buttons);
 	void putPixelInMap(int x,int y,float zValue,float red,float green,float blue);
 	static Application* getInstance();
@@ -105,16 +105,19 @@ public:
 	unsigned int getPhysicalScreenWidth();
 	unsigned int getPhysicalScreenHeight();
 
+	Vec3DFloat& getCameraLocation();
+
 private:
 
-	void render(int deltaTime);
-	void update(int deltaTime);
-	void initPixelMap();
-	
+	void render(double deltaTime);
+	void update(double deltaTime);
+	void init();
+
 	double currentFps = 0;
+
 	OpenGL openGLInstance;
 
-private:
+	Vec3DFloat cameraLocation = Vec3DFloat(0,0,cameraZLocation);
 
 	unsigned int physicalScreenWidth;
 	unsigned int physicalScreenHeight;

@@ -36,10 +36,6 @@ cmake . -GNinja -DCMAKE_TOOLCHAIN_FILE=<Vcpkg toolchain file address>
 ninja
 ./3d-cube.exe
 ``` 
-Also if you have node installed modify package.json for vcpkg toolchain address and then just run
-```
-npm run start
-```
 
 ### Mac:
 Install following dependencies : 
@@ -69,9 +65,15 @@ make
 ```
 
 ### IOS
-Open xcode project and set your team id bundle identifier and then run project.
+Open XCode project and set your team id bundle identifier and then run project.
 
 ### Android
 Open android folder using android studio and then run project.
 
-##### #3d #OpenGL #c++ #cmak3 #mac #windows #ubuntu #android #ios
+## RoadMap:
+Coming soon :)
+
+## Documents:
+I'm not sure if anybody wants to run my projects but if you liked to work with it tell me and I try my best to provide documentations for this project
+
+##### #3d #OpenGL #c++ #cmake #mac #windows #ubuntu #android #ios

@@ -61,7 +61,7 @@ public:
     float scaleValue
   );
   bool checkForNodesValidation();
-  void update(float deltaTime);
+  void update(double deltaTime);
   void transformX(float x);
   void transformY(float y);
   void transformZ(float z);

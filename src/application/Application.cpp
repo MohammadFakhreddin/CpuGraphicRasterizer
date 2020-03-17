@@ -5,6 +5,7 @@
 #include <vector>
 #include "../3d_shape/Shape3d.h"
 #include "../utils/log/Logger.h"
+#include "../utils/math/Math.h"
 
 Application::Application(
 	Application::Platform platform,
@@ -31,9 +32,9 @@ Application::Application(
 			width,
 			width,
 			width,
-			appScreenWidth/2,
-			appScreenHeight/2,
-			width + (maximumFov/2),
+			float(appScreenWidth)/2.0f,
+			float(appScreenHeight)/2.0f,
+			float(width + 500),
 			0,
 			0,
 			0,
@@ -48,15 +49,11 @@ Application::Application(
 		// 	-maximumFov/2,
 		// 	0,
 		// 	0,
-		// 	0,
-		// 	1
-		// );
+	:
 		Logger::log("Creating shape was successful");
 	}
 	
-	initPixelMap();
-
-	Logger::log("Ready for rendering page:");
+	init();
 }
 
 void Application::notifyScreenSurfaceChanged(
@@ -75,24 +72,32 @@ void Application::notifyScreenSurfaceChanged(
 	openGLInstance.notifyScreenSurfaceChanged(appScreenWidth,appScreenHeight,physicalScreenWidth,physicalScreenHeight);
 
 	pixelMap.erase(pixelMap.begin(),pixelMap.end());
-	initPixelMap();
+
+	init();
 }
 
-void Application::initPixelMap(){
-	Logger::log("Initiating pixel map:");
-	for(int i=0;i<appScreenWidth;i++){
-		std::vector<DrawPixel> innerMap;
-		pixelMap.emplace_back(innerMap);
-		for(int j=0;j<appScreenHeight;j++){
-			DrawPixel drawPixel;
-			drawPixel.zValue = cameraZLocation;
-			drawPixel.blue = 0;
-			drawPixel.green = 0;
-			drawPixel.red = 0;
-			pixelMap.at(i).emplace_back(drawPixel);
-		}
+void Application::init(){
+	{
+		cameraLocation.setX(float(appScreenWidth)/2.0f);
+		cameraLocation.setY(float(appScreenHeight)/2.0f);
 	}
-	Logger::log("Pixel map is ready");
+	{
+		Logger::log("Initiating pixel map:");
+		for(int i=0;i<appScreenWidth;i++){
+			std::vector<DrawPixel> innerMap;
+			pixelMap.emplace_back(innerMap);
+			for(int j=0;j<appScreenHeight;j++){
+				DrawPixel drawPixel;
+				drawPixel.zValue = cameraZLocation;
+				drawPixel.blue = 0;
+				drawPixel.green = 0;
+				drawPixel.red = 0;
+				pixelMap.at(i).emplace_back(drawPixel);
+			}
+		}
+		Logger::log("Pixel map is ready");
+	}
+	Logger::log("Ready for rendering page:");
 }
 
 void Application::drawLineBetweenPoints(
@@ -119,15 +124,15 @@ void Application::drawLineBetweenPoints(
     float zM = (endZ - startZ)/xDifference;
     putPixelInMap(static_cast<int>(round(startX)), static_cast<int>(round(startY)), startZ, red, green, blue);
     float stepMoveValue = startX - endX > 0 ? -1 : +1;
-		do{
- 			startX += stepMoveValue;
-      startY += yM * stepMoveValue;
-      startZ += zM * stepMoveValue;
-      putPixelInMap(int(round(startX)),int(round(startY)),startZ,red,green,blue);
-		}while (
-			( stepMoveValue > 0 && startX + stepMoveValue < endX ) || 
-			( stepMoveValue < 0 && startX - stepMoveValue > endX )
-		);
+	do{
+		startX += stepMoveValue;
+		startY += yM * stepMoveValue;
+		startZ += zM * stepMoveValue;
+		putPixelInMap(int(round(startX)),int(round(startY)),startZ,red,green,blue);
+	}while (
+		( stepMoveValue > 0 && startX + stepMoveValue < endX ) || 
+		( stepMoveValue < 0 && startX - stepMoveValue > endX )
+	);
   } else {
     float yDifference = endY - startY;
 	if(yDifference==0){
@@ -165,25 +170,25 @@ void Application::drawTextureBetweenPoints(
 
 	float triangleTotalStepCount = 0;
 	float triangleXStepValue = 0;
-	float traingleYStepValue = 0;
+	float triangleYStepValue = 0;
 	float triangleZStepValue = 0;
 	{//TriangleStepValue
 		if(abs(triangleEndX - triangleStartX) > abs(triangleEndY - triangleStartY)){
 			float xDifference = triangleEndX - triangleStartX;
 			assert(xDifference!=0);
-			triangleXStepValue = (xDifference>0 ? 1:-1) * drawStepValue;
+			triangleXStepValue = (xDifference>0 ? 1.0f:-1.0f) * drawStepValue;
 			triangleTotalStepCount = abs(xDifference/Application::drawStepValue);
 			assert(triangleTotalStepCount!=0);
-			traingleYStepValue = ((triangleEndY - triangleStartY)/xDifference) * triangleXStepValue;
+            triangleYStepValue = ((triangleEndY - triangleStartY) / xDifference) * triangleXStepValue;
 			triangleZStepValue = ((triangleEndZ - triangleStartZ)/xDifference) * triangleXStepValue;
 		}else{
 			float yDifference = triangleEndY - triangleStartY;
 			assert(yDifference!=0);
 			triangleTotalStepCount = abs(yDifference/Application::drawStepValue);
 			assert(triangleTotalStepCount!=0);
-			traingleYStepValue = ( yDifference > 0 ? 1.0f : -1.0f ) * drawStepValue;
-			triangleXStepValue = ((triangleEndX - triangleStartX)/yDifference) * traingleYStepValue;
-			triangleZStepValue = ((triangleEndZ - triangleStartZ)/yDifference) * traingleYStepValue;
+            triangleYStepValue = (yDifference > 0 ? 1.0f : -1.0f ) * drawStepValue;
+			triangleXStepValue = ((triangleEndX - triangleStartX)/yDifference) * triangleYStepValue;
+			triangleZStepValue = ((triangleEndZ - triangleStartZ)/yDifference) * triangleYStepValue;
 		}
 	}
 
@@ -219,7 +224,7 @@ void Application::drawTextureBetweenPoints(
 	);
 	for(int i=0;i<triangleTotalStepCount;i++){
 		triangleStartX += triangleXStepValue;
-		triangleStartY += traingleYStepValue;
+		triangleStartY += triangleYStepValue;
 		triangleStartZ += triangleZStepValue;
 		textureStartX += textureXStepValue;
 		textureStartY += textureYStepValue;
@@ -257,7 +262,7 @@ void Application::putPixelInMap(int x,int y,float zValue,float red,float green,f
 	}
 } 
 
-void Application::render(int deltaTime) {
+void Application::render(double deltaTime) {
 	openGLInstance.clear();
 	{//Drawing screen
 		openGLInstance.beginDrawingPoints();
@@ -288,68 +293,67 @@ void Application::render(int deltaTime) {
 	openGLInstance.flush();
 }
 
-void Application::update(int deltaTime) {
+void Application::update(double deltaTime) {
 	if (keyEvents[leftButton]==true) {
-		shape->transformX(-1 * Application::shapeTransformSpeed * deltaTime);
+		shape->transformX(float(-1.0f * Application::shapeTransformSpeed * deltaTime));
 		keyEvents[leftButton] = false;
 	}
 	if (keyEvents[rightButton]==true) {
-		shape->transformX(Application::shapeTransformSpeed * deltaTime);
+		shape->transformX(float(Application::shapeTransformSpeed * deltaTime));
 		keyEvents[rightButton] = false;
 	}
 	if (keyEvents[forwardButton] == true) {
-		shape->transformY(Application::shapeTransformSpeed * deltaTime);
+		shape->transformY(float(Application::shapeTransformSpeed * deltaTime));
 		keyEvents[forwardButton] = false;
 	}
 	if (keyEvents[backwardButton] == true) {
-		shape->transformY(-1 * Application::shapeTransformSpeed * deltaTime);
+		shape->transformY(float(-1 * Application::shapeTransformSpeed * deltaTime));
 		keyEvents[backwardButton] = false;
 	}
-  //TODO Add transformZ (It must be like scale factor)
-	if (keyEvents[rotationZLeftButton] == true) {
-		shape->rotateZ(Application::shapeRotationSpeed * deltaTime);
+  	if (keyEvents[rotationZLeftButton] == true) {
+		shape->rotateZ(float(Application::shapeRotationSpeed * deltaTime));
 		keyEvents[rotationZLeftButton] = false;
 	}
 	if (keyEvents[rotationZRightButton]) {
-		shape->rotateZ(-1* Application::shapeRotationSpeed * deltaTime);
+		shape->rotateZ(float(-1.0f * Application::shapeRotationSpeed * deltaTime));
 		keyEvents[rotationZRightButton] = false;
 	}
-  if (keyEvents[rotationXLeftButton] == true) {
-		shape->rotateX(Application::shapeRotationSpeed * deltaTime);
+  	if (keyEvents[rotationXLeftButton] == true) {
+		shape->rotateX(float(Application::shapeRotationSpeed * deltaTime));
 		keyEvents[rotationXLeftButton] = false;
 	}
 	if (keyEvents[rotationXRightButton]) {
-		shape->rotateX(-1* Application::shapeRotationSpeed * deltaTime);
+		shape->rotateX(float(-1.0f * Application::shapeRotationSpeed * deltaTime));
 		keyEvents[rotationXRightButton] = false;
 	}
 	if (keyEvents[rotationYLeftButton] == true) {
-		shape->rotateY(Application::shapeRotationSpeed * deltaTime);
+		shape->rotateY(float(Application::shapeRotationSpeed * deltaTime));
 		keyEvents[rotationYLeftButton] = false;
 	}
 	if (keyEvents[rotationYRightButton]) {
-		shape->rotateY(-1* Application::shapeRotationSpeed * deltaTime);
+		shape->rotateY(float(-1.0f * Application::shapeRotationSpeed * deltaTime));
 		keyEvents[rotationYRightButton] = false;
 	}
 	if (keyEvents[zoomInButton]) {
-		shape->scale(Application::shapeScaleSpeed * deltaTime);
+		shape->scale(float(Application::shapeScaleSpeed * deltaTime));
 		keyEvents[zoomInButton] = false;
 	}
 	if (keyEvents[zoomOutButton]) {
-		shape->scale(-1 * Application::shapeScaleSpeed * deltaTime);
+		shape->scale(float(-1.0f * Application::shapeScaleSpeed * deltaTime));
 		keyEvents[zoomOutButton] = false;
 	}
 	if(keyEvents[forwardZButton]){
-		shape->transformZ(Application::shapeTransformSpeed * deltaTime);
+		shape->transformZ(float(Application::shapeTransformSpeed * deltaTime));
 		keyEvents[forwardZButton] = false;
 	}
 	if(keyEvents[backwardZButton]){
-		shape->transformZ(-1 * Application::shapeTransformSpeed * deltaTime);
+		shape->transformZ(float(-1.0f * Application::shapeTransformSpeed * deltaTime));
 		keyEvents[backwardZButton] = false;
 	}
 	{//Temporary code for auto rotation
-		shape->rotateY(-1.0f * Application::shapeRotationSpeed * 1);
-		shape->rotateX(-1.0f * Application::shapeRotationSpeed * 1);
-		shape->rotateZ(-1.0f * Application::shapeRotationSpeed * 1);
+		shape->rotateY(float(-1.0f * Application::shapeRotationSpeed * deltaTime * 0.1f));
+		shape->rotateX(float(-1.0f * Application::shapeRotationSpeed * deltaTime * 0.1f));
+		shape->rotateZ(float(-1.0f * Application::shapeRotationSpeed * deltaTime * 0.1f));
 	}
 	shape->update(deltaTime);
 }
@@ -364,11 +368,12 @@ Application* Application::getInstance()
 	return Application::instance;
 }
 
-void Application::mainLoop(int deltaTime){
+void Application::mainLoop(double deltaTime){
+	deltaTime = Math::max(deltaTime,1000.0);
 	update(deltaTime);
 	render(deltaTime);
 	if(deltaTime>0){
-		currentFps = 1000.0f/float(deltaTime);
+		currentFps = 1000.0f/deltaTime;
 	}
 	assert(openGLInstance.checkForOpenGlError());
 }
@@ -389,4 +394,8 @@ unsigned int Application::getPhysicalScreenWidth(){
 
 unsigned int Application::getPhysicalScreenHeight(){
 	return physicalScreenHeight;
+}
+
+Vec3DFloat& Application::getCameraLocation(){
+	return cameraLocation;
 }

@@ -29,7 +29,15 @@ public:
     std::vector<float>{0},
     std::vector<float>{0}
   });
-  void render(std::vector<MatrixFloat>* worldPoints) override;
+  void render(
+    std::vector<MatrixFloat>* worldPoints,
+    Vec3DFloat& cameraLocation,
+    unsigned int appScreenWidth,
+    unsigned int appScreenHeight,
+    float transformX,
+    float transformY,
+    float transformZ
+  ) override;
   EdgeType getEdgeType() override;
 };
 
