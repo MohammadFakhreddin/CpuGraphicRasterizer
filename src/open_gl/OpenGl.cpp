@@ -15,15 +15,15 @@ physicalScreenHeight(physicalScreenHeight)
 }
 
 void OpenGL::notifyScreenSurfaceChanged(
-  unsigned int appScreenWidth,
-  unsigned int appScreenHeight,
-  unsigned int physicalScreenWidth,
-  unsigned int physicalScreenHeight
+  unsigned int paramAppScreenWidth,
+  unsigned int paramAppScreenHeight,
+  unsigned int paramPhysicalScreenWidth,
+  unsigned int paramPhysicalScreenHeight
 ){
-  this->appScreenWidth = appScreenWidth;
-  this->appScreenHeight = appScreenHeight;
-  this->physicalScreenWidth = physicalScreenWidth;
-  this->physicalScreenHeight = physicalScreenHeight;
+  this->appScreenWidth = paramAppScreenWidth;
+  this->appScreenHeight = paramAppScreenHeight;
+  this->physicalScreenWidth = paramPhysicalScreenWidth;
+  this->physicalScreenHeight = paramPhysicalScreenHeight;
 
   init();
 }
