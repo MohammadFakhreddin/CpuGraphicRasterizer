@@ -83,10 +83,7 @@ double deltaTime = 0;
                                         realScreenWidth,
                                         realScreenHeight
                                     );
-    //To prevent overflow in numbers for first frame
-    lastTime = [self currentTimeInMilliseconds];
-    currentTime = [self currentTimeInMilliseconds];
-}
+ }
 
 - (double)currentTimeInMilliseconds {
     NSDate *date = [NSDate date];
