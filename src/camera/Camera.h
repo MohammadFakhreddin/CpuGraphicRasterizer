@@ -10,7 +10,7 @@
 
 class Camera{
 public:
-
+    //TODO Store point size as well
     struct DrawPixel{
 		float zValue;
 		float red;
@@ -25,17 +25,13 @@ public:
         float left,
         float right,
         float top,
-        float bottom,
-        unsigned int appScreenWidth,
-        unsigned int appScreenHeight
+        float bottom
     );
     void notifyScreenSurfaceIsChanged(
         float left,
         float right,
         float top,
-        float bottom,
-        unsigned int appScreenWidth,
-        unsigned int appScreenHeight    
+        float bottom
     );
     void drawLineBetweenPoints(
 		float startX,
@@ -77,12 +73,14 @@ public:
     float getBottom();
     float getCameraZLocation();
     unsigned int calculateStepCount(float difference);
-    float calculateStepValue(float difference);
+    float calculateStepValue(float difference,unsigned int totalStepCount);
 private:
 
-    void initPixelMap();
-
+    static constexpr bool DEBUG_MODE = false;
+    
     static constexpr float drawStepValue = 0.5;
+
+    void initPixelMap();
 
     float cameraZLocation;
     float cameraFieldOfView;
@@ -96,6 +94,7 @@ private:
     unsigned int appScreenHeight;
 
     std::vector<std::vector<DrawPixel>> pixelMap;
+
     DrawPixel* currentPixel;
 
     OpenGL& openGLInstance;

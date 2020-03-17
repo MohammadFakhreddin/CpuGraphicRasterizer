@@ -7,8 +7,6 @@
 #include "./../../../utils/log/Logger.h"
 #include "../../../camera/Camera.h"
 
-bool DEBUG_MODE = false;
-
 TextureEdge::TextureEdge(
   int edge1,
   int edge2,
@@ -105,8 +103,8 @@ void TextureEdge::render(
     if(abs(triangleStartX - trianglePoint3X)>abs(triangleStartY - trianglePoint3Y)){
       float xDifference = trianglePoint3X - triangleStartX;
       assert(xDifference!=0);
-      triangleStartStepValueX = cameraInstance.calculateStepValue(xDifference);
       totalStepCount = cameraInstance.calculateStepCount(xDifference);
+      triangleStartStepValueX = cameraInstance.calculateStepValue(xDifference,totalStepCount);
       assert(totalStepCount!=0);
       triangleStartStepValueY = ((trianglePoint3Y - triangleStartY)/xDifference) * triangleStartStepValueX;
       triangleStartStepValueZ = ((trianglePoint3Z - triangleStartZ)/xDifference) * triangleStartStepValueX;
@@ -114,13 +112,19 @@ void TextureEdge::render(
     {
       float yDifference = trianglePoint3Y - triangleStartY;
       assert(yDifference!=0);
-      triangleStartStepValueY = cameraInstance.calculateStepValue(yDifference);
       totalStepCount = cameraInstance.calculateStepCount(yDifference);
+      triangleStartStepValueY = cameraInstance.calculateStepValue(yDifference,totalStepCount);
       assert(totalStepCount!=0);
       triangleStartStepValueX = ((trianglePoint3X - triangleStartX)/yDifference) * triangleStartStepValueY;
       triangleStartStepValueZ = ((trianglePoint3Z - triangleStartZ)/yDifference) * triangleStartStepValueY;
     }
   }
+
+  assert(totalStepCount!=0);
+
+  if(DEBUG_MODE){
+    Logger::log("TotalStepCount:"+std::to_string(totalStepCount));
+  }  
 
   float triangleEndX = trianglePoint2X;
   float triangleEndY = trianglePoint2Y;

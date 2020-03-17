@@ -26,11 +26,9 @@ Application::Application(
 		cameraInitialZLocation,
 		cameraInitialMaximumFov,
 		0,
-		appScreenWidth,
+		paramAppScreenWidth,
 		0,
-		appScreenHeight,
-		appScreenWidth,
-		appScreenHeight
+		paramAppScreenHeight
 	)
 {
 	instance = this;
@@ -71,8 +69,6 @@ void Application::notifyScreenSurfaceChanged(
 			0,
 			appScreenWidth,
 			0,
-			appScreenHeight,
-			appScreenWidth,
 			appScreenHeight
 		);
 	}

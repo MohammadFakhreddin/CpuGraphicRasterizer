@@ -2,6 +2,9 @@
 
 #include <cassert>
 
+#include "./../utils/log/Logger.h"
+#include "./../utils/math/Math.h"
+
 Camera::Camera(
     OpenGL& openGLInstance,
     float cameraZLocation,
@@ -9,9 +12,7 @@ Camera::Camera(
     float left,
     float right,
     float top,
-    float bottom,
-    unsigned int appScreenWidth,
-    unsigned int appScreenHeight
+    float bottom
 ) :
 openGLInstance(openGLInstance),
 cameraZLocation(cameraZLocation),
@@ -20,9 +21,29 @@ left(left),
 right(right),
 top(top),
 bottom(bottom),
-appScreenWidth(appScreenWidth),
-appScreenHeight(appScreenHeight)
+appScreenWidth( right - left ),
+appScreenHeight( bottom - top )
 {
+	
+	if(DEBUG_MODE==true){
+		Logger::log("==========================");
+		Logger::log("Camera information:");
+		Logger::log("Left: "+std::to_string(left));
+		Logger::log("Right: "+std::to_string(right));
+		Logger::log("Top: "+std::to_string(top));
+		Logger::log("Bottom: "+std::to_string(bottom));
+		Logger::log("CameraZLocation: "+ std::to_string(cameraZLocation));
+		Logger::log("FOV: "+std::to_string(cameraFieldOfView));
+		Logger::log("AppScreenWidth: "+std::to_string(appScreenWidth));
+		Logger::log("AppScreenHeight: "+std::to_string(appScreenHeight));
+		Logger::log("==========================");
+	}
+
+	assert(bottom>top);
+	assert(right>left);
+	assert(appScreenWidth>0);
+	assert(appScreenHeight>0); 
+
     initPixelMap();
 }
 
@@ -30,9 +51,7 @@ void Camera::notifyScreenSurfaceIsChanged(
     float left,
     float right,
     float top,
-    float bottom,
-    unsigned int appScreenWidth,
-    unsigned int appScreenHeight    
+    float bottom
 ){
     this->cameraZLocation = cameraZLocation;
     this->cameraFieldOfView = cameraFieldOfView;
@@ -40,15 +59,22 @@ void Camera::notifyScreenSurfaceIsChanged(
     this->right = right;
     this->top = top;
     this->bottom = bottom;
-    this->appScreenWidth = appScreenWidth;
-    this->appScreenHeight = appScreenHeight;
+    this->appScreenWidth = right - left;
+    this->appScreenHeight = bottom - top;
+
+	assert(right>left);
+	assert(bottom>top);
+	assert(appScreenWidth>0);
+	assert(appScreenHeight>0);
 
     pixelMap.erase(pixelMap.begin(),pixelMap.end());
     initPixelMap();
 }
 
 void Camera::initPixelMap(){
-   	Logger::log("Initiating pixel map:");
+	if(DEBUG_MODE){
+   		Logger::log("Initiating pixel map:");
+	}
     for(int i=0;i<appScreenWidth;i++){
         std::vector<DrawPixel> innerMap;
         pixelMap.emplace_back(innerMap);
@@ -61,7 +87,9 @@ void Camera::initPixelMap(){
             pixelMap.at(i).emplace_back(drawPixel);
         }
     }
-    Logger::log("Pixel map is ready");
+	if(DEBUG_MODE){
+    	Logger::log("Pixel map is ready");
+	}
 }
 
 void Camera::drawLineBetweenPoints(
@@ -140,8 +168,8 @@ void Camera::drawTextureBetweenPoints(
 		if(abs(triangleEndX - triangleStartX) > abs(triangleEndY - triangleStartY)){
 			float xDifference = triangleEndX - triangleStartX;
 			assert(xDifference!=0);
-			triangleXStepValue = calculateStepValue(xDifference);
 			triangleTotalStepCount = calculateStepCount(xDifference);
+			triangleXStepValue = calculateStepValue(xDifference,triangleTotalStepCount);
 			assert(triangleTotalStepCount!=0);
             triangleYStepValue = ((triangleEndY - triangleStartY)/xDifference) * triangleXStepValue;
 			triangleZStepValue = ((triangleEndZ - triangleStartZ)/xDifference) * triangleXStepValue;
@@ -150,7 +178,7 @@ void Camera::drawTextureBetweenPoints(
 			assert(yDifference!=0);
 			triangleTotalStepCount = calculateStepCount(yDifference);
 			assert(triangleTotalStepCount!=0);
-            triangleYStepValue = calculateStepValue(yDifference);
+            triangleYStepValue = calculateStepValue(yDifference,triangleTotalStepCount);
 			triangleXStepValue = ((triangleEndX - triangleStartX)/yDifference) * triangleYStepValue;
 			triangleZStepValue = ((triangleEndZ - triangleStartZ)/yDifference) * triangleYStepValue;
 		}
@@ -186,6 +214,7 @@ void Camera::drawTextureBetweenPoints(
 		green,
 		blue
 	);
+
 	for(int i=0;i<triangleTotalStepCount;i++){
 		triangleStartX += triangleXStepValue;
 		triangleStartY += triangleYStepValue;
@@ -205,16 +234,19 @@ void Camera::drawTextureBetweenPoints(
 }
 
 void Camera::putPixelInMap(int x,int y,float zValue,float red,float green,float blue){
+	//TODO Maybe we need cliping before inserting into pixel array
 	if(
 		zValue <= cameraZLocation || 
 		zValue >= cameraFieldOfView ||  
 		x < left ||
 		x >= right ||
-		y < left ||
-		y >= right
+		y < top ||
+		y >= bottom
 	){
 		return;
 	}
+	assert(x>=left && x<right);
+	assert(y>=top && y<bottom);
 	currentPixel = &pixelMap.at(x).at(y);
 	if(currentPixel->zValue == 0 || currentPixel->zValue > zValue){
 		currentPixel->blue = blue;
@@ -227,8 +259,8 @@ void Camera::putPixelInMap(int x,int y,float zValue,float red,float green,float 
 void Camera::render(double deltaTime){
     {//Drawing screen
 		openGLInstance.beginDrawingPoints();
-		for(unsigned int i=0;i<appScreenWidth;i++){
-			for(unsigned int j=0;j<appScreenHeight;j++){
+		for(auto i=0;i<appScreenWidth;i++){
+			for(auto j=0;j<appScreenHeight;j++){
 				currentPixel = &pixelMap.at(i).at(j); 
 				if(currentPixel->blue!=0 || currentPixel->green!=0 || currentPixel->red!=0){
 					openGLInstance.drawPixel(
@@ -269,13 +301,13 @@ float Camera::getTop(){
 float Camera::getBottom(){
     return bottom;
 }
-
+//TODO Store point size for each pixel as well
 unsigned int Camera::calculateStepCount(float difference){
-	return ceil(abs(difference/Camera::drawStepValue));
+	return Math::max((unsigned int)ceil(abs(difference/Camera::drawStepValue)),appScreenWidth);
 }
 
-float Camera::calculateStepValue(float difference){
-	return (difference > 0 ? 1 : -1) * Camera::drawStepValue;
+float Camera::calculateStepValue(float difference,unsigned int totalStepCount){
+	return (difference)/double(totalStepCount);//Camera::drawStepValue;
 }
 
 float Camera::getCameraZLocation(){

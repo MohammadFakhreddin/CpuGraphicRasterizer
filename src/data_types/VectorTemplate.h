@@ -78,12 +78,10 @@ public:
 		return _Vec2d<A>(A(this->x), A(this->y));
 	}
 	void print(){
-		Logger::log(
-			"Vector ---------------------"
-			"X:"+std::to_string(x)+
-			"Y:"+std::to_string(y)+
-			"End ------------------------"
-		);
+		Logger::log("Vector ---------------------");
+		Logger::log("X:"+std::to_string(x));
+		Logger::log("Y:"+std::to_string(y));
+		Logger::log("End ------------------------");
 	}
 };
 

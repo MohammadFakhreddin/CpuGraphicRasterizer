@@ -82,6 +82,7 @@ bool BaseEdge::isVisibleToCamera(
         ) - triangleCenter.getY()
     );
     cameraVector.setZ(triangleCenter.getZ() - cameraInstance.getCameraZLocation());
+    // cameraVector.print();
     //Creating edge vectors for normal vector computing
     edge1To2Vector.setX(worldPoints->at(edge2).get(0, 0) - worldPoints->at(edge1).get(0, 0));
     edge1To2Vector.setY(worldPoints->at(edge2).get(1, 0) - worldPoints->at(edge1).get(1, 0));

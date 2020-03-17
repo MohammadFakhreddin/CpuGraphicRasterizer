@@ -8,6 +8,8 @@
 class TextureEdge : public BaseEdge
 {
 private:
+  static constexpr bool DEBUG_MODE = false;
+
   Vec2DFloat edge1TexturePoint;
   Vec2DFloat edge2TexturePoint;
   Vec2DFloat edge3TexturePoint;
