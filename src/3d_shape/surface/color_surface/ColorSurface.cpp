@@ -1,9 +1,11 @@
-#include "./ColorEdge.h"
+#include "./ColorSurface.h"
+
 #include <cassert>
 #include <cmath>
-#include "../../../application/Application.h" 
 
-ColorEdge::ColorEdge(
+#include "./../../../camera/Camera.h"
+
+ColorSurface::ColorSurface(
   int edge1,
   int edge2,
   int edge3,
@@ -21,26 +23,10 @@ ColorEdge::ColorEdge(
   this->edge3 = edge3;
 }
 
-void ColorEdge::render(
-  std::vector<MatrixFloat>* worldPoints,
-  Vec3DFloat& cameraLocation,
-  unsigned int appScreenWidth,
-  unsigned int appScreenHeight,
-  float transformX,
-  float transformY,
-  float transformZ
-){ 
-  if(isVisibleToCamera(
-    worldPoints,
-    cameraLocation,
-    appScreenWidth,
-    appScreenHeight,
-    transformX,
-    transformY,
-    transformZ
-  )==false){
-    return;
-  }
+void ColorSurface::computePixelMapData(
+  Camera& cameraInstance,
+  std::vector<MatrixFloat>* worldPoints
+){
   topEdges.erase(topEdges.begin(),topEdges.end());
   bottomEdges.erase(bottomEdges.begin(),bottomEdges.end());
   middleEdges.erase(middleEdges.begin(),middleEdges.end());
@@ -120,9 +106,14 @@ void ColorEdge::render(
     float endZM = (endZ - finalZ)/(currentY - finalY);
     if(abs(currentY-finalY)>minimumDrawDistance){
       do{
-        Application::getInstance()->drawLineBetweenPoints(
-          startX,currentY,startZ,
-          endX,currentY,endZ,
+        drawLineBetweenPoints(
+          cameraInstance,
+          startX,
+          currentY,
+          startZ,
+          endX,
+          currentY,
+          endZ,
           red,
           green,
           blue
@@ -150,7 +141,8 @@ void ColorEdge::render(
     float endZM = (endZ - finalZ)/yDifference;
     if(abs(currentY - finalY)>minimumDrawDistance){
       do{
-        Application::getInstance()->drawLineBetweenPoints(
+        drawLineBetweenPoints(
+          cameraInstance,
           startX,currentY,startZ,
           endX,currentY,endZ,
           red,
@@ -188,9 +180,14 @@ void ColorEdge::render(
       float endZM = (endZ - finalZ)/(currentY - finalY);
       if(abs(currentY - finalY)>minimumDrawDistance){
         do{
-          Application::getInstance()->drawLineBetweenPoints(
-            startX,currentY,startZ,
-            endX,currentY,endZ,
+          drawLineBetweenPoints(
+            cameraInstance,
+            startX,
+            currentY,
+            startZ,
+            endX,
+            currentY,
+            endZ,
             red,
             green,
             blue
@@ -218,9 +215,14 @@ void ColorEdge::render(
       float endZM = (endZ - finalZ)/(currentY - finalY);
       if(abs(currentY - finalY) > minimumDrawDistance){
         do{
-          Application::getInstance()->drawLineBetweenPoints(
-            startX,currentY,startZ,
-            endX,currentY,endZ,
+          drawLineBetweenPoints(
+            cameraInstance,
+            startX,
+            currentY,
+            startZ,
+            endX,
+            currentY,
+            endZ,
             red,
             green,
             blue
@@ -236,6 +238,90 @@ void ColorEdge::render(
   }
 }
 
-EdgeType ColorEdge::getEdgeType(){
+EdgeType ColorSurface::getEdgeType(){
   return EdgeType::color;
+}
+
+void ColorSurface::drawLineBetweenPoints(
+  Camera& cameraInstance,
+  float startX,
+  float startY,
+  float startZ,
+  float endX,
+  float endY,
+  float endZ,
+  float red,
+  float green,
+  float blue
+){
+  bool moveByX = true;
+  if(abs(startX-endX)<abs(startY-endY)){
+    moveByX = false;
+  }
+  if(moveByX){
+    float xDifference = endX - startX;
+	if(xDifference==0){
+		return;
+	}
+	float yM = (endY - startY)/xDifference;
+    float zM = (endZ - startZ)/xDifference;
+    putPixelInMap(
+      cameraInstance,
+      int(round(startX)), 
+      int(round(startY)), 
+      startZ, 
+      red, 
+      green, 
+      blue
+    );
+    float stepMoveValue = startX - endX > 0 ? -1 : +1;
+	do{
+		startX += stepMoveValue;
+		startY += yM * stepMoveValue;
+		startZ += zM * stepMoveValue;
+		putPixelInMap(
+      cameraInstance,
+      int(round(startX)),
+      int(round(startY)),
+      startZ,red,green,blue
+    );
+	}while (
+		( stepMoveValue > 0 && startX + stepMoveValue < endX ) || 
+		( stepMoveValue < 0 && startX - stepMoveValue > endX )
+	);
+  } else {
+    float yDifference = endY - startY;
+    if(yDifference==0){
+      return;
+    }
+      float xM = (endX - startX)/yDifference;
+      float zM = (endZ - startZ)/yDifference;
+      putPixelInMap(
+        cameraInstance,
+        int(round(startX)),
+        int(round(startY)),
+        startZ,
+        red,
+        green,
+        blue
+      );
+      float stepMoveValue = startY - endY > 0 ? -1 : +1;
+    do{
+      startY += stepMoveValue;
+      startX += xM * stepMoveValue;
+      startZ += zM * stepMoveValue;
+      putPixelInMap(
+        cameraInstance,
+        int(round(startX)),
+        int(round(startY)),
+        startZ,
+        red,
+        green,
+        blue
+      );
+    }while (
+      (stepMoveValue > 0 && startY + stepMoveValue < endY) ||
+      ( stepMoveValue <0 && startY - stepMoveValue > endY )
+    );
+  }
 }

@@ -1,9 +1,11 @@
 #ifndef Wood_class
 #define Wood_class
 
-#include "./../data_types/VectorTemplate.h"
-#include "../3d_shape/edge/texture_edge/TextureEdge.h"
 #include <string>
+
+#include "./../data_types/VectorTemplate.h"
+#include "../3d_shape/surface/base_surface/BaseSurface.h"
+#include "../3d_shape/surface/texture_surface/TextureSurface.h"
 #include "../utils/path/Path.h"
 
 class Wood
@@ -20,19 +22,19 @@ public:
 		)
 	);
 public:
-	std::vector<BaseEdge*> woodCubeEdgeList = std::vector<BaseEdge*>{
-		new TextureEdge(0, 1, 2, woodCubeTexture, Vec2DFloat(0,0), Vec2DFloat(0, vLength - 1), Vec2DFloat(vLength - 1, vLength - 1)),
-		new TextureEdge(3, 1, 2, woodCubeTexture, Vec2DFloat(0,0), Vec2DFloat(vLength - 1, 0), Vec2DFloat(vLength - 1, vLength - 1)),
-		new TextureEdge(3, 1, 5, woodCubeTexture, Vec2DFloat(0,0), Vec2DFloat(0, vLength - 1), Vec2DFloat(vLength - 1, vLength - 1)),
-		new TextureEdge(3, 7, 5, woodCubeTexture, Vec2DFloat(0,0), Vec2DFloat(vLength - 1, 0), Vec2DFloat(vLength - 1, vLength - 1)),
-		new TextureEdge(0, 4, 5, woodCubeTexture, Vec2DFloat(0,0), Vec2DFloat(0, vLength - 1), Vec2DFloat(vLength - 1, vLength - 1)),
-		new TextureEdge(5, 0, 1, woodCubeTexture, Vec2DFloat(0,0), Vec2DFloat(vLength - 1, 0), Vec2DFloat(vLength - 1, vLength - 1)),
-		new TextureEdge(4, 0, 6, woodCubeTexture, Vec2DFloat(0,0), Vec2DFloat(0, vLength - 1), Vec2DFloat(vLength - 1, vLength - 1)),
-		new TextureEdge(2, 0, 6, woodCubeTexture, Vec2DFloat(0,0), Vec2DFloat(vLength - 1, 0), Vec2DFloat(vLength - 1, vLength - 1)),
-		new TextureEdge(2, 7, 6, woodCubeTexture, Vec2DFloat(0,0), Vec2DFloat(0, vLength - 1), Vec2DFloat(vLength - 1, vLength - 1)),
-		new TextureEdge(2, 7, 3, woodCubeTexture, Vec2DFloat(0,0), Vec2DFloat(vLength - 1, 0), Vec2DFloat(vLength - 1, vLength - 1)),
-		new TextureEdge(4, 5, 7, woodCubeTexture, Vec2DFloat(0,0), Vec2DFloat(0, vLength - 1), Vec2DFloat(vLength - 1, vLength - 1)),
-		new TextureEdge(4, 6, 7, woodCubeTexture, Vec2DFloat(0,0), Vec2DFloat(vLength - 1, 0), Vec2DFloat(vLength - 1, vLength - 1))
+	std::vector<BaseSurface*> woodCubeEdgeList = std::vector<BaseSurface*>{
+		new TextureSurface(0, 1, 2, woodCubeTexture, Vec2DFloat(0,0), Vec2DFloat(0, vLength - 1), Vec2DFloat(vLength - 1, vLength - 1)),
+		new TextureSurface(3, 1, 2, woodCubeTexture, Vec2DFloat(0,0), Vec2DFloat(vLength - 1, 0), Vec2DFloat(vLength - 1, vLength - 1)),
+		new TextureSurface(3, 1, 5, woodCubeTexture, Vec2DFloat(0,0), Vec2DFloat(0, vLength - 1), Vec2DFloat(vLength - 1, vLength - 1)),
+		new TextureSurface(3, 7, 5, woodCubeTexture, Vec2DFloat(0,0), Vec2DFloat(vLength - 1, 0), Vec2DFloat(vLength - 1, vLength - 1)),
+		new TextureSurface(0, 4, 5, woodCubeTexture, Vec2DFloat(0,0), Vec2DFloat(0, vLength - 1), Vec2DFloat(vLength - 1, vLength - 1)),
+		new TextureSurface(5, 0, 1, woodCubeTexture, Vec2DFloat(0,0), Vec2DFloat(vLength - 1, 0), Vec2DFloat(vLength - 1, vLength - 1)),
+		new TextureSurface(4, 0, 6, woodCubeTexture, Vec2DFloat(0,0), Vec2DFloat(0, vLength - 1), Vec2DFloat(vLength - 1, vLength - 1)),
+		new TextureSurface(2, 0, 6, woodCubeTexture, Vec2DFloat(0,0), Vec2DFloat(vLength - 1, 0), Vec2DFloat(vLength - 1, vLength - 1)),
+		new TextureSurface(2, 7, 6, woodCubeTexture, Vec2DFloat(0,0), Vec2DFloat(0, vLength - 1), Vec2DFloat(vLength - 1, vLength - 1)),
+		new TextureSurface(2, 7, 3, woodCubeTexture, Vec2DFloat(0,0), Vec2DFloat(vLength - 1, 0), Vec2DFloat(vLength - 1, vLength - 1)),
+		new TextureSurface(4, 5, 7, woodCubeTexture, Vec2DFloat(0,0), Vec2DFloat(0, vLength - 1), Vec2DFloat(vLength - 1, vLength - 1)),
+		new TextureSurface(4, 6, 7, woodCubeTexture, Vec2DFloat(0,0), Vec2DFloat(vLength - 1, 0), Vec2DFloat(vLength - 1, vLength - 1))
 	};
 };
 

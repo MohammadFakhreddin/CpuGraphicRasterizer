@@ -1,11 +1,11 @@
 #define STB_IMAGE_IMPLEMENTATION
-#include "../../../../../src/fa_texture/stb_image_headers.h"
+#include "../../src/fa_texture/stb_image_headers.h"
 
 #include <memory>
 #include <jni.h>
 
 #include "./AndroidEnvironment.h"
-#include "../../../../../src/application/Application.h"
+#include "../../src/application/Application.h"
 //
 // Created by mohammad.fakhreddin on 3/7/20.
 //
@@ -45,7 +45,8 @@ JNIEXPORT void JNICALL Java_co_fakhreddin_cube_Fa3dCube_init(
         application->notifyScreenSurfaceChanged(appScreenWidth,
                                                appScreenHeight,
                                                deviceScreenWidth,
-                                               deviceScreenHeight);
+                                               deviceScreenHeight,
+                                               false);
 
     } else {
 
