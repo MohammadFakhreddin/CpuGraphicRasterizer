@@ -23,8 +23,8 @@ left(left),
 right(right),
 top(top),
 bottom(bottom),
-appScreenWidth( right - left ),
-appScreenHeight( bottom - top )
+appScreenWidth( (unsigned int)(right - left) ),
+appScreenHeight( (unsigned int)(bottom - top) )
 {
 	
 	if(DEBUG_MODE==true){
@@ -55,14 +55,12 @@ void Camera::notifyScreenSurfaceIsChanged(
     float top,
     float bottom
 ){
-    this->cameraZLocation = cameraZLocation;
-    this->cameraFieldOfView = cameraFieldOfView;
     this->left = left;
     this->right = right;
     this->top = top;
     this->bottom = bottom;
-    this->appScreenWidth = right - left;
-    this->appScreenHeight = bottom - top;
+    this->appScreenWidth = (unsigned int)(right - left);
+    this->appScreenHeight = (unsigned int)(bottom - top);
 
 	assert(right>left);
 	assert(bottom>top);
@@ -108,7 +106,7 @@ void Camera::putPixelInMap(int x,int y,float zValue,float red,float green,float 
 	}
 	assert(x>=left && x<right);
 	assert(y>=top && y<bottom);
-	currentPixel = &pixelMap.at(x).at(y);
+	currentPixel = &pixelMap.at((unsigned int)x).at((unsigned int)y);
 	if(currentPixel->zValue == 0 || currentPixel->zValue > zValue){
 		currentPixel->blue = blue;
 		currentPixel->green = green;
@@ -120,8 +118,8 @@ void Camera::putPixelInMap(int x,int y,float zValue,float red,float green,float 
 void Camera::render(double deltaTime){
     {//Drawing screen
 		openGLInstance.beginDrawingPoints();
-		for(auto i=0;i<appScreenWidth;i++){
-			for(auto j=0;j<appScreenHeight;j++){
+		for(unsigned int i=0;i<appScreenWidth;i++){
+			for(unsigned int j=0;j<appScreenHeight;j++){
 				currentPixel = &pixelMap.at(i).at(j); 
 				if(currentPixel->blue!=0 || currentPixel->green!=0 || currentPixel->red!=0){
 					openGLInstance.drawPixel(

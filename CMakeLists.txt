@@ -89,8 +89,8 @@ if(LINUX)
 endif()
 
 if(ANDROID)
-   FILE(GLOB_RECURSE ANDROID_USER_HEADER "android/app/src/main/cpp/*.h")
-   FILE(GLOB_RECURSE ANDROID_USER_CPP "android/app/src/main/cpp/*.cpp")
+   FILE(GLOB_RECURSE ANDROID_USER_HEADER "android/cpp/*.h")
+   FILE(GLOB_RECURSE ANDROID_USER_CPP "android/cpp/*.cpp")
    list(
       APPEND APP_SOURCE
       ${ANDROID_USER_CPP}

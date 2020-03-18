@@ -28,8 +28,10 @@ address(address)
   for(int i=0;i<dataLength;i++){
     data[i].setValue(float(tempData[i])/255.0f);
   }
+#ifndef __ANDROID__
   //Removing temporary data
   delete[] tempData;
+#endif
 
   scaleX = float(width) / virtualImageWidth;
   scaleY = float(height) / virtualImageHeight;

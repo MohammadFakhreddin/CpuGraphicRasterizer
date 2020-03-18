@@ -6,7 +6,7 @@
 #include "../utils/log/Logger.h"
 #include <string>
 #ifdef __ANDROID__
-#include "./../../android/app/src/main/cpp/AndroidEnvironment.h"
+#include "./../../android/cpp/AndroidEnvironment.h"
 #endif
 #ifdef __IOS__
 #include "./../../ios/ThreeDimentionalCube/ThreeDimentionalCube/IPhoneHelperAbstraction.h"
