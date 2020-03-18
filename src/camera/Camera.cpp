@@ -7,6 +7,7 @@
 
 Camera::Camera(
     OpenGL& openGLInstance,
+	Light& lightInstance,
     float cameraZLocation,
     float cameraFieldOfView,
     float left,
@@ -15,6 +16,7 @@ Camera::Camera(
     float bottom
 ) :
 openGLInstance(openGLInstance),
+lightInstance(lightInstance),
 cameraZLocation(cameraZLocation),
 cameraFieldOfView(cameraFieldOfView),
 left(left),
@@ -92,147 +94,6 @@ void Camera::initPixelMap(){
 	}
 }
 
-void Camera::drawLineBetweenPoints(
-  float startX,
-  float startY,
-  float startZ,
-  float endX,
-  float endY,
-  float endZ,
-  float red,
-  float green,
-  float blue
-){
-  bool moveByX = true;
-  if(abs(startX-endX)<abs(startY-endY)){
-    moveByX = false;
-  }
-  if(moveByX){
-    float xDifference = endX - startX;
-	if(xDifference==0){
-		return;
-	}
-	float yM = (endY - startY)/xDifference;
-    float zM = (endZ - startZ)/xDifference;
-    putPixelInMap(static_cast<int>(round(startX)), static_cast<int>(round(startY)), startZ, red, green, blue);
-    float stepMoveValue = startX - endX > 0 ? -1 : +1;
-	do{
-		startX += stepMoveValue;
-		startY += yM * stepMoveValue;
-		startZ += zM * stepMoveValue;
-		putPixelInMap(int(round(startX)),int(round(startY)),startZ,red,green,blue);
-	}while (
-		( stepMoveValue > 0 && startX + stepMoveValue < endX ) || 
-		( stepMoveValue < 0 && startX - stepMoveValue > endX )
-	);
-  } else {
-    float yDifference = endY - startY;
-	if(yDifference==0){
-		return;
-	}
-    float xM = (endX - startX)/yDifference;
-    float zM = (endZ - startZ)/yDifference;
-    putPixelInMap(int(round(startX)),int(round(startY)),startZ,red,green,blue);
-    float stepMoveValue = startY - endY > 0 ? -1 : +1;
-	do{
-		startY += stepMoveValue;
-      	startX += xM * stepMoveValue;
-      	startZ += zM * stepMoveValue;
-      	putPixelInMap(int(round(startX)),int(round(startY)),startZ,red,green,blue);
-	}while (
-      	(stepMoveValue > 0 && startY + stepMoveValue < endY) ||
-		( stepMoveValue <0 && startY - stepMoveValue > endY )
-    );
-  }
-}
-
-void Camera::drawTextureBetweenPoints(
-	std::unique_ptr<FaTexture>& texture,
-	float triangleStartX,
-	float triangleStartY,
-	float triangleStartZ,
-	float triangleEndX,
-	float triangleEndY,
-	float triangleEndZ,
-	float textureStartX,
-	float textureStartY,
-	float textureEndX,
-	float textureEndY
-){
-
-	float triangleTotalStepCount = 0;
-	float triangleXStepValue = 0;
-	float triangleYStepValue = 0;
-	float triangleZStepValue = 0;
-	{//TriangleStepValue
-		if(abs(triangleEndX - triangleStartX) > abs(triangleEndY - triangleStartY)){
-			float xDifference = triangleEndX - triangleStartX;
-			assert(xDifference!=0);
-			triangleTotalStepCount = calculateStepCount(xDifference);
-			triangleXStepValue = calculateStepValue(xDifference,triangleTotalStepCount);
-			assert(triangleTotalStepCount!=0);
-            triangleYStepValue = ((triangleEndY - triangleStartY)/xDifference) * triangleXStepValue;
-			triangleZStepValue = ((triangleEndZ - triangleStartZ)/xDifference) * triangleXStepValue;
-		}else{
-			float yDifference = triangleEndY - triangleStartY;
-			assert(yDifference!=0);
-			triangleTotalStepCount = calculateStepCount(yDifference);
-			assert(triangleTotalStepCount!=0);
-            triangleYStepValue = calculateStepValue(yDifference,triangleTotalStepCount);
-			triangleXStepValue = ((triangleEndX - triangleStartX)/yDifference) * triangleYStepValue;
-			triangleZStepValue = ((triangleEndZ - triangleStartZ)/yDifference) * triangleYStepValue;
-		}
-	}
-
-	float textureXStepValue = 0;
-	float textureYStepValue = 0;
-	{//TextureStepValue
-		if(abs(textureEndX - textureStartX)>abs(textureEndY - textureStartY)){
-			float xDifference = textureEndX - textureStartX;
-			assert(xDifference!=0);
-			textureXStepValue = xDifference/triangleTotalStepCount;
-			textureYStepValue = ((textureEndY - textureStartY)/xDifference) * textureXStepValue;
-		}else
-		{
-			float yDifference = textureEndY - textureStartY;
-			assert(yDifference!=0);
-			textureYStepValue = yDifference/triangleTotalStepCount;
-			textureXStepValue = ((textureEndX - textureStartX)/yDifference) * textureYStepValue;
-		}
-	}
-	
-	float red = 0;
-	float green = 0;
-	float blue = 0;
-
-	texture->getColorForPosition(textureStartX,textureStartY,&red,&green,&blue);
-	putPixelInMap(
-		int(floor(triangleStartX)),
-		int(floor(triangleStartY)),
-		triangleStartZ,
-		red,
-		green,
-		blue
-	);
-
-	for(int i=0;i<triangleTotalStepCount;i++){
-		triangleStartX += triangleXStepValue;
-		triangleStartY += triangleYStepValue;
-		triangleStartZ += triangleZStepValue;
-		textureStartX += textureXStepValue;
-		textureStartY += textureYStepValue;
-		texture->getColorForPosition(textureStartX,textureStartY,&red,&green,&blue);
-		putPixelInMap(
-			int(floor(triangleStartX)),
-			int(floor(triangleStartY)),
-			triangleStartZ,
-			red,
-			green,
-			blue
-		);
-	}
-}
-
 void Camera::putPixelInMap(int x,int y,float zValue,float red,float green,float blue){
 	//TODO Maybe we need cliping before inserting into pixel array
 	if(
@@ -273,8 +134,8 @@ void Camera::render(double deltaTime){
 					currentPixel->blue = 0;
 					currentPixel->red = 0;
 					currentPixel->green = 0;
-					currentPixel->zValue = cameraZLocation;
 				}
+				currentPixel->zValue = cameraZLocation;
 			}
 		}
 		openGLInstance.resetProgram();
@@ -301,15 +162,19 @@ float Camera::getTop(){
 float Camera::getBottom(){
     return bottom;
 }
-//TODO Store point size for each pixel as well
-unsigned int Camera::calculateStepCount(float difference){
-	return Math::max((unsigned int)ceil(abs(difference/Camera::drawStepValue)),appScreenWidth);
-}
-
-float Camera::calculateStepValue(float difference,unsigned int totalStepCount){
-	return (difference)/double(totalStepCount);//Camera::drawStepValue;
-}
 
 float Camera::getCameraZLocation(){
 	return cameraZLocation;
+}
+
+unsigned int Camera::getAppScreenWidth(){
+	return appScreenWidth;
+}
+
+unsigned int Camera::getAppScreenHeight(){
+	return appScreenHeight;
+}
+
+Light& Camera::getLight(){
+	return lightInstance;
 }

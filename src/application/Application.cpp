@@ -20,9 +20,11 @@ Application::Application(
 	physicalScreenHeight(physicalDeviceScreenHeight),
 	appScreenWidth(paramAppScreenWidth),
 	appScreenHeight(paramAppScreenHeight),
+	light(0,0,0),
 	openGLInstance(paramAppScreenWidth,paramAppScreenHeight,physicalDeviceScreenWidth,physicalDeviceScreenHeight),
 	cameraInstance(
 		openGLInstance,
+		light,
 		cameraInitialZLocation,
 		cameraInitialMaximumFov,
 		0,

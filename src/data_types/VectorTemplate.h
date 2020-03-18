@@ -28,6 +28,7 @@ public:
 	void setY(T y) {
 		this->y = y;
 	}
+	//TODO Find a better solution because sqrt is a slow function
 	const double size() const {
 		return sqrt(this->x * this->x + this->y * this->y);
 	}
@@ -193,6 +194,13 @@ public:
 		_Vec3d<T> result;
 		result.crossProduct(this,rhs);
 		return result;
+	}
+	template <typename A>
+	_Vec3d<T>& multiplyOneByOne(_Vec3d<A>& rhs){
+		this->x *= rhs.x;
+		this->y *= rhs.y;
+		this->z *= rhs.z;
+		return *this;
 	}
 	void print(){
 		Logger::log(

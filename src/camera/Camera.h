@@ -7,6 +7,7 @@
 #include "./../data_types/VectorTemplate.h"
 #include "./../open_gl/OpenGl.h"
 #include "./../fa_texture/FaTexture.h"
+#include "./../shaders/light/Light.h"
 
 class Camera{
 public:
@@ -20,6 +21,7 @@ public:
 
     Camera(
         OpenGL& openGlInstance,
+        Light& lightInstance,
         float cameraZLocation,
         float cameraFieldOfView,
         float left,
@@ -33,30 +35,6 @@ public:
         float top,
         float bottom
     );
-    void drawLineBetweenPoints(
-		float startX,
-		float startY,
-		float startZ,
-		float endX,
-		float endY,
-		float endZ,
-		float red,
-		float green,
-		float blue
-	);
-	void drawTextureBetweenPoints(
-		std::unique_ptr<FaTexture>& texture,
-		float triangleStartX,
-		float triangleStartY,
-		float triangleStartZ,
-		float triangleEndX,
-		float triangleEndY,
-		float triangleEndZ,
-		float textureStartX,
-		float textureStartY,
-		float textureEndX,
-		float textureEndY
-	);
     void putPixelInMap(
         int x,
         int y,
@@ -72,14 +50,14 @@ public:
     float getTop();
     float getBottom();
     float getCameraZLocation();
-    unsigned int calculateStepCount(float difference);
-    float calculateStepValue(float difference,unsigned int totalStepCount);
+    Light& getLight();
+    unsigned int getAppScreenWidth();
+    unsigned int getAppScreenHeight();
+
 private:
 
     static constexpr bool DEBUG_MODE = false;
     
-    static constexpr float drawStepValue = 0.5;
-
     void initPixelMap();
 
     float cameraZLocation;
@@ -98,6 +76,8 @@ private:
     DrawPixel* currentPixel;
 
     OpenGL& openGLInstance;
+
+    Light& lightInstance;
     //TODO Add transformation and rotation 
 };
 

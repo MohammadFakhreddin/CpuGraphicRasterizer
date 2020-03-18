@@ -8,7 +8,7 @@
 #include "../data_types/MatrixTemplate.h"
 #include "../fa_texture/FaTexture.h"
 #include "../data_types/VectorTemplate.h"
-#include "./edge/base_edge/BaseEdge.h"
+#include "./surface/base_surface/BaseSurface.h"
 #include "./../camera/Camera.h"
 
 class Shape3d
@@ -28,7 +28,7 @@ public:
   );
   static std::unique_ptr<Shape3d> generateTextured3DCube(
     std::unique_ptr<FaTexture>& texture,
-    std::vector<BaseEdge*> edgeList,
+    std::vector<BaseSurface*> edgeList,
     float xWidth,
     float yWidth,
     float zWidth,
@@ -42,18 +42,18 @@ public:
   );
   Shape3d(
     std::vector<MatrixFloat> nodes,
-    std::vector<BaseEdge*> edges
+    std::vector<BaseSurface*> edges
   );
   Shape3d(
     std::vector<MatrixFloat> nodes,
-    std::vector<BaseEdge*> edges,
+    std::vector<BaseSurface*> edges,
     float initialTransformX,
     float initialTransformY,
     float initialTransformZ
   );
   Shape3d(
     std::vector<MatrixFloat> nodes,
-    std::vector<BaseEdge*> edges,
+    std::vector<BaseSurface*> edges,
     float transformX,
     float transformY,
     float transformZ,
@@ -73,7 +73,7 @@ public:
   void rotateZ(float z);
 private:
   std::vector<MatrixFloat> nodes;
-  std::vector<std::unique_ptr<BaseEdge>>edges;
+  std::vector<std::unique_ptr<BaseSurface>>edges;
   std::vector<MatrixFloat> worldPoints;
   MatrixFloat transformMatrix;
   MatrixFloat rotationDegreeMatrix;

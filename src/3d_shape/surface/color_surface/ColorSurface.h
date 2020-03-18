@@ -1,10 +1,10 @@
-#ifndef ColorEdge_class
-#define ColorEdge_class
+#ifndef ColorSurface_class
+#define ColorSurface_class
 
-#include "../base_edge/BaseEdge.h"
+#include "../base_surface/BaseSurface.h"
 #include "./../../../camera/Camera.h"
 
-class ColorEdge : public BaseEdge
+class ColorSurface : public BaseSurface
 {
 private:
   static constexpr float stepValue = 1;
@@ -16,8 +16,20 @@ private:
   std::vector<MatrixFloat*> topEdges;
   std::vector<MatrixFloat*> bottomEdges;
   std::vector<MatrixFloat*> middleEdges;
+  void drawLineBetweenPoints(
+    Camera& cameraInstance,
+    float startX,
+		float startY,
+		float startZ,
+		float endX,
+		float endY,
+		float endZ,
+		float red,
+		float green,
+		float blue
+  );
 public:
-  ColorEdge(
+  ColorSurface(
     int edge1,
     int edge2,
     int edge3,
@@ -30,12 +42,9 @@ public:
     std::vector<float>{0},
     std::vector<float>{0}
   });
-  void render(
+  void computePixelMapData(
     Camera& cameraInstance,
-    std::vector<MatrixFloat>* worldPoints,
-    float transformCenterX,
-    float transformCenterY,
-    float transformCenterZ
+    std::vector<MatrixFloat>* worldPoints
   ) override;
   EdgeType getEdgeType() override;
 };

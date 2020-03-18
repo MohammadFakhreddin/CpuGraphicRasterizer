@@ -1,3 +1,6 @@
+#ifndef Math_class
+#define Math_class 
+
 class Math {
 public:
     template<typename A,typename B>
@@ -25,3 +28,5 @@ public:
         return value;
     };
 };
+
+#endif
