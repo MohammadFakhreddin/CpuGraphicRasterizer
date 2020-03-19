@@ -10,7 +10,8 @@
 #include "../data_types/VectorTemplate.h"
 #include "./surface/base_surface/BaseSurface.h"
 #include "./../camera/Camera.h"
-
+// tiny_obj_loader.cpp
+// MiniBall.h
 class Shape3d
 {
 public:

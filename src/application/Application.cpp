@@ -66,7 +66,11 @@ Application::Application(
 	physicalScreenHeight(physicalDeviceScreenHeight),
 	appScreenWidth(paramAppScreenWidth),
 	appScreenHeight(paramAppScreenHeight),
-	light(paramAppScreenWidth/2,paramAppScreenHeight/2,cameraInitialZLocation + (cameraInitialMaximumFov/2)),
+	light(
+		paramAppScreenWidth/2,
+		paramAppScreenHeight/2,
+		cameraInitialZLocation + (cameraInitialMaximumFov/2)
+	),
 	openGLInstance(paramAppScreenWidth,paramAppScreenHeight,physicalDeviceScreenWidth,physicalDeviceScreenHeight),
 	cameraInstance(
 		openGLInstance,
