@@ -43,6 +43,7 @@ public:
         float green,
         float blue
     );
+    void update(double deltaTime);
     void render(double deltaTime);
     float scaleBasedOnZDistance(float zLocation);
     float getLeft();
@@ -59,6 +60,7 @@ private:
     static constexpr bool DEBUG_MODE = false;
     
     void initPixelMap();
+    void drawLight();
 
     float cameraZLocation;
     float cameraFieldOfView;

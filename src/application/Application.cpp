@@ -7,6 +7,52 @@
 #include "../utils/log/Logger.h"
 #include "../utils/math/Math.h"
 
+void handleKeyboardEvent(unsigned char key, int x, int y)
+{
+	if (key == 'a' || key == 'A') {
+		Application::getInstance()->notifyKeyIsPressed(Application::Buttons::keyA);
+	}
+	if (key == 'd' || key == 'D') {
+		Application::getInstance()->notifyKeyIsPressed(Application::Buttons::keyD);
+	}
+	if (key == 'w' || key == 'W') {
+		Application::getInstance()->notifyKeyIsPressed(Application::Buttons::keyW);
+	}
+	if (key == 's' || key == 'S') {
+		Application::getInstance()->notifyKeyIsPressed(Application::Buttons::keyS);
+	}
+	if (key == 'e' || key == 'E') {
+		Application::getInstance()->notifyKeyIsPressed(Application::Buttons::keyE);
+	}
+	if (key == 'q' || key == 'Q') {
+		Application::getInstance()->notifyKeyIsPressed(Application::Buttons::keyQ);
+	}
+	if (key == 'r' || key == 'R') {
+		Application::getInstance()->notifyKeyIsPressed(Application::Buttons::keyR);
+	}
+	if (key == 't' || key == 'T') {
+		Application::getInstance()->notifyKeyIsPressed(Application::Buttons::keyT);
+	}
+	if (key == 'f' || key == 'F') {
+		Application::getInstance()->notifyKeyIsPressed(Application::Buttons::keyF);
+	}
+	if (key == 'g' || key == 'G') {
+		Application::getInstance()->notifyKeyIsPressed(Application::Buttons::keyG);
+	}
+	if (key == 'x' || key == 'X') {
+		Application::getInstance()->notifyKeyIsPressed(Application::Buttons::keyX);
+	}
+	if (key == 'c' || key == 'C') {
+		Application::getInstance()->notifyKeyIsPressed(Application::Buttons::keyC);
+	}
+	if(key == 'v' || key == 'V'){
+		Application::getInstance()->notifyKeyIsPressed(Application::Buttons::keyV);
+	}
+	if(key == 'b' || key == 'B'){
+		Application::getInstance()->notifyKeyIsPressed(Application::Buttons::keyB);
+	}
+}
+
 Application::Application(
 	Application::Platform platform,
 	unsigned int paramAppScreenWidth,
@@ -20,7 +66,7 @@ Application::Application(
 	physicalScreenHeight(physicalDeviceScreenHeight),
 	appScreenWidth(paramAppScreenWidth),
 	appScreenHeight(paramAppScreenHeight),
-	light(0,0,0),
+	light(paramAppScreenWidth,paramAppScreenHeight,1),
 	openGLInstance(paramAppScreenWidth,paramAppScreenHeight,physicalDeviceScreenWidth,physicalDeviceScreenHeight),
 	cameraInstance(
 		openGLInstance,
@@ -53,6 +99,9 @@ Application::Application(
 		);
 		Logger::log("Creating shape was successful");
 	}
+#ifdef __DESKTOP__
+	glutKeyboardFunc(handleKeyboardEvent);
+#endif
 }
 
 void Application::notifyScreenSurfaceChanged(
@@ -99,61 +148,43 @@ void Application::render(double deltaTime) {
 }
 
 void Application::update(double deltaTime) {
-	if (keyEvents[leftButton]==true) {
-		shape->transformX(float(-1.0f * Application::shapeTransformSpeed * deltaTime));
-		keyEvents[leftButton] = false;
-	}
-	if (keyEvents[rightButton]==true) {
-		shape->transformX(float(Application::shapeTransformSpeed * deltaTime));
-		keyEvents[rightButton] = false;
-	}
-	if (keyEvents[forwardButton] == true) {
-		shape->transformY(float(Application::shapeTransformSpeed * deltaTime));
-		keyEvents[forwardButton] = false;
-	}
-	if (keyEvents[backwardButton] == true) {
-		shape->transformY(float(-1 * Application::shapeTransformSpeed * deltaTime));
-		keyEvents[backwardButton] = false;
-	}
-  	if (keyEvents[rotationZLeftButton] == true) {
-		shape->rotateZ(float(Application::shapeRotationSpeed * deltaTime));
-		keyEvents[rotationZLeftButton] = false;
-	}
-	if (keyEvents[rotationZRightButton]) {
-		shape->rotateZ(float(-1.0f * Application::shapeRotationSpeed * deltaTime));
-		keyEvents[rotationZRightButton] = false;
-	}
-  	if (keyEvents[rotationXLeftButton] == true) {
-		shape->rotateX(float(Application::shapeRotationSpeed * deltaTime));
-		keyEvents[rotationXLeftButton] = false;
-	}
-	if (keyEvents[rotationXRightButton]) {
-		shape->rotateX(float(-1.0f * Application::shapeRotationSpeed * deltaTime));
-		keyEvents[rotationXRightButton] = false;
-	}
-	if (keyEvents[rotationYLeftButton] == true) {
-		shape->rotateY(float(Application::shapeRotationSpeed * deltaTime));
-		keyEvents[rotationYLeftButton] = false;
-	}
-	if (keyEvents[rotationYRightButton]) {
-		shape->rotateY(float(-1.0f * Application::shapeRotationSpeed * deltaTime));
-		keyEvents[rotationYRightButton] = false;
-	}
-	if (keyEvents[zoomInButton]) {
-		shape->scale(float(Application::shapeScaleSpeed * deltaTime));
-		keyEvents[zoomInButton] = false;
-	}
-	if (keyEvents[zoomOutButton]) {
-		shape->scale(float(-1.0f * Application::shapeScaleSpeed * deltaTime));
-		keyEvents[zoomOutButton] = false;
-	}
-	if(keyEvents[forwardZButton]){
-		shape->transformZ(float(Application::shapeTransformSpeed * deltaTime));
-		keyEvents[forwardZButton] = false;
-	}
-	if(keyEvents[backwardZButton]){
-		shape->transformZ(float(-1.0f * Application::shapeTransformSpeed * deltaTime));
-		keyEvents[backwardZButton] = false;
+	{//We rotate light by keyboard
+		if(keyEvents[Buttons::keyA]){
+			cameraInstance.getLight().transformX(
+				deltaTime * Application::lightTransformSpeed * -1
+			);
+			keyEvents[Buttons::keyA] = false;
+		}
+		if(keyEvents[Buttons::keyD]){
+			cameraInstance.getLight().transformX(
+				deltaTime * Application::lightTransformSpeed * 1
+			);
+			keyEvents[Buttons::keyD] = false;
+		}
+		if(keyEvents[Buttons::keyW]){
+			cameraInstance.getLight().transformY(
+				deltaTime *  Application::lightTransformSpeed * 1
+			);
+			keyEvents[Buttons::keyW] = false;
+		}
+		if(keyEvents[Buttons::keyS]){
+			cameraInstance.getLight().transformY(
+				deltaTime *  Application::lightTransformSpeed * -1
+			);
+			keyEvents[Buttons::keyS] = false;
+		}
+		if(keyEvents[Buttons::keyC]){
+			cameraInstance.getLight().transformZ(
+				deltaTime *  Application::lightTransformSpeed * -1
+			);
+			keyEvents[Buttons::keyC] = false;
+		}
+		if(keyEvents[Buttons::keyV]){
+			cameraInstance.getLight().transformZ(
+				deltaTime *  Application::lightTransformSpeed * 1
+			);
+			keyEvents[Buttons::keyV] = false;	
+		}
 	}
 	{//Temporary code for auto rotation
 		shape->rotateY(float(-1.0f * Application::shapeRotationSpeed * deltaTime * 0.1f));
@@ -161,6 +192,7 @@ void Application::update(double deltaTime) {
 		shape->rotateZ(float(-1.0f * Application::shapeRotationSpeed * deltaTime * 0.1f));
 	}
 	shape->update(deltaTime,cameraInstance);
+	cameraInstance.update(deltaTime);
 }
 
 void Application::notifyKeyIsPressed(Application::Buttons keyEvent)

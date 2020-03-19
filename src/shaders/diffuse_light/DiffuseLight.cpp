@@ -1,13 +1,11 @@
 #include "./DiffuseLight.h"
 
 DiffuseLight::DiffuseLight(float positionX,float positionY,float positionZ)
-: 
-lightPositionVector(
-    positionX,
-    positionY,
-    positionZ
-)
-{}
+{
+    lightPositionVector.setX(positionX);
+    lightPositionVector.setY(positionY);
+    lightPositionVector.setZ(positionZ);
+}
 
 void DiffuseLight::computeLightIntensity(
     Vec3DFloat& surfaceNormalVector,

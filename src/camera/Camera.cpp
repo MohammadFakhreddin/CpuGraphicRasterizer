@@ -115,6 +115,26 @@ void Camera::putPixelInMap(int x,int y,float zValue,float red,float green,float 
 	}
 }
 
+void Camera::update(double deltaTime){
+	drawLight();	
+}
+//TODO Light bulb must be shape
+void Camera::drawLight(){
+	float radius = 10.0f;
+	for(int i=-radius;i<radius;i++){
+		for(int j=-radius;j<radius;j++){
+			putPixelInMap(
+				lightInstance.getLightPosition().getX() + i,
+				lightInstance.getLightPosition().getY() + j,
+				lightInstance.getLightPosition().getZ(),
+				1.0f,
+				1.0f,
+				1.0f
+			);
+		}
+	}
+}
+
 void Camera::render(double deltaTime){
     {//Drawing screen
 		openGLInstance.beginDrawingPoints();
@@ -138,7 +158,6 @@ void Camera::render(double deltaTime){
 		}
 		openGLInstance.resetProgram();
 	}
-	
 }
 
 float Camera::scaleBasedOnZDistance(float zLocation){

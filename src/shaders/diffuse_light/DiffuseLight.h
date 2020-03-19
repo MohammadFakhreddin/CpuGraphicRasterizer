@@ -14,11 +14,7 @@ public:
         short int surfaceDirectionFactor,
         Vec3DFloat& output
     ) override;
-    void transformX(float value);
-    void transformY(float value);
-    void transformZ(float value);
 private:
-    Vec3DFloat lightPositionVector;
     /**
      * 
      * Temporary data which is used to boost performance

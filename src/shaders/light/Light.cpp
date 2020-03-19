@@ -13,3 +13,19 @@ void Light::computeLightIntensity(
     Logger::log("Method getLightIntensity is not implemented correctly in child class");
     assert(false);
 }
+
+void Light::transformX(float value){
+    lightPositionVector.setX(value + lightPositionVector.getX());
+}
+
+void Light::transformY(float value){
+    lightPositionVector.setY(value + lightPositionVector.getY());
+}
+
+void Light::transformZ(float value){
+    lightPositionVector.setZ(value + lightPositionVector.getZ());
+}
+
+Vec3DFloat& Light::getLightPosition(){
+    return lightPositionVector;
+} 

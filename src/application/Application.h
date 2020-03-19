@@ -22,31 +22,33 @@ public:
 	};
 	enum Buttons
 	{
-		leftButton,
-		rightButton,
-		forwardButton,
-		backwardButton,
-		forwardZButton,
-		backwardZButton,
-		rotationZRightButton,
-		rotationZLeftButton,
-		rotationXRightButton,
-		rotationXLeftButton,
-		rotationYRightButton,
-		rotationYLeftButton,
-		zoomInButton,
-		zoomOutButton
+		keyA,
+		keyD,
+		keyW,
+		keyS,
+		keyE,
+		keyQ,
+		keyR,
+		keyT,
+		keyF,
+		keyG,
+		keyX,
+		keyC,
+		keyV,
+		keyB
 	};
 
 	static constexpr float shapeTransformSpeed = 1.0f;
-
 	static constexpr float shapeRotationSpeed = 0.01f;
+	static constexpr float shapeScaleSpeed = 0.1f;
 	
+	static constexpr float lightTransformSpeed = 0.2f;
+
 	static constexpr float cameraInitialZLocation = 0.0f;
-	
 	static constexpr float cameraInitialMaximumFov = 1000.0f;
 	
-	static constexpr float shapeScaleSpeed = 0.1f;
+	static Application* getInstance();
+	static Application* instance;
 	
 	Application(
 		Application::Platform platform,
@@ -68,11 +70,6 @@ public:
 	void mainLoop(double deltaTime);
 	void notifyKeyIsPressed(Application::Buttons);
 	void putPixelInMap(int x,int y,float zValue,float red,float green,float blue);
-	
-	static Application* getInstance();
-
-	static Application* instance;
-
 	unsigned int getAppScreenWidth();
 	unsigned int getAppScreenHeight();
 	unsigned int getPhysicalScreenWidth();
