@@ -66,7 +66,7 @@ Application::Application(
 	physicalScreenHeight(physicalDeviceScreenHeight),
 	appScreenWidth(paramAppScreenWidth),
 	appScreenHeight(paramAppScreenHeight),
-	light(paramAppScreenWidth,paramAppScreenHeight,1),
+	light(paramAppScreenWidth/2,paramAppScreenHeight/2,cameraInitialZLocation + (cameraInitialMaximumFov/2)),
 	openGLInstance(paramAppScreenWidth,paramAppScreenHeight,physicalDeviceScreenWidth,physicalDeviceScreenHeight),
 	cameraInstance(
 		openGLInstance,
@@ -175,13 +175,13 @@ void Application::update(double deltaTime) {
 		}
 		if(keyEvents[Buttons::keyC]){
 			cameraInstance.getLight().transformZ(
-				deltaTime *  Application::lightTransformSpeed * -1
+				deltaTime *  Application::lightTransformSpeed * -1 * 0.5
 			);
 			keyEvents[Buttons::keyC] = false;
 		}
 		if(keyEvents[Buttons::keyV]){
 			cameraInstance.getLight().transformZ(
-				deltaTime *  Application::lightTransformSpeed * 1
+				deltaTime *  Application::lightTransformSpeed * 1 * 0.5
 			);
 			keyEvents[Buttons::keyV] = false;	
 		}
