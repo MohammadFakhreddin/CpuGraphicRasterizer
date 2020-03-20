@@ -18,13 +18,13 @@ unsigned int lastTime = glutGet(GLUT_ELAPSED_TIME);
 unsigned int deltaTime = 0;
 
 void mainLoop() {
-	currentTime = glutGet(GLUT_ELAPSED_TIME);
-	deltaTime = currentTime - lastTime;
-	lastTime = currentTime;
+  currentTime = glutGet(GLUT_ELAPSED_TIME);
+  deltaTime = currentTime - lastTime;
+  lastTime = currentTime;
   application->mainLoop(deltaTime);
 }
 
-void ti mer(int value)
+void timer(int value)
 {
   glutTimerFunc(16, timer, 0);
   glutPostRedisplay();
@@ -32,15 +32,15 @@ void ti mer(int value)
 
 /* Main function: GLUT runs as a console application starting at main()  */
 int main(int argc, char** argv) {
-	glutInit(&argc,argv);
+	  glutInit(&argc,argv);
     glutInitDisplayMode ( GLUT_SINGLE | GLUT_RGB );
     //Get screen width and height
     Display* display = XOpenDisplay(NULL);
     Screen*  screen = DefaultScreenOfDisplay(display);
     unsigned int realScreenWidth = (int)screen->width;
     unsigned int realScreenHeight = (int)screen->height;
-	unsigned int appScreenWidth = 800;
-	unsigned int appScreenHeight = 600;
+    unsigned int appScreenWidth = 800;
+    unsigned int appScreenHeight = 600;
     glutInitWindowSize(appScreenWidth,appScreenHeight);
     glutInitWindowPosition(
             (int)(realScreenWidth/2 - appScreenWidth/2),
