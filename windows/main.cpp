@@ -2,7 +2,7 @@
 #include "../src/Constants.h"
 
 #define STB_IMAGE_IMPLEMENTATION
-#include "../src/fa_texture/stb_image_headers.h"
+#include "../src/libs/stb_image/open_gl_stb_image.h"
 
 #include "../src/open_gl/OpenGl.h"
 #include <memory>

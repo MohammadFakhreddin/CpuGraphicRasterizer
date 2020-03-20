@@ -1,20 +1,23 @@
 #ifndef STB_image_header
 #define STB_image_header
 
-#include "./../Constants.h"
-#include "./open_gl_stb_image.h"
-#include "../utils/log/Logger.h"
 #include <string>
+#include <assert.h>
+#include <iostream>
+
+#include "./../Constants.h"
+#include "../utils/log/Logger.h"
+#ifdef __DESKTOP__
+#include "./../libs/stb_image/open_gl_stb_image.h"
+#endif
 #ifdef __ANDROID__
 #include "./../../android/cpp/AndroidEnvironment.h"
 #endif
 #ifdef __IOS__
 #include "./../../ios/ThreeDimentionalCube/ThreeDimentionalCube/IPhoneHelperAbstraction.h"
 #endif
-#include <assert.h>
-#include <iostream>
 
-class STBImageHelper{
+class FileSystem{
 public:
   static unsigned char * loadTexture(
     std::string textureAddress,
