@@ -1,9 +1,7 @@
-#define __PLATFORM_WIN__
-#include "../src/Constants.h"
-
 #define STB_IMAGE_IMPLEMENTATION
 #include "../src/libs/stb_image/open_gl_stb_image.h"
 
+#include "../src/Constants.h"
 #include "../src/open_gl/OpenGl.h"
 #include <memory>
 #include <iostream>
