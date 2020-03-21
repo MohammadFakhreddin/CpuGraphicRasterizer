@@ -20,10 +20,7 @@ public:
 
   void render(
     Camera& cameraInstance,
-    std::vector<MatrixFloat>* worldPoints,
-    float shapeCenterX,
-    float shapeCenterY,
-    float shapeCenterZ
+    std::vector<MatrixFloat>* worldPoints
   );
 
   virtual EdgeType getEdgeType();

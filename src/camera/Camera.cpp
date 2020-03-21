@@ -161,7 +161,7 @@ void Camera::render(double deltaTime){
 }
 
 float Camera::scaleBasedOnZDistance(float zLocation){
-    return cameraFieldOfView/(zLocation - cameraZLocation);
+	return cameraFieldOfView/(zLocation - cameraZLocation);
 }
 
 float Camera::getLeft(){

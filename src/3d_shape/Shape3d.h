@@ -41,6 +41,7 @@ public:
     float rotationZ,
     float scale
   );
+  //TODO Rename node and edge to vertices and indices
   Shape3d(
     std::vector<MatrixFloat> nodes,
     std::vector<BaseSurface*> edges

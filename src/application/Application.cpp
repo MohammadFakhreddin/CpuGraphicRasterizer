@@ -1,11 +1,14 @@
 #include "Application.h"
+
 #include <memory>
+#include <vector>
+
 #include "../Constants.h"
 #include "../open_gl/OpenGl.h"
-#include <vector>
 #include "../3d_shape/Shape3d.h"
 #include "../utils/log/Logger.h"
 #include "../utils/math/Math.h"
+#include "../file_system/FileSystem.h"
 
 void handleKeyboardEvent(unsigned char key, int x, int y)
 {
@@ -69,7 +72,7 @@ Application::Application(
 	light(
 		paramAppScreenWidth/2,
 		paramAppScreenHeight/2,
-		cameraInitialZLocation + (cameraInitialMaximumFov/2)
+		cameraInitialZLocation + 1
 	),
 	openGLInstance(paramAppScreenWidth,paramAppScreenHeight,physicalDeviceScreenWidth,physicalDeviceScreenHeight),
 	cameraInstance(
@@ -87,20 +90,28 @@ Application::Application(
 	{//Shape
 		auto width = appScreenWidth/5;
 		Logger::log("Creating shape object");
-		shape = Shape3d::generateTextured3DCube(
-			dice.diceCubeTexture,
-			dice.diceCubeEdgeList,
-			width,
-			width,
-			width,
-			float(appScreenWidth)/2.0f,
-			float(appScreenHeight)/2.0f,
-			float(width + 500),
-			0,
-			0,
-			0,
-			1
+		// shape = Shape3d::generateTextured3DCube(
+		// 	dice.diceCubeTexture,
+		// 	dice.diceCubeEdgeList,
+		// 	width,
+		// 	width,
+		// 	width,
+		// 	float(appScreenWidth)/2.0f,
+		// 	float(appScreenHeight)/2.0f,
+		// 	float(width + 500),
+		// 	0,
+		// 	0,
+		// 	0,
+		// 	1
+		// );
+		shape = FileSystem::loadObjectWithColor(
+			Path::generateAssetPath("bunny",".obj"),
+			Vec3DFloat(1.0f,1.0f,1.0f)
 		);
+		shape->transformX(float(appScreenWidth)/2.0f);
+		shape->transformY(float(appScreenHeight)/2.0f);
+		shape->transformZ(50.0f);
+		shape->scale(100.0f);
 		Logger::log("Creating shape was successful");
 	}
 #ifdef __DESKTOP__

@@ -25,10 +25,7 @@ EdgeType BaseSurface::getEdgeType() {
 
 void BaseSurface::render(
     Camera& cameraInstance,
-    std::vector<MatrixFloat> *worldPoints,
-    float shapeCenterX,
-    float shapeCenterY,
-    float shapeCenterZ
+    std::vector<MatrixFloat> *worldPoints
 ) {
     assert(edge1<worldPoints->size() && edge1>=0);
     assert(edge2<worldPoints->size() && edge2>=0);
@@ -94,19 +91,6 @@ void BaseSurface::calculateStepCountAndStepValue(
     *stepValue = (difference)/double(*totalStepCount);
 }
 
-// void BaseSurface::computeEdgeDirection(
-//     float shapeCenterX,
-//     float shapeCenterY,
-//     float shapeCenterZ
-// ){
-//     edgeCenterToPolygonCenterPoint.setX(shapeCenterX - edgeCenter.getX());
-//     edgeCenterToPolygonCenterPoint.setY(shapeCenterY - edgeCenter.getY());
-//     edgeCenterToPolygonCenterPoint.setZ(shapeCenterZ - edgeCenter.getZ());
-
-//     dotProductValue = edgeCenterToPolygonCenterPoint.dotProduct(normalVector);
-//     edgeDirectionFactor = dotProductValue > 0 ? -1 : +1;
-// }
-
 void BaseSurface::computeEdgeCenter(
     std::vector<MatrixFloat>* worldPoints
 ){
@@ -155,7 +139,6 @@ bool BaseSurface::isVisibleToCamera(
     if (dotProductValue <= 0.0f) {
         return true;
     }
-
     return false;
 }
 

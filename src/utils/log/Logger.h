@@ -22,6 +22,11 @@ public:
     IPhoneHelperAbstraction::getInstance()->callObjectiveCToLog(text);
 #endif
   }
+  static void exception(std::string text){
+    //TODO Check and improve this function
+    Logger::log(text);
+    throw std::runtime_error(text);
+  }
 };
 
 #endif

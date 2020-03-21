@@ -1,5 +1,7 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include "../src/libs/stb_image/open_gl_stb_image.h"
+#define TINYOBJLOADER_IMPLEMENTATION
+#include "../src/libs/tiny_obj_loader/tiny_obj_loader.h"
 
 #include "../src/Constants.h"
 #include "../src/open_gl/OpenGl.h"
