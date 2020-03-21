@@ -11,7 +11,6 @@ public:
     void computeLightIntensity(
         Vec3DFloat& surfaceNormalVector,
         Vec3DFloat& surfaceCenter,
-        short int surfaceDirectionFactor,
         Vec3DFloat& output
     ) override;
 private:

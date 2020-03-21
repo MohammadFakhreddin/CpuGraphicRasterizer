@@ -41,7 +41,6 @@ void BaseSurface::render(
     cameraInstance.getLight().computeLightIntensity(
         normalVector,
         edgeCenter,
-        1.0f,//edgeDirectionFactor,
         colorIntensity
     );
     computePixelMapData(
