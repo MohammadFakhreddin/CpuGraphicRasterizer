@@ -134,9 +134,7 @@ bool BaseSurface::isVisibleToCamera(
 
     dotProductValue = normalVector.dotProduct(cameraVector);
 
-    dotProductValue = dotProductValue > 0 ? 1 : -1;
-
-    if (dotProductValue <= 0.0f) {
+    if (dotProductValue < 0.0f) {
         return true;
     }
     return false;
