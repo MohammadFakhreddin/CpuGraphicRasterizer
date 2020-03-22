@@ -24,17 +24,17 @@ public:
 public:
 	std::vector<BaseSurface*> diceCubeEdgeList = std::vector<BaseSurface*>{
     //1
-    new TextureSurface(0,1,2,
+    new TextureSurface(2,1,0,
       diceCubeTexture,
-      Vec2DFloat(diceCubeSquare,diceCubeSquare),
+      Vec2DFloat(diceCubeSquare,0),
       Vec2DFloat(0,diceCubeSquare), 
-      Vec2DFloat(diceCubeSquare,0)
+      Vec2DFloat(diceCubeSquare,diceCubeSquare)
     ),
     //2
     new TextureSurface(3,1,2,diceCubeTexture,
       Vec2DFloat(0,0),
       Vec2DFloat(0,diceCubeSquare),
-      Vec2DFloat(diceCubeSquare,0) 
+      Vec2DFloat(diceCubeSquare,0)
     ),
     //3
     new TextureSurface(1,3,5,diceCubeTexture,
@@ -43,28 +43,28 @@ public:
       Vec2DFloat(2 * diceCubeSquare,0)
     ),
     //4
-    new TextureSurface(7,3,5,diceCubeTexture,
-      Vec2DFloat(diceCubeSquare,0),
+    new TextureSurface(5,3,7,diceCubeTexture,
+      Vec2DFloat(diceCubeSquare * 2,0),
       Vec2DFloat(diceCubeSquare,diceCubeSquare),
-      Vec2DFloat(diceCubeSquare * 2,0)
+      Vec2DFloat(diceCubeSquare,0)
     ),
-    //5
+    // 5
     new TextureSurface(4,0,5,diceCubeTexture,
       Vec2DFloat(3 * diceCubeSquare - 1,diceCubeSquare), 
       Vec2DFloat(diceCubeSquare * 2,diceCubeSquare), 
       Vec2DFloat(diceCubeSquare * 3 -1,0)
     ),
-    //6
-    new TextureSurface(1,0,5,diceCubeTexture,
-      Vec2DFloat(diceCubeSquare * 2,0), 
+    // 6
+    new TextureSurface(5,0,1,diceCubeTexture,
+      Vec2DFloat(diceCubeSquare * 3 - 1,0),
       Vec2DFloat(diceCubeSquare * 2,diceCubeSquare), 
-      Vec2DFloat(diceCubeSquare * 3 - 1,0)
+      Vec2DFloat(diceCubeSquare * 2,0)
     ),
     //7
-    new TextureSurface(4,0,6,diceCubeTexture,
-      Vec2DFloat(diceCubeSquare,diceCubeSquare * 2 - 1),
+    new TextureSurface(6,0,4,diceCubeTexture,
+      Vec2DFloat(diceCubeSquare,diceCubeSquare),
       Vec2DFloat(0,diceCubeSquare * 2 - 1), 
-      Vec2DFloat(diceCubeSquare,diceCubeSquare)
+      Vec2DFloat(diceCubeSquare,diceCubeSquare * 2 - 1)
     ),
     //8
     new TextureSurface(2,0,6,diceCubeTexture,
@@ -73,24 +73,24 @@ public:
       Vec2DFloat(diceCubeSquare,diceCubeSquare) 
     ),
     //9
-    new TextureSurface(6,2,7,diceCubeTexture,
-      Vec2DFloat(diceCubeSquare * 2,diceCubeSquare * 2 - 1),
+    new TextureSurface(7,2,6,diceCubeTexture,
+      Vec2DFloat(diceCubeSquare * 2,diceCubeSquare),
       Vec2DFloat(diceCubeSquare,diceCubeSquare * 2 - 1), 
-      Vec2DFloat(diceCubeSquare * 2,diceCubeSquare)
+      Vec2DFloat(diceCubeSquare * 2,diceCubeSquare * 2 - 1)
     ),
-    // //10
+    //10
     new TextureSurface(3,2,7,diceCubeTexture,
       Vec2DFloat(diceCubeSquare,diceCubeSquare),
       Vec2DFloat(diceCubeSquare,diceCubeSquare * 2 - 1),
       Vec2DFloat(diceCubeSquare * 2,diceCubeSquare) 
     ),
-    // //11
-    new TextureSurface(5,4,7,diceCubeTexture,
-      Vec2DFloat(diceCubeSquare * 3 - 1,diceCubeSquare * 2 - 1),
+    //11
+    new TextureSurface(7,4,5,diceCubeTexture,
+      Vec2DFloat(diceCubeSquare * 3 - 1,diceCubeSquare),
       Vec2DFloat(diceCubeSquare * 2,diceCubeSquare * 2 - 1), 
-      Vec2DFloat(diceCubeSquare * 3 - 1,diceCubeSquare)
+      Vec2DFloat(diceCubeSquare * 3 - 1,diceCubeSquare * 2 - 1)
     ),
-    // //12
+    //12
     new TextureSurface(6,4,7,diceCubeTexture,
       Vec2DFloat(diceCubeSquare * 2,diceCubeSquare),
       Vec2DFloat(diceCubeSquare * 2,diceCubeSquare * 2 - 1),

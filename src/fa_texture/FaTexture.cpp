@@ -1,9 +1,9 @@
 #include "./FaTexture.h"
 
-#include "stb_image_headers.h"
 #include <cassert>
 #include <memory>
 
+#include "../file_system/FileSystem.h"
 #include "../camera/Camera.h"
 #include "./../data_types/FaObject.h"
 
@@ -20,7 +20,7 @@ address(address)
   assert(virtualImageWidth>0);
   assert(virtualImageHeight>0);
   
-  auto tempData = STBImageHelper::loadTexture(address, &width, &height, &numberOfChannels);
+  auto tempData = FileSystem::loadTexture(address, &width, &height, &numberOfChannels);
   assert(tempData);
   //For data protection we copy temp data so external events won't effect data
   dataLength = (unsigned int)(width * height * numberOfChannels);

@@ -1,11 +1,60 @@
 #include "Application.h"
+
 #include <memory>
+#include <vector>
+
 #include "../Constants.h"
 #include "../open_gl/OpenGl.h"
-#include <vector>
 #include "../3d_shape/Shape3d.h"
 #include "../utils/log/Logger.h"
 #include "../utils/math/Math.h"
+#include "../file_system/FileSystem.h"
+
+void handleKeyboardEvent(unsigned char key, int x, int y)
+{
+	if (key == 'a' || key == 'A') {
+		Application::getInstance()->notifyKeyIsPressed(Application::Buttons::keyA);
+	}
+	if (key == 'd' || key == 'D') {
+		Application::getInstance()->notifyKeyIsPressed(Application::Buttons::keyD);
+	}
+	if (key == 'w' || key == 'W') {
+		Application::getInstance()->notifyKeyIsPressed(Application::Buttons::keyW);
+	}
+	if (key == 's' || key == 'S') {
+		Application::getInstance()->notifyKeyIsPressed(Application::Buttons::keyS);
+	}
+	if (key == 'e' || key == 'E') {
+		Application::getInstance()->notifyKeyIsPressed(Application::Buttons::keyE);
+	}
+	if (key == 'q' || key == 'Q') {
+		Application::getInstance()->notifyKeyIsPressed(Application::Buttons::keyQ);
+	}
+	if (key == 'r' || key == 'R') {
+		Application::getInstance()->notifyKeyIsPressed(Application::Buttons::keyR);
+	}
+	if (key == 't' || key == 'T') {
+		Application::getInstance()->notifyKeyIsPressed(Application::Buttons::keyT);
+	}
+	if (key == 'f' || key == 'F') {
+		Application::getInstance()->notifyKeyIsPressed(Application::Buttons::keyF);
+	}
+	if (key == 'g' || key == 'G') {
+		Application::getInstance()->notifyKeyIsPressed(Application::Buttons::keyG);
+	}
+	if (key == 'x' || key == 'X') {
+		Application::getInstance()->notifyKeyIsPressed(Application::Buttons::keyX);
+	}
+	if (key == 'c' || key == 'C') {
+		Application::getInstance()->notifyKeyIsPressed(Application::Buttons::keyC);
+	}
+	if(key == 'v' || key == 'V'){
+		Application::getInstance()->notifyKeyIsPressed(Application::Buttons::keyV);
+	}
+	if(key == 'b' || key == 'B'){
+		Application::getInstance()->notifyKeyIsPressed(Application::Buttons::keyB);
+	}
+}
 
 Application::Application(
 	Application::Platform platform,
@@ -20,8 +69,17 @@ Application::Application(
 	physicalScreenHeight(physicalDeviceScreenHeight),
 	appScreenWidth(paramAppScreenWidth),
 	appScreenHeight(paramAppScreenHeight),
-	light(0,0,0),
-	openGLInstance(paramAppScreenWidth,paramAppScreenHeight,physicalDeviceScreenWidth,physicalDeviceScreenHeight),
+	light(
+		paramAppScreenWidth/2,
+		paramAppScreenHeight/2,
+		cameraInitialZLocation + 1
+	),
+	openGLInstance(
+		paramAppScreenWidth,
+		paramAppScreenHeight,
+		physicalDeviceScreenWidth,
+		physicalDeviceScreenHeight
+	),
 	cameraInstance(
 		openGLInstance,
 		light,
@@ -37,22 +95,33 @@ Application::Application(
 	{//Shape
 		auto width = appScreenWidth/5;
 		Logger::log("Creating shape object");
-		shape = Shape3d::generateTextured3DCube(
-			dice.diceCubeTexture,
-			dice.diceCubeEdgeList,
-			width,
-			width,
-			width,
-			float(appScreenWidth)/2.0f,
-			float(appScreenHeight)/2.0f,
-			float(width + 500),
-			0,
-			0,
-			0,
-			1
+		// shape = Shape3d::generateTextured3DCube(
+		// 	dice.diceCubeTexture,
+		// 	dice.diceCubeEdgeList,
+		// 	width,
+		// 	width,
+		// 	width,
+		// 	float(appScreenWidth)/2.0f,
+		// 	float(appScreenHeight)/2.0f,
+		// 	float(width + 500),
+		// 	0,
+		// 	0,
+		// 	0,
+		// 	1
+		// );
+		shape = FileSystem::loadObjectWithColor(
+			Path::generateAssetPath("bunny",".obj"),
+			Vec3DFloat(1.0f,1.0f,1.0f)
 		);
+		shape->transformX(float(appScreenWidth)/2.0f);
+		shape->transformY(float(appScreenHeight)/2.0f);
+		shape->transformZ(100.0f);
+		shape->scale(200.0f);
 		Logger::log("Creating shape was successful");
 	}
+#ifdef __DESKTOP__
+	glutKeyboardFunc(handleKeyboardEvent);
+#endif
 }
 
 void Application::notifyScreenSurfaceChanged(
@@ -99,68 +168,54 @@ void Application::render(double deltaTime) {
 }
 
 void Application::update(double deltaTime) {
-	if (keyEvents[leftButton]==true) {
-		shape->transformX(float(-1.0f * Application::shapeTransformSpeed * deltaTime));
-		keyEvents[leftButton] = false;
+	{//We rotate light by keyboard
+		if(keyEvents[Buttons::keyA]){
+			cameraInstance.getLight().transformX(
+				deltaTime * Application::lightTransformSpeed * -1
+			);
+			keyEvents[Buttons::keyA] = false;
+		}
+		if(keyEvents[Buttons::keyD]){
+			cameraInstance.getLight().transformX(
+				deltaTime * Application::lightTransformSpeed * 1
+			);
+			keyEvents[Buttons::keyD] = false;
+		}
+		if(keyEvents[Buttons::keyW]){
+			cameraInstance.getLight().transformY(
+				deltaTime *  Application::lightTransformSpeed * 1
+			);
+			keyEvents[Buttons::keyW] = false;
+		}
+		if(keyEvents[Buttons::keyS]){
+			cameraInstance.getLight().transformY(
+				deltaTime *  Application::lightTransformSpeed * -1
+			);
+			keyEvents[Buttons::keyS] = false;
+		}
+		if(keyEvents[Buttons::keyC]){
+			cameraInstance.getLight().transformZ(
+				deltaTime *  Application::lightTransformSpeed * -1 * 0.5
+			);
+			keyEvents[Buttons::keyC] = false;
+		}
+		if(keyEvents[Buttons::keyV]){
+			cameraInstance.getLight().transformZ(
+				deltaTime *  Application::lightTransformSpeed * 1 * 0.5
+			);
+			keyEvents[Buttons::keyV] = false;	
+		}
 	}
-	if (keyEvents[rightButton]==true) {
-		shape->transformX(float(Application::shapeTransformSpeed * deltaTime));
-		keyEvents[rightButton] = false;
-	}
-	if (keyEvents[forwardButton] == true) {
-		shape->transformY(float(Application::shapeTransformSpeed * deltaTime));
-		keyEvents[forwardButton] = false;
-	}
-	if (keyEvents[backwardButton] == true) {
-		shape->transformY(float(-1 * Application::shapeTransformSpeed * deltaTime));
-		keyEvents[backwardButton] = false;
-	}
-  	if (keyEvents[rotationZLeftButton] == true) {
-		shape->rotateZ(float(Application::shapeRotationSpeed * deltaTime));
-		keyEvents[rotationZLeftButton] = false;
-	}
-	if (keyEvents[rotationZRightButton]) {
-		shape->rotateZ(float(-1.0f * Application::shapeRotationSpeed * deltaTime));
-		keyEvents[rotationZRightButton] = false;
-	}
-  	if (keyEvents[rotationXLeftButton] == true) {
-		shape->rotateX(float(Application::shapeRotationSpeed * deltaTime));
-		keyEvents[rotationXLeftButton] = false;
-	}
-	if (keyEvents[rotationXRightButton]) {
-		shape->rotateX(float(-1.0f * Application::shapeRotationSpeed * deltaTime));
-		keyEvents[rotationXRightButton] = false;
-	}
-	if (keyEvents[rotationYLeftButton] == true) {
-		shape->rotateY(float(Application::shapeRotationSpeed * deltaTime));
-		keyEvents[rotationYLeftButton] = false;
-	}
-	if (keyEvents[rotationYRightButton]) {
-		shape->rotateY(float(-1.0f * Application::shapeRotationSpeed * deltaTime));
-		keyEvents[rotationYRightButton] = false;
-	}
-	if (keyEvents[zoomInButton]) {
-		shape->scale(float(Application::shapeScaleSpeed * deltaTime));
-		keyEvents[zoomInButton] = false;
-	}
-	if (keyEvents[zoomOutButton]) {
-		shape->scale(float(-1.0f * Application::shapeScaleSpeed * deltaTime));
-		keyEvents[zoomOutButton] = false;
-	}
-	if(keyEvents[forwardZButton]){
-		shape->transformZ(float(Application::shapeTransformSpeed * deltaTime));
-		keyEvents[forwardZButton] = false;
-	}
-	if(keyEvents[backwardZButton]){
-		shape->transformZ(float(-1.0f * Application::shapeTransformSpeed * deltaTime));
-		keyEvents[backwardZButton] = false;
+	{//Rotating shape by keyboard
+
 	}
 	{//Temporary code for auto rotation
 		shape->rotateY(float(-1.0f * Application::shapeRotationSpeed * deltaTime * 0.1f));
-		shape->rotateX(float(-1.0f * Application::shapeRotationSpeed * deltaTime * 0.1f));
-		shape->rotateZ(float(-1.0f * Application::shapeRotationSpeed * deltaTime * 0.1f));
+		// shape->rotateX(float(-1.0f * Application::shapeRotationSpeed * deltaTime * 0.1f));
+		// shape->rotateZ(float(-1.0f * Application::shapeRotationSpeed * deltaTime * 0.1f));
 	}
 	shape->update(deltaTime,cameraInstance);
+	cameraInstance.update(deltaTime);
 }
 
 void Application::notifyKeyIsPressed(Application::Buttons keyEvent)

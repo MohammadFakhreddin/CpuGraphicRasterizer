@@ -10,7 +10,8 @@
 #include "../data_types/VectorTemplate.h"
 #include "./surface/base_surface/BaseSurface.h"
 #include "./../camera/Camera.h"
-
+// tiny_obj_loader.cpp
+// MiniBall.h
 class Shape3d
 {
 public:
@@ -40,6 +41,7 @@ public:
     float rotationZ,
     float scale
   );
+  //TODO Rename node and edge to vertices and indices
   Shape3d(
     std::vector<MatrixFloat> nodes,
     std::vector<BaseSurface*> edges

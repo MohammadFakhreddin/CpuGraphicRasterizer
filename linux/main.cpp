@@ -1,9 +1,9 @@
-#define __PLATFORM_WIN__
-#include "../src/Constants.h"
-
 #define STB_IMAGE_IMPLEMENTATION
-#include "../src/fa_texture/stb_image_headers.h"
+#include "../src/libs/stb_image/open_gl_stb_image.h"
+#define TINYOBJLOADER_IMPLEMENTATION
+#include "../src/libs/tiny_obj_loader/tiny_obj_loader.h"
 
+#include "../src/Constants.h"
 #include "../src/open_gl/OpenGl.h"
 #include <memory>
 #include <iostream>
@@ -13,63 +13,14 @@
 
 std::unique_ptr<Application> application;
 
-void handleKeyboardEvent(unsigned char key, int x, int y)
-{
-	if (!Application::getInstance()) {
-		return;
-	}
-	if (key == 'a' || key == 'A') {
-		Application::getInstance()->notifyKeyIsPressed(Application::Buttons::leftButton);
-	}
-	if (key == 'd' || key == 'D') {
-		Application::getInstance()->notifyKeyIsPressed(Application::Buttons::rightButton);
-	}
-	if (key == 'w' || key == 'W') {
-		Application::getInstance()->notifyKeyIsPressed(Application::Buttons::forwardButton);
-	}
-	if (key == 's' || key == 'S') {
-		Application::getInstance()->notifyKeyIsPressed(Application::Buttons::backwardButton);
-	}
-	if (key == 'e' || key == 'E') {
-		Application::getInstance()->notifyKeyIsPressed(Application::Buttons::rotationZRightButton);
-	}
-	if (key == 'q' || key == 'Q') {
-		Application::getInstance()->notifyKeyIsPressed(Application::Buttons::rotationZLeftButton);
-	}
-	if (key == 'r' || key == 'R') {
-		Application::getInstance()->notifyKeyIsPressed(Application::Buttons::rotationXRightButton);
-	}
-	if (key == 't' || key == 'T') {
-		Application::getInstance()->notifyKeyIsPressed(Application::Buttons::rotationXLeftButton);
-	}
-	if (key == 'f' || key == 'F') {
-		Application::getInstance()->notifyKeyIsPressed(Application::Buttons::rotationYRightButton);
-	}
-	if (key == 'g' || key == 'G') {
-		Application::getInstance()->notifyKeyIsPressed(Application::Buttons::rotationYLeftButton);
-	}
-	if (key == 'x' || key == 'X') {
-		Application::getInstance()->notifyKeyIsPressed(Application::Buttons::zoomInButton);
-	}
-	if (key == 'c' || key == 'C') {
-		Application::getInstance()->notifyKeyIsPressed(Application::Buttons::zoomOutButton);
-	}
-	if(key == 'v' || key == 'V'){
-		Application::getInstance()->notifyKeyIsPressed(Application::Buttons::forwardZButton);
-	}
-	if(key == 'b' || key == 'B'){
-		Application::getInstance()->notifyKeyIsPressed(Application::Buttons::backwardZButton);
-	}
-}
-
 unsigned int currentTime = 0;
 unsigned int lastTime = glutGet(GLUT_ELAPSED_TIME);
 unsigned int deltaTime = 0;
 
 void mainLoop() {
-	currentTime = glutGet(GLUT_ELAPSED_TIME);
-	deltaTime = currentTime - lastTime;
-	lastTime = currentTime;
+  currentTime = glutGet(GLUT_ELAPSED_TIME);
+  deltaTime = currentTime - lastTime;
+  lastTime = currentTime;
   application->mainLoop(deltaTime);
 }
 
@@ -81,15 +32,15 @@ void timer(int value)
 
 /* Main function: GLUT runs as a console application starting at main()  */
 int main(int argc, char** argv) {
-	glutInit(&argc,argv);
+	  glutInit(&argc,argv);
     glutInitDisplayMode ( GLUT_SINGLE | GLUT_RGB );
     //Get screen width and height
     Display* display = XOpenDisplay(NULL);
     Screen*  screen = DefaultScreenOfDisplay(display);
     unsigned int realScreenWidth = (int)screen->width;
     unsigned int realScreenHeight = (int)screen->height;
-	unsigned int appScreenWidth = 800;
-	unsigned int appScreenHeight = 600;
+    unsigned int appScreenWidth = 800;
+    unsigned int appScreenHeight = 600;
     glutInitWindowSize(appScreenWidth,appScreenHeight);
     glutInitWindowPosition(
             (int)(realScreenWidth/2 - appScreenWidth/2),
@@ -103,7 +54,6 @@ int main(int argc, char** argv) {
 			realScreenWidth,
 			realScreenHeight
     ));
-    glutKeyboardFunc(handleKeyboardEvent);
     glutTimerFunc(0, timer, 0);
     glutDisplayFunc(mainLoop);
     glutMainLoop();

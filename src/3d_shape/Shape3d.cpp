@@ -21,8 +21,10 @@ std::unique_ptr<Shape3d> Shape3d::generateTextured3DCube(
         float rotationX,
         float rotationY,
         float rotationZ,
-float scale
+        float scale
 ) {
+    //TODO Move these two methods into new class
+    //Also nodeList for cube is only part that is needed    
     float x = -w / 2;
     float y = -h / 2;
     float z = -d / 2;
@@ -289,10 +291,7 @@ void Shape3d::update(double deltaTime,Camera& cameraInstance) {
             for (auto &edge:edges) {
                 edge->render(
                         cameraInstance,
-                        &worldPoints,
-                        transformMatrix.get(0, 0),
-                        transformMatrix.get(1, 0),
-                        transformMatrix.get(2, 0)
+                        &worldPoints
                 );
             }
         }

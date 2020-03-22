@@ -25,30 +25,19 @@ EdgeType BaseSurface::getEdgeType() {
 
 void BaseSurface::render(
     Camera& cameraInstance,
-    std::vector<MatrixFloat> *worldPoints,
-    float shapeCenterX,
-    float shapeCenterY,
-    float shapeCenterZ
+    std::vector<MatrixFloat> *worldPoints
 ) {
     assert(edge1<worldPoints->size() && edge1>=0);
     assert(edge2<worldPoints->size() && edge2>=0);
     assert(edge3<worldPoints->size() && edge3>=0);
     computeNormalVector(worldPoints);
     computeEdgeCenter(worldPoints);
-    if(edgeDirectionFactor==0){
-        computeEdgeDirection(
-            shapeCenterX,
-            shapeCenterY,
-            shapeCenterZ
-        );
-    }
     if(isVisibleToCamera(cameraInstance,worldPoints)==false){
         return;
     }
     cameraInstance.getLight().computeLightIntensity(
         normalVector,
         edgeCenter,
-        edgeDirectionFactor,
         colorIntensity
     );
     computePixelMapData(
@@ -82,11 +71,11 @@ void BaseSurface::computeNormalVector(std::vector<MatrixFloat>* worldPoints){
     edge1To2Vector.setY(worldPoints->at(edge2).get(1, 0) - worldPoints->at(edge1).get(1, 0));
     edge1To2Vector.setZ(worldPoints->at(edge2).get(2, 0) - worldPoints->at(edge1).get(2, 0));
 
-    edge1To3Vector.setX(worldPoints->at(edge3).get(0, 0) - worldPoints->at(edge1).get(0, 0));
-    edge1To3Vector.setY(worldPoints->at(edge3).get(1, 0) - worldPoints->at(edge1).get(1, 0));
-    edge1To3Vector.setZ(worldPoints->at(edge3).get(2, 0) - worldPoints->at(edge1).get(2, 0));
+    edge2To3Vector.setX(worldPoints->at(edge3).get(0, 0) - worldPoints->at(edge2).get(0, 0));
+    edge2To3Vector.setY(worldPoints->at(edge3).get(1, 0) - worldPoints->at(edge2).get(1, 0));
+    edge2To3Vector.setZ(worldPoints->at(edge3).get(2, 0) - worldPoints->at(edge2).get(2, 0));
     //Generating normal vector from edge vectors
-    normalVector.crossProduct(edge1To3Vector, edge1To2Vector);
+    normalVector.crossProduct(edge2To3Vector, edge1To2Vector);
 }
 
 void BaseSurface::calculateStepCountAndStepValue(
@@ -100,19 +89,6 @@ void BaseSurface::calculateStepCountAndStepValue(
         cameraInstance.getAppScreenWidth()
     );
     *stepValue = (difference)/double(*totalStepCount);
-}
-
-void BaseSurface::computeEdgeDirection(
-    float shapeCenterX,
-    float shapeCenterY,
-    float shapeCenterZ
-){
-    edgeCenterToPolygonCenterPoint.setX(shapeCenterX - edgeCenter.getX());
-    edgeCenterToPolygonCenterPoint.setY(shapeCenterY - edgeCenter.getY());
-    edgeCenterToPolygonCenterPoint.setZ(shapeCenterZ - edgeCenter.getZ());
-
-    dotProductValue = edgeCenterToPolygonCenterPoint.dotProduct(normalVector);
-    edgeDirectionFactor = dotProductValue > 0 ? -1 : +1;
 }
 
 void BaseSurface::computeEdgeCenter(
@@ -158,12 +134,9 @@ bool BaseSurface::isVisibleToCamera(
 
     dotProductValue = normalVector.dotProduct(cameraVector);
 
-    dotProductValue = dotProductValue > 0 ? 1 : -1;
-
-    if (edgeDirectionFactor * dotProductValue <= 0.0f) {
+    if (dotProductValue < 0.0f) {
         return true;
     }
-
     return false;
 }
 

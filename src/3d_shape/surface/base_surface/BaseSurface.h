@@ -20,10 +20,7 @@ public:
 
   void render(
     Camera& cameraInstance,
-    std::vector<MatrixFloat>* worldPoints,
-    float shapeCenterX,
-    float shapeCenterY,
-    float shapeCenterZ
+    std::vector<MatrixFloat>* worldPoints
   );
 
   virtual EdgeType getEdgeType();
@@ -88,16 +85,6 @@ private:
   void computeEdgeCenter(
     std::vector<MatrixFloat>* worldPoints
   );
-  /**
-   * 
-   * It must be called if edgeDirectionFactor is 0
-   * 
-  */
-  void computeEdgeDirection(
-    float shapeCenterX,
-    float shapeCenterY,
-    float shapeCenterZ
-  );
   /*
   *
   * Vector from camera boundary to center of shape
@@ -122,7 +109,7 @@ private:
    * Based on world points we create this vector for normal vector computation
    * 
    * */
-  Vec3DFloat edge1To3Vector = Vec3DFloat(0.0f,0.0f,0.0f);
+  Vec3DFloat edge2To3Vector = Vec3DFloat(0.0f,0.0f,0.0f);
   /**
    * 
    * Center of surface
@@ -145,15 +132,7 @@ private:
   * We use this element to check if we need to reverse our dot products result due to
   * Normal vector being reverse
   */
-  Vec3DFloat colorIntensity = Vec3DFloat(0.0f,0.0f,0.0f);
-  /*
-  *
-  * Indicates that normal vector is facing toward or backward of shape
-  * TODO Remove this in future with correct shape edge description
-  * 
-  */
-  short int edgeDirectionFactor = 0;
-  
+  Vec3DFloat colorIntensity = Vec3DFloat(0.0f,0.0f,0.0f);  
 };
 
 #endif

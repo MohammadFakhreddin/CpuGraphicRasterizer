@@ -8,9 +8,14 @@ public:
     virtual void computeLightIntensity(
         Vec3DFloat& surfaceNormalVector,
         Vec3DFloat& surfaceCenter,
-        short int surfaceDirectionFactor,
         Vec3DFloat& output
     );
+    void transformX(float value);
+    void transformY(float value);
+    void transformZ(float value);
+    Vec3DFloat& getLightPosition();
+protected:
+    Vec3DFloat lightPositionVector = Vec3DFloat(0.0f,0.0f,0.0f);
 };
 
 #endif
