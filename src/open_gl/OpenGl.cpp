@@ -313,7 +313,7 @@ bool OpenGL::checkForOpenGlError(){
   while ((error = glGetError())!=GL_NO_ERROR)
   {
     Logger::log("OpenGLError:\n"+std::to_string(error));
-  };
+  }
   
   return false;
 }
