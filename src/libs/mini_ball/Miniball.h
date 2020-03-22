@@ -63,7 +63,7 @@ namespace Miniball {
   class Miniball {
   private:
     // types
-    // The iterator type to go through the input points
+  // The iterator type to go through the input points
     typedef typename CoordAccessor::Pit                         Pit; 
     // The iterator type to go through the coordinates of a single point. 
     typedef typename CoordAccessor::Cit                         Cit; 

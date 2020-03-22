@@ -17,6 +17,7 @@
 #include "../3d_shape/surface/base_surface/BaseSurface.h"
 #include "../3d_shape/Shape3d.h"
 #include "../3d_shape/surface/color_surface/ColorSurface.h"
+#include "../libs/mini_ball/Miniball.h"
 #ifdef __DESKTOP__
 #include "./../libs/stb_image/open_gl_stb_image.h"
 #endif
@@ -173,14 +174,55 @@ public:
         }
       }
     }
-    
+    Logger::log("Reading from object file is successful");    
     delete file;
-
+    Logger::log("Going to normalize center point");
+    {//Centralizing vertices to make them be more friendly for transformation and scale
+      // used to enable miniball to access vertex pos info
+      // solve the minimum bounding sphere
+      Miniball::Miniball<VertexAccessor> mb( 3,vertices.cbegin(),vertices.cend() );
+      // get center of min sphere
+      // result is a pointer to float[3]
+      const auto pc = mb.center();
+      MatrixFloat center = MatrixFloat(3,1,std::vector<std::vector<float>>{
+        std::vector<float>{*pc},
+        std::vector<float>{*std::next( pc )},
+        std::vector<float>{*std::next( pc,2 )}
+      });
+      // adjust all vertices so that center of minimal sphere is at 0,0
+      for( auto& vertex : vertices )
+      {
+        // vertex.set(0,0,vertex.get(0,0)-center.get(0,0));
+        // vertex.set(1,0,vertex.get(1,0)-center.get(1,0));
+        // vertex.set(2,0,vertex.get(2,0)-center.get(2,0));
+        // vertex = vertex - center;
+        vertex -= center;
+      }
+    }
+    Logger::log("Centralizing 3dShape was successful,Creating shape3d");
     return std::make_unique<Shape3d>(
       vertices,
       indices
     );
   }
+private:
+  struct VertexAccessor
+  {
+    // iterator type for iterating over vertices
+    typedef std::vector<MatrixFloat>::const_iterator Pit;
+    // it type for iterating over components of vertex
+    // (pointer is used to iterate over members of class here)
+    typedef const float* Cit;
+    // functor that miniball uses to get element iter based on vertex iter
+    Cit operator()( Pit it ) const
+    {
+      float* elements = new float[3];
+      elements[0] = it->get(0,0);
+      elements[1] = it->get(1,0);
+      elements[2] = it->get(2,0);
+      return elements;
+    }
+  };
 };
 
 #endif

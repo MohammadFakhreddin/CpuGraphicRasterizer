@@ -74,7 +74,12 @@ Application::Application(
 		paramAppScreenHeight/2,
 		cameraInitialZLocation + 1
 	),
-	openGLInstance(paramAppScreenWidth,paramAppScreenHeight,physicalDeviceScreenWidth,physicalDeviceScreenHeight),
+	openGLInstance(
+		paramAppScreenWidth,
+		paramAppScreenHeight,
+		physicalDeviceScreenWidth,
+		physicalDeviceScreenHeight
+	),
 	cameraInstance(
 		openGLInstance,
 		light,
@@ -110,8 +115,8 @@ Application::Application(
 		);
 		shape->transformX(float(appScreenWidth)/2.0f);
 		shape->transformY(float(appScreenHeight)/2.0f);
-		shape->transformZ(50.0f);
-		shape->scale(100.0f);
+		shape->transformZ(100.0f);
+		shape->scale(200.0f);
 		Logger::log("Creating shape was successful");
 	}
 #ifdef __DESKTOP__
@@ -201,10 +206,13 @@ void Application::update(double deltaTime) {
 			keyEvents[Buttons::keyV] = false;	
 		}
 	}
+	{//Rotating shape by keyboard
+
+	}
 	{//Temporary code for auto rotation
 		shape->rotateY(float(-1.0f * Application::shapeRotationSpeed * deltaTime * 0.1f));
-		shape->rotateX(float(-1.0f * Application::shapeRotationSpeed * deltaTime * 0.1f));
-		shape->rotateZ(float(-1.0f * Application::shapeRotationSpeed * deltaTime * 0.1f));
+		// shape->rotateX(float(-1.0f * Application::shapeRotationSpeed * deltaTime * 0.1f));
+		// shape->rotateZ(float(-1.0f * Application::shapeRotationSpeed * deltaTime * 0.1f));
 	}
 	shape->update(deltaTime,cameraInstance);
 	cameraInstance.update(deltaTime);

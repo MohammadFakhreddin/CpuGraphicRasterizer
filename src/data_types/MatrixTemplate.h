@@ -64,7 +64,7 @@ class _Matrix{
     }
     template <typename A>
     _Matrix<T>& operator+=(_Matrix<A> rhs){
-      this = this + rhs;
+      *this = *this + rhs;
       return *this;
     }
     template <typename A>
@@ -83,7 +83,7 @@ class _Matrix{
     }
     template <typename A>
     _Matrix<T>& operator-=(_Matrix<A> rhs){
-      this = this - rhs;
+      *this = *this - rhs;
       return *this;
     }
     template <typename A>
@@ -107,7 +107,7 @@ class _Matrix{
     }
     template <typename A>
     _Matrix<T>& operator*=(_Matrix<A> rhs){
-      this = this * rhs;
+      *this = (*this) * rhs;
       return *this;
     }
     bool operator==(_Matrix<T> rhs){
@@ -126,10 +126,10 @@ class _Matrix{
     bool operator!=(_Matrix<T> rhs){
       return !(this==rhs);
     }
-    int getWidth(){
+    int getWidth() const{
       return width;
     }
-    int getHeight(){
+    int getHeight() const{
       return height;
     }
     void print(){
@@ -144,7 +144,7 @@ class _Matrix{
       }
       std::cout<<"-----------------------"<<std::endl;
     }
-    T get(int x,int y){
+    T get(int x,int y) const {
       assert(x<width);
       assert(y<height);
       return this->cells.at(x).at(y);
