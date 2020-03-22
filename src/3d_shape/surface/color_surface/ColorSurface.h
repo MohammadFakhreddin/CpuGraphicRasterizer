@@ -7,15 +7,15 @@
 class ColorSurface : public BaseSurface
 {
 private:
+
+  static constexpr bool DEBUG_MODE = false;
+
   static constexpr float stepValue = 1;
   static constexpr float minimumDrawDistance = 0.5;
   float red;
   float green;
   float blue;
   MatrixFloat* currentWorldPoint;
-  std::vector<MatrixFloat*> topEdges;
-  std::vector<MatrixFloat*> bottomEdges;
-  std::vector<MatrixFloat*> middleEdges;
   void drawLineBetweenPoints(
     Camera& cameraInstance,
     float startX,

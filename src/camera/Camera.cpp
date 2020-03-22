@@ -6,14 +6,14 @@
 #include "./../utils/math/Math.h"
 
 Camera::Camera(
-    OpenGL& openGLInstance,
+	OpenGL& openGLInstance,
 	Light& lightInstance,
-    float cameraZLocation,
-    float cameraFieldOfView,
-    float left,
-    float right,
-    float top,
-    float bottom
+	float cameraZLocation,
+	float cameraFieldOfView,
+	float left,
+	float right,
+	float top,
+	float bottom
 ) :
 openGLInstance(openGLInstance),
 lightInstance(lightInstance),
@@ -80,7 +80,7 @@ void Camera::initPixelMap(){
         pixelMap.emplace_back(innerMap);
         for(int j=0;j<appScreenHeight;j++){
             DrawPixel drawPixel;
-            drawPixel.zValue = cameraZLocation;
+            drawPixel.zValue = cameraZLocation + cameraFieldOfView;
             drawPixel.blue = 0;
             drawPixel.green = 0;
             drawPixel.red = 0;
@@ -96,7 +96,7 @@ void Camera::putPixelInMap(int x,int y,float zValue,float red,float green,float 
 	//TODO Maybe we need cliping before inserting into pixel array
 	if(
 		zValue <= cameraZLocation || 
-		zValue >= cameraFieldOfView ||  
+		zValue > cameraFieldOfView + cameraZLocation ||  
 		x < left ||
 		x >= right ||
 		y < top ||
@@ -107,7 +107,7 @@ void Camera::putPixelInMap(int x,int y,float zValue,float red,float green,float 
 	assert(x>=left && x<right);
 	assert(y>=top && y<bottom);
 	currentPixel = &pixelMap.at((unsigned int)x).at((unsigned int)y);
-	if(currentPixel->zValue == 0 || currentPixel->zValue > zValue){
+	if(currentPixel->zValue > zValue){
 		currentPixel->blue = blue;
 		currentPixel->green = green;
 		currentPixel->red = red;
@@ -127,9 +127,9 @@ void Camera::drawLight(){
 				lightInstance.getLightPosition().getX() + i,
 				lightInstance.getLightPosition().getY() + j,
 				lightInstance.getLightPosition().getZ(),
-				1.0f,
-				1.0f,
-				1.0f
+				7.0f,
+				6.0f,
+				0.0f
 			);
 		}
 	}
@@ -153,7 +153,7 @@ void Camera::render(double deltaTime){
 					currentPixel->red = 0;
 					currentPixel->green = 0;
 				}
-				currentPixel->zValue = cameraZLocation;
+				currentPixel->zValue = cameraZLocation + cameraFieldOfView;
 			}
 		}
 		openGLInstance.resetProgram();

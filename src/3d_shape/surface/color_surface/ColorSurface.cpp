@@ -27,215 +27,110 @@ void ColorSurface::computePixelMapData(
   Camera& cameraInstance,
   std::vector<MatrixFloat>* worldPoints
 ){
-  topEdges.erase(topEdges.begin(),topEdges.end());
-  bottomEdges.erase(bottomEdges.begin(),bottomEdges.end());
-  middleEdges.erase(middleEdges.begin(),middleEdges.end());
-  for(int i=0;i<3;i++){
-    currentWorldPoint = &worldPoints->at(getEdgeByIndex(i));
-    if(topEdges.size()==0){
-      topEdges.emplace_back(currentWorldPoint);
-    }
-    else if(currentWorldPoint->get(1,0)>topEdges.at(0)->get(1,0)){
-      topEdges.erase(topEdges.begin(),topEdges.end());
-      topEdges.emplace_back(currentWorldPoint);
-    }
-    else if(currentWorldPoint->get(1,0)==topEdges.at(0)->get(1,0)){
-      topEdges.emplace_back(currentWorldPoint);
-    }
-  }
-  for(int i=0;i<3;i++){
-    currentWorldPoint = &worldPoints->at(getEdgeByIndex(i));
-    if(bottomEdges.size()==0){
-      bottomEdges.emplace_back(currentWorldPoint);
-    }
-    else if(currentWorldPoint->get(1,0)<bottomEdges.at(0)->get(1,0)){
-      bottomEdges.erase(bottomEdges.begin(),bottomEdges.end());
-      bottomEdges.emplace_back(currentWorldPoint);
-    }
-    else if(currentWorldPoint->get(1,0)==bottomEdges.at(0)->get(1,0)){
-      bottomEdges.emplace_back(currentWorldPoint);
-    }
-  }
-  assert(topEdges.size()>=1);
-  assert(bottomEdges.size()>=1);
-  if(topEdges.size()!=2&&bottomEdges.size()!=2){
-    for(int i=0;i<3;i++){
-      currentWorldPoint = &worldPoints->at(getEdgeByIndex(i));
-      if(currentWorldPoint!=topEdges.at(0) && currentWorldPoint!=bottomEdges.at(0)){
-        middleEdges.emplace_back(currentWorldPoint);
-        middlePoint.set(0,0,(
-            currentWorldPoint->get(1,0) - topEdges.at(0)->get(1,0)
-          ) * (
-            (
-              topEdges.at(0)->get(0,0) - bottomEdges.at(0)->get(0,0)
-            )/(
-              topEdges.at(0)->get(1,0) - bottomEdges.at(0)->get(1,0)
-            )
-          ) + topEdges.at(0)->get(0,0)
-        );
-        middlePoint.set(1,0,currentWorldPoint->get(1,0));
-        middlePoint.set(2,0,
-          (
-            currentWorldPoint->get(1,0) - topEdges.at(0)->get(1,0)
-          ) * (
-            (
-              topEdges.at(0)->get(2,0) - bottomEdges.at(0)->get(2,0)
-            )/(
-              topEdges.at(0)->get(1,0) - bottomEdges.at(0)->get(1,0)
-            )
-          ) + topEdges.at(0)->get(2,0)
-        );
-        MatrixFloat* middlePointPointer = &middlePoint;
-        middleEdges.emplace_back(middlePointPointer);
-        break;
-      }
+  //TODO Remove all these temporary variables to boost performance
+  MatrixFloat* point1 = &worldPoints->at(edge1);
+  MatrixFloat* point2 = &worldPoints->at(edge2);
+  MatrixFloat* point3 = &worldPoints->at(edge3);
+
+  float trianglePoint1X = point1->get(0,0);
+  float trianglePoint1Y = point1->get(1,0);
+  float trianglePoint1Z = point1->get(2,0);
+  float trianglePoint2X = point2->get(0,0);
+  float trianglePoint2Y = point2->get(1,0);
+  float trianglePoint2Z = point2->get(2,0);
+  float trianglePoint3X = point3->get(0,0);
+  float trianglePoint3Y = point3->get(1,0);
+  float trianglePoint3Z = point3->get(2,0);
+  
+  float triangleStartX = trianglePoint1X;
+  float triangleStartY = trianglePoint1Y;
+  float triangleStartZ = trianglePoint1Z;
+
+  unsigned int totalStepCount = 0;
+  float triangleStartStepValueX = 0;
+  float triangleStartStepValueY = 0;
+  float triangleStartStepValueZ = 0;
+  {
+    if(abs(triangleStartX - trianglePoint3X)>abs(triangleStartY - trianglePoint3Y)){
+      float xDifference = trianglePoint3X - triangleStartX;
+      assert(xDifference!=0);
+      calculateStepCountAndStepValue(
+        cameraInstance,
+        xDifference,
+        &totalStepCount,
+        &triangleStartStepValueX
+      );
+      assert(totalStepCount!=0);
+      triangleStartStepValueY = ((trianglePoint3Y - triangleStartY)/xDifference) * triangleStartStepValueX;
+      triangleStartStepValueZ = ((trianglePoint3Z - triangleStartZ)/xDifference) * triangleStartStepValueX;
+    }else
+    {
+      float yDifference = trianglePoint3Y - triangleStartY;
+      assert(yDifference!=0);
+      calculateStepCountAndStepValue(
+        cameraInstance,
+        yDifference,
+        &totalStepCount,
+        &triangleStartStepValueY
+      );
+      assert(totalStepCount!=0);
+      triangleStartStepValueX = ((trianglePoint3X - triangleStartX)/yDifference) * triangleStartStepValueY;
+      triangleStartStepValueZ = ((trianglePoint3Z - triangleStartZ)/yDifference) * triangleStartStepValueY;
     }
   }
-  if(topEdges.size()==2){
-    float currentY = topEdges.at(0)->get(1,0);
-    float startX = topEdges.at(0)->get(0,0);
-    float startZ = topEdges.at(0)->get(2,0);
-    float endX = topEdges.at(1)->get(0,0);
-    float endZ = topEdges.at(1)->get(2,0);
-    float finalY = bottomEdges.at(0)->get(1,0);
-    float finalX = bottomEdges.at(0)->get(0,0);
-    float finalZ = bottomEdges.at(0)->get(2,0);
-    float startXM = (startX - finalX)/(currentY - finalY);
-    float startZM = (startZ - finalZ)/(currentY - finalY);
-    float endXM = (endX - finalX)/(currentY - finalY);
-    float endZM = (endZ - finalZ)/(currentY - finalY);
-    if(abs(currentY-finalY)>minimumDrawDistance){
-      do{
-        drawLineBetweenPoints(
-          cameraInstance,
-          startX,
-          currentY,
-          startZ,
-          endX,
-          currentY,
-          endZ,
-          red,
-          green,
-          blue
-        );
-        currentY-=stepValue;
-        startX-=startXM * stepValue;
-        startZ-=startZM * stepValue;
-        endX-=endXM * stepValue;
-        endZ-=endZM * stepValue;
-      } while (currentY>finalY+stepValue);
-    }
-  }else if(bottomEdges.size()==2){
-    float currentY = bottomEdges.at(0)->get(1,0);
-    float startX = bottomEdges.at(0)->get(0,0);
-    float startZ = bottomEdges.at(0)->get(2,0);
-    float endX = bottomEdges.at(1)->get(0,0);
-    float endZ = bottomEdges.at(1)->get(2,0);
-    float finalY = topEdges.at(0)->get(1,0);
-    float finalX = topEdges.at(0)->get(0,0);
-    float finalZ = topEdges.at(0)->get(2,0);
-    float yDifference = (currentY - finalY);
-    float startXM = (startX - finalX)/yDifference;
-    float startZM = (startZ - finalZ)/yDifference;
-    float endXM = (endX - finalX)/yDifference;
-    float endZM = (endZ - finalZ)/yDifference;
-    if(abs(currentY - finalY)>minimumDrawDistance){
-      do{
-        drawLineBetweenPoints(
-          cameraInstance,
-          startX,currentY,startZ,
-          endX,currentY,endZ,
-          red,
-          green,
-          blue
-        );
-        currentY+=stepValue;
-        startX+=startXM * stepValue;
-        startZ+=startZM * stepValue;
-        endX+=endXM * stepValue;
-        endZ+=endZM * stepValue;
-      } while (currentY<finalY-stepValue);
-    }
-  }else {
-    assert(topEdges.size()==1);
-    assert(middleEdges.size()==2);
-    assert(bottomEdges.size()==1);
-    assert(middleEdges.at(0)->get(1,0)<topEdges.at(0)->get(1,0));
-    assert(middleEdges.at(0)->get(1,0)>bottomEdges.at(0)->get(1,0));
-    assert(middleEdges.at(1)->get(1,0)<topEdges.at(0)->get(1,0));
-    assert(middleEdges.at(1)->get(1,0)>bottomEdges.at(0)->get(1,0));
-    assert(middleEdges.at(0)->get(1,0)==middleEdges.at(1)->get(1,0));
-    {//From middle to top
-      float currentY = middleEdges.at(0)->get(1,0);
-      float startX = middleEdges.at(0)->get(0,0);
-      float startZ = middleEdges.at(0)->get(2,0);
-      float endX = middleEdges.at(1)->get(0,0);
-      float endZ = middleEdges.at(1)->get(2,0);
-      float finalY = topEdges.at(0)->get(1,0);
-      float finalX = topEdges.at(0)->get(0,0);
-      float finalZ = topEdges.at(0)->get(2,0);
-      float startXM = (startX - finalX)/(currentY - finalY);
-      float startZM = (startZ - finalZ)/(currentY - finalY);
-      float endXM = (endX - finalX)/(currentY - finalY);
-      float endZM = (endZ - finalZ)/(currentY - finalY);
-      if(abs(currentY - finalY)>minimumDrawDistance){
-        do{
-          drawLineBetweenPoints(
-            cameraInstance,
-            startX,
-            currentY,
-            startZ,
-            endX,
-            currentY,
-            endZ,
-            red,
-            green,
-            blue
-          );
-          currentY+=stepValue;
-          startX+=startXM * stepValue;
-          startZ+=startZM * stepValue;
-          endX+=endXM * stepValue;
-          endZ+=endZM * stepValue;
-        } while (currentY<finalY-stepValue);
-      }
-    }
-    {//From middle to bottom
-      float currentY = middleEdges.at(0)->get(1,0);
-      float startX = middleEdges.at(0)->get(0,0);
-      float startZ = middleEdges.at(0)->get(2,0);
-      float endX = middleEdges.at(1)->get(0,0);
-      float endZ = middleEdges.at(1)->get(2,0);
-      float finalY = bottomEdges.at(0)->get(1,0);
-      float finalX = bottomEdges.at(0)->get(0,0);
-      float finalZ = bottomEdges.at(0)->get(2,0);
-      float startXM = (startX - finalX)/(currentY - finalY);
-      float startZM = (startZ - finalZ)/(currentY - finalY);
-      float endXM = (endX - finalX)/(currentY - finalY);
-      float endZM = (endZ - finalZ)/(currentY - finalY);
-      if(abs(currentY - finalY) > minimumDrawDistance){
-        do{
-          drawLineBetweenPoints(
-            cameraInstance,
-            startX,
-            currentY,
-            startZ,
-            endX,
-            currentY,
-            endZ,
-            red,
-            green,
-            blue
-          );
-          currentY-= stepValue;
-          startX-=startXM * stepValue;
-          startZ-=startZM * stepValue;
-          endX-=endXM * stepValue;
-          endZ-=endZM * stepValue;
-        } while (currentY>finalY+stepValue);
-      }
+
+  assert(totalStepCount!=0);
+
+  if(DEBUG_MODE){
+    Logger::log("TotalStepCount:"+std::to_string(totalStepCount));
+  }  
+
+  float triangleEndX = trianglePoint2X;
+  float triangleEndY = trianglePoint2Y;
+  float triangleEndZ = trianglePoint2Z;
+
+  float triangleEndStepValueX = 0;
+  float triangleEndStepValueY = 0;
+  float triangleEndStepValueZ = 0;
+  {
+    if(abs(triangleEndX - trianglePoint3X)>abs(triangleEndY - trianglePoint3Y)){
+      float xDifference = trianglePoint3X - triangleEndX;
+      assert(xDifference!=0);
+      triangleEndStepValueX = xDifference/totalStepCount;
+      triangleEndStepValueY = ((trianglePoint3Y - triangleEndY)/xDifference) * triangleEndStepValueX;
+      triangleEndStepValueZ = ((trianglePoint3Z - triangleEndZ)/xDifference) * triangleEndStepValueX;
+    }else
+    {
+      float yDifference = trianglePoint3Y - triangleEndY;
+      assert(yDifference!=0);
+      triangleEndStepValueY = yDifference/totalStepCount;
+      triangleEndStepValueX = ((trianglePoint3X - triangleEndX)/yDifference) * triangleEndStepValueY;
+      triangleEndStepValueZ = ((trianglePoint3Z - triangleEndZ)/yDifference) * triangleEndStepValueY;
     }
   }
+
+  for(int i=0;i<totalStepCount;i++){
+    
+    drawLineBetweenPoints(
+      cameraInstance,
+      triangleStartX,
+      triangleStartY,
+      triangleStartZ,
+      triangleEndX,
+      triangleEndY,
+      triangleEndZ,
+      red,green,blue
+    );
+
+    triangleStartX += triangleStartStepValueX;
+    triangleEndX += triangleEndStepValueX;
+    triangleStartY += triangleStartStepValueY;
+    triangleEndY += triangleEndStepValueY;
+    triangleStartZ += triangleStartStepValueZ;
+    triangleEndZ += triangleEndStepValueZ;
+
+  }
+
 }
 
 EdgeType ColorSurface::getEdgeType(){
@@ -244,84 +139,69 @@ EdgeType ColorSurface::getEdgeType(){
 
 void ColorSurface::drawLineBetweenPoints(
   Camera& cameraInstance,
-  float startX,
-  float startY,
-  float startZ,
-  float endX,
-  float endY,
-  float endZ,
+	float triangleStartX,
+	float triangleStartY,
+	float triangleStartZ,
+	float triangleEndX,
+	float triangleEndY,
+	float triangleEndZ,
   float red,
   float green,
   float blue
 ){
-  bool moveByX = true;
-  if(abs(startX-endX)<abs(startY-endY)){
-    moveByX = false;
-  }
-  if(moveByX){
-    float xDifference = endX - startX;
-	if(xDifference==0){
-		return;
+  unsigned int triangleTotalStepCount = 0;
+	float triangleXStepValue = 0;
+	float triangleYStepValue = 0;
+	float triangleZStepValue = 0;
+	{//TriangleStepValue
+		if(abs(triangleEndX - triangleStartX) > abs(triangleEndY - triangleStartY)){
+			float xDifference = triangleEndX - triangleStartX;
+			assert(xDifference!=0);
+      calculateStepCountAndStepValue(
+        cameraInstance,
+        xDifference,
+        &triangleTotalStepCount,
+        &triangleXStepValue
+      );
+			assert(triangleTotalStepCount!=0);
+      triangleYStepValue = ((triangleEndY - triangleStartY)/xDifference) * triangleXStepValue;
+			triangleZStepValue = ((triangleEndZ - triangleStartZ)/xDifference) * triangleXStepValue;
+		}else{
+			float yDifference = triangleEndY - triangleStartY;
+			assert(yDifference!=0);
+      calculateStepCountAndStepValue(
+        cameraInstance,
+        yDifference,
+        &triangleTotalStepCount,
+        &triangleYStepValue
+      );
+			assert(triangleTotalStepCount!=0);
+      triangleXStepValue = ((triangleEndX - triangleStartX)/yDifference) * triangleYStepValue;
+			triangleZStepValue = ((triangleEndZ - triangleStartZ)/yDifference) * triangleYStepValue;
+		}
 	}
-	float yM = (endY - startY)/xDifference;
-    float zM = (endZ - startZ)/xDifference;
-    putPixelInMap(
-      cameraInstance,
-      int(round(startX)), 
-      int(round(startY)), 
-      startZ, 
-      red, 
-      green, 
-      blue
-    );
-    float stepMoveValue = startX - endX > 0 ? -1 : +1;
-	do{
-		startX += stepMoveValue;
-		startY += yM * stepMoveValue;
-		startZ += zM * stepMoveValue;
+
+	putPixelInMap(
+    cameraInstance,
+		int(floor(triangleStartX)),
+		int(floor(triangleStartY)),
+		triangleStartZ,
+		red,
+		green,
+		blue
+	);
+	for(int i=0;i<triangleTotalStepCount;i++){
+		triangleStartX += triangleXStepValue;
+		triangleStartY += triangleYStepValue;
+		triangleStartZ += triangleZStepValue;
 		putPixelInMap(
       cameraInstance,
-      int(round(startX)),
-      int(round(startY)),
-      startZ,red,green,blue
-    );
-	}while (
-		( stepMoveValue > 0 && startX + stepMoveValue < endX ) || 
-		( stepMoveValue < 0 && startX - stepMoveValue > endX )
-	);
-  } else {
-    float yDifference = endY - startY;
-    if(yDifference==0){
-      return;
-    }
-      float xM = (endX - startX)/yDifference;
-      float zM = (endZ - startZ)/yDifference;
-      putPixelInMap(
-        cameraInstance,
-        int(round(startX)),
-        int(round(startY)),
-        startZ,
-        red,
-        green,
-        blue
-      );
-      float stepMoveValue = startY - endY > 0 ? -1 : +1;
-    do{
-      startY += stepMoveValue;
-      startX += xM * stepMoveValue;
-      startZ += zM * stepMoveValue;
-      putPixelInMap(
-        cameraInstance,
-        int(round(startX)),
-        int(round(startY)),
-        startZ,
-        red,
-        green,
-        blue
-      );
-    }while (
-      (stepMoveValue > 0 && startY + stepMoveValue < endY) ||
-      ( stepMoveValue <0 && startY - stepMoveValue > endY )
-    );
-  }
+			int(floor(triangleStartX)),
+			int(floor(triangleStartY)),
+			triangleStartZ,
+			red,
+			green,
+			blue
+		);
+	}
 }
