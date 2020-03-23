@@ -1,8 +1,8 @@
 # 3D-Cube 
 ### Using c++,cmake, pure math and putPixel equivalent in openGL
 
-### Drawing colored 3d-cube
-![Alt Text](3d-cube.gif)
+### Defuse light on bunny model (New support for .Obj is added)
+![Alt Text](bunny.gif)
 ### Drawing 3d-cube with texture
 ![Alt Text](dice.gif)
 ### Android port

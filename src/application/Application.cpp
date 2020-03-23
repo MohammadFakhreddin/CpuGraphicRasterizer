@@ -223,9 +223,9 @@ void Application::update(double deltaTime) {
     }
   }
   {//Temporary code for auto rotation
-    // shape->rotateY(float(-1.0f * Application::shapeRotationSpeed * deltaTime * 0.1f));
-    // shape->rotateX(float(-1.0f * Application::shapeRotationSpeed * deltaTime * 0.1f));
-    // shape->rotateZ(float(-1.0f * Application::shapeRotationSpeed * deltaTime * 0.1f));
+    shape->rotateY(float(-1.0f * Application::shapeRotationSpeed * deltaTime * 0.1f));
+    shape->rotateX(float(-1.0f * Application::shapeRotationSpeed * deltaTime * 0.1f));
+    shape->rotateZ(float(-1.0f * Application::shapeRotationSpeed * deltaTime * 0.1f));
   }
   shape->update(deltaTime,cameraInstance);
   cameraInstance.update(deltaTime);
