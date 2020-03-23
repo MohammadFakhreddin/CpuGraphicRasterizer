@@ -79,7 +79,7 @@ public:
     #else
     #   error "loadObject failed Unhandled platform"
     #endif
-    //Checking if ifstream is filled
+    //Checking if file is filled
     assert(file);
 
     bool isCounterClockWise = false;
@@ -152,7 +152,8 @@ public:
             Logger::exception("Number of face vertices cannot be other than "+ std::to_string(mesh.num_face_vertices[faceIndex]));
           }
           //Loading mesh indices into indices vector
-          if(isCounterClockWise==false){
+          //My implementation is counter clock wise so I need to rotate before rendering
+          if(isCounterClockWise==true){
             indices.emplace_back(new ColorSurface(
               mesh.indices[faceIndex * 3 + 0].vertex_index,
               mesh.indices[faceIndex * 3 + 1].vertex_index,
@@ -192,10 +193,6 @@ public:
       // adjust all vertices so that center of minimal sphere is at 0,0
       for( auto& vertex : vertices )
       {
-        // vertex.set(0,0,vertex.get(0,0)-center.get(0,0));
-        // vertex.set(1,0,vertex.get(1,0)-center.get(1,0));
-        // vertex.set(2,0,vertex.get(2,0)-center.get(2,0));
-        // vertex = vertex - center;
         vertex -= center;
       }
     }

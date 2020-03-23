@@ -14,94 +14,97 @@
 
 class Application {
 public:
-	enum Platform{
-		Windows,
-		Mac,
-		Iphone,
-		Android
-	};
-	enum Buttons
-	{
-		keyA,
-		keyD,
-		keyW,
-		keyS,
-		keyE,
-		keyQ,
-		keyR,
-		keyT,
-		keyF,
-		keyG,
-		keyX,
-		keyC,
-		keyV,
-		keyB
-	};
+  enum Platform{
+    Windows,
+    Mac,
+    Iphone,
+    Android
+  };
+  enum Buttons
+  {
+    keyA,
+    keyD,
+    keyW,
+    keyS,
+    keyE,
+    keyQ,
+    keyR,
+    keyT,
+    keyF,
+    keyG,
+    keyX,
+    keyC,
+    keyV,
+    keyB,
+    keyU,
+    keyH,
+    keyJ,
+    keyK,
+    keyY,
+    keyI
+  };
 
-	static constexpr float shapeTransformSpeed = 1.0f;
-	static constexpr float shapeRotationSpeed = 0.01f;
-	static constexpr float shapeScaleSpeed = 0.1f;
-	
-	static constexpr float lightTransformSpeed = 0.2f;
+  static constexpr float shapeTransformSpeed = 1.0f;
+  static constexpr float shapeRotationSpeed = 0.01f;
+  static constexpr float shapeScaleSpeed = 0.1f;
 
-	static constexpr float cameraInitialZLocation = 0.0f;
-	static constexpr float cameraInitialMaximumFov = 1000.0f;
-	
-	static Application* getInstance();
-	static Application* instance;
-	
-	Application(
-		Application::Platform platform,
-		unsigned int appScreenWidth,
-		unsigned int appScreenHeight,
-		unsigned int physicalDeviceScreenWidth,
-		unsigned int physicalDeviceScreenHeight
-	);
-	/**
-	 * Currently this event is only for android
-	*/
-	void notifyScreenSurfaceChanged(
-		unsigned int appScreenWidth,
-		unsigned int appScreenHeight,
-		unsigned int physicalDeviceScreenWidth,
-		unsigned int physicalDeviceScreenHeight,
-		bool forceNewAppScreenData
-	);
-	void mainLoop(double deltaTime);
-	void notifyKeyIsPressed(Application::Buttons);
-	void putPixelInMap(int x,int y,float zValue,float red,float green,float blue);
-	unsigned int getAppScreenWidth();
-	unsigned int getAppScreenHeight();
-	unsigned int getPhysicalScreenWidth();
-	unsigned int getPhysicalScreenHeight();
+  static constexpr float lightTransformSpeed = 0.2f;
 
-	Vec3DFloat& getCameraLocation();
+  static constexpr float cameraInitialZLocation = 1000.0f;
+  static constexpr float cameraInitialMaximumFov = -1000.0f;
+
+  static Application* getInstance();
+  static Application* instance;
+
+  Application(
+          Application::Platform platform,
+          unsigned int appScreenWidth,
+          unsigned int appScreenHeight,
+          unsigned int physicalDeviceScreenWidth,
+          unsigned int physicalDeviceScreenHeight
+  );
+  /**
+   * Currently this event is only for android
+  */
+  void notifyScreenSurfaceChanged(
+    unsigned int paramAppScreenWidth,
+    unsigned int paramAppScreenHeight,
+    unsigned int paramPhysicalScreenWidth,
+    unsigned int paramPhysicalScreenHeight,
+    bool forceNewAppScreenData
+  );
+  void mainLoop(double deltaTime);
+  void notifyKeyIsPressed(Application::Buttons);
+  unsigned int getAppScreenWidth();
+  unsigned int getAppScreenHeight();
+  unsigned int getPhysicalScreenWidth();
+  unsigned int getPhysicalScreenHeight();
 
 private:
 
-	void render(double deltaTime);
-	void update(double deltaTime);
-	
-	double currentFps = 0;
+  void render(double deltaTime);
+  void update(double deltaTime);
 
-	DiffuseLight light;
-	OpenGL openGLInstance;
-	Camera cameraInstance;
+  double currentFps = 0;
 
-	unsigned int physicalScreenWidth;
-	unsigned int physicalScreenHeight;
-	unsigned int appScreenWidth;
-	unsigned int appScreenHeight;
+  DiffuseLight light;
+  OpenGL openGLInstance;
+  Camera cameraInstance;
 
-	Application::Platform platform;
+  unsigned int physicalScreenWidth;
+  unsigned int physicalScreenHeight;
+  unsigned int appScreenWidth;
+  unsigned int appScreenHeight;
 
-	std::unique_ptr<Shape3d> shape;
+  Application::Platform platform;
 
-	std::unordered_map<Application::Buttons,bool> keyEvents;
+  std::unique_ptr<Shape3d> shape;
 
-	Wood wood;
-	Sky sky;
-	Dice dice;	
+  std::unordered_map<Application::Buttons,bool> keyEvents;
+
+  Wood wood;
+  Sky sky;
+  Dice dice;
 };
 
 #endif

@@ -233,7 +233,7 @@ void OpenGL::flush(){
   glFlush();
 }
 
-void OpenGL::drawPixel(int x,int y,float red,float green,float blue){
+void OpenGL::drawPixel(unsigned int x,unsigned int y,float red,float green,float blue){
 
     assert(x>=0 && x<appScreenWidth);
     assert(y>=0 && y<appScreenHeight);
@@ -289,13 +289,15 @@ void OpenGL::resetProgram(){
 #endif
 }
 
-void OpenGL::drawText(int x,int y,std::string text,float red,float green,float blue){
+void OpenGL::drawText(unsigned int x,unsigned int y,const std::string& text,float red,float green,float blue){
+  assert(x>=0 && x<appScreenWidth);
+  assert(y>=0 && y<appScreenHeight);
 #if defined(__OPENGL__)
   glColor3f(red,green,blue);
   glRasterPos2i(x ,y);
-  for (int i = 0; i < text.length(); i++)
+  for (auto& i : text)
   {
-    glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24,text[i]);
+    glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24,i);
   }
 #elif defined(__GLES__)
     //TODO

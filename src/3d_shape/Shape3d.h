@@ -29,7 +29,7 @@ public:
   );
   static std::unique_ptr<Shape3d> generateTextured3DCube(
     std::unique_ptr<FaTexture>& texture,
-    std::vector<BaseSurface*> edgeList,
+    const std::vector<BaseSurface*>& edgeList,
     float xWidth,
     float yWidth,
     float zWidth,
@@ -44,18 +44,18 @@ public:
   //TODO Rename node and edge to vertices and indices
   Shape3d(
     std::vector<MatrixFloat> nodes,
-    std::vector<BaseSurface*> edges
+    const std::vector<BaseSurface*>& edges
   );
   Shape3d(
     std::vector<MatrixFloat> nodes,
-    std::vector<BaseSurface*> edges,
+    const std::vector<BaseSurface*>& edges,
     float initialTransformX,
     float initialTransformY,
     float initialTransformZ
   );
   Shape3d(
     std::vector<MatrixFloat> nodes,
-    std::vector<BaseSurface*> edges,
+    const std::vector<BaseSurface*>& edges,
     float transformX,
     float transformY,
     float transformZ,

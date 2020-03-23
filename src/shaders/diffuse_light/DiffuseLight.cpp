@@ -18,7 +18,7 @@ void DiffuseLight::computeLightIntensity(
     dotProductPlaceholder = 
         lightDirectionVectorPlaceholder.dotProduct(surfaceNormalVector) 
         * -1;
-    angleValuePlaceholder = dotProductPlaceholder / (surfaceNormalVector.size() * lightDirectionVectorPlaceholder.size());
+    angleValuePlaceholder = float(dotProductPlaceholder / (surfaceNormalVector.size() * lightDirectionVectorPlaceholder.size()));
     lightIntensityFactorPlaceholder = Math::clamp(angleValuePlaceholder,0,1);
     output.setX(lightIntensityFactorPlaceholder);
     output.setY(lightIntensityFactorPlaceholder);

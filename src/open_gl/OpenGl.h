@@ -38,8 +38,8 @@ public:
     unsigned int physicalScreenHeight
   );
   void init();
-  void drawPixel(int x,int y,float red,float green,float blue);
-  void drawText(int x,int y,std::string text,float red,float green,float blue);
+  void drawPixel(unsigned int x,unsigned int y,float red,float green,float blue);
+  void drawText(unsigned int x,unsigned int y,const std::string& text,float red,float green,float blue);
   void clear();
   void flush();
   void beginDrawingPoints();

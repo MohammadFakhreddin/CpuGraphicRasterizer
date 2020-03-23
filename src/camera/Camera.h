@@ -11,45 +11,44 @@
 
 class Camera{
 public:
-    //TODO Store point size as well
-    struct DrawPixel{
-		float zValue;
-		float red;
-		float green;
-		float blue;
-	};
+  //TODO Store point size as well
+  struct DrawPixel{
+    float zValue;
+    float red;
+    float green;
+    float blue;
+  };
 
-    Camera(
-        OpenGL& openGlInstance,
-        Light& lightInstance,
-        float cameraZLocation,
-        float cameraFieldOfView,
-        float left,
-        float right,
-        float top,
-        float bottom
-    );
-    void notifyScreenSurfaceIsChanged(
-        float left,
-        float right,
-        float top,
-        float bottom
-    );
-    void putPixelInMap(
-        int x,
-        int y,
-        float zValue,
-        float red,
-        float green,
-        float blue
-    );
+  Camera(
+    OpenGL& openGlInstance,
+    Light& lightInstance,
+    float cameraZLocation,
+    float cameraFieldOfView,
+    int left,
+    int right,
+    int top,
+    int bottom
+  );
+  void notifyScreenSurfaceIsChanged(
+    int paramLeft,
+    int paramRight,
+    int paramTop,
+    int paramBottom);
+  void putPixelInMap(
+    int x,
+    int y,
+    float zValue,
+    float red,
+    float green,
+    float blue
+  );
     void update(double deltaTime);
     void render(double deltaTime);
     float scaleBasedOnZDistance(float zLocation);
-    float getLeft();
-    float getRight();
-    float getTop();
-    float getBottom();
+    int getLeft();
+    int getRight();
+    int getTop();
+    int getBottom();
     float getCameraZLocation();
     Light& getLight();
     unsigned int getAppScreenWidth();
@@ -57,29 +56,29 @@ public:
 
 private:
 
-    static constexpr bool DEBUG_MODE = false;
+  static constexpr bool DEBUG_MODE = false;
     
-    void initPixelMap();
-    void drawLight();
+  void initPixelMap();
+  void drawLight();
 
-    float cameraZLocation;
-    float cameraFieldOfView;
+  float cameraZLocation;
+  float cameraFieldOfView;
 
-    float left;
-    float right;
-    float top;
-    float bottom;
+  int left;
+  int right;
+  int top;
+  int bottom;
 
-    unsigned int appScreenWidth;
-    unsigned int appScreenHeight;
+  unsigned int appScreenWidth;
+  unsigned int appScreenHeight;
 
-    std::vector<std::vector<DrawPixel>> pixelMap;
+  std::vector<std::vector<DrawPixel>> pixelMap;
 
-    DrawPixel* currentPixel;
+  DrawPixel* currentPixel = nullptr;
 
-    OpenGL& openGLInstance;
+  OpenGL& openGLInstance;
 
-    Light& lightInstance;
+  Light& lightInstance;
     //TODO Add transformation and rotation 
 };
 

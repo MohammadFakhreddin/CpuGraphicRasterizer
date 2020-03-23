@@ -1,8 +1,7 @@
 #include "./Shape3d.h"
 
-#include <assert.h>
-#include <math.h>
-#include <iostream>
+#include <cassert>
+#include <cmath>
 #include <memory>
 
 #include "../open_gl/OpenGl.h"
@@ -10,18 +9,18 @@
 #include "./surface/color_surface/ColorSurface.h"
 
 std::unique_ptr<Shape3d> Shape3d::generateTextured3DCube(
-        std::unique_ptr<FaTexture> &texture,
-        std::vector<BaseSurface *> edgeList,
-        float w,
-        float h,
-        float d,
-        float transformX,
-        float transformY,
-        float transformZ,
-        float rotationX,
-        float rotationY,
-        float rotationZ,
-        float scale
+  std::unique_ptr<FaTexture> &texture,
+  const std::vector<BaseSurface *>& edgeList,
+  float w,
+  float h,
+  float d,
+  float transformX,
+  float transformY,
+  float transformZ,
+  float rotationX,
+  float rotationY,
+  float rotationZ,
+  float scale
 ) {
     //TODO Move these two methods into new class
     //Also nodeList for cube is only part that is needed    
@@ -29,46 +28,46 @@ std::unique_ptr<Shape3d> Shape3d::generateTextured3DCube(
     float y = -h / 2;
     float z = -d / 2;
     std::vector<MatrixFloat> nodeList = {
-            MatrixFloat(3, 1, std::vector<std::vector<float>>{
-                std::vector<float>{x},
-                std::vector<float>{y},
-                std::vector<float>{z}
-            }),
-            MatrixFloat(3, 1, std::vector<std::vector<float>>{
-                std::vector<float>{x},
-                std::vector<float>{y},
-                std::vector<float>{z + d}
-            }),
-            MatrixFloat(3, 1, std::vector<std::vector<float>>{
-                std::vector<float>{x},
-                std::vector<float>{y + h},
-                std::vector<float>{z}
-            }),
-            MatrixFloat(3, 1, std::vector<std::vector<float>>{
-                std::vector<float>{x},
-                std::vector<float>{y + h},
-                std::vector<float>{z + d}
-            }),
-            MatrixFloat(3, 1, std::vector<std::vector<float>>{
-                std::vector<float>{x + w},
-                std::vector<float>{y},
-                std::vector<float>{z}
-            }),
-            MatrixFloat(3, 1, std::vector<std::vector<float>>{
-                std::vector<float>{x + w},
-                std::vector<float>{y},
-                std::vector<float>{z + d}
-            }),
-            MatrixFloat(3, 1, std::vector<std::vector<float>>{
-                std::vector<float>{x + w},
-                std::vector<float>{y + h},
-                std::vector<float>{z}
-            }),
-            MatrixFloat(3, 1, std::vector<std::vector<float>>{
-                std::vector<float>{x + w},
-                std::vector<float>{y + h},
-                std::vector<float>{z + d}
-            })
+      MatrixFloat(3, 1, std::vector<std::vector<float>>{
+        std::vector<float>{x},
+        std::vector<float>{y},
+        std::vector<float>{z}
+      }),
+      MatrixFloat(3, 1, std::vector<std::vector<float>>{
+        std::vector<float>{x},
+        std::vector<float>{y},
+        std::vector<float>{z + d}
+      }),
+      MatrixFloat(3, 1, std::vector<std::vector<float>>{
+        std::vector<float>{x},
+        std::vector<float>{y + h},
+        std::vector<float>{z}
+      }),
+      MatrixFloat(3, 1, std::vector<std::vector<float>>{
+        std::vector<float>{x},
+        std::vector<float>{y + h},
+        std::vector<float>{z + d}
+      }),
+      MatrixFloat(3, 1, std::vector<std::vector<float>>{
+        std::vector<float>{x + w},
+        std::vector<float>{y},
+        std::vector<float>{z}
+      }),
+      MatrixFloat(3, 1, std::vector<std::vector<float>>{
+        std::vector<float>{x + w},
+        std::vector<float>{y},
+        std::vector<float>{z + d}
+      }),
+      MatrixFloat(3, 1, std::vector<std::vector<float>>{
+        std::vector<float>{x + w},
+        std::vector<float>{y + h},
+        std::vector<float>{z}
+      }),
+      MatrixFloat(3, 1, std::vector<std::vector<float>>{
+        std::vector<float>{x + w},
+        std::vector<float>{y + h},
+        std::vector<float>{z + d}
+      })
     };
     return std::make_unique<Shape3d>(
         nodeList,
@@ -100,44 +99,44 @@ std::unique_ptr<Shape3d> Shape3d::generateColored3DCube(
     float z = -d / 2;
     std::vector<MatrixFloat> nodeList = {
         MatrixFloat(3, 1, std::vector<std::vector<float>>{
-                std::vector<float>{x},
-                std::vector<float>{y},
-                std::vector<float>{z}
+          std::vector<float>{x},
+          std::vector<float>{y},
+          std::vector<float>{z}
         }),
         MatrixFloat(3, 1, std::vector<std::vector<float>>{
-                std::vector<float>{x},
-                std::vector<float>{y},
-                std::vector<float>{z + d}
+          std::vector<float>{x},
+          std::vector<float>{y},
+          std::vector<float>{z + d}
         }),
         MatrixFloat(3, 1, std::vector<std::vector<float>>{
-                std::vector<float>{x},
-                std::vector<float>{y + h},
-                std::vector<float>{z}
+          std::vector<float>{x},
+          std::vector<float>{y + h},
+          std::vector<float>{z}
         }),
         MatrixFloat(3, 1, std::vector<std::vector<float>>{
-                std::vector<float>{x},
-                std::vector<float>{y + h},
-                std::vector<float>{z + d}
+          std::vector<float>{x},
+          std::vector<float>{y + h},
+          std::vector<float>{z + d}
         }),
         MatrixFloat(3, 1, std::vector<std::vector<float>>{
-                std::vector<float>{x + w},
-                std::vector<float>{y},
-                std::vector<float>{z}
+          std::vector<float>{x + w},
+          std::vector<float>{y},
+          std::vector<float>{z}
         }),
         MatrixFloat(3, 1, std::vector<std::vector<float>>{
-                std::vector<float>{x + w},
-                std::vector<float>{y},
-                std::vector<float>{z + d}
+          std::vector<float>{x + w},
+          std::vector<float>{y},
+          std::vector<float>{z + d}
         }),
         MatrixFloat(3, 1, std::vector<std::vector<float>>{
-                std::vector<float>{x + w},
-                std::vector<float>{y + h},
-                std::vector<float>{z}
+          std::vector<float>{x + w},
+          std::vector<float>{y + h},
+          std::vector<float>{z}
         }),
         MatrixFloat(3, 1, std::vector<std::vector<float>>{
-                std::vector<float>{x + w},
-                std::vector<float>{y + h},
-                std::vector<float>{z + d}
+          std::vector<float>{x + w},
+          std::vector<float>{y + h},
+          std::vector<float>{z + d}
         })
     };
     std::vector<BaseSurface *> edgeList = {
@@ -154,7 +153,7 @@ std::unique_ptr<Shape3d> Shape3d::generateColored3DCube(
         new ColorSurface(4, 5, 7, 245.0f / 255.0f, 66.0f / 255.0f, 123.0f / 255.0f),
         new ColorSurface(4, 6, 7, 245.0f / 255.0f, 66.0f / 255.0f, 123.0f / 255.0f)
     };
-    return std::unique_ptr<Shape3d>(new Shape3d(
+    return std::make_unique<Shape3d>(
         nodeList,
         edgeList,
         transformX,
@@ -164,88 +163,97 @@ std::unique_ptr<Shape3d> Shape3d::generateColored3DCube(
         rotationY,
         rotationZ,
         scale
-    ));
+    );
 }
 
 Shape3d::Shape3d(
-        std::vector<MatrixFloat> nodes,
-        std::vector<BaseSurface *> edges
+  std::vector<MatrixFloat> nodes,
+  const std::vector<BaseSurface *>& edges
 )
-        :
-        Shape3d(nodes, edges, 0, 0, 0, 0, 0, 0, 1) {}
+:
+Shape3d(
+    std::move(nodes),
+    edges,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    1) {}
 
 Shape3d::Shape3d(
-        std::vector<MatrixFloat> nodes,
-        std::vector<BaseSurface *> edges,
-        float initialTransformX,
-        float initialTransformY,
-        float initialTransformZ
+  std::vector<MatrixFloat> nodes,
+  const std::vector<BaseSurface *>& edges,
+  float initialTransformX,
+  float initialTransformY,
+  float initialTransformZ
 )
-        :
-        Shape3d(
-                nodes, 
-                edges, 
-                initialTransformX, 
-                initialTransformY, 
-                initialTransformZ, 
-                0, 
-                0, 
-                0, 
-                1
-        ) {}
+:
+Shape3d(
+  std::move(nodes),
+  edges,
+  initialTransformX,
+  initialTransformY,
+  initialTransformZ,
+  0,
+  0,
+  0,
+  1
+) {}
 
 Shape3d::Shape3d(
-        std::vector<MatrixFloat> nodes,
-        std::vector<BaseSurface *> edges,
-        float transformX,
-        float transformY,
-        float transformZ,
-        float rotationDegreeX,
-        float rotationDegreeY,
-        float rotationDegreeZ,
-        float scaleValue
+  std::vector<MatrixFloat> nodes,
+  const std::vector<BaseSurface *>& edges,
+  float transformX,
+  float transformY,
+  float transformZ,
+  float rotationDegreeX,
+  float rotationDegreeY,
+  float rotationDegreeZ,
+  float scaleValue
 ) :
-        nodes(nodes),
-        transformMatrix(3, 1, 0.0f),
-        rotationDegreeMatrix(3, 1, 0.0f),
-        rotationValueXMatrix(3, 3, std::vector<std::vector<float>>{
-                std::vector<float>{cosf(0), -sinf(0), 0},
-                std::vector<float>{sinf(0), cosf(0), 0},
-                std::vector<float>{0, 0, 1}
-        }),
-        rotationValueYMatrix(3, 3, std::vector<std::vector<float>>{
-                std::vector<float>{cosf(0), 0, sinf(0)},
-                std::vector<float>{0, 1, 0},
-                std::vector<float>{-sinf(0), 0, cosf(0)}
-        }),
-        rotationValueZMatrix(3, 3, std::vector<std::vector<float>>{
-                std::vector<float>{1, 0, 0},
-                std::vector<float>{0, cosf(0), sinf(0)},
-                std::vector<float>{0, -sinf(0), cosf(0)}
-        }),
-        scaleValueMatrix(3, 3, std::vector<std::vector<float>>{
-                std::vector<float>{1, 0, 0},
-                std::vector<float>{0, 1, 0},
-                std::vector<float>{0, 0, 1}
-        }),
-        zScaleMatrix(3, 3, std::vector<std::vector<float>>{
-                std::vector<float>{1, 0, 0},
-                std::vector<float>{0, 1, 0},
-                std::vector<float>{0, 0, 1}
-        }) {
+  nodes(nodes),
+  transformMatrix(3, 1, 0.0f),
+  rotationDegreeMatrix(3, 1, 0.0f),
+  rotationValueXMatrix(3, 3, std::vector<std::vector<float>>{
+    std::vector<float>{cosf(0), -sinf(0), 0},
+    std::vector<float>{sinf(0), cosf(0), 0},
+    std::vector<float>{0, 0, 1}
+  }),
+  rotationValueYMatrix(3, 3, std::vector<std::vector<float>>{
+    std::vector<float>{cosf(0), 0, sinf(0)},
+    std::vector<float>{0, 1, 0},
+    std::vector<float>{-sinf(0), 0, cosf(0)}
+  }),
+  rotationValueZMatrix(3, 3, std::vector<std::vector<float>>{
+    std::vector<float>{1, 0, 0},
+    std::vector<float>{0, cosf(0), sinf(0)},
+    std::vector<float>{0, -sinf(0), cosf(0)}
+  }),
+  scaleValueMatrix(3, 3, std::vector<std::vector<float>>{
+    std::vector<float>{1, 0, 0},
+    std::vector<float>{0, 1, 0},
+    std::vector<float>{0, 0, 1}
+  }),
+  zScaleMatrix(3, 3, std::vector<std::vector<float>>{
+    std::vector<float>{1, 0, 0},
+    std::vector<float>{0, 1, 0},
+    std::vector<float>{0, 0, 1}
+  }) {
     assert(nodes.size() > 0);
     assert(edges.size() > 0);
     assert(checkForNodesValidation());
-    if (nodes.size() > 0) {
-        for (auto &node:nodes) {
-            worldPoints.emplace_back(node.clone());
-        }
+    if (!nodes.empty()) {
+      for (auto &node:nodes) {
+        worldPoints.emplace_back(node.clone());
+      }
     }
-    if (edges.size() > 0) {
-        for (auto edge:edges) {
-            assert(edge->areEdgesDataValid(nodes.size()));
-            this->edges.emplace_back(std::unique_ptr<BaseSurface>(edge));
-        }
+    if (!edges.empty()) {
+      for (auto edge:edges) {
+        assert(edge->areEdgesDataValid(nodes.size()));
+        this->edges.emplace_back(std::unique_ptr<BaseSurface>(edge));
+      }
     }
     transformMatrix.set(0, 0, transformX);
     transformMatrix.set(1, 0, transformY);
@@ -256,86 +264,84 @@ Shape3d::Shape3d(
 }
 
 bool Shape3d::checkForNodesValidation() {
-    if (nodes.empty() == false) {
-        for (auto &node:nodes) {
-            if (node.getWidth() != 3 || node.getHeight() != 1) {
-                return false;
-            }
-        }
+  if (nodes.empty() == false) {
+    for (auto &node:nodes) {
+      if (node.getWidth() != 3 || node.getHeight() != 1) {
+        return false;
+      }
     }
-    return true;
+  }
+  return true;
 }
 
 void Shape3d::update(double deltaTime,Camera& cameraInstance) {
-    if (nodes.empty()==false) {
-        {
-            for (int i = 0; i < nodes.size(); i++) {
-                rotationAndScaleResult = (
-                        nodes[i] *
-                        rotationValueXMatrix *
-                        rotationValueYMatrix *
-                        rotationValueZMatrix *
-                        scaleValueMatrix
-                );
-                zComparisionMatrix = rotationAndScaleResult + transformMatrix;
-                zLocation = zComparisionMatrix.get(2, 0);
-                scaleValue = cameraInstance.scaleBasedOnZDistance(zLocation); 
-                zScaleMatrix.set(0, 0, scaleValue);
-                zScaleMatrix.set(1, 1, scaleValue);
-                worldPoints.at(i) = rotationAndScaleResult *
-                                    zScaleMatrix +
-                                    transformMatrix;
-            }
-        }
-        if (edges.empty()==false) {
-            for (auto &edge:edges) {
-                edge->render(
-                        cameraInstance,
-                        &worldPoints
-                );
-            }
-        }
+  if (nodes.empty()==false) {
+    for (int i = 0; i < nodes.size(); i++) {
+      rotationAndScaleResult = (
+        nodes[i] *
+        rotationValueXMatrix *
+        rotationValueYMatrix *
+        rotationValueZMatrix *
+        scaleValueMatrix
+      );
+      zComparisionMatrix = rotationAndScaleResult + transformMatrix;
+      zLocation = zComparisionMatrix.get(2, 0);
+      scaleValue = cameraInstance.scaleBasedOnZDistance(zLocation);
+      zScaleMatrix.set(0, 0, scaleValue);
+      zScaleMatrix.set(1, 1, scaleValue);
+      worldPoints.at(i) = rotationAndScaleResult *
+                          zScaleMatrix +
+                          transformMatrix;
     }
+    if (edges.empty()==false) {
+      for (auto &edge:edges) {
+        edge->render(
+            cameraInstance,
+            &worldPoints
+        );
+      }
+    }
+  }
 }
 
 void Shape3d::transformX(float x) {
-        transformMatrix.set(0, 0, transformMatrix.get(0, 0) + x);
+  transformMatrix.set(0, 0, transformMatrix.get(0, 0) + x);
 }
 
 void Shape3d::transformY(float y) {
-        transformMatrix.set(1, 0, transformMatrix.get(1, 0) + y);
+  transformMatrix.set(1, 0, transformMatrix.get(1, 0) + y);
 }
 
 void Shape3d::transformZ(float z) {
-        transformMatrix.set(2, 0, transformMatrix.get(2, 0) + z);
+  transformMatrix.set(2, 0, transformMatrix.get(2, 0) + z);
 }
 
 void Shape3d::scale(float value) {
-        scaleValueMatrix.set(0, 0, scaleValueMatrix.get(0, 0) + value);
-        scaleValueMatrix.set(1, 1, scaleValueMatrix.get(1, 1) + value);
-        scaleValueMatrix.set(2, 2, scaleValueMatrix.get(2, 2) + value);
+  scaleValueMatrix.set(0, 0, scaleValueMatrix.get(0, 0) + value);
+  scaleValueMatrix.set(1, 1, scaleValueMatrix.get(1, 1) + value);
+  scaleValueMatrix.set(2, 2, scaleValueMatrix.get(2, 2) + value);
 }
 
 void Shape3d::rotateX(float x) {
-        rotationDegreeMatrix.set(0, 0, rotationDegreeMatrix.get(0, 0) + x);
-        rotationValueXMatrix.set(0, 0, cosf(rotationDegreeMatrix.get(0, 0)));
-        rotationValueXMatrix.set(0, 1, -sinf(rotationDegreeMatrix.get(0, 0)));
-        rotationValueXMatrix.set(1, 0, sinf(rotationDegreeMatrix.get(0, 0)));
-        rotationValueXMatrix.set(1, 1, cosf(rotationDegreeMatrix.get(0, 0)));
+  rotationDegreeMatrix.set(0, 0, rotationDegreeMatrix.get(0, 0) + x);
+  rotationValueXMatrix.set(0, 0, cosf(rotationDegreeMatrix.get(0, 0)));
+  rotationValueXMatrix.set(0, 1, -sinf(rotationDegreeMatrix.get(0, 0)));
+  rotationValueXMatrix.set(1, 0, sinf(rotationDegreeMatrix.get(0, 0)));
+  rotationValueXMatrix.set(1, 1, cosf(rotationDegreeMatrix.get(0, 0)));
 }
 
 void Shape3d::rotateY(float y) {
-        rotationDegreeMatrix.set(1, 0, rotationDegreeMatrix.get(1, 0) + y);
-        rotationValueYMatrix.set(0, 0, cosf(rotationDegreeMatrix.get(1, 0)));
-        rotationValueYMatrix.set(0, 2, sinf(rotationDegreeMatrix.get(1, 0)));
-        rotationValueYMatrix.set(2, 0, -sinf(rotationDegreeMatrix.get(1, 0)));
-        rotationValueYMatrix.set(2, 2, cosf(rotationDegreeMatrix.get(1, 0)));
+  rotationDegreeMatrix.set(1, 0, rotationDegreeMatrix.get(1, 0) + y);
+  rotationValueYMatrix.set(0, 0, cosf(rotationDegreeMatrix.get(1, 0)));
+  rotationValueYMatrix.set(0, 2, sinf(rotationDegreeMatrix.get(1, 0)));
+  rotationValueYMatrix.set(2, 0, -sinf(rotationDegreeMatrix.get(1, 0)));
+  rotationValueYMatrix.set(2, 2, cosf(rotationDegreeMatrix.get(1, 0)));
 }
 
 void Shape3d::rotateZ(float z) {
-        rotationDegreeMatrix.set(2, 0, rotationDegreeMatrix.get(2, 0) + z);
-        rotationValueZMatrix.set(1, 1, cosf(rotationDegreeMatrix.get(2, 0)));
-        rotationValueZMatrix.set(1, 2, sinf(rotationDegreeMatrix.get(2, 0)));
-        rotationValueZMatrix.set(2, 1, -sinf(rotationDegreeMatrix.get(2, 0)));
-        rotationValueZMatrix.set(2, 2, cosf(rotationDegreeMatrix.get(2, 0)));
+  rotationDegreeMatrix.set(2, 0, rotationDegreeMatrix.get(2, 0) + z);
+  rotationValueZMatrix.set(1, 1, cosf(rotationDegreeMatrix.get(2, 0)));
+  rotationValueZMatrix.set(1, 2, sinf(rotationDegreeMatrix.get(2, 0)));
+  rotationValueZMatrix.set(2, 1, -sinf(rotationDegreeMatrix.get(2, 0)));
+  rotationValueZMatrix.set(2, 2, cosf(rotationDegreeMatrix.get(2, 0)));
 }
