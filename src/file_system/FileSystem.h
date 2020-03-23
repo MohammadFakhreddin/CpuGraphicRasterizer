@@ -60,7 +60,8 @@ public:
   }
   static std::unique_ptr<Shape3d> loadObjectWithColor(
     std::string filename,
-    Vec3DFloat color
+    Vec3DFloat color,
+    bool requireCentralizing
   ){
     assert(color.getX()>=0.0f && color.getX()<=1.0f);
     assert(color.getY()>=0.0f && color.getY()<=1.0f);
@@ -177,26 +178,28 @@ public:
     }
     Logger::log("Reading from object file is successful");    
     delete file;
-    Logger::log("Going to normalize center point");
-    {//Centralizing vertices to make them be more friendly for transformation and scale
-      // used to enable miniball to access vertex pos info
-      // solve the minimum bounding sphere
-      Miniball::Miniball<VertexAccessor> mb( 3,vertices.cbegin(),vertices.cend() );
-      // get center of min sphere
-      // result is a pointer to float[3]
-      const auto pc = mb.center();
-      MatrixFloat center = MatrixFloat(3,1,std::vector<std::vector<float>>{
-        std::vector<float>{*pc},
-        std::vector<float>{*std::next( pc )},
-        std::vector<float>{*std::next( pc,2 )}
-      });
-      // adjust all vertices so that center of minimal sphere is at 0,0
-      for( auto& vertex : vertices )
-      {
-        vertex -= center;
+    if(requireCentralizing==true){
+      Logger::log("Going to normalize center point");
+      {//Centralizing vertices to make them be more friendly for transformation and scale
+        // used to enable miniball to access vertex pos info
+        // solve the minimum bounding sphere
+        Miniball::Miniball<VertexAccessor> mb( 3,vertices.cbegin(),vertices.cend() );
+        // get center of min sphere
+        // result is a pointer to float[3]
+        const auto pc = mb.center();
+        MatrixFloat center = MatrixFloat(3,1,std::vector<std::vector<float>>{
+          std::vector<float>{*pc},
+          std::vector<float>{*std::next( pc )},
+          std::vector<float>{*std::next( pc,2 )}
+        });
+        // adjust all vertices so that center of minimal sphere is at 0,0
+        for( auto& vertex : vertices )
+        {
+          vertex -= center;
+        }
       }
+      Logger::log("Centralizing 3dShape was successful,Creating shape3d");
     }
-    Logger::log("Centralizing 3dShape was successful,Creating shape3d");
     return std::make_unique<Shape3d>(
       vertices,
       indices

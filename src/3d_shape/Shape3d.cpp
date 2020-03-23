@@ -275,8 +275,8 @@ bool Shape3d::checkForNodesValidation() {
 }
 
 void Shape3d::update(double deltaTime,Camera& cameraInstance) {
-  if (nodes.empty()==false) {
-    for (int i = 0; i < nodes.size(); i++) {
+  if (!nodes.empty()) {
+    for (unsigned int i = 0; i < nodes.size(); i++) {
       rotationAndScaleResult = (
         nodes[i] *
         rotationValueXMatrix *
@@ -293,7 +293,7 @@ void Shape3d::update(double deltaTime,Camera& cameraInstance) {
                           zScaleMatrix +
                           transformMatrix;
     }
-    if (edges.empty()==false) {
+    if (!edges.empty()) {
       for (auto &edge:edges) {
         edge->render(
             cameraInstance,

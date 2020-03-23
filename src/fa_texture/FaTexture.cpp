@@ -12,10 +12,10 @@ FaTexture::FaTexture(
   float virtualImageWidth,
   float virtualImageHeight
 )
-:
-virtualImageWidth(virtualImageWidth),
-virtualImageHeight(virtualImageHeight),
-address(address)
+    :
+    virtualImageWidth(virtualImageWidth),
+    virtualImageHeight(virtualImageHeight),
+    address(address)
 {
   assert(virtualImageWidth>0);
   assert(virtualImageHeight>0);

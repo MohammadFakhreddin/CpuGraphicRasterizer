@@ -116,7 +116,6 @@ bool BaseSurface::isVisibleToCamera(
     Camera& cameraInstance,
     std::vector<MatrixFloat> *worldPoints
 ) {
-  return true;
   //Making camera vector
   cameraVector.setX(
     Math::clamp(
@@ -136,10 +135,7 @@ bool BaseSurface::isVisibleToCamera(
 
   dotProductValue = normalVector.dotProduct(cameraVector);
 
-  if (dotProductValue < 0.0f) {
-      return true;
-  }
-  return false;
+  return dotProductValue < 0.0f;
 }
 
 void BaseSurface::putPixelInMap(
