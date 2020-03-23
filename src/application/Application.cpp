@@ -103,14 +103,22 @@ Application::Application(
     // 	0,
     // 	1
     // );
+    // shape = FileSystem::loadObjectWithColor(
+    //    Path::generateAssetPath("bunny",".obj"),
+    //    Vec3DFloat(1.0f,1.0f,1.0f)
+    // );
+    // shape->transformX(float(appScreenWidth)/2.0f);
+    // shape->transformY(float(appScreenHeight)/2.0f);
+    // shape->transformZ(cameraInitialZLocation - 100.0f);
+    // shape->scale(200.0f);
     shape = FileSystem::loadObjectWithColor(
-       Path::generateAssetPath("bunny",".obj"),
+       Path::generateAssetPath("robot",".obj"),
        Vec3DFloat(1.0f,1.0f,1.0f)
     );
     shape->transformX(float(appScreenWidth)/2.0f);
     shape->transformY(float(appScreenHeight)/2.0f);
     shape->transformZ(cameraInitialZLocation - 100.0f);
-    shape->scale(200.0f);
+    shape->scale(10.0f);
     Logger::log("Creating shape was successful");
   }
 #ifdef __DESKTOP__
@@ -223,9 +231,9 @@ void Application::update(double deltaTime) {
     }
   }
   {//Temporary code for auto rotation
-    shape->rotateY(float(-1.0f * Application::shapeRotationSpeed * deltaTime * 0.1f));
-    shape->rotateX(float(-1.0f * Application::shapeRotationSpeed * deltaTime * 0.1f));
-    shape->rotateZ(float(-1.0f * Application::shapeRotationSpeed * deltaTime * 0.1f));
+    // shape->rotateY(float(-1.0f * Application::shapeRotationSpeed * deltaTime * 0.1f));
+    // shape->rotateX(float(-1.0f * Application::shapeRotationSpeed * deltaTime * 0.1f));
+    // shape->rotateZ(float(-1.0f * Application::shapeRotationSpeed * deltaTime * 0.1f));
   }
   shape->update(deltaTime,cameraInstance);
   cameraInstance.update(deltaTime);
@@ -242,7 +250,7 @@ Application* Application::getInstance()
 }
 
 void Application::mainLoop(double deltaTime){
-  deltaTime = Math::max(deltaTime,1000.0);
+  deltaTime = Math::max(deltaTime,100.0);
   update(deltaTime);
   render(deltaTime);
   if(deltaTime>0){
