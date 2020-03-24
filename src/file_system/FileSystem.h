@@ -74,17 +74,14 @@ public:
     //1- Copy all android files into a folder and then run everything using c++ which helps to avoid working with that
     //2- Write everything using that painful android buffer but it can be faster
     #if defined(__DESKTOP__)
+      
       file = new std::ifstream(filename);
-    #elif defined(__MOBILE__)
-      unsigned char * data = nullptr;
-      std::string temporaryFileName = "";
-      #if defined(__ANDROID__)
-        data = AndroidEnvironment::getInstance()->loadText(filename);
-        std::string temporaryFileName = AndroidEnvironment::getInstance()->generateFileAbsolutePath("/cube-temp-file.obj");
-      #elif defined(__IOS__)
-        data = IPhoneHelperAbstraction::getInstance()->callObjectiveCToLoadTextFile(filename);
-      #endif
+      
+    #elif defined(__ANDROID__)
+      
+      auto data = AndroidEnvironment::getInstance()->loadText(filename);
       assert(data);
+      std::string temporaryFileName = AndroidEnvironment::getInstance()->generateFileAbsolutePath("/cube-temp-file.obj");
       //We need to write it into a file to be accessible to ifstream
       //TODO Refactor this part
       FILE* temporaryFile = fopen(temporaryFileName.c_str(),"w");
@@ -94,6 +91,12 @@ public:
       fclose(temporaryFile);
 
       file = new std::ifstream(temporaryFileName);
+      
+    #elif defined(__IOS__)
+      
+      auto resourceAddress = IPhoneHelperAbstraction::getInstance()->callObjectiveCToGetPathNameForResource(filename, "obj");
+      file = new std::ifstream(resourceAddress);
+      
     #else
     #   error "loadObject failed Unhandled platform"
     #endif

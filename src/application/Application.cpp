@@ -65,8 +65,8 @@ Application::Application(
   appScreenHeight(paramAppScreenHeight),
   light(
     float(paramAppScreenWidth)/2.0f,
-    float(paramAppScreenHeight)/2.0f,
-    cameraInitialZLocation - 75
+    float(paramAppScreenHeight),
+    cameraInitialZLocation - 50
   ),
   openGLInstance(
     paramAppScreenWidth,

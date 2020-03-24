@@ -20,6 +20,10 @@ public:
     unsigned char * callObjectiveCToLoadTextFile(
                                                  std::string fileName
                                                  );
+    std::string callObjectiveCToGetPathNameForResource(
+                                       std::string fileName,
+                                       std::string extension
+                                       );
 };
 
 #endif

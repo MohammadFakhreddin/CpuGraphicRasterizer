@@ -33,6 +33,12 @@ unsigned char * loadTextFile( void * self , std::string textFileName ){
     return [callerObject loadTextFile:textFileName];
 };
 
+std::string getPathNameForResource(void * self,std::string fileName,std::string extension){
+    id callerObject = (__bridge id)(self);
+    assert(callerObject);
+    return [callerObject getPathNameForResource:fileName extension:extension];
+};
+
 @implementation IPhoneHelper
 
 - (ImageData) loadImage:(std::string)rawImageName{
@@ -79,8 +85,28 @@ unsigned char * loadTextFile( void * self , std::string textFileName ){
     NSString * textFileName = [NSString stringWithCString:rawTextFileName.c_str() encoding:[NSString defaultCStringEncoding]];
     assert(textFileName);
     
-    NSString *fileContent = [[NSString alloc]initWithContentsOfFile:textFileName encoding:NSUTF8StringEncoding error:nil];
+    NSString * path = [NSBundle.mainBundle pathForResource:textFileName ofType:@"obj"];
+
+    NSError* error;
+    NSString *fileContent = [[NSString alloc]initWithContentsOfFile:path encoding:NSUTF8StringEncoding error:&error];
+    if(error){
+        NSLog(@"%@",[error localizedDescription]);
+    }
+    assert(!error);
+    assert(fileContent);
+   
     return (unsigned char *)[fileContent UTF8String];
+}
+
+- (std::string) getPathNameForResource: (std::string) rawFileName extension:(std::string) rawExtensionName{
+    NSString * fileName = [NSString stringWithCString:rawFileName.c_str() encoding:[NSString defaultCStringEncoding]];
+    assert(fileName);
+    
+    NSString * extensionName = [NSString stringWithCString:rawExtensionName.c_str() encoding:[NSString defaultCStringEncoding]];
+    assert(extensionName);
+    
+    NSString * path = [NSBundle.mainBundle pathForResource:fileName ofType:extensionName];
+    return (std::string)[path UTF8String];
 }
 
 @end

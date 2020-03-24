@@ -21,6 +21,8 @@
 
 - (unsigned char *) loadTextFile: (std::string) textFileName;
 
+- (std::string) getPathNameForResource: (std::string) fileName extension:(std::string) extension;
+
 @end
 
 #endif

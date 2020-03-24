@@ -24,4 +24,6 @@ unsigned char * loadTextFile(void * ObjectiveCIPhoneHelperInstance,std::string f
 
 void log(void * ObjectiveCIPhoneHelperInstance,std::string logName);
 
+std::string getPathNameForResource(void * ObjectiveCIPhoneHelperInstance,std::string fileName,std::string extension);
+
 #endif /* IPhoneHelper_C_Interface_h */

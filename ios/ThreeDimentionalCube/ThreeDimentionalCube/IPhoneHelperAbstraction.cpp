@@ -1,5 +1,7 @@
 #include "./IPhoneHelperAbstraction.h"
 
+#include <string>
+
 IPhoneHelperAbstraction* IPhoneHelperAbstraction::instance = nullptr;
 
 unsigned char * IPhoneHelperAbstraction::callObjectiveCToLoadImage(
@@ -34,4 +36,12 @@ objectiveCIPhoneHelperInstance(objectiveCIPhoneHelperInstance)
 
 IPhoneHelperAbstraction* IPhoneHelperAbstraction::getInstance(){
     return instance;
+};
+
+
+std::string IPhoneHelperAbstraction::callObjectiveCToGetPathNameForResource(std::string fileName, std::string extension){
+    return getPathNameForResource(
+                                  objectiveCIPhoneHelperInstance,
+                                  fileName,
+                                  extension);
 };
