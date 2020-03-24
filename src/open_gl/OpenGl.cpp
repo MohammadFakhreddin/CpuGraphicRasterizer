@@ -235,11 +235,11 @@ void OpenGL::flush(){
 
 void OpenGL::drawPixel(unsigned int x,unsigned int y,float red,float green,float blue){
 
-    assert(x>=0 && x<appScreenWidth);
-    assert(y>=0 && y<appScreenHeight);
-    assert(red>=0 && red<=1.0f);
-    assert(green>=0 && green<=1.0f);
-    assert(blue>=0 && blue<=1.0f);
+  assert(x>=0 && x<appScreenWidth);
+  assert(y>=0 && y<appScreenHeight);
+  assert(red>=0 && red<=1.0f);
+  assert(green>=0 && green<=1.0f);
+  assert(blue>=0 && blue<=1.0f);
 
 #ifdef __OPENGL__
   glColor3f(red,green,blue);

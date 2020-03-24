@@ -92,6 +92,10 @@ void Camera::initPixelMap(){
 }
 
 void Camera::putPixelInMap(int x,int y,float zValue,float red,float green,float blue){
+  assert(red>=0 && red<=1.0f);
+  assert(green>=0 && green<=1.0f);
+  assert(blue>=0 && blue<=1.0f);
+  
   if(
     zValue >= cameraZLocation ||
     zValue <= cameraFieldOfView + cameraZLocation ||
@@ -102,8 +106,10 @@ void Camera::putPixelInMap(int x,int y,float zValue,float red,float green,float 
   ){
     return;
   }
+  
   assert(x>=left && x<right);
   assert(y>=top && y<bottom);
+  
   currentPixel = &pixelMap.at((unsigned int)x).at((unsigned int)y);
   if(currentPixel->zValue < zValue){
     currentPixel->blue = blue;

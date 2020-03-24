@@ -14,6 +14,7 @@ private:
   jclass ndkClass;
   jmethodID loadImageMethodId;
   jmethodID logMethodId;
+  jmethodID loadTextMethodId;
 public:
   static AndroidEnvironment* getInstance(){
     return instance;
@@ -24,6 +25,7 @@ public:
     int* height,
     int* numberOfChannels
   );
+  unsigned char * loadText(std::string textFileAddress);
   void log(
     std::string text
   ){

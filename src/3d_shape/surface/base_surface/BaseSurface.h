@@ -25,15 +25,15 @@ public:
 
   virtual EdgeType getEdgeType();
 
-  int getEdgeByIndex(int index);
+  unsigned long getEdgeByIndex(short index);
 
   bool areEdgesDataValid(int nodesSize);
 
 protected:
 
-  int edge1;
-  int edge2;
-  int edge3;
+  unsigned long edge1;
+  unsigned long edge2;
+  unsigned long edge3;
 
   virtual void computePixelMapData(
     Camera& cameraInstance,

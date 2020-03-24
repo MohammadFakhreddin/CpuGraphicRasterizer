@@ -7,6 +7,7 @@
 #include <fstream>
 #include <vector>
 #include <memory>
+#include <sstream>
 
 #include "./../Constants.h"
 #include "../utils/log/Logger.h"
@@ -70,11 +71,20 @@ public:
     Logger::log("Loading 3d object with name:"+filename);
 
     std::ifstream* file; 
-    
+    //TODO We have two options
+    //1- Copy all android files into a folder and then run everything using c++ which helps to avoid working with that
+    //2- Write everything using that painful android buffer but it can be faster
     #if defined(__DESKTOP__)
       file = new std::ifstream(filename);
     #elif defined(__ANDROID__)
-    //TODO
+      auto data = AndroidEnvironment::getInstance()->loadText(filename);
+      //We need to write it into a file to be accessible to ifstream
+      std::ofstream outputFileStream;
+      outputFileStream.open("/cube-temp-file.obj",'W');
+      outputFileStream<<data;
+      outputFileStream.close();
+
+      file = new std::ifstream("/"+filename);
     #elif defined(__IOS__)
     //TODO
     #else
@@ -154,7 +164,7 @@ public:
           }
           //Loading mesh indices into indices vector
           //My implementation is counter clock wise so I need to rotate before rendering
-          if(isCounterClockWise==true){
+          if(isCounterClockWise){
             indices.emplace_back(new ColorSurface(
               mesh.indices[faceIndex * 3 + 0].vertex_index,
               mesh.indices[faceIndex * 3 + 1].vertex_index,
@@ -178,7 +188,7 @@ public:
     }
     Logger::log("Reading from object file is successful");    
     delete file;
-    if(requireCentralizing==true){
+    if(requireCentralizing){
       Logger::log("Going to normalize center point");
       {//Centralizing vertices to make them be more friendly for transformation and scale
         // used to enable miniball to access vertex pos info

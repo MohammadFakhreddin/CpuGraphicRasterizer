@@ -26,8 +26,10 @@ void AndroidEnvironment::init(){
     assert(loadImageMethodId);
     logMethodId = env->GetStaticMethodID(ndkClass,"log", "(Ljava/lang/String;)V");
     assert(logMethodId);
+    loadTextMethodId = env->GetStaticMethodID(ndkClass,"loadText","(Ljava/lang/String;)Ljava/lang/Object;");
+    assert(loadTextMethodId);
 }
-
+//TODO Convert unsigned char * to string to prevent memory leak
 unsigned char * AndroidEnvironment::loadImage(
   std::string textureAddress,
   int* width,
@@ -58,5 +60,25 @@ unsigned char * AndroidEnvironment::loadImage(
   //TODO This is a memory leak do something about it
   unsigned char* data = (unsigned char *)env->GetDirectBufferAddress(rawImageObject);
   
+  return data;
+}
+
+unsigned char * AndroidEnvironment::loadText(
+  std::string textFileAddress
+){
+  auto jTextFileAddress = env->NewStringUTF(textFileAddress.c_str());
+  auto textFileInformation = env->CallStaticObjectMethod(ndkClass,loadTextMethodId,jTextFileAddress);
+
+  auto textFileInformationClass = env->GetObjectClass(textFileInformation);
+  auto successFieldId = env->GetFieldID(textFileInformationClass,"success","Z");
+  auto contentFieldId = env->GetFieldID(textFileInformationClass,"content", "Ljava/lang/Object;");
+
+  auto successFieldValue = (bool)env->GetBooleanField(textFileInformation,successFieldId);
+  assert(successFieldValue);
+
+  auto rawContentFieldValue = env->GetObjectField(textFileInformation,contentFieldId);
+  //TODO This is a memory leak do something about it
+  unsigned char* data = (unsigned char *)env->GetDirectBufferAddress(rawContentFieldValue);
+
   return data;
 }

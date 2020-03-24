@@ -104,34 +104,35 @@ Application::Application(
     // 	1
     // );
     //============================================
-    shape = FileSystem::loadObjectWithColor(
-      Path::generateAssetPath("bunny",".obj"),
-      Vec3DFloat(1.0f,1.0f,1.0f),
-      true
-    );
-    shape->transformX(float(appScreenWidth)/2.0f);
-    shape->transformY(float(appScreenHeight)/2.0f);
-    shape->transformZ(cameraInitialZLocation - 100.0f);
-    shape->scale(200.0f);
+    // shape = FileSystem::loadObjectWithColor(
+    //   Path::generateAssetPath("bunny",".obj"),
+    //   Vec3DFloat(1.0f,1.0f,1.0f),
+    //   true
+    // );
+    // shape->transformX(float(appScreenWidth)/2.0f);
+    // shape->transformY(float(appScreenHeight)/2.0f);
+    // shape->transformZ(cameraInitialZLocation - 100.0f);
+    // shape->scale(200.0f);
     //===========================================
     // shape = FileSystem::loadObjectWithColor(
     //    Path::generateAssetPath("robot",".obj"),
-    //    Vec3DFloat(1.0f,1.0f,1.0f)
+    //    Vec3DFloat(1.0f,1.0f,1.0f),
+    //    true
     // );
     // shape->transformX(float(appScreenWidth)/2.0f);
     // shape->transformY(float(appScreenHeight)/2.0f);
     // shape->transformZ(cameraInitialZLocation - 100.0f);
     // shape->scale(10.0f);
     //==========================================
-    // shape = FileSystem::loadObjectWithColor(
-    //   Path::generateAssetPath("plant",".obj"),
-    //   Vec3DFloat(1.0f,1.0f,1.0f),
-    //   false
-    // );
-    // shape->transformX(float(appScreenWidth) * 0.5f);
-    // shape->transformY(float(appScreenHeight) * 0.25f);
-    // shape->transformZ(cameraInitialZLocation - 100.0f);
-    // shape->scale(5.0f);
+    shape = FileSystem::loadObjectWithColor(
+      Path::generateAssetPath("plant",".obj"),
+      Vec3DFloat(1.0f,1.0f,1.0f),
+      false
+    );
+    shape->transformX(float(appScreenWidth) * 0.5f);
+    shape->transformY(float(appScreenHeight) * 0.25f);
+    shape->transformZ(cameraInitialZLocation - 100.0f);
+    shape->scale(5.0f);
     //==========================================
     Logger::log("Creating shape was successful");
   }

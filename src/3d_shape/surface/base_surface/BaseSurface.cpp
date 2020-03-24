@@ -5,7 +5,7 @@
 #include "../../../utils/math/Math.h"
 #include "./../../../camera/Camera.h"
 
-int BaseSurface::getEdgeByIndex(int index) {
+unsigned long BaseSurface::getEdgeByIndex(short index) {
   assert(index > -1);
   assert(index < 3);
   switch (index) {
@@ -16,8 +16,9 @@ int BaseSurface::getEdgeByIndex(int index) {
     case 2:
       return edge3;
     default:
-      return -1;
+      Logger::exception("Edge index must be between 0 to 2");
   }
+  return edge1;
 }
 
 EdgeType BaseSurface::getEdgeType() {
@@ -33,7 +34,7 @@ void BaseSurface::render(
   assert(edge3<worldPoints->size() && edge3>=0);
   computeNormalVector(worldPoints);
   computeEdgeCenter(worldPoints);
-  if(isVisibleToCamera(cameraInstance,worldPoints)==false){
+  if(!isVisibleToCamera(cameraInstance, worldPoints)){
     return;
   }
   cameraInstance.getLight().computeLightIntensity(
@@ -147,6 +148,9 @@ void BaseSurface::putPixelInMap(
   float green,
   float blue
 ){
+  assert(red>=0 && red<=1.0f);
+  assert(green>=0 && green<=1.0f);
+  assert(blue>=0 && blue<=1.0f);
   cameraInstance.putPixelInMap(
       x,
       y,

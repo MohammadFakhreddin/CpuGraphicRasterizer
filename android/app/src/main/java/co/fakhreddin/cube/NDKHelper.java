@@ -1,11 +1,13 @@
+
 package co.fakhreddin.cube;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
 
-import java.io.File;
-import java.io.FileInputStream;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.nio.ByteBuffer;
 
 public class NDKHelper {
@@ -17,30 +19,25 @@ public class NDKHelper {
         int originalHeight;
         Object image;
     }
+    public static class TextFileInformation{
+        boolean success;
+        Object content;
+    }
     public static Object loadImage(String path) {
         Bitmap bitmap = null;
         TextureInformation object = new TextureInformation();
         object.success = false;
 
         try {
-            String str = path;
-            if (!path.startsWith("/")) {
-                str = "/" + path;
-            }
-
-            File file = new File(co.fakhreddin.cube.MainActivity.getInstance().getExternalFilesDir(null), str);
-            if (file.canRead()) {
-                bitmap = BitmapFactory.decodeStream(new FileInputStream(file));
-            } else {
-                bitmap = BitmapFactory.decodeStream(
-                        co.fakhreddin.cube.MainActivity.getInstance()
-                                .getResources()
-                                .getAssets()
-                                .open(path)
-                );
-            }
+            bitmap = BitmapFactory.decodeStream(
+                co.fakhreddin.cube.MainActivity.getInstance()
+                .getResources()
+                .getAssets()
+                .open(path)
+            );
         } catch (Exception e) {
-            Log.w(NDKHelper.tagName, "Couldn't load a file:" + path);
+            log(e.getMessage());
+            log("Couldn't load file:" + path);
             return object;
         }
 
@@ -56,6 +53,31 @@ public class NDKHelper {
         object.success = true;
 
         return object;
+    }
+    public static Object loadText(String path){
+        TextFileInformation textFileInformation = new TextFileInformation();
+        textFileInformation.success = false;
+        try {
+            InputStream file = co.fakhreddin.cube.MainActivity.getInstance().getAssets().open(path);
+            //Read text from file
+            StringBuilder text = new StringBuilder();
+            BufferedReader br = new BufferedReader(new InputStreamReader(file));
+            String line;
+            while ((line = br.readLine()) != null) {
+                text.append(line);
+                text.append('\n');
+            }
+            br.close();
+            //We allocate byteBuffer directly to be accessible by c++ thread
+            ByteBuffer buffer =  ByteBuffer.allocateDirect(text.toString().getBytes().length);
+            buffer.put(text.toString().getBytes());
+            textFileInformation.content = buffer;
+        }catch (Exception exception){
+            log(exception.getMessage());
+            return textFileInformation;
+        }
+        textFileInformation.success = true;
+        return textFileInformation;
     }
     public static void log(String log){
         Log.d(NDKHelper.tagName,log);

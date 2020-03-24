@@ -1,5 +1,5 @@
-#define STB_IMAGE_IMPLEMENTATION
-#include "../../src/fa_texture/stb_image_headers.h"
+#define TINYOBJLOADER_IMPLEMENTATION
+#include "../../src/libs/tiny_obj_loader/tiny_obj_loader.h"
 
 #include <memory>
 #include <jni.h>
