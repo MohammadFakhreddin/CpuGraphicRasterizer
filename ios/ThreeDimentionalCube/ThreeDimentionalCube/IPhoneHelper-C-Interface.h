@@ -20,6 +20,8 @@ struct ImageData{
 
 ImageData loadImage(void * ObjectiveCIPhoneHelperInstance,std::string imageName);
 
+unsigned char * loadTextFile(void * ObjectiveCIPhoneHelperInstance,std::string fileName);
+
 void log(void * ObjectiveCIPhoneHelperInstance,std::string logName);
 
 #endif /* IPhoneHelper_C_Interface_h */

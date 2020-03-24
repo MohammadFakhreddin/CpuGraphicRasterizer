@@ -15,6 +15,12 @@ unsigned char * IPhoneHelperAbstraction::callObjectiveCToLoadImage(
   return imageData.pixels;
 };
 
+unsigned char * IPhoneHelperAbstraction::callObjectiveCToLoadTextFile(
+                                                                      std::string fileName
+                                                                      ){
+    return loadTextFile(objectiveCIPhoneHelperInstance,fileName);
+}
+
 void IPhoneHelperAbstraction::callObjectiveCToLog(std::string text){
     log(objectiveCIPhoneHelperInstance,text);
 }

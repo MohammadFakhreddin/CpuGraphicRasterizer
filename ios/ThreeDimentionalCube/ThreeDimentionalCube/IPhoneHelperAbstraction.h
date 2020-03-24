@@ -17,6 +17,9 @@ public:
         int * numberOfChannels
     );
     void callObjectiveCToLog(std::string text);
+    unsigned char * callObjectiveCToLoadTextFile(
+                                                 std::string fileName
+                                                 );
 };
 
 #endif

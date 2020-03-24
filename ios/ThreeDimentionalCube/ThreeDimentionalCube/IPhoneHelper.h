@@ -19,6 +19,8 @@
 
 - (void) log:(std::string) logName;
 
+- (unsigned char *) loadTextFile: (std::string) textFileName;
+
 @end
 
 #endif

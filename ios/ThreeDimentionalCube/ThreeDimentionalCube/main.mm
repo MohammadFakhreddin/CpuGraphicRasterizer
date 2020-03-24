@@ -13,6 +13,10 @@
 #define GL_SILENCE_DEPRECATION
 #endif
 
+#define TINYOBJLOADER_IMPLEMENTATION
+#include "../../../src/libs/tiny_obj_loader/tiny_obj_loader.h"
+
+
 int main(int argc, char * argv[]) {
     NSString * appDelegateClassName;
     @autoreleasepool {

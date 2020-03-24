@@ -12,9 +12,7 @@
 #include <string>
 #include <AssetsLibrary/AssetsLibrary.h>
 
-#define Clamp255(a) (a>255 ? 255 : a)
-
-ImageData loadImage( void* self, std::string imageName ){
+ImageData loadImage( void * self, std::string imageName ){
     id callerObject = (__bridge id)(self);
     assert(callerObject);
     log(self, "Trying to load image from xcode assets:"+imageName);
@@ -27,6 +25,12 @@ void log( void * self, std::string logName ){
     id callerObject = (__bridge id)(self);
     assert(callerObject);
     [callerObject log:logName];
+};
+
+unsigned char * loadTextFile( void * self , std::string textFileName ){
+    id callerObject = (__bridge id)(self);
+    assert(callerObject);
+    return [callerObject loadTextFile:textFileName];
 };
 
 @implementation IPhoneHelper
@@ -69,6 +73,14 @@ void log( void * self, std::string logName ){
 - (void) log:(std::string)rawLog{
     NSString *parsedLog = [NSString stringWithCString:rawLog.c_str() encoding:[NSString defaultCStringEncoding]];
     NSLog(@"%@", parsedLog);
+}
+
+- (unsigned char *) loadTextFile:(std::string)rawTextFileName{
+    NSString * textFileName = [NSString stringWithCString:rawTextFileName.c_str() encoding:[NSString defaultCStringEncoding]];
+    assert(textFileName);
+    
+    NSString *fileContent = [[NSString alloc]initWithContentsOfFile:textFileName encoding:NSUTF8StringEncoding error:nil];
+    return (unsigned char *)[fileContent UTF8String];
 }
 
 @end
