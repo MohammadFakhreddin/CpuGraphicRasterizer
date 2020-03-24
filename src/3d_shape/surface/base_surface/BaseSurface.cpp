@@ -117,6 +117,7 @@ bool BaseSurface::isVisibleToCamera(
     Camera& cameraInstance,
     std::vector<MatrixFloat> *worldPoints
 ) {
+  //TODO Check for cliping too
   //Making camera vector
   cameraVector.setX(
     Math::clamp(
@@ -152,11 +153,11 @@ void BaseSurface::putPixelInMap(
   assert(green>=0 && green<=1.0f);
   assert(blue>=0 && blue<=1.0f);
   cameraInstance.putPixelInMap(
-      x,
-      y,
-      zValue,
-      red * colorIntensity.getX(),
-      green * colorIntensity.getY(),
-      blue * colorIntensity.getZ()
+    x,
+    y,
+    zValue,
+    Math::clamp(red * colorIntensity.getX(),0.0f,1.0f),
+    Math::clamp(green * colorIntensity.getY(),0.0f,1.0f),
+    Math::clamp(blue * colorIntensity.getZ(),0.0f,1.0f)
   );
 }

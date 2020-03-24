@@ -7,7 +7,6 @@
 #include <fstream>
 #include <vector>
 #include <memory>
-#include <sstream>
 
 #include "./../Constants.h"
 #include "../utils/log/Logger.h"
@@ -79,12 +78,17 @@ public:
     #elif defined(__ANDROID__)
       auto data = AndroidEnvironment::getInstance()->loadText(filename);
       //We need to write it into a file to be accessible to ifstream
-      std::ofstream outputFileStream;
-      outputFileStream.open("/cube-temp-file.obj",'W');
-      outputFileStream<<data;
-      outputFileStream.close();
+      //TODO Refactor this part
+      std::string temporaryFileName = AndroidEnvironment::getInstance()->generateFileAbsolutePath("/cube-temp-file.obj");
+      FILE* temporaryFile = fopen(temporaryFileName.c_str(),"w");
 
-      file = new std::ifstream("/"+filename);
+      assert(temporaryFile);
+
+      fputs(reinterpret_cast<const char *>(data), temporaryFile);
+      fflush(temporaryFile);
+      fclose(temporaryFile);
+
+      file = new std::ifstream(temporaryFileName);
     #elif defined(__IOS__)
     //TODO
     #else

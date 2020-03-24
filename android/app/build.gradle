@@ -3,7 +3,10 @@ apply plugin: 'com.android.application'
 android {
     signingConfigs {
         release {
-            storeFile file('..\\cube.jks')
+            storeFile file('C:\\Projects\\3d-cube\\android\\cube.jks')
+            keyAlias = 'key0'
+            storePassword 'darkknight1375'
+            keyPassword 'darkknight1375'
         }
     }
     compileSdkVersion 28

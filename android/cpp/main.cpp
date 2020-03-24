@@ -19,7 +19,8 @@ extern "C" {
         JNIEnv * env, 
         jobject obj,  
         jint phyiscalScreenWidth, 
-        jint phyiscalScreenHeight
+        jint phyiscalScreenHeight,
+        jstring applicationAbsolutePath
     );
     JNIEXPORT void JNICALL Java_co_fakhreddin_cube_Fa3dCube_step(JNIEnv * env, jobject obj,jlong deltaTime);
 };
@@ -28,14 +29,15 @@ JNIEXPORT void JNICALL Java_co_fakhreddin_cube_Fa3dCube_init(
     JNIEnv * env, 
     jobject obj,  
     jint phyiscalScreenWidth, 
-    jint phyiscalScreenHeight
+    jint phyiscalScreenHeight,
+    jstring rawApplicationAbsolutePath
 )
 {
 
     unsigned int deviceScreenWidth = (unsigned int)phyiscalScreenWidth;
     unsigned int deviceScreenHeight = (unsigned int)phyiscalScreenHeight;
     //TODO Implement dynamic resolution
-    unsigned int appScreenWidth = (unsigned int)(float(deviceScreenWidth)/7.0f);
+    unsigned int appScreenWidth = (unsigned int)(float(deviceScreenWidth)/4.0f);
     unsigned int appScreenHeight = (unsigned int)(float(appScreenWidth) * (float(deviceScreenHeight)/float(deviceScreenWidth)));
 
     if(isAppInitOnce){
@@ -49,9 +51,14 @@ JNIEXPORT void JNICALL Java_co_fakhreddin_cube_Fa3dCube_init(
                                                false);
 
     } else {
-
+        //TODO Refactor this part
+        jboolean isCopy;
+        const char *convertedValue = (env)->GetStringUTFChars(rawApplicationAbsolutePath, &isCopy);
+        std::string applicationAbsolutePath = std::string(convertedValue);
         androidEnvironment = std::unique_ptr<AndroidEnvironment>(
-                new AndroidEnvironment(env)
+                new AndroidEnvironment(
+                        env,
+                        applicationAbsolutePath)
         );
 
         application = std::unique_ptr<Application>(new Application(

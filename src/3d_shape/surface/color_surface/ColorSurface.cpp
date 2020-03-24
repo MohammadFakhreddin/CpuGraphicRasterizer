@@ -149,6 +149,10 @@ void ColorSurface::drawLineBetweenPoints(
   float green,
   float blue
 ){
+  assert(red>=0&&red<=1.0f);
+  assert(green>=0 && green<=1.0f);
+  assert(blue>=0 && blue<=1.0f);
+  
   unsigned int triangleTotalStepCount = 0;
 	float triangleXStepValue = 0;
 	float triangleYStepValue = 0;

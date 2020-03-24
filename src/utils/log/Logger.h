@@ -2,8 +2,10 @@
 #define Logger_class
 
 #include <string>
-#include "../../Constants.h"
 #include <iostream>
+#include <cassert>
+
+#include "../../Constants.h"
 #ifdef __ANDROID__
 #include "../../../android/cpp/AndroidEnvironment.h"
 #endif
@@ -25,7 +27,7 @@ public:
   static void exception(std::string text){
     //TODO Check and improve this function
     Logger::log(text);
-    throw std::runtime_error(text);
+    assert(false);
   }
 };
 

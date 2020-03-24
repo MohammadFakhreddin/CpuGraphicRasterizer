@@ -120,7 +120,7 @@ void Camera::putPixelInMap(int x,int y,float zValue,float red,float green,float 
 }
 
 void Camera::update(double deltaTime){
-  drawLight();
+  // drawLight();
 }
 //TODO Light bulb must be shape
 void Camera::drawLight(){
@@ -131,8 +131,8 @@ void Camera::drawLight(){
           int(lightInstance.getLightPosition().getX()) + i,
           int(lightInstance.getLightPosition().getY()) + j,
           lightInstance.getLightPosition().getZ(),
-          7.0f,
-          6.0f,
+          0.7f,
+          0.6f,
           0.0f
       );
     }

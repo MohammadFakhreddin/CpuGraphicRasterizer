@@ -6,28 +6,32 @@
 
 AndroidEnvironment* AndroidEnvironment::instance = nullptr;
 
-AndroidEnvironment::AndroidEnvironment(JNIEnv * env)
-  :
-    env(env)
+AndroidEnvironment::AndroidEnvironment(
+  JNIEnv * env,
+  std::string applicationAbsolutePath
+) 
+: 
+env(env),
+applicationAbsolutePath(applicationAbsolutePath)
 {
-    init();
-    instance = this;
+  init();
+  instance = this;
 };
 
 void AndroidEnvironment::replaceEnv(JNIEnv *env) {
-    this->env = env;
-    init();
+  this->env = env;
+  init();
 }
 
 void AndroidEnvironment::init(){
-    ndkClass = env->FindClass("co/fakhreddin/cube/NDKHelper");
-    assert(ndkClass);
-    loadImageMethodId = env->GetStaticMethodID(ndkClass, "loadImage", "(Ljava/lang/String;)Ljava/lang/Object;");
-    assert(loadImageMethodId);
-    logMethodId = env->GetStaticMethodID(ndkClass,"log", "(Ljava/lang/String;)V");
-    assert(logMethodId);
-    loadTextMethodId = env->GetStaticMethodID(ndkClass,"loadText","(Ljava/lang/String;)Ljava/lang/Object;");
-    assert(loadTextMethodId);
+  ndkClass = env->FindClass("co/fakhreddin/cube/NDKHelper");
+  assert(ndkClass);
+  loadImageMethodId = env->GetStaticMethodID(ndkClass, "loadImage", "(Ljava/lang/String;)Ljava/lang/Object;");
+  assert(loadImageMethodId);
+  logMethodId = env->GetStaticMethodID(ndkClass,"log", "(Ljava/lang/String;)V");
+  assert(logMethodId);
+  loadTextMethodId = env->GetStaticMethodID(ndkClass,"loadText","(Ljava/lang/String;)Ljava/lang/Object;");
+  assert(loadTextMethodId);
 }
 //TODO Convert unsigned char * to string to prevent memory leak
 unsigned char * AndroidEnvironment::loadImage(
@@ -79,6 +83,11 @@ unsigned char * AndroidEnvironment::loadText(
   auto rawContentFieldValue = env->GetObjectField(textFileInformation,contentFieldId);
   //TODO This is a memory leak do something about it
   unsigned char* data = (unsigned char *)env->GetDirectBufferAddress(rawContentFieldValue);
-
   return data;
+}
+
+std::string AndroidEnvironment::generateFileAbsolutePath(
+  std::string filename
+){
+  return applicationAbsolutePath + filename;
 }

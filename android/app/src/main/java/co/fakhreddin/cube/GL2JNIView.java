@@ -3,10 +3,7 @@ package co.fakhreddin.cube;
 import android.content.Context;
 import android.graphics.PixelFormat;
 import android.opengl.GLSurfaceView;
-import android.util.AttributeSet;
 import android.util.Log;
-import android.view.KeyEvent;
-import android.view.MotionEvent;
 
 import javax.microedition.khronos.egl.EGL10;
 import javax.microedition.khronos.egl.EGLConfig;
@@ -18,19 +15,19 @@ import javax.microedition.khronos.opengles.GL10;
  * A simple GLSurfaceView sub-class that demonstrate how to perform
  * OpenGL ES 2.0 rendering into a GL Surface. Note the following important
  * details:
- *
+ * <p>
  * - The class must use a custom context factory to enable 2.0 rendering.
- *   See ContextFactory class definition below.
- *
+ * See ContextFactory class definition below.
+ * <p>
  * - The class must use a custom EGLConfigChooser to be able to select
- *   an EGLConfig that supports 2.0. This is done by providing a config
- *   specification to eglChooseConfig() that has the attribute
- *   EGL10.ELG_RENDERABLE_TYPE containing the EGL_OPENGL_ES2_BIT flag
- *   set. See ConfigChooser class definition below.
- *
+ * an EGLConfig that supports 2.0. This is done by providing a config
+ * specification to eglChooseConfig() that has the attribute
+ * EGL10.ELG_RENDERABLE_TYPE containing the EGL_OPENGL_ES2_BIT flag
+ * set. See ConfigChooser class definition below.
+ * <p>
  * - The class must select the surface's format, then choose an EGLConfig
- *   that matches it exactly (with regards to red/green/blue/alpha channels
- *   bit depths). Failure to do so would result in an EGL_BAD_MATCH error.
+ * that matches it exactly (with regards to red/green/blue/alpha channels
+ * bit depths). Failure to do so would result in an EGL_BAD_MATCH error.
  */
 class GL2JNIView extends GLSurfaceView {
     private static String TAG = "GL2JNIView";
@@ -69,9 +66,9 @@ class GL2JNIView extends GLSurfaceView {
          * custom config chooser. See ConfigChooser class definition
          * below.
          */
-        setEGLConfigChooser( translucent ?
+        setEGLConfigChooser(translucent ?
                 new ConfigChooser(8, 8, 8, 8, depth, stencil) :
-                new ConfigChooser(5, 6, 5, 0, depth, stencil) );
+                new ConfigChooser(5, 6, 5, 0, depth, stencil));
 
         renderer = new Renderer();
         /* Set the renderer responsible for frame rendering */
@@ -80,10 +77,11 @@ class GL2JNIView extends GLSurfaceView {
 
     private static class ContextFactory implements GLSurfaceView.EGLContextFactory {
         private static int EGL_CONTEXT_CLIENT_VERSION = 0x3098;
+
         public EGLContext createContext(EGL10 egl, EGLDisplay display, EGLConfig eglConfig) {
             Log.w(TAG, "creating OpenGL ES 2.0 context");
             checkEglError("Before eglCreateContext", egl);
-            int[] attrib_list = {EGL_CONTEXT_CLIENT_VERSION, 2, EGL10.EGL_NONE };
+            int[] attrib_list = {EGL_CONTEXT_CLIENT_VERSION, 2, EGL10.EGL_NONE};
             EGLContext context = egl.eglCreateContext(display, eglConfig, EGL10.EGL_NO_CONTEXT, attrib_list);
             checkEglError("After eglCreateContext", egl);
             return context;
@@ -154,7 +152,7 @@ class GL2JNIView extends GLSurfaceView {
 
         public EGLConfig chooseConfig(EGL10 egl, EGLDisplay display,
                                       EGLConfig[] configs) {
-            for(EGLConfig config : configs) {
+            for (EGLConfig config : configs) {
                 int d = findConfigAttrib(egl, display, config,
                         EGL10.EGL_DEPTH_SIZE, 0);
                 int s = findConfigAttrib(egl, display, config,
@@ -275,11 +273,11 @@ class GL2JNIView extends GLSurfaceView {
             for (int i = 0; i < attributes.length; i++) {
                 int attribute = attributes[i];
                 String name = names[i];
-                if ( egl.eglGetConfigAttrib(display, config, attribute, value)) {
+                if (egl.eglGetConfigAttrib(display, config, attribute, value)) {
                     Log.w(TAG, String.format("  %s: %d\n", name, value[0]));
                 } else {
                     // Log.w(TAG, String.format("  %s: failed\n", name));
-                    while (egl.eglGetError() != EGL10.EGL_SUCCESS);
+                    while (egl.eglGetError() != EGL10.EGL_SUCCESS) ;
                 }
             }
         }
@@ -296,14 +294,20 @@ class GL2JNIView extends GLSurfaceView {
 
     private static class Renderer implements GLSurfaceView.Renderer {
         long tStart = System.currentTimeMillis();
+
         public void onDrawFrame(GL10 gl) {
             long tEnd = System.currentTimeMillis();
             long tDelta = tEnd - tStart;
             tStart = tEnd;
             co.fakhreddin.cube.Fa3dCube.step(tDelta);
         }
+
         public void onSurfaceChanged(GL10 gl, int width, int height) {
-            co.fakhreddin.cube.Fa3dCube.init(width, height);
+            co.fakhreddin.cube.Fa3dCube.init(
+                    width,
+                    height,
+                    MainActivity.getInstance().getFilesDir().getAbsolutePath()
+            );
         }
 
         public void onSurfaceCreated(GL10 gl, EGLConfig config) {
