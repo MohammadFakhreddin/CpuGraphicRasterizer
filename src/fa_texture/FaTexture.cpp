@@ -95,7 +95,7 @@ void FaTexture::getPixelForPosition(
   float* green,
   float* blue
 ){
-  int index = numberOfChannels * (positionY * width + positionX);
+  unsigned int index = numberOfChannels * (positionY * width + positionX);
   assert(index+numberOfChannels<=dataLength);
   *red = data[index + 0].getValue();
   *green = data[index + 1].getValue();

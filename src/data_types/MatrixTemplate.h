@@ -2,9 +2,10 @@
 #define MatrixTemplate_class
 
 #include <assert.h>
-#include <iostream>
 #include <vector>
 #include <memory>
+
+#include "../utils/log/Logger.h";
 
 template <typename T>
 class _Matrix{
@@ -133,16 +134,18 @@ class _Matrix{
       return height;
     }
     void print(){
-      std::cout<<"---Printing matrix----"<<std::endl;
-      std::cout<<"Width:"<<width<<std::endl;
-      std::cout<<"Height:"<<height<<std::endl;
+      Logger::log("---Printing matrix----");
+      Logger::log("Width:"<<width);
+      Logger::log("Height:"<<height);
+      std::string line = "";
       for(int i=0;i<height;i++){
+        line = "";
         for(int j=0;j<width;j++){
-          std::cout<<" "<<cells.at(j).at(i)<<" ";
+          line += " " << cells.at(j).at(i) << " ";
         }
-        std::cout<<std::endl;
+        Logger::log(line);
       }
-      std::cout<<"-----------------------"<<std::endl;
+      Logger::log("-----------------------");
     }
     T get(int x,int y) const {
       assert(x<width);
