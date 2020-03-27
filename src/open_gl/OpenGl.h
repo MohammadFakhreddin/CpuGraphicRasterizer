@@ -1,9 +1,9 @@
 #ifndef OpenGl_class
 #define OpenGl_class
 
-#include "../Constants.h"
 #include <string>
 
+#include "../Constants.h"
 #if defined(__PLATFORM_MAC__) 
   #define GL_SILENCE_DEPRECATION
   /* Defined before OpenGL and GLUT includes to avoid deprecation messages */

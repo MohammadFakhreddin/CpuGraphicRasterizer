@@ -14,6 +14,7 @@ private:
     Camera& cameraInstance,
     std::vector<MatrixFloat>* worldPoints
   ) override;
+  
   void drawLineBetweenPoints(
     Camera& cameraInstance,
     float startX,
@@ -28,22 +29,28 @@ private:
   );
 
   float red;
+  
   float green;
+  
   float blue;
-  MatrixFloat* firstEdge;
-  MatrixFloat* secondEdge;
-  MatrixFloat* thirdEdge;
+  
+  MatrixFloat* firstEdge = nullptr;
+  
+  MatrixFloat* secondEdge = nullptr;
+  
+  MatrixFloat* thirdEdge = nullptr;
 
 public:
 
   SimpleSurface(
-    int edge1,
-    int edge2,
-    int edge3,
+    unsigned int edge1,
+    unsigned int edge2,
+    unsigned int edge3,
     float red,
     float green,
     float blue
   );
+  
   EdgeType getEdgeType() override;
 
 };

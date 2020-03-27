@@ -6,9 +6,9 @@
 #include "./../../../camera/Camera.h"
 
 ColorSurface::ColorSurface(
-  int edge1,
-  int edge2,
-  int edge3,
+  unsigned int edge1,
+  unsigned int edge2,
+  unsigned int edge3,
   float red,
   float green,
   float blue
@@ -109,7 +109,7 @@ void ColorSurface::computePixelMapData(
     }
   }
 
-  for(int i=0;i<totalStepCount;i++){
+  for(unsigned int i=0;i<totalStepCount;i++){
     
     drawLineBetweenPoints(
       cameraInstance,
@@ -194,7 +194,7 @@ void ColorSurface::drawLineBetweenPoints(
 		green,
 		blue
 	);
-	for(int i=0;i<triangleTotalStepCount;i++){
+	for(unsigned int i=0;i<triangleTotalStepCount;i++){
 		triangleStartX += triangleXStepValue;
 		triangleStartY += triangleYStepValue;
 		triangleStartZ += triangleZStepValue;

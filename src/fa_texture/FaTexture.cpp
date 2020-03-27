@@ -25,7 +25,7 @@ FaTexture::FaTexture(
   //For data protection we copy temp data so external events won't effect data
   dataLength = (unsigned int)(width * height * numberOfChannels);
   data = std::unique_ptr<FaObject<float>[]>(new FaObject<float>[dataLength]);
-  for(int i=0;i<dataLength;i++){
+  for(unsigned int i=0;i<dataLength;i++){
     data[i].setValue(float(tempData[i])/255.0f);
   }
 #ifndef __ANDROID__

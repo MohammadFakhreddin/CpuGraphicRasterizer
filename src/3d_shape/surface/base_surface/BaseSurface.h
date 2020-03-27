@@ -31,9 +31,9 @@ public:
 
 protected:
 
-  unsigned long edge1;
-  unsigned long edge2;
-  unsigned long edge3;
+  unsigned int edge1 = 0;
+  unsigned int edge2 = 0;
+  unsigned int edge3 = 0;
 
   virtual void computePixelMapData(
     Camera& cameraInstance,

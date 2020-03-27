@@ -10,8 +10,7 @@
 #include "../data_types/VectorTemplate.h"
 #include "./surface/base_surface/BaseSurface.h"
 #include "./../camera/Camera.h"
-// tiny_obj_loader.cpp
-// MiniBall.h
+
 class Shape3d
 {
 public:
@@ -87,8 +86,8 @@ private:
   float zLocation = 0;
   float scaleValue = 0;
 private:
-  MatrixFloat rotationAndScaleResult = MatrixFloat(0.0f,0.0f,0.0f);
-  MatrixFloat zComparisionMatrix = MatrixFloat(0.0f,0.0f,0.0f);
+  MatrixFloat rotationAndScaleResult = MatrixFloat(3,3,0.0f);
+  MatrixFloat zComparisionMatrix = MatrixFloat(3,3,0.0f);
 };
 
 #endif

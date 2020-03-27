@@ -181,7 +181,7 @@ void TextureSurface::computePixelMapData(
     }
   }
   
-  for(int i=0;i<totalStepCount;i++){
+  for(unsigned int i=0;i<totalStepCount;i++){
     
     drawTextureBetweenPoints(
       cameraInstance,
@@ -298,7 +298,7 @@ void TextureSurface::drawTextureBetweenPoints(
 		blue
 	);
 
-	for(int i=0;i<triangleTotalStepCount;i++){
+	for(unsigned int i=0;i<triangleTotalStepCount;i++){
 		triangleStartX += triangleXStepValue;
 		triangleStartY += triangleYStepValue;
 		triangleStartZ += triangleZStepValue;

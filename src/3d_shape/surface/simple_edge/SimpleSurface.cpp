@@ -2,9 +2,9 @@
 #include "./../../../camera/Camera.h"
 
 SimpleSurface::SimpleSurface(
-  int edge1,
-  int edge2,
-  int edge3,
+  unsigned int edge1,
+  unsigned int edge2,
+  unsigned int edge3,
   float red,
   float green,
   float blue
@@ -102,7 +102,7 @@ void SimpleSurface::drawLineBetweenPoints(
       green, 
       blue
     );
-    float stepMoveValue = startX - endX > 0 ? -1 : +1;
+    float stepMoveValue = startX - endX > 0 ? -1.0f : +1.0f;
 	do{
 		startX += stepMoveValue;
 		startY += yM * stepMoveValue;
@@ -133,7 +133,7 @@ void SimpleSurface::drawLineBetweenPoints(
         green,
         blue
       );
-      float stepMoveValue = startY - endY > 0 ? -1 : +1;
+      float stepMoveValue = startY > endY ? -1.0f : +1.0f;
     do{
       startY += stepMoveValue;
       startX += xM * stepMoveValue;
