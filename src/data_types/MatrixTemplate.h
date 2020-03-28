@@ -16,6 +16,8 @@ private:
   unsigned int j = 0;
   unsigned int k = 0;
   unsigned int p = 0;
+  //T* cells;
+  //T* placeholderCells;
   std::vector<std::vector<T>> cells;
   std::vector<std::vector<T>> placeholderCells;
 public:

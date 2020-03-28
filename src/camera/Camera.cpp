@@ -67,6 +67,10 @@ Camera::Camera(
 
 }
 
+Camera::~Camera() {
+  delete[] pixelMap;
+}
+
 void Camera::notifyScreenSurfaceIsChanged(
   EventHandler::ScreenSurfaceChangeEventData data
 ){
@@ -84,7 +88,7 @@ void Camera::notifyScreenSurfaceIsChanged(
   assert(appScreenWidth>0);
   assert(appScreenHeight>0);
 
-  pixelMap.erase(pixelMap.begin(),pixelMap.end());
+  delete[] pixelMap;
   initPixelMap();
 }
 
@@ -92,16 +96,18 @@ void Camera::initPixelMap(){
   if(DEBUG_MODE){
     Logger::log("Initiating pixel map:");
   }
+  pixelMap = new DrawPixel[appScreenWidth * appScreenHeight];
+  unsigned int rowValue = 0;
   for(unsigned int i=0;i<appScreenWidth;i++){
-    std::vector<DrawPixel> innerMap;
-    pixelMap.emplace_back(innerMap);
+    rowValue = i * appScreenHeight;
     for(unsigned int j=0;j<appScreenHeight;j++){
-      DrawPixel drawPixel{};
-      drawPixel.zValue = zDefaultValue;
-      drawPixel.blue = 0;
-      drawPixel.green = 0;
-      drawPixel.red = 0;
-      pixelMap.at(i).emplace_back(drawPixel);
+      currentPixel = &pixelMap[rowValue + j];
+      currentPixel->zValue = zDefaultValue;
+      currentPixel->blue = 0;
+      currentPixel->green = 0;
+      currentPixel->red = 0;
+      currentPixel->x = i;
+      currentPixel->y = j;
     }
   }
   if(DEBUG_MODE){
@@ -123,9 +129,9 @@ void Camera::putPixelInMap(int x,int y,float zValue,float red,float green,float 
     long(y) >= long(appScreenHeight)
   ){
     return;
-  }
-    
-  currentPixel = &pixelMap.at((unsigned int)x).at((unsigned int)y);
+  }  
+
+  currentPixel = &pixelMap[x * appScreenHeight + y];
   if(currentPixel->zValue < zValue){
     currentPixel->blue = blue;
     currentPixel->green = green;
@@ -136,28 +142,14 @@ void Camera::putPixelInMap(int x,int y,float zValue,float red,float green,float 
 
 void Camera::update(double deltaTime){}
 
-/*void Camera::drawLight(){
-  int radius = 10;
-  for(int i=-radius;i<radius;i++){
-    for(int j=-radius;j<radius;j++){
-      putPixelInMap(
-          int(lightInstance.getLightPosition().getX()) + i,
-          int(lightInstance.getLightPosition().getY()) + j,
-          lightInstance.getLightPosition().getZ(),
-          0.7f,
-          0.6f,
-          0.0f
-      );
-    }
-  }
-}*/
-
 void Camera::render(double deltaTime){
   {//Drawing screen
     gl.beginDrawingPoints();
+    unsigned int rowValue = 0;
     for(unsigned int i=0;i<appScreenWidth;i++){
+      rowValue = i * appScreenHeight;
       for(unsigned int j=0;j<appScreenHeight;j++){
-        currentPixel = &pixelMap.at(i).at(j);
+        currentPixel = &pixelMap[rowValue + j];
         if(currentPixel->blue!=0 || currentPixel->green!=0 || currentPixel->red!=0){
           gl.drawPixel(
             i,

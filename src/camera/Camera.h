@@ -15,6 +15,8 @@ public:
   
   //TODO Store point size as well
   struct DrawPixel{
+    unsigned int x;
+    unsigned int y;
     float zValue;
     float red;
     float green;
@@ -38,6 +40,8 @@ public:
     unsigned int appScreenHeight,
     std::string cameraName
   );
+
+  ~Camera();
   
   void notifyScreenSurfaceIsChanged(
     EventHandler::ScreenSurfaceChangeEventData data
@@ -93,7 +97,8 @@ private:
   unsigned int appScreenWidth;
   unsigned int appScreenHeight;
 
-  std::vector<std::vector<DrawPixel>> pixelMap;
+  //std::vector<std::vector<DrawPixel>> pixelMap;
+  DrawPixel* pixelMap;
 
   DrawPixel* currentPixel = nullptr;
 
