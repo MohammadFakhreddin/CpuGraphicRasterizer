@@ -13,16 +13,16 @@ public:
     template<typename A,typename B>
     static A max(A value,B max){
         if(value>max){
-            return A(max);
+            return value;
         }
-        return value;
+        return A(max);
     };
     template<typename A,typename B>
-    static A min(A value,B max){
+    static A min(A value,B min){
         if(value<min){
-            return A(min);
+            return value;
         }
-        return value;
+        return A(min);
     };
     template<typename A,typename B,typename C>
     static A clamp(A value,B min,C max){

@@ -11,6 +11,7 @@ private:
 	T x;
 	T y;
 public:
+	_Vec2d() = default;
 	_Vec2d(T x, T y)
 		:
 		x(x),
@@ -97,6 +98,7 @@ private:
 	T y;
 	T z;
 public:
+	_Vec3d() = default;
 	_Vec3d(T x, T y, T z)
 		:
 		x(x),

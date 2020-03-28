@@ -12,7 +12,7 @@ private:
 
   void computePixelMapData(
     Camera& cameraInstance,
-    std::vector<MatrixFloat>* worldPoints
+    std::vector<MatrixFloat>& worldPoints
   ) override;
   
   void drawLineBetweenPoints(
@@ -33,13 +33,7 @@ private:
   float green;
   
   float blue;
-  
-  MatrixFloat* firstEdge = nullptr;
-  
-  MatrixFloat* secondEdge = nullptr;
-  
-  MatrixFloat* thirdEdge = nullptr;
-
+ 
 public:
 
   SimpleSurface(
@@ -51,8 +45,6 @@ public:
     float blue
   );
   
-  EdgeType getEdgeType() override;
-
 };
 
 #endif

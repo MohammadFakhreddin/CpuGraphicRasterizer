@@ -7,6 +7,7 @@
 #include "../../event_handler/EventHandler.h"
 #include "../../utils/log/Logger.h"
 #include "../../utils/operators/Operators.h"
+#include "../../application/Application.h"
 
 BaseScene::BaseScene(OpenGL& gl,std::string sceneName) 
   : 
@@ -16,7 +17,7 @@ BaseScene::BaseScene(OpenGL& gl,std::string sceneName)
   if (sceneName.empty()) {
     Logger::exception("Scene name is not specified");
   }
-  EventHandler::getInstance()->subscribeToEvent<Constants::Buttons>(
+  Application::getInstance()->getEventHandler().subscribeToEvent<Constants::Buttons>(
     EventHandler::EventName::keyboardKeyIsPressed,
     sceneName,
     std::bind(&BaseScene::notifyKeyIsPressed,this, std::placeholders::_1)
@@ -42,7 +43,13 @@ bool BaseScene::useKeyEvent(const Constants::Buttons & keyEvent) {
 }
 
 BaseScene::~BaseScene() {
-  EventHandler::getInstance()->unSubscribeFromEvents(
-    sceneName
-  );
+  if (Application::getInstance()) {
+    Application::getInstance()->getEventHandler().unSubscribeFromEvents(
+      sceneName
+    );
+  }
+}
+
+std::string BaseScene::getSceneName() {
+  return sceneName;
 }

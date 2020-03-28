@@ -11,6 +11,8 @@ appScreenHeight(appScreenHeight),
 physicalScreenWidth(physicalScreenWidth),
 physicalScreenHeight(physicalScreenHeight)
 {
+  Logger::log("AppScreenWidth:" + appScreenWidth);
+  Logger::log("AppScreenHeight:" + appScreenHeight);
   init();
 }
 
@@ -234,7 +236,6 @@ void OpenGL::flush(){
 }
 
 void OpenGL::drawPixel(unsigned int x,unsigned int y,float red,float green,float blue){
-
   assert(x>=0 && x<appScreenWidth);
   assert(y>=0 && y<appScreenHeight);
   assert(red>=0 && red<=1.0f);

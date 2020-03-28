@@ -28,7 +28,7 @@ private:
 
   void computePixelMapData(
     Camera& cameraInstance,
-    std::vector<MatrixFloat>* worldPoints
+    std::vector<MatrixFloat>& worldPoints
   ) override;
 
   Vec2DFloat edge1TexturePoint;
@@ -47,8 +47,6 @@ public:
     Vec2DFloat edge2TexturePoint,
     Vec2DFloat edge3TexturePoint
   );
-
-  EdgeType getEdgeType() override;
 
 };
 

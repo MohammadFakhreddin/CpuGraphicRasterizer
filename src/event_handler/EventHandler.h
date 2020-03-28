@@ -9,8 +9,7 @@
 
 class EventHandler {
 private:
-  //TODO Use Class and BaseClass instead base on stackoverflow solution
-  //https://stackoverflow.com/questions/41893489/using-template-struct-in-vector-with-deffrent-types
+
   struct Listener {
     std::string className;
     std::function<void(std::any)> callback;
@@ -55,11 +54,7 @@ public:
     }
   }
 
-  static std::unique_ptr<EventHandler>& getInstance();
-
 private:
-
-  static std::unique_ptr<EventHandler> instance;
 
   std::unordered_map<
     EventName,

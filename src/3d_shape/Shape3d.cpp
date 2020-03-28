@@ -7,6 +7,7 @@
 #include "../open_gl/OpenGl.h"
 #include "./surface/base_surface/BaseSurface.h"
 #include "./surface/color_surface/ColorSurface.h"
+#include "./../shaders/light/Light.h"
 
 std::unique_ptr<Shape3d> Shape3d::generateTextured3DCube(
   std::unique_ptr<FaTexture> &texture,
@@ -83,16 +84,16 @@ std::unique_ptr<Shape3d> Shape3d::generateTextured3DCube(
 }
 
 std::unique_ptr<Shape3d> Shape3d::generateColored3DCube(
-        float h,
-        float w,
-        float d,
-        float transformX,
-        float transformY,
-        float transformZ,
-        float rotationX,
-        float rotationY,
-        float rotationZ,
-        float scale
+  float h,
+  float w,
+  float d,
+  float transformX,
+  float transformY,
+  float transformZ,
+  float rotationX,
+  float rotationY,
+  float rotationZ,
+  float scale
 ) {
     float x = -w / 2;
     float y = -h / 2;
@@ -255,12 +256,13 @@ Shape3d::Shape3d(
         this->edges.emplace_back(std::unique_ptr<BaseSurface>(edge));
       }
     }
-    transformMatrix.set(0, 0, transformX);
-    transformMatrix.set(1, 0, transformY);
-    transformMatrix.set(2, 0, transformZ);
-    rotationDegreeMatrix.set(0, 0, rotationDegreeX);
-    rotationDegreeMatrix.set(1, 0, rotationDegreeY);
-    rotationDegreeMatrix.set(2, 0, rotationDegreeZ);
+
+    this->transformX(transformX);
+    this->transformY(transformY);
+    this->transformZ(transformZ);
+    this->rotateX(rotationDegreeX);
+    this->rotateY(rotationDegreeY);
+    this->rotateZ(rotationDegreeZ);
 }
 
 bool Shape3d::checkForNodesValidation() {
@@ -274,33 +276,69 @@ bool Shape3d::checkForNodesValidation() {
   return true;
 }
 
-void Shape3d::update(double deltaTime,Camera& cameraInstance) {
+void Shape3d::update(
+  double deltaTime,
+  Camera& cameraInstance,
+  std::vector<Light*>& lightSources
+) {
   if (!nodes.empty()) {
+
+    float zLocation = 0;
+    float scaleValue = 0;
+
     for (unsigned int i = 0; i < nodes.size(); i++) {
-      rotationAndScaleResult = (
-        nodes[i] *
-        rotationValueXMatrix *
-        rotationValueYMatrix *
-        rotationValueZMatrix *
-        scaleValueMatrix
-      );
-      zComparisionMatrix = rotationAndScaleResult + transformMatrix;
-      zLocation = zComparisionMatrix.get(2, 0);
+      //TODO Create pipleline class from this part
+      //TODO Needs optimization
+      //Local transformation
+      transformResultMatrix = nodes[i];
+      transformResultMatrix *= rotationValueXMatrix;
+      transformResultMatrix *= rotationValueYMatrix;
+      transformResultMatrix *= rotationValueZMatrix;
+      transformResultMatrix *= scaleValueMatrix;
+      
+      transformResultMatrix *= cameraInstance.getRotationX();
+      transformResultMatrix *= cameraInstance.getRotationY();
+      transformResultMatrix *= cameraInstance.getRotationZ();
+      
+      zLocation = transformResultMatrix.get(2, 0) + transformMatrix.get(2,0);
       scaleValue = cameraInstance.scaleBasedOnZDistance(zLocation);
       zScaleMatrix.set(0, 0, scaleValue);
       zScaleMatrix.set(1, 1, scaleValue);
-      worldPoints.at(i) = rotationAndScaleResult *
-                          zScaleMatrix +
-                          transformMatrix;
+
+      transformResultMatrix *= zScaleMatrix;
+      transformResultMatrix += transformMatrix;
+      transformResultMatrix -= cameraInstance.getTransformMatrix();
+
+      worldPoints.at(i) = transformResultMatrix;
+
     }
     if (!edges.empty()) {
       for (auto &edge:edges) {
-        edge->render(
-            cameraInstance,
-            &worldPoints
+        edge->update(
+          cameraInstance,
+          worldPoints,
+          lightSources
         );
       }
     }
+  }
+}
+
+void Shape3d::render(
+  double deltaTime,
+  Camera& cameraInstance
+) {
+  if (!edges.empty()) {
+    for (auto& edge : edges) {
+      edge->render(
+        cameraInstance,
+        worldPoints
+      );
+    }
+    //edges.at(0)->render(
+    //  cameraInstance,
+    //  worldPoints
+    //);
   }
 }
 

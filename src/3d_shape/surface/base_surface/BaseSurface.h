@@ -6,24 +6,22 @@
 #include "../../../data_types/MatrixTemplate.h"
 #include "../../../data_types/VectorTemplate.h"
 #include "../../../camera/Camera.h"
-
-enum EdgeType{
-  color,
-  simple,
-  texture,
-  base
-};
+#include "../../../shaders/light/Light.h"
 
 class BaseSurface
 {
 public:
 
-  void render(
+  void update(
     Camera& cameraInstance,
-    std::vector<MatrixFloat>* worldPoints
+    std::vector<MatrixFloat>& worldPoints,
+    std::vector<Light*>& lightSources
   );
 
-  virtual EdgeType getEdgeType();
+  void render(
+    Camera& cameraInstance,
+    std::vector<MatrixFloat>& worldPoints
+  );
 
   unsigned long getEdgeByIndex(short index);
 
@@ -37,7 +35,7 @@ protected:
 
   virtual void computePixelMapData(
     Camera& cameraInstance,
-    std::vector<MatrixFloat>* worldPoints
+    std::vector<MatrixFloat>& worldPoints
   );
 
   void putPixelInMap(
@@ -77,13 +75,16 @@ private:
    */
   bool isVisibleToCamera(
     Camera& cameraInstance,
-    std::vector<MatrixFloat>* worldPoints
+    std::vector<MatrixFloat>& worldPoints
   );
   void computeNormalVector(
-    std::vector<MatrixFloat>* worldPoints
+    std::vector<MatrixFloat>& worldPoints
   );
   void computeEdgeCenter(
-    std::vector<MatrixFloat>* worldPoints
+    std::vector<MatrixFloat>& worldPoints
+  );
+  void computeColorIntensity(
+    std::vector<Light*>& lightSources  
   );
   /*
   *

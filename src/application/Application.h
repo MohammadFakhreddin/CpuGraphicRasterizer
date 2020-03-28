@@ -12,19 +12,22 @@
 #include "../camera/Camera.h"
 #include "../shaders/diffuse_light/DiffuseLight.h"
 #include "../scenes/base_scene/BaseScene.h"
+#include "../event_handler/EventHandler.h"
 
 class Application {
 public:
 
-  static std::unique_ptr<Application>& getInstance();
+  static Application* getInstance();
 
   Application(
-          Constants::Platform platform,
-          unsigned int appScreenWidth,
-          unsigned int appScreenHeight,
-          unsigned int physicalDeviceScreenWidth,
-          unsigned int physicalDeviceScreenHeight
+    Constants::Platform platform,
+    unsigned int appScreenWidth,
+    unsigned int appScreenHeight,
+    unsigned int physicalDeviceScreenWidth,
+    unsigned int physicalDeviceScreenHeight
   );
+
+  ~Application();
   
   /**
    * Currently this event is only for android
@@ -47,9 +50,13 @@ public:
   
   unsigned int getPhysicalScreenHeight();
 
+  EventHandler& getEventHandler();
+
 private:
 
-  static std::unique_ptr<Application> applicationInstance;
+  static Application* applicationInstance;
+
+  EventHandler eventHandler;
 
   void render(double deltaTime);
   

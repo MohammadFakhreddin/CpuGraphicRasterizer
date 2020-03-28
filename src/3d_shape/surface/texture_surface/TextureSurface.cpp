@@ -50,23 +50,23 @@ edge3TexturePoint(edge3TexturePoint)
 
 void TextureSurface::computePixelMapData(
   Camera& cameraInstance,
-  std::vector<MatrixFloat>* worldPoints
+  std::vector<MatrixFloat>& worldPoints
 )
 {
   //TODO Remove all these temporary variables to boost performance
-  MatrixFloat* point1 = &worldPoints->at(edge1);
-  MatrixFloat* point2 = &worldPoints->at(edge2);
-  MatrixFloat* point3 = &worldPoints->at(edge3);
+  const auto& point1 = worldPoints.at(edge1);
+  const auto& point2 = worldPoints.at(edge2);
+  const auto& point3 = worldPoints.at(edge3);
 
-  float trianglePoint1X = point1->get(0,0);
-  float trianglePoint1Y = point1->get(1,0);
-  float trianglePoint1Z = point1->get(2,0);
-  float trianglePoint2X = point2->get(0,0);
-  float trianglePoint2Y = point2->get(1,0);
-  float trianglePoint2Z = point2->get(2,0);
-  float trianglePoint3X = point3->get(0,0);
-  float trianglePoint3Y = point3->get(1,0);
-  float trianglePoint3Z = point3->get(2,0);
+  float trianglePoint1X = point1.get(0,0);
+  float trianglePoint1Y = point1.get(1,0);
+  float trianglePoint1Z = point1.get(2,0);
+  float trianglePoint2X = point2.get(0,0);
+  float trianglePoint2Y = point2.get(1,0);
+  float trianglePoint2Z = point2.get(2,0);
+  float trianglePoint3X = point3.get(0,0);
+  float trianglePoint3Y = point3.get(1,0);
+  float trianglePoint3Z = point3.get(2,0);
   
   float texturePoint1X = edge1TexturePoint.getX();
   float texturePoint1Y = edge1TexturePoint.getY();
@@ -212,11 +212,6 @@ void TextureSurface::computePixelMapData(
 
   }
 
-}
-
-EdgeType TextureSurface::getEdgeType()
-{
-  return EdgeType::texture;
 }
 
 void TextureSurface::drawTextureBetweenPoints(

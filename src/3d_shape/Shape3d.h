@@ -14,6 +14,7 @@
 class Shape3d
 {
 public:
+
   static std::unique_ptr<Shape3d> generateColored3DCube(
     float xWidth,
     float yWidth,
@@ -26,6 +27,7 @@ public:
     float rotationZ,
     float scale
   );
+
   static std::unique_ptr<Shape3d> generateTextured3DCube(
     std::unique_ptr<FaTexture>& texture,
     const std::vector<BaseSurface*>& edgeList,
@@ -40,11 +42,13 @@ public:
     float rotationZ,
     float scale
   );
+
   //TODO Rename node and edge to vertices and indices
   Shape3d(
     std::vector<MatrixFloat> nodes,
     const std::vector<BaseSurface*>& edges
   );
+
   Shape3d(
     std::vector<MatrixFloat> nodes,
     const std::vector<BaseSurface*>& edges,
@@ -52,6 +56,7 @@ public:
     float initialTransformY,
     float initialTransformZ
   );
+
   Shape3d(
     std::vector<MatrixFloat> nodes,
     const std::vector<BaseSurface*>& edges,
@@ -63,19 +68,40 @@ public:
     float rotationDegreeZ,
     float scaleValue
   );
+
   bool checkForNodesValidation();
-  void update(double deltaTime,Camera& cameraInstance);
+
+  void update(
+    double deltaTime,
+    Camera& cameraInstance,
+    std::vector<Light*>& lightSources
+  );
+
+  void render(
+    double deltaTime,
+    Camera& cameraInstance
+  );
+
   void transformX(float x);
+
   void transformY(float y);
+
   void transformZ(float z);
+
   void scale(float value);
+
   void rotateX(float x);
+
   void rotateY(float y);
+
   void rotateZ(float z);
+
 private:
+
   std::vector<MatrixFloat> nodes;
   std::vector<std::unique_ptr<BaseSurface>>edges;
   std::vector<MatrixFloat> worldPoints;
+
   MatrixFloat transformMatrix;
   MatrixFloat rotationDegreeMatrix;
   MatrixFloat rotationValueXMatrix;
@@ -83,11 +109,9 @@ private:
   MatrixFloat rotationValueZMatrix;
   MatrixFloat scaleValueMatrix;
   MatrixFloat zScaleMatrix;
-  float zLocation = 0;
-  float scaleValue = 0;
-private:
-  MatrixFloat rotationAndScaleResult = MatrixFloat(3,3,0.0f);
-  MatrixFloat zComparisionMatrix = MatrixFloat(3,3,0.0f);
+
+  MatrixFloat transformResultMatrix = MatrixFloat(3,3,0.0f);
+
 };
 
 #endif

@@ -21,27 +21,26 @@ unsigned long BaseSurface::getEdgeByIndex(short index) {
   return edge1;
 }
 
-EdgeType BaseSurface::getEdgeType() {
-  return EdgeType::base;
-}
-
-void BaseSurface::render(
+void BaseSurface::update(
   Camera& cameraInstance,
-  std::vector<MatrixFloat> *worldPoints
+  std::vector<MatrixFloat>& worldPoints,
+  std::vector<Light*>& lightSources
 ) {
-  assert(edge1<worldPoints->size() && edge1>=0);
-  assert(edge2<worldPoints->size() && edge2>=0);
-  assert(edge3<worldPoints->size() && edge3>=0);
+  assert(edge1<worldPoints.size() && edge1>=0);
+  assert(edge2<worldPoints.size() && edge2>=0);
+  assert(edge3<worldPoints.size() && edge3>=0);
   computeNormalVector(worldPoints);
   computeEdgeCenter(worldPoints);
   if(!isVisibleToCamera(cameraInstance, worldPoints)){
     return;
   }
-  cameraInstance.getLight().computeLightIntensity(
-    normalVector,
-    edgeCenter,
-    colorIntensity
-  );
+  computeColorIntensity(lightSources);
+}
+
+void BaseSurface::render(
+  Camera& cameraInstance,
+  std::vector<MatrixFloat>& worldPoints
+) {
   computePixelMapData(
     cameraInstance,
     worldPoints
@@ -50,10 +49,51 @@ void BaseSurface::render(
 
 void BaseSurface::computePixelMapData(
   Camera& cameraInstance,
-  std::vector<MatrixFloat>* worldPoints
+  std::vector<MatrixFloat>& worldPoints
 ){
   Logger::log("computePixelMapData is not implemented correctly");
   assert("False");
+}
+
+void BaseSurface::computeColorIntensity(
+  std::vector<Light*>& lightSources
+) {
+  if (lightSources.empty() == false) {
+    colorIntensity.setX(0.0f);
+    colorIntensity.setY(0.0f);
+    colorIntensity.setZ(0.0f);
+    Vec3DFloat currentLightSourceColorIntensity;
+    for (auto& light : lightSources) {
+      light->computeLightIntensity(
+        normalVector,
+        edgeCenter,
+        currentLightSourceColorIntensity
+      );
+      colorIntensity.setX(
+        Math::max(
+          currentLightSourceColorIntensity.getX(),
+          colorIntensity.getX()
+        )
+      );
+      colorIntensity.setY(
+        Math::max(
+          currentLightSourceColorIntensity.getY(),
+          colorIntensity.getY()
+        )
+      );
+      colorIntensity.setZ(
+        Math::max(
+          currentLightSourceColorIntensity.getZ(),
+          colorIntensity.getZ()
+        )
+      );
+    }
+  }
+  else {
+    colorIntensity.setX(1.0f);
+    colorIntensity.setY(1.0f);
+    colorIntensity.setZ(1.0f);
+  }
 }
 
 bool BaseSurface::areEdgesDataValid(int nodesSize) {
@@ -67,15 +107,15 @@ bool BaseSurface::areEdgesDataValid(int nodesSize) {
   return true;
 }
 
-void BaseSurface::computeNormalVector(std::vector<MatrixFloat>* worldPoints){
+void BaseSurface::computeNormalVector(std::vector<MatrixFloat>& worldPoints){
  //Creating edge vectors for normal vector computing
-  edge1To2Vector.setX(worldPoints->at(edge2).get(0, 0) - worldPoints->at(edge1).get(0, 0));
-  edge1To2Vector.setY(worldPoints->at(edge2).get(1, 0) - worldPoints->at(edge1).get(1, 0));
-  edge1To2Vector.setZ(worldPoints->at(edge2).get(2, 0) - worldPoints->at(edge1).get(2, 0));
+  edge1To2Vector.setX(worldPoints.at(edge2).get(0, 0) - worldPoints.at(edge1).get(0, 0));
+  edge1To2Vector.setY(worldPoints.at(edge2).get(1, 0) - worldPoints.at(edge1).get(1, 0));
+  edge1To2Vector.setZ(worldPoints.at(edge2).get(2, 0) - worldPoints.at(edge1).get(2, 0));
 
-  edge2To3Vector.setX(worldPoints->at(edge3).get(0, 0) - worldPoints->at(edge2).get(0, 0));
-  edge2To3Vector.setY(worldPoints->at(edge3).get(1, 0) - worldPoints->at(edge2).get(1, 0));
-  edge2To3Vector.setZ(worldPoints->at(edge3).get(2, 0) - worldPoints->at(edge2).get(2, 0));
+  edge2To3Vector.setX(worldPoints.at(edge3).get(0, 0) - worldPoints.at(edge2).get(0, 0));
+  edge2To3Vector.setY(worldPoints.at(edge3).get(1, 0) - worldPoints.at(edge2).get(1, 0));
+  edge2To3Vector.setZ(worldPoints.at(edge3).get(2, 0) - worldPoints.at(edge2).get(2, 0));
   //Generating normal vector from edge vectors
   normalVector.crossProduct(edge2To3Vector, edge1To2Vector);
 }
@@ -86,7 +126,9 @@ void BaseSurface::calculateStepCountAndStepValue(
   unsigned int* totalStepCount,
   float* stepValue
 ){
-  *totalStepCount = Math::max(
+  assert(difference != 0 && "Difference must be above 0 in BaseSurface::calculateStepCountAndStepValue");
+  assert(drawStepValue != 0 && "Draw step value must be above 0 in BaseSurface::calculateStepCountAndStepValue");
+  *totalStepCount = Math::min(
       (unsigned int)ceil(abs(difference/drawStepValue)),
       cameraInstance.getAppScreenWidth()
   );
@@ -94,46 +136,77 @@ void BaseSurface::calculateStepCountAndStepValue(
 }
 
 void BaseSurface::computeEdgeCenter(
-    std::vector<MatrixFloat>* worldPoints
+    std::vector<MatrixFloat>& worldPoints
 ){
   edgeCenter.setX((
-    worldPoints->at(edge1).get(0, 0) +
-    worldPoints->at(edge2).get(0, 0) +
-    worldPoints->at(edge3).get(0, 0))
+    worldPoints.at(edge1).get(0, 0) +
+    worldPoints.at(edge2).get(0, 0) +
+    worldPoints.at(edge3).get(0, 0))
   / 3.0f);
   edgeCenter.setY((
-    worldPoints->at(edge1).get(1, 0) +
-    worldPoints->at(edge2).get(1, 0) +
-    worldPoints->at(edge3).get(1, 0)
+    worldPoints.at(edge1).get(1, 0) +
+    worldPoints.at(edge2).get(1, 0) +
+    worldPoints.at(edge3).get(1, 0)
   ) / 3.0f);
   edgeCenter.setZ((
-    worldPoints->at(edge1).get(2, 0) +
-    worldPoints->at(edge2).get(2, 0) +
-    worldPoints->at(edge3).get(2, 0)
+    worldPoints.at(edge1).get(2, 0) +
+    worldPoints.at(edge2).get(2, 0) +
+    worldPoints.at(edge3).get(2, 0)
   ) / 3.0f);
 }
 
 bool BaseSurface::isVisibleToCamera(
     Camera& cameraInstance,
-    std::vector<MatrixFloat> *worldPoints
+    std::vector<MatrixFloat>& worldPoints
 ) {
+  float halfScreenWidth = cameraInstance.getAppScreenWidth() / 2.0f;
+  float halfScreenHeight = cameraInstance.getAppScreenHeight() / 2.0f;
+  float cameraX = halfScreenWidth;
+  float cameraY = halfScreenHeight;
+  auto left = 0;
+  auto right = cameraInstance.getAppScreenWidth();
+  auto top = 0;
+  auto bottom = cameraInstance.getAppScreenHeight();
+  if (
+    (
+      worldPoints.at(edge1).get(0, 0) < left &&
+      worldPoints.at(edge2).get(0, 0) < left &&
+      worldPoints.at(edge3).get(0, 0) < left
+    ) || (
+      worldPoints.at(edge1).get(0, 0) >= right &&
+      worldPoints.at(edge2).get(0, 0) >= right &&
+      worldPoints.at(edge3).get(0, 0) >= right
+    ) ||
+    (
+      worldPoints.at(edge1).get(1, 0) >= bottom &&
+      worldPoints.at(edge2).get(1, 0) >= bottom &&
+      worldPoints.at(edge3).get(1, 0) >= bottom
+    ) ||
+    (
+      worldPoints.at(edge1).get(1, 0) < top &&
+      worldPoints.at(edge2).get(1, 0) < top &&
+      worldPoints.at(edge3).get(1, 0) < top
+    )
+  ) {
+    return false;
+  }
   //TODO Check for cliping too
   //Making camera vector
   cameraVector.setX(
     Math::clamp(
       edgeCenter.getX(),
-      cameraInstance.getLeft(),
-      cameraInstance.getRight()
+      left,
+      right
     ) - edgeCenter.getX()
   );
   cameraVector.setY(
-      Math::clamp(
+    Math::clamp(
       edgeCenter.getY(),
-      cameraInstance.getTop(),
-      cameraInstance.getBottom()
+      top,
+      bottom
     ) - edgeCenter.getY()
   );
-  cameraVector.setZ(edgeCenter.getZ() - cameraInstance.getCameraZLocation());
+  cameraVector.setZ(edgeCenter.getZ());
 
   dotProductValue = normalVector.dotProduct(cameraVector);
 

@@ -21,6 +21,8 @@ public:
   
   void notifyKeyIsPressed(const Constants::Buttons& keyEvent);
 
+  std::string getSceneName();
+
 protected:
 
   bool useKeyEvent(const Constants::Buttons& keyEvent);

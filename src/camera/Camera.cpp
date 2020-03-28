@@ -1,90 +1,108 @@
 #include "./Camera.h"
 
 #include <cassert>
+#include <math.h>
+#include <functional>
 
 #include "./../utils/log/Logger.h"
 #include "./../utils/math/Math.h"
+#include "../event_handler/EventHandler.h"
+#include "../application/Application.h"
 
 Camera::Camera(
-	OpenGL& openGLInstance,
-	Light& lightInstance,
-	float cameraZLocation,
-	float cameraFieldOfView,
-	int left,
-	int right,
-	int top,
-	int bottom
+  OpenGL& gl,
+  float cameraFieldOfView,
+  float transformX,
+  float transformY,
+  float transformZ,
+  float rotationDegreeX,
+  float rotationDegreeY,
+  float rotationDegreeZ,
+  unsigned int appScreenWidth,
+  unsigned int appScreenHeight,
+  std::string cameraName
 ) :
-  openGLInstance(openGLInstance),
-  lightInstance(lightInstance),
-  cameraZLocation(cameraZLocation),
+  cameraName(cameraName),
+  gl(gl),
   cameraFieldOfView(cameraFieldOfView),
-  left(left),
-  right(right),
-  top(top),
-  bottom(bottom),
-  appScreenWidth( (unsigned int)(right - left) ),
-  appScreenHeight( (unsigned int)(bottom - top) )
+  zDefaultValue(cameraFieldOfView * -1),
+  appScreenWidth(appScreenWidth),
+  appScreenHeight(appScreenHeight),
+  transformMatrix(3, 1, 0.0f),
+  rotationDegreeMatrix(3, 1, 0.0f),
+  rotationValueXMatrix(3, 3, std::vector<std::vector<float>>{
+  std::vector<float>{cosf(0), -sinf(0), 0},
+    std::vector<float>{sinf(0), cosf(0), 0},
+    std::vector<float>{0, 0, 1}
+  }),
+  rotationValueYMatrix(3, 3, std::vector<std::vector<float>>{
+    std::vector<float>{cosf(0), 0, sinf(0)},
+    std::vector<float>{0, 1, 0},
+    std::vector<float>{-sinf(0), 0, cosf(0)}
+  }),
+  rotationValueZMatrix(3, 3, std::vector<std::vector<float>>{
+    std::vector<float>{1, 0, 0},
+    std::vector<float>{0, cosf(0), sinf(0)},
+    std::vector<float>{0, -sinf(0), cosf(0)}
+  })
 {
-	
-  if(DEBUG_MODE==true){
-    Logger::log("==========================");
-    Logger::log("Camera information:");
-    Logger::log("Left: "+std::to_string(left));
-    Logger::log("Right: "+std::to_string(right));
-    Logger::log("Top: "+std::to_string(top));
-    Logger::log("Bottom: "+std::to_string(bottom));
-    Logger::log("CameraZLocation: "+ std::to_string(cameraZLocation));
-    Logger::log("FOV: "+std::to_string(cameraFieldOfView));
-    Logger::log("AppScreenWidth: "+std::to_string(appScreenWidth));
-    Logger::log("AppScreenHeight: "+std::to_string(appScreenHeight));
-    Logger::log("==========================");
-  }
 
-  assert(bottom>top);
-  assert(right>left);
+  assert(cameraFieldOfView>0);
   assert(appScreenWidth>0);
   assert(appScreenHeight>0);
 
+  this->transform(transformX,transformY,transformZ);
+  this->rotateX(rotationDegreeX);
+  this->rotateY(rotationDegreeY);
+  this->rotateZ(rotationDegreeZ);
+
+  Application::getInstance()->getEventHandler()
+    .subscribeToEvent<EventHandler::ScreenSurfaceChangeEventData>(
+    EventHandler::EventName::screenSurfaceChanged,
+    cameraName,
+    std::bind(&Camera::notifyScreenSurfaceIsChanged,this,std::placeholders::_1)
+  );
+
   initPixelMap();
+
 }
 
 void Camera::notifyScreenSurfaceIsChanged(
-    int paramLeft,
-    int paramRight,
-    int paramTop,
-    int paramBottom){
-    this->left = paramLeft;
-    this->right = paramRight;
-    this->top = paramTop;
-    this->bottom = paramBottom;
-    this->appScreenWidth = (unsigned int)(paramRight - paramLeft);
-    this->appScreenHeight = (unsigned int)(paramBottom - paramTop);
+  EventHandler::ScreenSurfaceChangeEventData data
+){
 
-    assert(paramRight > paramLeft);
-    assert(paramBottom > paramTop);
-    assert(appScreenWidth>0);
-    assert(appScreenHeight>0);
+  if (
+    this->appScreenWidth == data.appScreenWidth && 
+    this->appScreenHeight == data.appScreenHeight
+  ) {
+    return;
+  }
 
-    pixelMap.erase(pixelMap.begin(),pixelMap.end());
-    initPixelMap();
+  this->appScreenWidth = data.appScreenWidth;
+  this->appScreenHeight = data.appScreenHeight;
+
+  assert(appScreenWidth>0);
+  assert(appScreenHeight>0);
+
+  pixelMap.erase(pixelMap.begin(),pixelMap.end());
+  initPixelMap();
 }
 
 void Camera::initPixelMap(){
   if(DEBUG_MODE){
     Logger::log("Initiating pixel map:");
   }
-  for(int i=0;i<appScreenWidth;i++){
-      std::vector<DrawPixel> innerMap;
-      pixelMap.emplace_back(innerMap);
-      for(int j=0;j<appScreenHeight;j++){
-          DrawPixel drawPixel{};
-          drawPixel.zValue = cameraZLocation + cameraFieldOfView;
-          drawPixel.blue = 0;
-          drawPixel.green = 0;
-          drawPixel.red = 0;
-          pixelMap.at(i).emplace_back(drawPixel);
-      }
+  for(unsigned int i=0;i<appScreenWidth;i++){
+    std::vector<DrawPixel> innerMap;
+    pixelMap.emplace_back(innerMap);
+    for(unsigned int j=0;j<appScreenHeight;j++){
+      DrawPixel drawPixel{};
+      drawPixel.zValue = zDefaultValue;
+      drawPixel.blue = 0;
+      drawPixel.green = 0;
+      drawPixel.red = 0;
+      pixelMap.at(i).emplace_back(drawPixel);
+    }
   }
   if(DEBUG_MODE){
     Logger::log("Pixel map is ready");
@@ -97,19 +115,16 @@ void Camera::putPixelInMap(int x,int y,float zValue,float red,float green,float 
   assert(blue>=0 && blue<=1.0f);
   
   if(
-    zValue >= cameraZLocation ||
-    zValue <= cameraFieldOfView + cameraZLocation ||
-    x < left ||
-    x >= right ||
-    y < top ||
-    y >= bottom
+    zValue >= 0 ||
+    zValue <= zDefaultValue ||
+    x < 0 ||
+    long(x) >= long(appScreenWidth) ||
+    y < 0 ||
+    long(y) >= long(appScreenHeight)
   ){
     return;
   }
-  
-  assert(x>=left && x<right);
-  assert(y>=top && y<bottom);
-  
+    
   currentPixel = &pixelMap.at((unsigned int)x).at((unsigned int)y);
   if(currentPixel->zValue < zValue){
     currentPixel->blue = blue;
@@ -119,11 +134,9 @@ void Camera::putPixelInMap(int x,int y,float zValue,float red,float green,float 
   }
 }
 
-void Camera::update(double deltaTime){
-  // drawLight();
-}
-//TODO Light bulb must be shape
-void Camera::drawLight(){
+void Camera::update(double deltaTime){}
+
+/*void Camera::drawLight(){
   int radius = 10;
   for(int i=-radius;i<radius;i++){
     for(int j=-radius;j<radius;j++){
@@ -137,55 +150,38 @@ void Camera::drawLight(){
       );
     }
   }
-}
+}*/
 
 void Camera::render(double deltaTime){
   {//Drawing screen
-    openGLInstance.beginDrawingPoints();
+    gl.beginDrawingPoints();
     for(unsigned int i=0;i<appScreenWidth;i++){
       for(unsigned int j=0;j<appScreenHeight;j++){
         currentPixel = &pixelMap.at(i).at(j);
         if(currentPixel->blue!=0 || currentPixel->green!=0 || currentPixel->red!=0){
-          openGLInstance.drawPixel(
-              (int)i,
-              (int)j,
-              currentPixel->red,
-              currentPixel->green,
-              currentPixel->blue
+          gl.drawPixel(
+            i,
+            j,
+            currentPixel->red,
+            currentPixel->green,
+            currentPixel->blue
           );
           currentPixel->blue = 0;
           currentPixel->red = 0;
           currentPixel->green = 0;
         }
-        currentPixel->zValue = cameraZLocation + cameraFieldOfView;
+        currentPixel->zValue = zDefaultValue;
       }
     }
-    openGLInstance.resetProgram();
+    gl.resetProgram();
   }
 }
 
 float Camera::scaleBasedOnZDistance(float zLocation){
-  return abs(cameraFieldOfView/(zLocation - cameraZLocation));
-}
-
-int Camera::getLeft(){
-  return left;
-}
-
-int Camera::getRight(){
-  return right;
-}
-
-int Camera::getTop(){
-  return top;
-}
-
-int Camera::getBottom(){
-  return bottom;
-}
-
-float Camera::getCameraZLocation(){
-  return cameraZLocation;
+  if (zLocation > transformMatrix.get(2, 0)) {
+    return 1;
+  }
+  return cameraFieldOfView/(transformMatrix.get(2, 0) - zLocation);
 }
 
 unsigned int Camera::getAppScreenWidth(){
@@ -196,6 +192,64 @@ unsigned int Camera::getAppScreenHeight(){
   return appScreenHeight;
 }
 
-Light& Camera::getLight(){
-  return lightInstance;
+//TODO Check this code again
+//It must transform based on theta
+void Camera::transform(float transformX, float transformY, float transformZ) {
+  MatrixFloat transformValue = MatrixFloat(3, 1, std::vector<std::vector<float>>{
+    std::vector<float>{transformX},
+    std::vector<float>{transformY},
+    std::vector<float>{transformZ}
+  });
+  
+  transformValue *= rotationValueXMatrix;
+  transformValue *= rotationValueYMatrix;
+  transformValue *= rotationValueZMatrix;
+
+  transformMatrix += transformValue;
+}
+
+//TODO We can use other ways instead of sin and cos for new matrix calculation
+void Camera::rotateX(float x) {
+  //For camera we reverse the rotation to apply to pipeline shapes
+  rotationDegreeMatrix.set(0, 0, rotationDegreeMatrix.get(0, 0) - x);
+  rotationValueXMatrix.set(0, 0, cosf(rotationDegreeMatrix.get(0, 0)));
+  rotationValueXMatrix.set(0, 1, -sinf(rotationDegreeMatrix.get(0, 0)));
+  rotationValueXMatrix.set(1, 0, sinf(rotationDegreeMatrix.get(0, 0)));
+  rotationValueXMatrix.set(1, 1, cosf(rotationDegreeMatrix.get(0, 0)));
+}
+
+//TODO We can use other ways instead of sin and cos for new matrix calculation
+void Camera::rotateY(float y) {
+  //For camera we reverse the rotation to apply to pipeline shapes
+  rotationDegreeMatrix.set(1, 0, rotationDegreeMatrix.get(1, 0) - y);
+  rotationValueYMatrix.set(0, 0, cosf(rotationDegreeMatrix.get(1, 0)));
+  rotationValueYMatrix.set(0, 2, sinf(rotationDegreeMatrix.get(1, 0)));
+  rotationValueYMatrix.set(2, 0, -sinf(rotationDegreeMatrix.get(1, 0)));
+  rotationValueYMatrix.set(2, 2, cosf(rotationDegreeMatrix.get(1, 0)));
+}
+
+//TODO We can use other ways instead of sin and cos for new matrix calculation
+void Camera::rotateZ(float z) {
+  //For camera we reverse the rotation to apply to pipeline shapes
+  rotationDegreeMatrix.set(2, 0, rotationDegreeMatrix.get(2, 0) - z);
+  rotationValueZMatrix.set(1, 1, cosf(rotationDegreeMatrix.get(2, 0)));
+  rotationValueZMatrix.set(1, 2, sinf(rotationDegreeMatrix.get(2, 0)));
+  rotationValueZMatrix.set(2, 1, -sinf(rotationDegreeMatrix.get(2, 0)));
+  rotationValueZMatrix.set(2, 2, cosf(rotationDegreeMatrix.get(2, 0)));
+}
+
+const MatrixFloat& Camera::getTransformMatrix() {
+  return transformMatrix;
+}
+
+const MatrixFloat& Camera::getRotationX() {
+  return rotationValueXMatrix;
+}
+
+const MatrixFloat& Camera::getRotationY() {
+  return rotationValueYMatrix;
+}
+
+const MatrixFloat& Camera::getRotationZ() {
+  return rotationValueZMatrix;
 }

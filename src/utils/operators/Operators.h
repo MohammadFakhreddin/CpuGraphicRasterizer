@@ -55,7 +55,7 @@ public:
     }
     int start = -1;
     int end = -1;
-    for (size_t i = 0; i < rawText.length(); i++) {
+    for (int i = 0; i < rawText.length(); i++) {
       if (rawText[i] != ' ') {
         if (start == -1) {
           start = i;

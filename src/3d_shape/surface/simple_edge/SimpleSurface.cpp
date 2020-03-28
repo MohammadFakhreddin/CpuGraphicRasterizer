@@ -21,53 +21,52 @@ SimpleSurface::SimpleSurface(
 
 void SimpleSurface::computePixelMapData(
   Camera& cameraInstance,
-  std::vector<MatrixFloat>* worldPoints
+  std::vector<MatrixFloat>& worldPoints
 ){
   for(int i=0;i<3;i++){
-    firstEdge = &worldPoints->at(getEdgeByIndex((i)%3));
-    secondEdge = &worldPoints->at(getEdgeByIndex((i+1)%3));
-    thirdEdge = &worldPoints->at(getEdgeByIndex((i+2)%3));
+    const MatrixFloat& firstEdge = worldPoints.at(getEdgeByIndex((i) % 3));
+    const MatrixFloat& secondEdge = worldPoints.at(getEdgeByIndex((i + 1) % 3));
+    const MatrixFloat& thirdEdge = worldPoints.at(getEdgeByIndex((i + 2) % 3));
+  
     drawLineBetweenPoints(
       cameraInstance,
-      firstEdge->get(0,0),
-      firstEdge->get(1,0),
-      firstEdge->get(2,0),
-      secondEdge->get(0,0),
-      secondEdge->get(1,0),
-      secondEdge->get(2,0),
+      firstEdge.get(0,0),
+      firstEdge.get(1,0),
+      firstEdge.get(2,0),
+      secondEdge.get(0,0),
+      secondEdge.get(1,0),
+      secondEdge.get(2,0),
       red,
       green,
       blue
     );
+
     drawLineBetweenPoints(
       cameraInstance,
-      firstEdge->get(0,0),
-      firstEdge->get(1,0),
-      firstEdge->get(2,0),
-      thirdEdge->get(0,0),
-      thirdEdge->get(1,0),
-      thirdEdge->get(2,0),
+      firstEdge.get(0,0),
+      firstEdge.get(1,0),
+      firstEdge.get(2,0),
+      thirdEdge.get(0,0),
+      thirdEdge.get(1,0),
+      thirdEdge.get(2,0),
       red,
       green,
       blue
     );
+    
     drawLineBetweenPoints(
       cameraInstance,
-      thirdEdge->get(0,0),
-      thirdEdge->get(1,0),
-      thirdEdge->get(2,0),
-      secondEdge->get(0,0),
-      secondEdge->get(1,0),
-      secondEdge->get(2,0),
+      thirdEdge.get(0,0),
+      thirdEdge.get(1,0),
+      thirdEdge.get(2,0),
+      secondEdge.get(0,0),
+      secondEdge.get(1,0),
+      secondEdge.get(2,0),
       red,
       green,
       blue
     );
   }
-}
-
-EdgeType SimpleSurface::getEdgeType(){
-  return EdgeType::color;
 }
 
 void SimpleSurface::drawLineBetweenPoints(

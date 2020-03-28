@@ -54,10 +54,8 @@ public:
 
   void computePixelMapData(
     Camera& cameraInstance,
-    std::vector<MatrixFloat>* worldPoints
+    std::vector<MatrixFloat>& worldPoints
   ) override;
-
-  EdgeType getEdgeType() override;
 
 };
 

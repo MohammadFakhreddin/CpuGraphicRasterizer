@@ -6,11 +6,13 @@
 
 #include "./../data_types/VectorTemplate.h"
 #include "./../open_gl/OpenGl.h"
+#include "../event_handler/EventHandler.h"
 #include "./../fa_texture/FaTexture.h"
-#include "./../shaders/light/Light.h"
+#include "./../data_types/MatrixTemplate.h"
 
 class Camera{
 public:
+  
   //TODO Store point size as well
   struct DrawPixel{
     float zValue;
@@ -19,21 +21,28 @@ public:
     float blue;
   };
 
+  // TODO Camera must contain following information
+  // 1- cameraLocation
+  // 2- cameraBorders (Left,Right,Top,Bottom)
+  // 3- cameraDirectionVector
   Camera(
-    OpenGL& openGlInstance,
-    Light& lightInstance,
-    float cameraZLocation,
+    OpenGL& gl,
     float cameraFieldOfView,
-    int left,
-    int right,
-    int top,
-    int bottom
+    float transformX,
+    float transformY,
+    float transformZ,
+    float rotationDegreeX,
+    float rotationDegreeY,
+    float rotationDegreeZ,
+    unsigned int appScreenWidth,
+    unsigned int appScreenHeight,
+    std::string cameraName
   );
+  
   void notifyScreenSurfaceIsChanged(
-    int paramLeft,
-    int paramRight,
-    int paramTop,
-    int paramBottom);
+    EventHandler::ScreenSurfaceChangeEventData data
+  );
+
   void putPixelInMap(
     int x,
     int y,
@@ -42,32 +51,44 @@ public:
     float green,
     float blue
   );
-    void update(double deltaTime);
-    void render(double deltaTime);
-    float scaleBasedOnZDistance(float zLocation);
-    int getLeft();
-    int getRight();
-    int getTop();
-    int getBottom();
-    float getCameraZLocation();
-    Light& getLight();
-    unsigned int getAppScreenWidth();
-    unsigned int getAppScreenHeight();
+
+  void update(double deltaTime);
+  
+  void render(double deltaTime);
+  
+  float scaleBasedOnZDistance(float zLocation);
+  
+  unsigned int getAppScreenWidth();
+  
+  unsigned int getAppScreenHeight();
+
+  void Camera::transform(float transformX, float transformY, float transformZ);
+
+  void Camera::rotateX(float x);
+
+  void Camera::rotateY(float y);
+
+  void Camera::rotateZ(float z);
+
+  const MatrixFloat& Camera::getTransformMatrix();
+
+  const MatrixFloat& Camera::getRotationX();
+
+  const MatrixFloat& Camera::getRotationY();
+
+  const MatrixFloat& Camera::getRotationZ();
 
 private:
 
   static constexpr bool DEBUG_MODE = false;
-    
-  void initPixelMap();
-  void drawLight();
+  
+  std::string cameraName;
 
-  float cameraZLocation;
+  void initPixelMap();
+
   float cameraFieldOfView;
 
-  int left;
-  int right;
-  int top;
-  int bottom;
+  float zDefaultValue;
 
   unsigned int appScreenWidth;
   unsigned int appScreenHeight;
@@ -76,10 +97,18 @@ private:
 
   DrawPixel* currentPixel = nullptr;
 
-  OpenGL& openGLInstance;
+  OpenGL& gl;
 
-  Light& lightInstance;
-    //TODO Add transformation and rotation 
+  MatrixFloat transformMatrix;
+
+  MatrixFloat rotationDegreeMatrix;
+  
+  MatrixFloat rotationValueXMatrix;
+  
+  MatrixFloat rotationValueYMatrix;
+  
+  MatrixFloat rotationValueZMatrix;
+
 };
 
 #endif

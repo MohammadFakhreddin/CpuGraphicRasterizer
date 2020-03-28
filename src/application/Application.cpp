@@ -12,11 +12,11 @@
 #include "../event_handler/EventHandler.h"
 #include "../scenes/bunny_scene/BunnyScene.h"
 
-std::unique_ptr<Application> Application::applicationInstance;
+Application* Application::applicationInstance;
 
 void handleKeyboardEvent(unsigned char key, int x, int y)
 {
-  EventHandler::getInstance()->emitEvent<Constants::Buttons>(
+  Application::getInstance()->getEventHandler().emitEvent<Constants::Buttons>(
     EventHandler::EventName::keyboardKeyIsPressed, 
     Constants::keyMap[std::tolower(key)]
   );
@@ -42,7 +42,7 @@ Application::Application(
     physicalDeviceScreenHeight
   )
 {
-  applicationInstance = std::unique_ptr<Application>(this);
+  applicationInstance = this;
 #ifdef __DESKTOP__
   glutKeyboardFunc(handleKeyboardEvent);
 #endif
@@ -99,7 +99,7 @@ Application::Application(
   }
 }
 
-std::unique_ptr<Application>& Application::getInstance() {
+Application* Application::getInstance() {
   return applicationInstance;
 }
 
@@ -134,7 +134,7 @@ void Application::notifyScreenSurfaceChanged(
     data.physicalScreenHeight = physicalScreenHeight;
     data.forceNewAppScreenWidthAndHeight = forceNewAppScreenWidthAndHeight;
 
-    EventHandler::getInstance()->emitEvent(
+    eventHandler.emitEvent(
       EventHandler::EventName::screenSurfaceChanged,
       data
     );
@@ -151,6 +151,9 @@ void Application::render(double deltaTime) {
   {//FPSText
     openGLInstance.drawText(0,0,std::to_string(currentFps),1.0f,1.0f,1.0f);
   }
+  {//SceneNameText
+    openGLInstance.drawText(0, appScreenHeight - 32, currentScene->getSceneName(), 1.0f, 1.0f, 1.0f);
+  }
   // dice.diceCubeTexture->render();
   openGLInstance.flush();
 }
@@ -160,7 +163,7 @@ void Application::update(double deltaTime) {
 }
 
 void Application::mainLoop(double deltaTime){
-  deltaTime = Math::max(deltaTime,100.0);
+  deltaTime = Math::min(deltaTime,100.0);
   update(deltaTime);
   render(deltaTime);
   if(deltaTime>0){
@@ -183,4 +186,12 @@ unsigned int Application::getPhysicalScreenWidth(){
 
 unsigned int Application::getPhysicalScreenHeight(){
   return physicalScreenHeight;
+}
+
+EventHandler& Application::getEventHandler() {
+  return eventHandler;
+}
+
+Application::~Application() {
+  applicationInstance = nullptr;
 }

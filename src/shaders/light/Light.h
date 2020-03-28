@@ -1,21 +1,46 @@
 #ifndef Light_class
 #define Light_class
 
+#include <vector>
+
 #include "./../../data_types/VectorTemplate.h"
+#include "./../../camera/Camera.h"
+#include "./../../data_types/MatrixTemplate.h"
 
 class Light{
+
 public:
-    virtual void computeLightIntensity(
-        Vec3DFloat& surfaceNormalVector,
-        Vec3DFloat& surfaceCenter,
-        Vec3DFloat& output
-    );
-    void transformX(float value);
-    void transformY(float value);
-    void transformZ(float value);
-    Vec3DFloat& getLightPosition();
+
+  Light(
+    float transformX,
+    float transformY,
+    float transformZ
+  );
+
+  virtual void computeLightIntensity(
+    Vec3DFloat& surfaceNormalVector,
+    Vec3DFloat& surfaceCenter,
+    Vec3DFloat& output
+  );
+
+  void transformX(float value);
+
+  void transformY(float value);
+
+  void transformZ(float value);
+
+  void update(double deltaTime, Camera& cameraInstance);
+
+  void render(double deltaTime, Camera& cameraInstance);
+
 protected:
-    Vec3DFloat lightPositionVector = Vec3DFloat(0.0f,0.0f,0.0f);
+  
+  MatrixFloat worldPoint = MatrixFloat(3,1,0.0f);
+
+private:
+
+  MatrixFloat transformMatrix = MatrixFloat(3, 1, 0.0f);
+
 };
 
 #endif
