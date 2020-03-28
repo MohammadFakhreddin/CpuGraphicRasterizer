@@ -17,6 +17,10 @@ public:
     Vec3DFloat& output
   ) override;
 
+private:
+
+  Vec3DFloat lightDirectionVector;
+
 };
 
 #endif

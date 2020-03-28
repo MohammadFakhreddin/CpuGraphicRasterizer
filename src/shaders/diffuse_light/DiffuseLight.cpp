@@ -9,7 +9,7 @@ void DiffuseLight::computeLightIntensity(
     Vec3DFloat& surfaceCenter,
     Vec3DFloat& output
 ){
-  Vec3DFloat lightDirectionVector = Vec3DFloat(0.0f, 0.0f, 0.0f);
+  
   lightDirectionVector.setX(surfaceCenter.getX() - worldPoint.get(0,0));
   lightDirectionVector.setY(surfaceCenter.getY() - worldPoint.get(1,0));
   lightDirectionVector.setZ(surfaceCenter.getZ() - worldPoint.get(2,0));
@@ -28,4 +28,5 @@ void DiffuseLight::computeLightIntensity(
   output.setX(lightIntensityFactor);
   output.setY(lightIntensityFactor);
   output.setZ(lightIntensityFactor);
+
 }
