@@ -178,9 +178,6 @@ void Camera::render(double deltaTime){
 }
 
 float Camera::scaleBasedOnZDistance(float zLocation){
-  if (zLocation > transformMatrix.get(2, 0)) {
-    return 1;
-  }
   return cameraFieldOfView/(transformMatrix.get(2, 0) - zLocation);
 }
 

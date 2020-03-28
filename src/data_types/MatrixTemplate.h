@@ -72,6 +72,7 @@ public:
     }
     return *this;
   }
+  /*
   template <typename A>
   _Matrix<T> operator+(_Matrix<A> rhs) {
     assert(rhs.getWidth() == width);
@@ -85,7 +86,7 @@ public:
     }
     _Matrix<T> result(width, height, resultsCell);
     return result;
-  }
+  }*/
   template <typename A>
   _Matrix<T>& operator+=(_Matrix<A> rhs) {
     assert(rhs.getWidth() == width);
@@ -97,6 +98,7 @@ public:
     }
     return *this;
   }
+  /*
   template <typename A>
   _Matrix<T> operator-(_Matrix<A> rhs) {
     assert(rhs.getWidth() == width);
@@ -110,7 +112,7 @@ public:
     }
     _Matrix<T> result(width, height, resultsCell);
     return result;
-  }
+  }*/
   template <typename A>
   _Matrix<T>& operator-=(_Matrix<A> rhs) {
     assert(rhs.getWidth() == width);
@@ -122,6 +124,7 @@ public:
     }
     return *this;
   }
+  /*
   template <typename A>
   _Matrix<T> operator*(_Matrix<A> rhs) {
     assert(rhs.getHeight() == width);
@@ -139,7 +142,7 @@ public:
     }
     _Matrix<T> resultMatrix(finalWidth, finalHeight, resultCells);
     return resultMatrix;
-  }
+  }*/
   template <typename A>
   _Matrix<T>& operator*=(_Matrix<A> rhs) {
     assert(rhs.getHeight() == width);
