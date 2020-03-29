@@ -11,6 +11,8 @@
 #include <memory>
 #import <QuartzCore/QuartzCore.h>
 
+#include "../../../src/Constants.h"
+
 @interface ViewController ()
 
 @end
@@ -69,7 +71,7 @@ double deltaTime = 0;
     
     unsigned int realScreenWidth = (unsigned int)viewSize.width;
     unsigned int realScreenHeight = (unsigned int)viewSize.height;
-    unsigned int appScreenWidth = (unsigned int)(float(realScreenWidth)/1.5f);
+    unsigned int appScreenWidth = (unsigned int)(float(realScreenWidth)/1.2f);
     unsigned int appScreenHeight = (unsigned int)(appScreenWidth * (float(realScreenHeight)/float(realScreenWidth)));
     
     self.iphoneHelper = [[IPhoneHelper alloc] init];
@@ -77,7 +79,7 @@ double deltaTime = 0;
     self.iphoneHelperAbstraction = new IPhoneHelperAbstraction((__bridge void *)(self.iphoneHelper));
 
     self.application = new Application(
-                                        Application::Platform::Iphone,
+                                        Constants::Platform::Iphone,
                                         appScreenWidth,
                                         appScreenHeight,
                                         realScreenWidth,
