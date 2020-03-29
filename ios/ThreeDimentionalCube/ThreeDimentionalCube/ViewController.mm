@@ -71,7 +71,7 @@ double deltaTime = 0;
     
     unsigned int realScreenWidth = (unsigned int)viewSize.width;
     unsigned int realScreenHeight = (unsigned int)viewSize.height;
-    unsigned int appScreenWidth = (unsigned int)(float(realScreenWidth)/1.2f);
+    unsigned int appScreenWidth = (unsigned int)(float(realScreenWidth)/1.0f);
     unsigned int appScreenHeight = (unsigned int)(appScreenWidth * (float(realScreenHeight)/float(realScreenWidth)));
     
     self.iphoneHelper = [[IPhoneHelper alloc] init];
