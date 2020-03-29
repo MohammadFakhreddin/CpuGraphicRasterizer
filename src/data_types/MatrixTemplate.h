@@ -5,7 +5,7 @@
 #include <vector>
 #include <memory>
 
-#include "../utils/log/Logger.h";
+#include "../utils/log/Logger.h"
 
 template <typename T>
 class _Matrix {
@@ -101,8 +101,8 @@ public:
   void minus(const _Matrix<A>& rhs) {
     assert(rhs.getWidth() == width);
     assert(rhs.getHeight() == height);
-    for (int i = 0; i < width; i++) {
-      for (int j = 0; j < height; j++) {
+    for (i = 0; i < width; i++) {
+      for (j = 0; j < height; j++) {
         cells.at(i).at(j) -= T(rhs.get(i, j));
       }
     }
@@ -143,8 +143,8 @@ public:
     if (rhs.width != width || rhs.height != height) {
       return false;
     }
-    for (int i = 0; i < width; i++) {
-      for (int j = 0; j < height; j++) {
+    for (i = 0; i < width; i++) {
+      for (j = 0; j < height; j++) {
         if (rhs.get(i, j) != get(i, j)) {
           return false;
         }
@@ -176,9 +176,9 @@ public:
     Logger::log("Width:" + std::to_string(width));
     Logger::log("Height:" + std::to_string(height));
     std::string line = "";
-    for (int i = 0; i < height; i++) {
+    for (i = 0; i < height; i++) {
       line = "";
-      for (int j = 0; j < width; j++) {
+      for (j = 0; j < width; j++) {
         line += " " + std::to_string(cells.at(j).at(i)) + " ";
       }
       Logger::log(line);
@@ -200,7 +200,6 @@ public:
 
   _Matrix<T> clone() {
     std::vector<std::vector<T>> cellsCopy;
-    int i, j;
     for (i = 0; i < width; i++) {
       cellsCopy.emplace_back(std::vector<T>());
       for (j = 0; j < height; j++) {

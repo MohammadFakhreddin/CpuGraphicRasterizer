@@ -1,8 +1,9 @@
 #include "./BunnyScene.h"
 
 #include "../base_scene/BaseScene.h"
-#include "../../application/Application.h"
+#include "../../data_access_point/DataAccessPoint.h"
 #include "../../file_system/FileSystem.h"
+#include "../../utils/path/Path.h"
 
 BunnyScene::BunnyScene(OpenGL& gl)
   : 
@@ -16,25 +17,25 @@ BunnyScene::BunnyScene(OpenGL& gl)
     0,
     0,
     0,
-    (int)Application::getInstance()->getAppScreenWidth(),
-    (int)Application::getInstance()->getAppScreenHeight(),
+    (int)DataAccessPoint::getInstance()->getAppScreenWidth(),
+    (int)DataAccessPoint::getInstance()->getAppScreenHeight(),
     "Main camera"
   ),
   light(
-    float(Application::getInstance()->getAppScreenWidth()) / 2.0f,
-    float(Application::getInstance()->getAppScreenHeight()),
+    float(DataAccessPoint::getInstance()->getAppScreenWidth()) / 2.0f,
+    float(DataAccessPoint::getInstance()->getAppScreenHeight()),
     cameraInitialZLocation - 1.0f
   )
 {
   {//Creating shape
-    auto scaleFactor = float(Application::getInstance()->getAppScreenWidth()) / 4.0f;
+    auto scaleFactor = float(DataAccessPoint::getInstance()->getAppScreenWidth()) / 4.0f;
     shape = FileSystem::loadObjectWithColor(
       Path::generateAssetPath("bunny", ".obj"),
       Vec3DFloat(1.0f, 1.0f, 1.0f),
       true
     );
-    shape->transformX(float(Application::getInstance()->getAppScreenWidth()) / 2.0f);
-    shape->transformY(float(Application::getInstance()->getAppScreenHeight()) / 2.0f);
+    shape->transformX(float(DataAccessPoint::getInstance()->getAppScreenWidth()) / 2.0f);
+    shape->transformY(float(DataAccessPoint::getInstance()->getAppScreenHeight()) / 2.0f);
     shape->transformZ(cameraInitialZLocation - 100.0f);
     shape->scale(scaleFactor);
   }

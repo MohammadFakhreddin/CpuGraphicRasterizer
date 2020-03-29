@@ -11,40 +11,46 @@
 #include "../file_system/FileSystem.h"
 #include "../event_handler/EventHandler.h"
 #include "../scenes/bunny_scene/BunnyScene.h"
-
-Application* Application::applicationInstance;
+#include "../data_access_point/DataAccessPoint.h"
 
 void handleKeyboardEvent(unsigned char key, int x, int y)
 {
-  Application::getInstance()->getEventHandler().emitEvent<Constants::Buttons>(
-    EventHandler::EventName::keyboardKeyIsPressed, 
-    Constants::keyMap[std::tolower(key)]
+  DataAccessPoint::getInstance()->getEventHandler().emitEvent<Constants::Buttons>(
+    EventHandler::EventName::keyboardKeyIsPressed,
+    DataAccessPoint::getInstance()->getKeyCode(key)
   );
 }
 
 Application::Application(
   Constants::Platform platform,
-  unsigned int paramAppScreenWidth,
-  unsigned int paramAppScreenHeight,
+  unsigned int appScreenWidth,
+  unsigned int appScreenHeight,
   unsigned int physicalDeviceScreenWidth,
   unsigned int physicalDeviceScreenHeight
-)
+  )
   :
-  platform(platform),
-  physicalScreenWidth(physicalDeviceScreenWidth),
-  physicalScreenHeight(physicalDeviceScreenHeight),
-  appScreenWidth(paramAppScreenWidth),
-  appScreenHeight(paramAppScreenHeight),
   openGLInstance(
-    paramAppScreenWidth,
-    paramAppScreenHeight,
+    appScreenWidth,
+    appScreenHeight,
     physicalDeviceScreenWidth,
     physicalDeviceScreenHeight
-  )
+    ),
+  fpsDrawLocation(0.0f, 0.0f),
+  sceneNameDrawLocation(0.0f, appScreenHeight - 32)
 {
-  applicationInstance = this;
+
+  DataAccessPoint::createInstance();
+  
+  DataAccessPoint::getInstance()->setAppScreenWidth(appScreenWidth);
+  DataAccessPoint::getInstance()->setAppScreenHeight(appScreenHeight);
+  DataAccessPoint::getInstance()->setPhysicalScreenWidth(physicalDeviceScreenWidth);
+  DataAccessPoint::getInstance()->setPhysicalScreenHeight(physicalDeviceScreenHeight);
+  DataAccessPoint::getInstance()->setPlatform(platform);
+
 #ifdef __DESKTOP__
   glutKeyboardFunc(handleKeyboardEvent);
+  //TODO We need a singleton user class to store data in it
+
 #endif
   currentScene = std::make_unique<BunnyScene>(openGLInstance);
   {//Shape
@@ -99,10 +105,6 @@ Application::Application(
   }
 }
 
-Application* Application::getInstance() {
-  return applicationInstance;
-}
-
 void Application::notifyScreenSurfaceChanged(
   unsigned int paramAppScreenWidth,
   unsigned int paramAppScreenHeight,
@@ -113,13 +115,15 @@ void Application::notifyScreenSurfaceChanged(
   Logger::log("Surface has changed");
 
   if(forceNewAppScreenWidthAndHeight==true){
-    this->appScreenWidth = paramAppScreenWidth;
-    this->appScreenHeight = paramAppScreenHeight;
+    DataAccessPoint::getInstance()->setPhysicalScreenWidth(paramAppScreenWidth);
+    DataAccessPoint::getInstance()->setAppScreenHeight(paramAppScreenHeight);
+
+    sceneNameDrawLocation.setY(paramAppScreenHeight - 32);
   }
 
-  this->physicalScreenWidth = paramPhysicalScreenWidth;
-  this->physicalScreenHeight = paramPhysicalScreenHeight;
-
+  DataAccessPoint::getInstance()->setPhysicalScreenWidth(paramPhysicalScreenWidth);
+  DataAccessPoint::getInstance()->setPhysicalScreenHeight(paramPhysicalScreenHeight);
+  
   openGLInstance.notifyScreenSurfaceChanged(
     paramAppScreenWidth,
     paramAppScreenHeight,
@@ -127,16 +131,9 @@ void Application::notifyScreenSurfaceChanged(
     paramPhysicalScreenHeight);
 
   {//Sending events to all listeners
-    EventHandler::ScreenSurfaceChangeEventData data;
-    data.appScreenWidth = appScreenWidth;
-    data.appScreenHeight = appScreenHeight;
-    data.physicalScreenWidth = physicalScreenWidth;
-    data.physicalScreenHeight = physicalScreenHeight;
-    data.forceNewAppScreenWidthAndHeight = forceNewAppScreenWidthAndHeight;
-
-    eventHandler.emitEvent(
+    DataAccessPoint::getInstance()->getEventHandler().emitEvent<bool>(
       EventHandler::EventName::screenSurfaceChanged,
-      data
+      forceNewAppScreenWidthAndHeight
     );
   }
 }
@@ -149,10 +146,20 @@ void Application::render(double deltaTime) {
     currentScene->render(deltaTime);
   }
   {//FPSText
-    openGLInstance.drawText(0,0,std::to_string(currentFps),1.0f,1.0f,1.0f);
+    openGLInstance.drawText(
+      fpsDrawLocation.getX(),
+      fpsDrawLocation.getY(),
+      std::to_string(currentFps),
+      1.0f,1.0f,1.0f
+    );
   }
   {//SceneNameText
-    openGLInstance.drawText(0, appScreenHeight - 32, currentScene->getSceneName(), 1.0f, 1.0f, 1.0f);
+    openGLInstance.drawText(
+      sceneNameDrawLocation.getX(),
+      sceneNameDrawLocation.getY(),
+      currentScene->getSceneName(), 
+      1.0f, 1.0f, 1.0f
+    );
   }
   // dice.diceCubeTexture->render();
   openGLInstance.flush();
@@ -170,28 +177,4 @@ void Application::mainLoop(double deltaTime){
     currentFps = 1000.0f/deltaTime;
   }
   assert(openGLInstance.checkForOpenGlError());
-}
-
-unsigned int Application::getAppScreenHeight(){
-  return appScreenHeight;
-}
-
-unsigned int Application::getAppScreenWidth(){
-  return appScreenWidth;
-}
-
-unsigned int Application::getPhysicalScreenWidth(){
-  return physicalScreenWidth;
-}
-
-unsigned int Application::getPhysicalScreenHeight(){
-  return physicalScreenHeight;
-}
-
-EventHandler& Application::getEventHandler() {
-  return eventHandler;
-}
-
-Application::~Application() {
-  applicationInstance = nullptr;
 }

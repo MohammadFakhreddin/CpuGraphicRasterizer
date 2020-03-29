@@ -6,7 +6,6 @@
 
 #include "./../data_types/VectorTemplate.h"
 #include "./../open_gl/OpenGl.h"
-#include "../event_handler/EventHandler.h"
 #include "./../fa_texture/FaTexture.h"
 #include "./../data_types/MatrixTemplate.h"
 
@@ -44,7 +43,7 @@ public:
   ~Camera();
   
   void notifyScreenSurfaceIsChanged(
-    EventHandler::ScreenSurfaceChangeEventData data
+   bool usingNewAppScreenWidthAndHeightIsForced
   );
 
   void putPixelInMap(

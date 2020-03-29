@@ -20,7 +20,7 @@ android {
         externalNativeBuild {
             cmake {
                 targets '3d-cube'
-                cppFlags "-std=c++14"
+                cppFlags "-std=c++17"
                 version "3.16.2"
             }
         }

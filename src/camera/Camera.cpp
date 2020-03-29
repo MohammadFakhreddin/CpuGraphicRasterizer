@@ -7,7 +7,7 @@
 #include "./../utils/log/Logger.h"
 #include "./../utils/math/Math.h"
 #include "../event_handler/EventHandler.h"
-#include "../application/Application.h"
+#include "../data_access_point/DataAccessPoint.h"
 
 Camera::Camera(
   OpenGL& gl,
@@ -56,8 +56,7 @@ Camera::Camera(
   this->rotateY(rotationDegreeY);
   this->rotateZ(rotationDegreeZ);
 
-  Application::getInstance()->getEventHandler()
-    .subscribeToEvent<EventHandler::ScreenSurfaceChangeEventData>(
+  DataAccessPoint::getInstance()->getEventHandler().subscribeToEvent<bool>(
     EventHandler::EventName::screenSurfaceChanged,
     cameraName,
     std::bind(&Camera::notifyScreenSurfaceIsChanged,this,std::placeholders::_1)
@@ -72,18 +71,18 @@ Camera::~Camera() {
 }
 
 void Camera::notifyScreenSurfaceIsChanged(
-  EventHandler::ScreenSurfaceChangeEventData data
+  bool usingNewAppScreenWidthAndHeightIsForced
 ){
 
   if (
-    this->appScreenWidth == data.appScreenWidth && 
-    this->appScreenHeight == data.appScreenHeight
+    this->appScreenWidth == DataAccessPoint::getInstance()->getAppScreenWidth() && 
+    this->appScreenHeight == DataAccessPoint::getInstance()->getAppScreenHeight()
   ) {
     return;
   }
 
-  this->appScreenWidth = data.appScreenWidth;
-  this->appScreenHeight = data.appScreenHeight;
+  this->appScreenWidth = DataAccessPoint::getInstance()->getAppScreenWidth();
+  this->appScreenHeight = DataAccessPoint::getInstance()->getAppScreenHeight();
 
   assert(appScreenWidth>0);
   assert(appScreenHeight>0);

@@ -18,8 +18,12 @@ public:
   virtual void update(double deltaTime);
   
   virtual void render(double deltaTime);
-  
+
+#ifdef __DESKTOP__
+
   void notifyKeyIsPressed(const Constants::Buttons& keyEvent);
+
+#endif // __DESKTOP__
 
   std::string getSceneName();
 

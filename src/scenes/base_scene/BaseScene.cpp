@@ -7,7 +7,7 @@
 #include "../../event_handler/EventHandler.h"
 #include "../../utils/log/Logger.h"
 #include "../../utils/operators/Operators.h"
-#include "../../application/Application.h"
+#include "../../data_access_point/DataAccessPoint.h"
 
 BaseScene::BaseScene(OpenGL& gl,std::string sceneName) 
   : 
@@ -17,11 +17,15 @@ BaseScene::BaseScene(OpenGL& gl,std::string sceneName)
   if (sceneName.empty()) {
     Logger::exception("Scene name is not specified");
   }
-  Application::getInstance()->getEventHandler().subscribeToEvent<Constants::Buttons>(
+
+#ifdef __DESKTOP__
+  DataAccessPoint::getInstance()->getEventHandler().subscribeToEvent<Constants::Buttons>(
     EventHandler::EventName::keyboardKeyIsPressed,
     sceneName,
     std::bind(&BaseScene::notifyKeyIsPressed,this, std::placeholders::_1)
   );
+#endif // __DESKTOP__
+
 }
 
 void BaseScene::update(double deltaTime) {
@@ -32,9 +36,11 @@ void BaseScene::render(double deltaTime) {
   Logger::exception("BaseScene::render function is not implemented in child class");
 }
 
+#ifdef __DESKTOP__
 void BaseScene::notifyKeyIsPressed(const Constants::Buttons & keyEvent) {
   keyEvents[keyEvent] = true;
 }
+#endif // __DESKTOP__
 
 bool BaseScene::useKeyEvent(const Constants::Buttons & keyEvent) {
   temporaryKeyEventPlaceholder = keyEvents[keyEvent];
@@ -43,8 +49,8 @@ bool BaseScene::useKeyEvent(const Constants::Buttons & keyEvent) {
 }
 
 BaseScene::~BaseScene() {
-  if (Application::getInstance()) {
-    Application::getInstance()->getEventHandler().unSubscribeFromEvents(
+  if (DataAccessPoint::getInstance()) {
+    DataAccessPoint::getInstance()->getEventHandler().unSubscribeFromEvents(
       sceneName
     );
   }

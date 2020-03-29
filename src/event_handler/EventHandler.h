@@ -5,14 +5,13 @@
 #include <string>
 #include <functional>
 #include <memory>
-#include <any>
 
 class EventHandler {
 private:
 
   struct Listener {
     std::string className;
-    std::function<void(std::any)> callback;
+    std::function<void(void *)> callback;
   };
 
 public:
@@ -20,14 +19,6 @@ public:
   enum EventName {
     keyboardKeyIsPressed,
     screenSurfaceChanged
-  };
-
-  struct ScreenSurfaceChangeEventData {
-    unsigned int appScreenWidth;
-    unsigned int appScreenHeight;
-    unsigned int physicalScreenWidth;
-    unsigned int physicalScreenHeight;
-    bool forceNewAppScreenWidthAndHeight;
   };
 
   template<typename T>
@@ -38,8 +29,9 @@ public:
   ) {
     Listener listener;
     listener.className = className;
-    listener.callback = [callback](std::any param) {
-      callback(std::any_cast<T>(param));
+    listener.callback = [callback](void * rawDataPointer) {
+      T* dataPointer = (T*)rawDataPointer;
+      callback(dataPointer[0]);
     };
     eventsMap[eventName][className] = listener;
   }
@@ -49,9 +41,12 @@ public:
   template<typename T>
   void emitEvent(EventName eventName, T data) {
     auto& listeners = eventsMap[eventName];
+    T* pointer = new T[1];
+    pointer[0] = data;
     for (auto& listener : listeners) {
-      listener.second.callback(std::make_any<T>(data));
+      listener.second.callback((void *)pointer);
     }
+    delete pointer;
   }
 
 private:

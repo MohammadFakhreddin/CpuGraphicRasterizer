@@ -4,7 +4,6 @@
 // Created by mohammad.fakhreddin on 1/3/20.
 //
 #include <math.h>
-#include <unordered_map>
 
 #if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
     //define something for Windows (32-bit and 64-bit, this part is common)
@@ -62,16 +61,17 @@ public:
 	
   };
   
-  enum Platform {
+  enum class Platform {
     Windows,
     Mac,
     Iphone,
-    Android
+    Android,
+    Unknown
   };
 
 #ifdef __DESKTOP__
   
-  enum Buttons
+  enum class Buttons
   {
     keyA,
     keyD,
@@ -98,37 +98,14 @@ public:
     keyN,
     keyO,
     keyP,
-    keyZ
+    keyZ,
+    tab,
+    arrowLeft,
+    arrowRight,
+    arrowUp,
+    arrowDown
   };
 
-  inline static std::unordered_map<char, Buttons> keyMap = std::unordered_map<char, Buttons>({
-    {'a',Buttons::keyA},
-    {'b',Buttons::keyB},
-    {'c',Buttons::keyC},
-    {'d',Buttons::keyD},
-    {'e',Buttons::keyE},
-    {'f',Buttons::keyF},
-    {'g',Buttons::keyG},
-    {'h',Buttons::keyH},
-    {'i',Buttons::keyI},
-    {'j',Buttons::keyJ},
-    {'k',Buttons::keyK},
-    {'l',Buttons::keyL},
-    {'m',Buttons::keyM},
-    {'n',Buttons::keyN},
-    {'o',Buttons::keyO},
-    {'p',Buttons::keyP},
-    {'q',Buttons::keyQ},
-    {'r',Buttons::keyR},
-    {'s',Buttons::keyS},
-    {'t',Buttons::keyT},
-    {'u',Buttons::keyU},
-    {'v',Buttons::keyV},
-    {'w',Buttons::keyW},
-    {'x',Buttons::keyX},
-    {'y',Buttons::keyY},
-    {'z',Buttons::keyZ}
-  });
 #endif // __DESKTOP__
 };
 #endif //!Constants_class
