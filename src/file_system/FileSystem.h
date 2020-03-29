@@ -215,7 +215,7 @@ public:
         // adjust all vertices so that center of minimal sphere is at 0,0
         for( auto& vertex : vertices )
         {
-          vertex -= center;
+          vertex.minus(center);
         }
       }
       Logger::log("Centralizing 3dShape was successful,Creating shape3d");

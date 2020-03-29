@@ -114,6 +114,8 @@ private:
   
   MatrixFloat rotationValueZMatrix;
 
+  MatrixFloat transformationPlacholder = MatrixFloat(3, 1, 0.0f);
+
 };
 
 #endif

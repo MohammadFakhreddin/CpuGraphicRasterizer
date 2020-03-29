@@ -15,11 +15,13 @@ private:
   unsigned int i = 0;
   unsigned int j = 0;
   unsigned int k = 0;
-  unsigned int p = 0;
   //TODO Vectors are a bit slow try to replace them in future
   std::vector<std::vector<T>> cells;
   std::vector<std::vector<T>> placeholderCells;
 public:
+
+  _Matrix() = delete;
+
   //For safty and clarity of code delete all operators and use methods instead
   template <typename A>
   _Matrix(unsigned int paramWidth,unsigned int paramHeight, A cellDefaultValue)
@@ -62,23 +64,23 @@ public:
     assert(cells.size() == placeholderCells.size());
     assert(cells.size() == width);
   }
-  
+
   template <typename A>
-  _Matrix<T>& operator=(_Matrix<A> rhs) {
+  void assign(const _Matrix<A>& rhs) {
     assert(width == rhs.getWidth());
     assert(height == rhs.getHeight());
-    cells.erase(cells.begin(), cells.end());
     for (i = 0; i < width; i++) {
-      cells.emplace_back(std::vector<T>());
       for (j = 0; j < height; j++) {
-        cells.at(i).emplace_back(T(rhs.get(i,j)));
+        cells.at(i).at(j) = T(rhs.get(i, j));
       }
     }
-    return *this;
   }
 
   template <typename A>
-  _Matrix<T>& operator+=(_Matrix<A> rhs) {
+  void operator=(_Matrix<A> rhs) = delete;
+
+  template <typename A>
+  void sum(const _Matrix<A>& rhs) {
     assert(rhs.getWidth() == width);
     assert(rhs.getHeight() == height);
     for (i = 0; i < width; i++) {
@@ -86,11 +88,17 @@ public:
         cells.at(i).at(j) += T(rhs.get(i, j));
       }
     }
-    return *this;
   }
 
   template <typename A>
-  _Matrix<T>& operator-=(_Matrix<A> rhs) {
+  void operator+=(_Matrix<A> rhs) = delete;
+
+  template <typename A>
+  void operator+(_Matrix<A> rhs) = delete;
+
+
+  template <typename A>
+  void minus(const _Matrix<A>& rhs) {
     assert(rhs.getWidth() == width);
     assert(rhs.getHeight() == height);
     for (int i = 0; i < width; i++) {
@@ -98,18 +106,23 @@ public:
         cells.at(i).at(j) -= T(rhs.get(i, j));
       }
     }
-    return *this;
   }
 
   template <typename A>
-  _Matrix<T>& operator*=(_Matrix<A> rhs) {
+  void operator-=(_Matrix<A> rhs) = delete;
+
+  template <typename A>
+  void operator-(_Matrix<A> rhs) = delete;
+
+  template <typename A>
+  void multiply(const _Matrix<A>& rhs) {
     assert(rhs.getHeight() == width);
     assert(rhs.getWidth() == width);
     for (i = 0; i < rhs.getWidth(); i++) {
       for (j = 0; j < height; j++) {
         placeholderCells.at(i).at(j) = 0;
-        for (k = 0, p = 0; k < width; k++, p++) {
-          placeholderCells.at(i).at(j) += cells.at(k).at(j) * T(rhs.get(i, p));
+        for (k = 0; k < width; k++) {
+          placeholderCells.at(i).at(j) += cells.at(k).at(j) * T(rhs.get(i, k));
         }
       }
     }
@@ -118,9 +131,15 @@ public:
         cells.at(i).at(j) = placeholderCells.at(i).at(j);
       }
     }
-    return *this;
   }
-  bool operator==(_Matrix<T> rhs) {
+
+  template <typename A>
+  void operator*=(_Matrix<A> rhs) = delete;
+
+  template <typename A>
+  void operator*(_Matrix<A> rhs) = delete;
+
+  bool equal(const _Matrix<T>& rhs) {
     if (rhs.width != width || rhs.height != height) {
       return false;
     }
@@ -133,10 +152,16 @@ public:
     }
     return true;
   }
+
+  template <typename A>
+  bool operator==(_Matrix<A>& rhs) = delete;
   
-  bool operator!=(_Matrix<T> rhs) {
-    return !(this->operator==(rhs));
+  bool unEqual(const _Matrix<T>& rhs) {
+    return !(this->equal(rhs));
   }
+
+  template <typename A>
+  bool operator!=(_Matrix<A>& rhs) = delete;
   
   unsigned int getWidth() const {
     return width;

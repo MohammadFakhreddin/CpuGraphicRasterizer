@@ -184,17 +184,15 @@ unsigned int Camera::getAppScreenHeight(){
 //TODO Check this code again
 //It must transform based on theta
 void Camera::transform(float transformX, float transformY, float transformZ) {
-  MatrixFloat transformValue = MatrixFloat(3, 1, std::vector<std::vector<float>>{
-    std::vector<float>{transformX},
-    std::vector<float>{transformY},
-    std::vector<float>{transformZ}
-  });
+  transformationPlacholder.set(0, 0, transformX);
+  transformationPlacholder.set(1, 0, transformY);
+  transformationPlacholder.set(2, 0, transformZ);
   
-  transformValue *= rotationValueXMatrix;
-  transformValue *= rotationValueYMatrix;
-  transformValue *= rotationValueZMatrix;
+  transformationPlacholder.multiply(rotationValueXMatrix);
+  transformationPlacholder.multiply(rotationValueYMatrix);
+  transformationPlacholder.multiply(rotationValueZMatrix);
 
-  transformMatrix += transformValue;
+  transformMatrix.sum(transformationPlacholder);
 }
 
 //TODO We can use other ways instead of sin and cos for new matrix calculation

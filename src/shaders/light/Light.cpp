@@ -49,6 +49,6 @@ void Light::render(double deltaTime,Camera& cameraInstance) {
 }
 
 void Light::update(double deltaTime,Camera& cameraInstance) {
-  worldPoint = transformMatrix;
-  worldPoint -= cameraInstance.getTransformMatrix();
+  worldPoint.assign(transformMatrix);
+  worldPoint.minus(cameraInstance.getTransformMatrix());
 }

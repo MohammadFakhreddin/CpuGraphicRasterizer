@@ -281,46 +281,42 @@ void Shape3d::update(
   Camera& cameraInstance,
   std::vector<Light*>& lightSources
 ) {
-  if (!nodes.empty()) {
+  
+  float zLocation = 0;
+  float scaleValue = 0;
 
-    float zLocation = 0;
-    float scaleValue = 0;
-
-    for (unsigned int i = 0; i < nodes.size(); i++) {
-      //TODO Create pipleline class from this part
-      //TODO Needs optimization
-      //Local transformation
-      transformResultMatrix = nodes[i];
-      transformResultMatrix *= rotationValueXMatrix;
-      transformResultMatrix *= rotationValueYMatrix;
-      transformResultMatrix *= rotationValueZMatrix;
-      transformResultMatrix *= scaleValueMatrix;
+  for (unsigned int i = 0; i < nodes.size(); i++) {
+    //TODO Create pipleline class from this part
+    //TODO Needs optimization
+    transformResultMatrix.assign(nodes[i]);
+    transformResultMatrix.multiply(rotationValueXMatrix);
+    transformResultMatrix.multiply(rotationValueYMatrix);
+    transformResultMatrix.multiply(rotationValueZMatrix);
+    transformResultMatrix.multiply(scaleValueMatrix);
       
-      transformResultMatrix *= cameraInstance.getRotationX();
-      transformResultMatrix *= cameraInstance.getRotationY();
-      transformResultMatrix *= cameraInstance.getRotationZ();
+    transformResultMatrix.multiply(cameraInstance.getRotationX());
+    transformResultMatrix.multiply(cameraInstance.getRotationY());
+    transformResultMatrix.multiply(cameraInstance.getRotationZ());
       
-      zLocation = transformResultMatrix.get(2, 0) + transformMatrix.get(2,0);
-      scaleValue = cameraInstance.scaleBasedOnZDistance(zLocation);
-      zScaleMatrix.set(0, 0, scaleValue);
-      zScaleMatrix.set(1, 1, scaleValue);
+    zLocation = transformResultMatrix.get(2, 0) + transformMatrix.get(2,0);
+    scaleValue = cameraInstance.scaleBasedOnZDistance(zLocation);
+    zScaleMatrix.set(0, 0, scaleValue);
+    zScaleMatrix.set(1, 1, scaleValue);
 
-      transformResultMatrix *= zScaleMatrix;
-      transformResultMatrix += transformMatrix;
-      transformResultMatrix -= cameraInstance.getTransformMatrix();
+    transformResultMatrix.multiply(zScaleMatrix);
+    transformResultMatrix.sum(transformMatrix);
+    transformResultMatrix.minus(cameraInstance.getTransformMatrix());
 
-      worldPoints.at(i) = transformResultMatrix;
+    worldPoints.at(i) = transformResultMatrix;
 
-    }
-    if (!edges.empty()) {
-      for (auto &edge:edges) {
-        edge->update(
-          cameraInstance,
-          worldPoints,
-          lightSources
-        );
-      }
-    }
+  }
+    
+  for (auto &edge:edges) {
+    edge->update(
+      cameraInstance,
+      worldPoints,
+      lightSources
+    );
   }
 }
 
@@ -335,10 +331,6 @@ void Shape3d::render(
         worldPoints
       );
     }
-    //edges.at(0)->render(
-    //  cameraInstance,
-    //  worldPoints
-    //);
   }
 }
 

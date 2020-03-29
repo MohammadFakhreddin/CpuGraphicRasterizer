@@ -2,6 +2,7 @@
 #define VectorTemplate_class
 
 #include "../utils/log/Logger.h"
+#include "../utils/math/Math.h"
 
 //TODO Add N factor as argument
 
@@ -29,9 +30,9 @@ public:
 	void setY(T y) {
 		this->y = y;
 	}
-	//TODO Find a better solution because sqrt is a slow function
+
 	const double size() const {
-		return sqrt(this->x * this->x + this->y * this->y);
+		return Math::sqrt(this->x * this->x + this->y * this->y);
 	}
 	_Vec2d<double> hat() {
 		const double size = this->size();

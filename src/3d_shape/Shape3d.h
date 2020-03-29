@@ -110,7 +110,7 @@ private:
   MatrixFloat scaleValueMatrix;
   MatrixFloat zScaleMatrix;
 
-  MatrixFloat transformResultMatrix = MatrixFloat(3,3,0.0f);
+  MatrixFloat transformResultMatrix = MatrixFloat(3,1,0.0f);
 
 };
 
