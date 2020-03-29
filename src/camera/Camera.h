@@ -22,10 +22,6 @@ public:
     float blue;
   };
 
-  // TODO Camera must contain following information
-  // 1- cameraLocation
-  // 2- cameraBorders (Left,Right,Top,Bottom)
-  // 3- cameraDirectionVector
   Camera(
     OpenGL& gl,
     float cameraFieldOfView,
@@ -65,21 +61,21 @@ public:
   
   unsigned int getAppScreenHeight();
 
-  void Camera::transform(float transformX, float transformY, float transformZ);
+  void transform(float transformX, float transformY, float transformZ);
 
-  void Camera::rotateX(float x);
+  void rotateX(float x);
 
-  void Camera::rotateY(float y);
+  void rotateY(float y);
 
-  void Camera::rotateZ(float z);
+  void rotateZ(float z);
 
-  const MatrixFloat& Camera::getTransformMatrix();
+  const MatrixFloat& getTransformMatrix();
 
-  const MatrixFloat& Camera::getRotationX();
+  const MatrixFloat& getRotationX();
 
-  const MatrixFloat& Camera::getRotationY();
+  const MatrixFloat& getRotationY();
 
-  const MatrixFloat& Camera::getRotationZ();
+  const MatrixFloat& getRotationZ();
 
 private:
 
@@ -94,9 +90,9 @@ private:
   float zDefaultValue;
 
   unsigned int appScreenWidth;
+
   unsigned int appScreenHeight;
 
-  //std::vector<std::vector<DrawPixel>> pixelMap;
   DrawPixel* pixelMap;
 
   DrawPixel* currentPixel = nullptr;
@@ -113,7 +109,7 @@ private:
   
   MatrixFloat rotationValueZMatrix;
 
-  MatrixFloat transformationPlacholder = MatrixFloat(3, 1, 0.0f);
+  MatrixFloat transformationPlaceholder = MatrixFloat(3, 1, 0.0f);
 
 };
 

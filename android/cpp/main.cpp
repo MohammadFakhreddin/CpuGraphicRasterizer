@@ -62,7 +62,7 @@ JNIEXPORT void JNICALL Java_co_fakhreddin_cube_Fa3dCube_init(
         );
 
         application = std::unique_ptr<Application>(new Application(
-                Application::Platform::Android,
+                Constants::Platform::Android,
                 appScreenWidth,
                 appScreenHeight,
                 deviceScreenWidth,

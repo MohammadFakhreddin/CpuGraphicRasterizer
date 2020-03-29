@@ -2,6 +2,7 @@
 #define Operators_class
 
 #include <string>
+#include <vector>
 
 class Operators{
 public:

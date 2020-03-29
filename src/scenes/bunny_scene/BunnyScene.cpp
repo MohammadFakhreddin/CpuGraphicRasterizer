@@ -17,8 +17,8 @@ BunnyScene::BunnyScene(OpenGL& gl)
     0,
     0,
     0,
-    (int)DataAccessPoint::getInstance()->getAppScreenWidth(),
-    (int)DataAccessPoint::getInstance()->getAppScreenHeight(),
+    DataAccessPoint::getInstance()->getAppScreenWidth(),
+    DataAccessPoint::getInstance()->getAppScreenHeight(),
     "Main camera"
   ),
   light(
@@ -47,6 +47,7 @@ BunnyScene::BunnyScene(OpenGL& gl)
 }
 
 void BunnyScene::update(double deltaTime) {
+#ifdef __DESKTOP__
   {//We rotate light by keyboard
     if (useKeyEvent(Constants::Buttons::keyA)) {
       light.transformX(
@@ -99,6 +100,7 @@ void BunnyScene::update(double deltaTime) {
       shape->rotateX(float(-1.0 * shapeRotationSpeed * deltaTime));
     }
   }
+#endif
   {//Temporary code for auto rotation
     shape->rotateY(float(-1.0f * shapeRotationSpeed * deltaTime * 0.1f));
     shape->rotateX(float(-1.0f * shapeRotationSpeed * deltaTime * 0.1f));

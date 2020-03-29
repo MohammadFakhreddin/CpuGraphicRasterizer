@@ -29,7 +29,9 @@ public:
 
 protected:
 
+#ifdef __DESKTOP__
   bool useKeyEvent(const Constants::Buttons& keyEvent);
+#endif
 
   OpenGL & gl;
 
@@ -37,7 +39,9 @@ protected:
 
 private:
 
+#ifdef __DESKTOP__
   std::unordered_map<Constants::Buttons, bool> keyEvents;
+#endif
 
   bool temporaryKeyEventPlaceholder = false;
 

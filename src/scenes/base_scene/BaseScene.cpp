@@ -42,11 +42,14 @@ void BaseScene::notifyKeyIsPressed(const Constants::Buttons & keyEvent) {
 }
 #endif // __DESKTOP__
 
+#ifdef __DESKTOP__
 bool BaseScene::useKeyEvent(const Constants::Buttons & keyEvent) {
   temporaryKeyEventPlaceholder = keyEvents[keyEvent];
   keyEvents[keyEvent] = false;
   return temporaryKeyEventPlaceholder;
 }
+#endif // __DESKTOP__
+
 
 BaseScene::~BaseScene() {
   if (DataAccessPoint::getInstance()) {

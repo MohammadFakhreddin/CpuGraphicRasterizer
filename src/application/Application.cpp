@@ -13,6 +13,7 @@
 #include "../scenes/bunny_scene/BunnyScene.h"
 #include "../data_access_point/DataAccessPoint.h"
 
+#ifdef __DESKTOP__
 void handleKeyboardEvent(unsigned char key, int x, int y)
 {
   DataAccessPoint::getInstance()->getEventHandler().emitEvent<Constants::Buttons>(
@@ -20,6 +21,7 @@ void handleKeyboardEvent(unsigned char key, int x, int y)
     DataAccessPoint::getInstance()->getKeyCode(key)
   );
 }
+#endif
 
 Application::Application(
   Constants::Platform platform,
@@ -114,7 +116,7 @@ void Application::notifyScreenSurfaceChanged(
 ){
   Logger::log("Surface has changed");
 
-  if(forceNewAppScreenWidthAndHeight==true){
+  if(forceNewAppScreenWidthAndHeight){
     DataAccessPoint::getInstance()->setPhysicalScreenWidth(paramAppScreenWidth);
     DataAccessPoint::getInstance()->setAppScreenHeight(paramAppScreenHeight);
 
@@ -147,21 +149,20 @@ void Application::render(double deltaTime) {
   }
   {//FPSText
     openGLInstance.drawText(
-      fpsDrawLocation.getX(),
-      fpsDrawLocation.getY(),
+      static_cast<unsigned int>(fpsDrawLocation.getX()),
+      static_cast<unsigned int>(fpsDrawLocation.getY()),
       std::to_string(currentFps),
       1.0f,1.0f,1.0f
     );
   }
   {//SceneNameText
     openGLInstance.drawText(
-      sceneNameDrawLocation.getX(),
-      sceneNameDrawLocation.getY(),
+      static_cast<unsigned int>(sceneNameDrawLocation.getX()),
+      static_cast<unsigned int>(sceneNameDrawLocation.getY()),
       currentScene->getSceneName(), 
       1.0f, 1.0f, 1.0f
     );
   }
-  // dice.diceCubeTexture->render();
   openGLInstance.flush();
 }
 

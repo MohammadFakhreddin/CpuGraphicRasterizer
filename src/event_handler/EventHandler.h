@@ -46,7 +46,7 @@ public:
     for (auto& listener : listeners) {
       listener.second.callback((void *)pointer);
     }
-    delete pointer;
+    delete[] pointer;
   }
 
 private:
