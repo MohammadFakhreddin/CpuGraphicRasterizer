@@ -24,7 +24,7 @@ public:
 
   //For safty and clarity of code delete all operators and use methods instead
   template <typename A>
-  _Matrix(unsigned int paramWidth,unsigned int paramHeight, A cellDefaultValue)
+  _Matrix(const unsigned int paramWidth,const unsigned int paramHeight,const A& cellDefaultValue)
     :
     width(paramWidth),
     height(paramHeight)
@@ -44,7 +44,7 @@ public:
   }
   
   template <typename A>
-  _Matrix(unsigned int paramWidth, unsigned int paramHeight, std::vector<std::vector<A>> initialCellValue)
+  _Matrix(const unsigned int paramWidth, const unsigned int paramHeight, const std::vector<std::vector<A>>& initialCellValue)
     :
     width(paramWidth),
     height(paramHeight)
@@ -186,13 +186,13 @@ public:
     Logger::log("-----------------------");
   }
   
-  T get(int x, int y) const {
+  T get(const unsigned int& x, const unsigned int& y) const {
     assert(x < width);
     assert(y < height);
     return this->cells.at(x).at(y);
   }
   
-  void set(int x, int y, T value) {
+  void set(const unsigned int& x, const unsigned int& y, T value) {
     assert(x < width);
     assert(y < height);
     this->cells.at(x).at(y) = value;

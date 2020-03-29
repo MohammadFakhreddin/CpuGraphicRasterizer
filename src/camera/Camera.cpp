@@ -115,7 +115,14 @@ void Camera::initPixelMap(){
   }
 }
 
-void Camera::putPixelInMap(int x,int y,float zValue,float red,float green,float blue){
+void Camera::putPixelInMap(
+  const int& x,
+  const int& y,
+  const float& zValue,
+  const float& red,
+  const float& green,
+  const float& blue
+) {
   assert(red>=0 && red<=1.0f);
   assert(green>=0 && green<=1.0f);
   assert(blue>=0 && blue<=1.0f);

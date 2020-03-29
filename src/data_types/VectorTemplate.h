@@ -4,8 +4,6 @@
 #include "../utils/log/Logger.h"
 #include "../utils/math/Math.h"
 
-//TODO Add N factor as argument
-
 template <typename T>
 class _Vec2d {
 private:
@@ -24,10 +22,10 @@ public:
 	const T getY() const {
 		return this->y;
 	};
-	void setX(T x) {
+	void setX(const T x) {
 		this->x = x;
 	}
-	void setY(T y) {
+	void setY(const T y) {
 		this->y = y;
 	}
 
@@ -99,88 +97,109 @@ private:
 	T y;
 	T z;
 public:
-	_Vec3d() = default;
+	
+	_Vec3d() = delete;
+
 	_Vec3d(T x, T y, T z)
 		:
 		x(x),
 		y(y),
 		z(z)
 	{}
+
 	const T getX() const {
 		return this->x;
 	};
+
 	const T getY() const {
 		return this->y;
 	};
+
 	const T getZ() const {
 		return this->z;
 	};
+
 	template <typename A>
-	void setX(A x) {
+	void setX(const A x) {
 		this->x = T(x);
 	}
+
 	template <typename A>
-	void setY(A y) {
+	void setY(const A y) {
 		this->y = T(y);
 	}
+
 	template <typename A>
-	void setZ(A z) {
+	void setZ(const A z) {
 		this->z = T(z);
 	}
+
 	const double size() const {
-		return sqrt(this->x * this->x + this->y * this->y + this->z * this->z);
+		return Math::sqrt(this->x * this->x + this->y * this->y + this->z * this->z);
 	}
+
 	_Vec3d<double> hat() {
 		const double size = this->size();
 		return _Vec3d<double>(double(this->x) / size, double(this->y) / size, double(this->z) / size);
 	}
+
 	template <typename A>
-	_Vec3d<T>& operator+=(const _Vec3d<A>& rhs) {
+	_Vec3d<T>& sum(const _Vec3d<A>& rhs) {
 		this->x += T(rhs.getX());
 		this->y += T(rhs.getY());
 		this->z += T(rhs.getZ());
 		return *this;
 	}
+
 	template <typename A>
-	_Vec3d<T> operator+(const _Vec3d<A>& rhs) {
-		return _Vec3d<T>(this->x + T(rhs.getX()), this->y + T(rhs.getY()), this->z + T(rhs.getZ()));
-	}
+	_Vec3d<T>& operator+=(const _Vec3d<A>& rhs) = delete;
+
 	template <typename A>
-	_Vec3d<T>& operator-=(const _Vec3d<A>& rhs) const {
+	_Vec3d<T> operator+(const _Vec3d<A>& rhs) = delete;
+
+	template <typename A>
+	_Vec3d<T>& minus(const _Vec3d<A>& rhs) const {
 		this->x -= T(rhs.getX()); 
 		this->y -= T(rhs.getY()); 
 		this->z -= T(rhs.getZ());
 	}
+
 	template <typename A>
-	_Vec3d<T> operator-(const _Vec3d<A>& rhs) const {
-		return _Vec3d<T>(this->x - T(rhs.getX()), this->y - T(rhs.getY()), this->z - T(rhs.getZ()));
-	}
+	_Vec3d<T>& operator-=(const _Vec3d<A>& rhs) = delete;
+
 	template <typename A>
-	_Vec3d<T>& operator*=(const A value) {
+	_Vec3d<T> operator-(const _Vec3d<A>& rhs) = delete;
+
+	template <typename A>
+	_Vec3d<T>& multiply(const A& value) {
 		this->x *= T(value);
 		this->y *= T(value);
 		this->z *= T(value);
 		return *this;
 	}
+
 	template <typename A>
-	_Vec3d<T> operator*(const A value) {
-		return _Vec3d<T>(
-			this->x * T(value),
-			this->y * T(value),
-			this->z * T(value)
-		);
-	}
+	_Vec3d<T>& operator*=(const A value) = delete;
+
 	template <typename A>
-	_Vec3d<T>& operator=(const _Vec3d<A>& rhs) {
+	_Vec3d<T> operator*(const A value) = delete;
+
+	template <typename A>
+	_Vec3d<T>& assign(const _Vec3d<A>& rhs) {
 		this->x = T(rhs.x);
 		this->y = T(rhs.y);
 		this->z = T(rhs.z);
 		return *this;
 	}
+
+	template <typename A>
+	_Vec3d<T>& operator=(const _Vec3d<A>& rhs) = delete;
+
 	template <typename A>
 	explicit operator _Vec3d<A>() const {
 		return _Vec3d<A>(A(this->x), A(this->y), A(this->z));
 	}
+
 	template <typename A,typename B>
 	_Vec3d<T>& crossProduct(_Vec3d<A>& vec1,_Vec3d<B>& vec2){
 		x = T(vec1.y) * T(vec2.z) - T(vec1.z) * T(vec2.y),
@@ -188,16 +207,19 @@ public:
 		z = T(vec1.x) * T(vec2.y) - T(vec1.y) * T(vec2.x);
 		return *this;
 	}
+
 	template <typename A>
 	T dotProduct(_Vec3d<A>& rhs){
 		return (this->x * T(rhs.x)) + (this->y * T(rhs.y)) + (this->z * T(rhs.z));
 	}
+
 	template <typename A>
 	_Vec3d<T> crossProduct(_Vec3d<A>& rhs){
 		_Vec3d<T> result;
 		result.crossProduct(this,rhs);
 		return result;
 	}
+
 	template <typename A>
 	_Vec3d<T>& multiplyOneByOne(_Vec3d<A>& rhs){
 		this->x *= rhs.x;
@@ -205,6 +227,7 @@ public:
 		this->z *= rhs.z;
 		return *this;
 	}
+
 	void print(){
 		Logger::log(
 			"Vector ---------------------"
@@ -213,6 +236,7 @@ public:
 			"Z:"+std::to_string(z)
 		);
 	}
+
 };
 
 using Vec3DInt = _Vec3d<int>;

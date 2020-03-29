@@ -183,6 +183,9 @@ void ColorSurface::drawLineBetweenPoints(
         &triangleTotalStepCount,
         &triangleXStepValue
       );
+      if (triangleTotalStepCount == 0) {
+        return;
+      }
 			assert(triangleTotalStepCount!=0);
       triangleYStepValue = ((triangleEndY - triangleStartY)/xDifference) * triangleXStepValue;
 			triangleZStepValue = ((triangleEndZ - triangleStartZ)/xDifference) * triangleXStepValue;
@@ -194,6 +197,9 @@ void ColorSurface::drawLineBetweenPoints(
         &triangleTotalStepCount,
         &triangleYStepValue
       );
+      if (triangleTotalStepCount == 0) {
+        return;
+      }
 			assert(triangleTotalStepCount!=0);
       triangleXStepValue = ((triangleEndX - triangleStartX)/yDifference) * triangleYStepValue;
 			triangleZStepValue = ((triangleEndZ - triangleStartZ)/yDifference) * triangleYStepValue;
@@ -202,8 +208,8 @@ void ColorSurface::drawLineBetweenPoints(
 
 	putPixelInMap(
     cameraInstance,
-		int(floor(triangleStartX)),
-		int(floor(triangleStartY)),
+		int(triangleStartX),
+		int(triangleStartY),
 		triangleStartZ,
 		red,
 		green,
@@ -215,8 +221,8 @@ void ColorSurface::drawLineBetweenPoints(
 		triangleStartZ += triangleZStepValue;
 		putPixelInMap(
       cameraInstance,
-			int(floor(triangleStartX)),
-			int(floor(triangleStartY)),
+			int(triangleStartX),
+			int(triangleStartY),
 			triangleStartZ,
 			red,
 			green,

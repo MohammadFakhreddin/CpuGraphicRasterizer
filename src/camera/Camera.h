@@ -48,12 +48,12 @@ public:
   );
 
   void putPixelInMap(
-    int x,
-    int y,
-    float zValue,
-    float red,
-    float green,
-    float blue
+    const int& x,
+    const int& y,
+    const float& zValue,
+    const float& red,
+    const float& green,
+    const float& blue
   );
 
   void update(double deltaTime);

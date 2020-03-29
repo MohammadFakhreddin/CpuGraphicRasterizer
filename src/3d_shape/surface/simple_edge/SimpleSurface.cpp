@@ -94,8 +94,8 @@ void SimpleSurface::drawLineBetweenPoints(
     float zM = (endZ - startZ)/xDifference;
     putPixelInMap(
       cameraInstance,
-      int(floor(startX)), 
-      int(floor(startY)), 
+      int(startX), 
+      int(startY), 
       startZ, 
       red, 
       green, 
@@ -108,8 +108,8 @@ void SimpleSurface::drawLineBetweenPoints(
 		startZ += zM * stepMoveValue;
 		putPixelInMap(
       cameraInstance,
-      int(floor(startX)),
-      int(floor(startY)),
+      int(startX),
+      int(startY),
       startZ,red,green,blue
     );
 	}while (
@@ -125,8 +125,8 @@ void SimpleSurface::drawLineBetweenPoints(
       float zM = (endZ - startZ)/yDifference;
       putPixelInMap(
         cameraInstance,
-        int(floor(startX)),
-        int(floor(startY)),
+        int(startX),
+        int(startY),
         startZ,
         red,
         green,
@@ -139,8 +139,8 @@ void SimpleSurface::drawLineBetweenPoints(
       startZ += zM * stepMoveValue;
       putPixelInMap(
         cameraInstance,
-        int(floor(startX)),
-        int(floor(startY)),
+        int(startX),
+        int(startY),
         startZ,
         red,
         green,

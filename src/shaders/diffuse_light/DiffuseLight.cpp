@@ -14,17 +14,17 @@ void DiffuseLight::computeLightIntensity(
   lightDirectionVector.setY(surfaceCenter.getY() - worldPoint.get(1,0));
   lightDirectionVector.setZ(surfaceCenter.getZ() - worldPoint.get(2,0));
   
-  float dotProductValue = 
+  dotProductValue = 
       lightDirectionVector.dotProduct(surfaceNormalVector) 
       * -1;
 
-  float angleValue = float(
+  angleValue = float(
     dotProductValue / (
       surfaceNormalVector.size() * lightDirectionVector.size()
     )
   );
   
-  float lightIntensityFactor = Math::clamp(angleValue,0.0f,1.0f);
+  lightIntensityFactor = Math::clamp(angleValue,0.0f,1.0f);
   output.setX(lightIntensityFactor);
   output.setY(lightIntensityFactor);
   output.setZ(lightIntensityFactor);

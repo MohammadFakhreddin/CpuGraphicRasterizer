@@ -93,6 +93,9 @@ void TextureSurface::computePixelMapData(
         &totalStepCount,
         &triangleStartStepValueX
       );
+      if (totalStepCount == 0) {
+        return;
+      }
       assert(totalStepCount!=0);
       triangleStartStepValueY = ((trianglePoint3Y - triangleStartY)/xDifference) * triangleStartStepValueX;
       triangleStartStepValueZ = ((trianglePoint3Z - triangleStartZ)/xDifference) * triangleStartStepValueX;
@@ -106,6 +109,9 @@ void TextureSurface::computePixelMapData(
         &totalStepCount,
         &triangleStartStepValueY
       );
+      if (totalStepCount == 0) {
+        return;
+      }
       assert(totalStepCount!=0);
       triangleStartStepValueX = ((trianglePoint3X - triangleStartX)/yDifference) * triangleStartStepValueY;
       triangleStartStepValueZ = ((trianglePoint3Z - triangleStartZ)/yDifference) * triangleStartStepValueY;
@@ -243,6 +249,9 @@ void TextureSurface::drawTextureBetweenPoints(
         &triangleTotalStepCount,
         &triangleXStepValue
       );
+      if (triangleTotalStepCount == 0) {
+        return;
+      }
 			assert(triangleTotalStepCount!=0);
       triangleYStepValue = ((triangleEndY - triangleStartY)/xDifference) * triangleXStepValue;
 			triangleZStepValue = ((triangleEndZ - triangleStartZ)/xDifference) * triangleXStepValue;
@@ -255,6 +264,9 @@ void TextureSurface::drawTextureBetweenPoints(
         &triangleTotalStepCount,
         &triangleYStepValue
       );
+      if (triangleTotalStepCount == 0) {
+        return;
+      }
 			assert(triangleTotalStepCount!=0);
       triangleXStepValue = ((triangleEndX - triangleStartX)/yDifference) * triangleYStepValue;
 			triangleZStepValue = ((triangleEndZ - triangleStartZ)/yDifference) * triangleYStepValue;
@@ -285,8 +297,8 @@ void TextureSurface::drawTextureBetweenPoints(
 	texture->getColorForPosition(textureStartX,textureStartY,&red,&green,&blue);
 	putPixelInMap(
     cameraInstance,
-		int(floor(triangleStartX)),
-		int(floor(triangleStartY)),
+		int(triangleStartX),
+		int(triangleStartY),
 		triangleStartZ,
 		red,
 		green,
@@ -302,8 +314,8 @@ void TextureSurface::drawTextureBetweenPoints(
 		texture->getColorForPosition(textureStartX,textureStartY,&red,&green,&blue);
 		putPixelInMap(
       cameraInstance,
-			int(floor(triangleStartX)),
-			int(floor(triangleStartY)),
+			int(triangleStartX),
+			int(triangleStartY),
 			triangleStartZ,
 			red,
 			green,

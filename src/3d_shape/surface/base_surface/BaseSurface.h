@@ -40,12 +40,12 @@ protected:
 
   void putPixelInMap(
     Camera& cameraInstance,
-    int x,
-    int y,
-    float zValue,
-    float red,
-    float green,
-    float blue
+    const int& x,
+    const int& y,
+    const float& zValue,
+    float& red,
+    float& green,
+    float& blue
   );
   
   void calculateStepCountAndStepValue(
@@ -134,6 +134,7 @@ private:
   * Normal vector being reverse
   */
   Vec3DFloat colorIntensity = Vec3DFloat(0.0f,0.0f,0.0f);  
+  Vec3DFloat temporaryColorIntensityPlaceholder = Vec3DFloat(0.0f, 0.0f, 0.0f);
 };
 
 #endif

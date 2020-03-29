@@ -19,7 +19,13 @@ public:
 
 private:
 
-  Vec3DFloat lightDirectionVector;
+  Vec3DFloat lightDirectionVector = Vec3DFloat(0.0f,0.0f,0.0f);
+  
+  float dotProductValue = 0.0f;
+  
+  float angleValue = 0.0f;
+
+  float lightIntensityFactor = 0.0f;
 
 };
 

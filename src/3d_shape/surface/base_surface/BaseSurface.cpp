@@ -62,28 +62,27 @@ void BaseSurface::computeColorIntensity(
     colorIntensity.setX(0.0f);
     colorIntensity.setY(0.0f);
     colorIntensity.setZ(0.0f);
-    Vec3DFloat currentLightSourceColorIntensity;
     for (auto& light : lightSources) {
       light->computeLightIntensity(
         normalVector,
         edgeCenter,
-        currentLightSourceColorIntensity
+        temporaryColorIntensityPlaceholder
       );
       colorIntensity.setX(
         Math::max(
-          currentLightSourceColorIntensity.getX(),
+          temporaryColorIntensityPlaceholder.getX(),
           colorIntensity.getX()
         )
       );
       colorIntensity.setY(
         Math::max(
-          currentLightSourceColorIntensity.getY(),
+          temporaryColorIntensityPlaceholder.getY(),
           colorIntensity.getY()
         )
       );
       colorIntensity.setZ(
         Math::max(
-          currentLightSourceColorIntensity.getZ(),
+          temporaryColorIntensityPlaceholder.getZ(),
           colorIntensity.getZ()
         )
       );
@@ -129,7 +128,7 @@ void BaseSurface::calculateStepCountAndStepValue(
   assert(difference != 0 && "Difference must be above 0 in BaseSurface::calculateStepCountAndStepValue");
   assert(drawStepValue != 0 && "Draw step value must be above 0 in BaseSurface::calculateStepCountAndStepValue");
   *totalStepCount = Math::min(
-      (unsigned int)ceil(abs(difference/drawStepValue)),
+      (unsigned int)abs(difference/drawStepValue),
       cameraInstance.getAppScreenWidth()
   );
   *stepValue = difference/float(*totalStepCount);
@@ -215,16 +214,13 @@ bool BaseSurface::isVisibleToCamera(
 
 void BaseSurface::putPixelInMap(
   Camera& cameraInstance,
-  int x,
-  int y,
-  float zValue,
-  float red,
-  float green,
-  float blue
+  const int& x,
+  const int& y,
+  const float& zValue,
+  float& red,
+  float& green,
+  float& blue
 ){
-  assert(red>=0 && red<=1.0f);
-  assert(green>=0 && green<=1.0f);
-  assert(blue>=0 && blue<=1.0f);
   cameraInstance.putPixelInMap(
     x,
     y,

@@ -39,7 +39,7 @@ public:
         return value;
     };
 
-    double sqrt(double x) {
+    static double sqrt(double x) {
       if (x <= 0)
         return 0;       // if negative number throw an exception?
       int exp = 0;
