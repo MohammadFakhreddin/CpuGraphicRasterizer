@@ -48,11 +48,12 @@ DataAccessPoint::DataAccessPoint() {
     keyMap['x'] = Constants::Buttons::keyX;
     keyMap['y'] = Constants::Buttons::keyY;
     keyMap['z'] = Constants::Buttons::keyZ;
-    keyMap[VK_TAB] = Constants::Buttons::tab;
-    keyMap[VK_LEFT] = Constants::Buttons::arrowLeft;
-    keyMap[VK_RIGHT] = Constants::Buttons::arrowRight;
-    keyMap[VK_UP] = Constants::Buttons::arrowUp;
-    keyMap[VK_DOWN] = Constants::Buttons::arrowDown;
+    //TODO Replace these characters with actual button code
+    // keyMap[VK_TAB] = Constants::Buttons::tab;
+    // keyMap[VK_LEFT] = Constants::Buttons::arrowLeft;
+    // keyMap[VK_RIGHT] = Constants::Buttons::arrowRight;
+    // keyMap[VK_UP] = Constants::Buttons::arrowUp;
+    // keyMap[VK_DOWN] = Constants::Buttons::arrowDown;
   }
 #endif // __DESKTOP__
 
