@@ -149,16 +149,16 @@ void Application::render(double deltaTime) {
   }
   {//FPSText
     openGLInstance.drawText(
-      static_cast<unsigned int>(fpsDrawLocation.getX()),
-      static_cast<unsigned int>(fpsDrawLocation.getY()),
+      fpsDrawLocation.getX(),
+      fpsDrawLocation.getY(),
       std::to_string(currentFps),
       1.0f,1.0f,1.0f
     );
   }
   {//SceneNameText
     openGLInstance.drawText(
-      static_cast<unsigned int>(sceneNameDrawLocation.getX()),
-      static_cast<unsigned int>(sceneNameDrawLocation.getY()),
+      sceneNameDrawLocation.getX(),
+      sceneNameDrawLocation.getY(),
       currentScene->getSceneName(), 
       1.0f, 1.0f, 1.0f
     );

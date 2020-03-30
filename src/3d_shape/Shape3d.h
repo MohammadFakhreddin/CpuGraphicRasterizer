@@ -74,7 +74,7 @@ public:
   void update(
     double deltaTime,
     Camera& cameraInstance,
-    std::vector<Light*>& lightSources
+    std::vector<std::unique_ptr<Light>>& lightSources
   );
 
   void render(

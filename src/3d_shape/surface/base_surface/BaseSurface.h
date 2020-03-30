@@ -2,6 +2,7 @@
 #define BaseSurface_class
 
 #include <vector>
+#include <memory>
 
 #include "../../../data_types/MatrixTemplate.h"
 #include "../../../data_types/VectorTemplate.h"
@@ -15,7 +16,7 @@ public:
   void update(
     Camera& cameraInstance,
     std::vector<MatrixFloat>& worldPoints,
-    std::vector<Light*>& lightSources
+    std::vector<std::unique_ptr<Light>>& lightSources
   );
 
   void render(
@@ -84,7 +85,7 @@ private:
     std::vector<MatrixFloat>& worldPoints
   );
   void computeColorIntensity(
-    std::vector<Light*>& lightSources  
+    std::vector<std::unique_ptr<Light>>& lightSources  
   );
   /*
   *

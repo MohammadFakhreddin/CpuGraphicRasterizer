@@ -279,7 +279,7 @@ bool Shape3d::checkForNodesValidation() {
 void Shape3d::update(
   double deltaTime,
   Camera& cameraInstance,
-  std::vector<Light*>& lightSources
+  std::vector<std::unique_ptr<Light>>& lightSources
 ) {
   
   float zLocation = 0;

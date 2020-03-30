@@ -20,11 +20,6 @@ BunnyScene::BunnyScene(OpenGL& gl)
     DataAccessPoint::getInstance()->getAppScreenWidth(),
     DataAccessPoint::getInstance()->getAppScreenHeight(),
     "Main camera"
-  ),
-  light(
-    float(DataAccessPoint::getInstance()->getAppScreenWidth()) / 2.0f,
-    float(DataAccessPoint::getInstance()->getAppScreenHeight()),
-    cameraInitialZLocation - 1.0f
   )
 {
   {//Creating shape
@@ -41,8 +36,13 @@ BunnyScene::BunnyScene(OpenGL& gl)
   }
   {//Creating light source
     lightSources.emplace_back(
-      &light
+      std::make_unique<DiffuseLight>(
+        float(DataAccessPoint::getInstance()->getAppScreenWidth()) / 2.0f,
+        float(DataAccessPoint::getInstance()->getAppScreenHeight()),
+        cameraInitialZLocation - 1.0f
+      )
     );
+    light = (DiffuseLight*)lightSources.at(lightSources.size()-1).get();
   }
 }
 
@@ -50,32 +50,32 @@ void BunnyScene::update(double deltaTime) {
 #ifdef __DESKTOP__
   {//We rotate light by keyboard
     if (useKeyEvent(Constants::Buttons::keyA)) {
-      light.transformX(
+      light->transformX(
         float(deltaTime * lightTransformSpeed * -1.0f)
       );
     }
     if (useKeyEvent(Constants::Buttons::keyD)) {
-      light.transformX(
+      light->transformX(
         float(deltaTime * lightTransformSpeed)
       );
     }
     if (useKeyEvent(Constants::Buttons::keyW)) {
-      light.transformY(
+      light->transformY(
         float(deltaTime * lightTransformSpeed)
       );
     }
     if (useKeyEvent(Constants::Buttons::keyS)) {
-      light.transformY(
+      light->transformY(
         float(deltaTime * lightTransformSpeed * -1.0)
       );
     }
     if (useKeyEvent(Constants::Buttons::keyC)) {
-      light.transformZ(
+      light->transformZ(
         float(deltaTime * lightTransformSpeed * -1.0 * 0.5)
       );
     }
     if (useKeyEvent(Constants::Buttons::keyV)) {
-      light.transformZ(
+      light->transformZ(
         float(deltaTime * lightTransformSpeed * 1.0 * 0.5)
       );
     }
@@ -111,7 +111,7 @@ void BunnyScene::update(double deltaTime) {
       lightSources.at(i)->update(deltaTime, cameraInstance);
     }
   }
-  shape->update(deltaTime, cameraInstance,lightSources);
+  shape->update(deltaTime, cameraInstance, lightSources);
   cameraInstance.update(deltaTime);
 }
 

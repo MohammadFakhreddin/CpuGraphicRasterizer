@@ -48,9 +48,9 @@ private:
 
   OpenGL openGLInstance;
 
-  Vec2DFloat fpsDrawLocation;
+  _Vec2d<unsigned int> fpsDrawLocation;
 
-  Vec2DFloat sceneNameDrawLocation;
+  _Vec2d<unsigned int> sceneNameDrawLocation;
 
   /*
 

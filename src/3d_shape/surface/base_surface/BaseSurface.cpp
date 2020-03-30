@@ -24,7 +24,7 @@ unsigned long BaseSurface::getEdgeByIndex(short index) {
 void BaseSurface::update(
   Camera& cameraInstance,
   std::vector<MatrixFloat>& worldPoints,
-  std::vector<Light*>& lightSources
+  std::vector<std::unique_ptr<Light>>& lightSources
 ) {
   assert(edge1<worldPoints.size() && edge1>=0);
   assert(edge2<worldPoints.size() && edge2>=0);
@@ -56,7 +56,7 @@ void BaseSurface::computePixelMapData(
 }
 
 void BaseSurface::computeColorIntensity(
-  std::vector<Light*>& lightSources
+  std::vector<std::unique_ptr<Light>>& lightSources
 ) {
   if (lightSources.empty() == false) {
     colorIntensity.setX(0.0f);

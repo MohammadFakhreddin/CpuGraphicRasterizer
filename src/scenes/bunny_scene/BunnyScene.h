@@ -35,13 +35,13 @@ public:
 
 private:
 
-  DiffuseLight light;
+  DiffuseLight* light;
 
   Camera cameraInstance;
 
   std::unique_ptr<Shape3d> shape;
-  //TODO Light sources need to transform too
-  std::vector<Light*> lightSources;
+  
+  std::vector<std::unique_ptr<Light>> lightSources;
 
 };
 
