@@ -1,13 +1,13 @@
-#include "./BunnyScene.h"
+#include "./RobotScene.h"
 
 #include "../base_scene/BaseScene.h"
 #include "../../data_access_point/DataAccessPoint.h"
 #include "../../file_system/FileSystem.h"
 #include "../../utils/path/Path.h"
 
-BunnyScene::BunnyScene(OpenGL& gl)
-  : 
-  BaseScene(gl, "BunnyScene"),
+RobotScene::RobotScene(OpenGL& gl)
+  :
+  BaseScene(gl, "RobotScene"),
   cameraInstance(
     gl,
     cameraInitialMaximumFov,
@@ -20,15 +20,15 @@ BunnyScene::BunnyScene(OpenGL& gl)
     DataAccessPoint::getInstance()->getAppScreenWidth(),
     DataAccessPoint::getInstance()->getAppScreenHeight(),
     "Bunny main camera"
-  )
+    )
 {
   {//Creating shape
-    auto scaleFactor = float(DataAccessPoint::getInstance()->getAppScreenWidth()) / 4.0f;
+    auto scaleFactor = float(DataAccessPoint::getInstance()->getAppScreenWidth()) / 50.0f;
     shape = FileSystem::loadObjectWithColor(
-      Path::generateAssetPath("bunny", ".obj"),
+      Path::generateAssetPath("robot", ".obj"),
       Vec3DFloat(1.0f, 1.0f, 1.0f),
       true
-    );
+      );
     shape->transformX(float(DataAccessPoint::getInstance()->getAppScreenWidth()) / 2.0f);
     shape->transformY(float(DataAccessPoint::getInstance()->getAppScreenHeight()) / 2.0f);
     shape->transformZ(cameraInitialZLocation - 100.0f);
@@ -40,44 +40,44 @@ BunnyScene::BunnyScene(OpenGL& gl)
         float(DataAccessPoint::getInstance()->getAppScreenWidth()) / 2.0f,
         float(DataAccessPoint::getInstance()->getAppScreenHeight()),
         cameraInitialZLocation - 1.0f
-      )
-    );
-    light = (DiffuseLight*)lightSources.at(lightSources.size()-1).get();
+        )
+      );
+    light = (DiffuseLight*)lightSources.at(lightSources.size() - 1).get();
   }
 }
 
-void BunnyScene::update(double deltaTime) {
+void RobotScene::update(double deltaTime) {
 #ifdef __DESKTOP__
   {//We rotate light by keyboard
     if (useKeyEvent(Constants::Buttons::keyA)) {
       light->transformX(
         float(deltaTime * lightTransformSpeed * -1.0f)
-      );
+        );
     }
     if (useKeyEvent(Constants::Buttons::keyD)) {
       light->transformX(
         float(deltaTime * lightTransformSpeed)
-      );
+        );
     }
     if (useKeyEvent(Constants::Buttons::keyW)) {
       light->transformY(
         float(deltaTime * lightTransformSpeed)
-      );
+        );
     }
     if (useKeyEvent(Constants::Buttons::keyS)) {
       light->transformY(
         float(deltaTime * lightTransformSpeed * -1.0)
-      );
+        );
     }
     if (useKeyEvent(Constants::Buttons::keyC)) {
       light->transformZ(
         float(deltaTime * lightTransformSpeed * -1.0 * 0.5)
-      );
+        );
     }
     if (useKeyEvent(Constants::Buttons::keyV)) {
       light->transformZ(
         float(deltaTime * lightTransformSpeed * 1.0 * 0.5)
-      );
+        );
     }
   }
   {//Rotating shape by keyboard
@@ -101,11 +101,6 @@ void BunnyScene::update(double deltaTime) {
     }
   }
 #endif
-  {//Temporary code for auto rotation
-    shape->rotateY(float(-1.0f * shapeRotationSpeed * deltaTime * 0.1f));
-    shape->rotateX(float(-1.0f * shapeRotationSpeed * deltaTime * 0.1f));
-    shape->rotateZ(float(-1.0f * shapeRotationSpeed * deltaTime * 0.1f));
-  }
   {//Updating light
     for (unsigned int i = 0; i < lightSources.size(); i++) {
       lightSources.at(i)->update(deltaTime, cameraInstance);
@@ -115,7 +110,7 @@ void BunnyScene::update(double deltaTime) {
   cameraInstance.update(deltaTime);
 }
 
-void BunnyScene::render(double deltaTime) {
+void RobotScene::render(double deltaTime) {
   {//Updating light
     for (unsigned int i = 0; i < lightSources.size(); i++) {
       lightSources.at(0)->render(deltaTime, cameraInstance);

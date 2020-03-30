@@ -141,18 +141,18 @@ std::unique_ptr<Shape3d> Shape3d::generateColored3DCube(
         })
     };
     std::vector<BaseSurface *> edgeList = {
-        new ColorSurface(0, 1, 2, 245.0f / 255.0f, 144.0f / 255.0f, 66.0f / 255.0f),
+        new ColorSurface(2, 1, 0, 245.0f / 255.0f, 144.0f / 255.0f, 66.0f / 255.0f),
         new ColorSurface(3, 1, 2, 245.0f / 255.0f, 144.0f / 255.0f, 66.0f / 255.0f),
-        new ColorSurface(3, 1, 5, 221.0f / 255.0f, 245.0f / 255.0f, 66.0f / 255.0f),
-        new ColorSurface(3, 7, 5, 221.0f / 255.0f, 245.0f / 255.0f, 66.0f / 255.0f),
-        new ColorSurface(0, 4, 5, 66.0f / 255.0f, 245.0f / 255.0f, 126.0f / 255.0f),
+        new ColorSurface(1, 3, 5, 221.0f / 255.0f, 245.0f / 255.0f, 66.0f / 255.0f),
+        new ColorSurface(5, 3, 7, 221.0f / 255.0f, 245.0f / 255.0f, 66.0f / 255.0f),
+        new ColorSurface(4, 0, 5, 66.0f / 255.0f, 245.0f / 255.0f, 126.0f / 255.0f),
         new ColorSurface(5, 0, 1, 66.0f / 255.0f, 245.0f / 255.0f, 126.0f / 255.0f),
-        new ColorSurface(4, 0, 6, 66.0f / 255.0f, 194.0f / 255.0f, 245.0f / 255.0f),
+        new ColorSurface(6, 0, 4, 66.0f / 255.0f, 194.0f / 255.0f, 245.0f / 255.0f),
         new ColorSurface(2, 0, 6, 66.0f / 255.0f, 194.0f / 255.0f, 245.0f / 255.0f),
-        new ColorSurface(2, 7, 6, 96.0f / 255.0f, 66.0f / 255.0f, 245.0f / 255.0f),
-        new ColorSurface(2, 7, 3, 96.0f / 255.0f, 66.0f / 255.0f, 245.0f / 255.0f),
-        new ColorSurface(4, 5, 7, 245.0f / 255.0f, 66.0f / 255.0f, 123.0f / 255.0f),
-        new ColorSurface(4, 6, 7, 245.0f / 255.0f, 66.0f / 255.0f, 123.0f / 255.0f)
+        new ColorSurface(7, 2, 6, 96.0f / 255.0f, 66.0f / 255.0f, 245.0f / 255.0f),
+        new ColorSurface(3, 2, 7, 96.0f / 255.0f, 66.0f / 255.0f, 245.0f / 255.0f),
+        new ColorSurface(7, 4, 5, 245.0f / 255.0f, 66.0f / 255.0f, 123.0f / 255.0f),
+        new ColorSurface(6, 4, 7, 245.0f / 255.0f, 66.0f / 255.0f, 123.0f / 255.0f)
     };
     return std::make_unique<Shape3d>(
         nodeList,

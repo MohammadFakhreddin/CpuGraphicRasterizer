@@ -1,19 +1,25 @@
-﻿#ifndef ColoredCubeScene_Class
-#define ColoredCubeScene_Class
+#ifndef RobotScene_Class
+#define RobotScene_Class
 
 #include <memory>
-#include <vector>
 
 #include "../base_scene/BaseScene.h"
+#include "../../open_gl/OpenGl.h"
+#include "../../shaders/diffuse_light/DiffuseLight.h"
 #include "../../camera/Camera.h"
 #include "../../3d_shape/Shape3d.h"
-#include "../../open_gl/OpenGl.h"
 
-class ColoredCubeScene : public BaseScene {
+class RobotScene : public BaseScene {
 
 private:
 
+  static constexpr float shapeTransformSpeed = 1.0f;
+
   static constexpr float shapeRotationSpeed = 0.01f;
+
+  static constexpr float shapeScaleSpeed = 0.1f;
+
+  static constexpr float lightTransformSpeed = 0.2f;
 
   static constexpr float cameraInitialZLocation = 1000.0f;
 
@@ -21,7 +27,7 @@ private:
 
 public:
 
-  ColoredCubeScene(OpenGL& gl);
+  RobotScene(OpenGL& gl);
 
   void update(double deltaTime) override;
 
@@ -29,12 +35,14 @@ public:
 
 private:
 
+  DiffuseLight* light;
+
   Camera cameraInstance;
 
-  std::unique_ptr<Shape3d> cube;
+  std::unique_ptr<Shape3d> shape;
 
   std::vector<std::unique_ptr<Light>> lightSources;
 
 };
 
-#endif // !ColoredCubeScene_Class
+#endif // !RobotScene_Class

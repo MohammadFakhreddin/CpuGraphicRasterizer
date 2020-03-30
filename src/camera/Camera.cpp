@@ -67,6 +67,7 @@ Camera::Camera(
 }
 
 Camera::~Camera() {
+  DataAccessPoint::getInstance()->getEventHandler().unSubscribeFromEvents(cameraName);
   delete[] pixelMap;
 }
 
@@ -75,8 +76,11 @@ void Camera::notifyScreenSurfaceIsChanged(
 ){
 
   if (
-    this->appScreenWidth == DataAccessPoint::getInstance()->getAppScreenWidth() && 
-    this->appScreenHeight == DataAccessPoint::getInstance()->getAppScreenHeight()
+    usingNewAppScreenWidthAndHeightIsForced==false || 
+    (
+      this->appScreenWidth == DataAccessPoint::getInstance()->getAppScreenWidth() && 
+      this->appScreenHeight == DataAccessPoint::getInstance()->getAppScreenHeight()
+    )
   ) {
     return;
   }

@@ -11,7 +11,11 @@
 #include "../file_system/FileSystem.h"
 #include "../event_handler/EventHandler.h"
 #include "../scenes/bunny_scene/BunnyScene.h"
+#include "../scenes/colored_cube_scene/ColoredCubeScene.h"
 #include "../data_access_point/DataAccessPoint.h"
+#include "../scenes/textured_cube_scene/TexturedCubeScene.h"
+#include "../scenes/robot_scene/RobotScene.h"
+#include "../scenes/plant_scene/PlantScene.h"
 
 #ifdef __DESKTOP__
 void handleKeyboardEvent(unsigned char key, int x, int y)
@@ -40,70 +44,37 @@ Application::Application(
   fpsDrawLocation(0.0f, 0.0f),
   sceneNameDrawLocation(0.0f, appScreenHeight - 32)
 {
+  {
+    DataAccessPoint::createInstance();
 
-  DataAccessPoint::createInstance();
-  
-  DataAccessPoint::getInstance()->setAppScreenWidth(appScreenWidth);
-  DataAccessPoint::getInstance()->setAppScreenHeight(appScreenHeight);
-  DataAccessPoint::getInstance()->setPhysicalScreenWidth(physicalDeviceScreenWidth);
-  DataAccessPoint::getInstance()->setPhysicalScreenHeight(physicalDeviceScreenHeight);
-  DataAccessPoint::getInstance()->setPlatform(platform);
+    DataAccessPoint::getInstance()->setAppScreenWidth(appScreenWidth);
+    DataAccessPoint::getInstance()->setAppScreenHeight(appScreenHeight);
+    DataAccessPoint::getInstance()->setPhysicalScreenWidth(physicalDeviceScreenWidth);
+    DataAccessPoint::getInstance()->setPhysicalScreenHeight(physicalDeviceScreenHeight);
+    DataAccessPoint::getInstance()->setPlatform(platform);
+  }
 
 #ifdef __DESKTOP__
   glutKeyboardFunc(handleKeyboardEvent);
 #endif
 
-  currentScene = std::make_unique<BunnyScene>(openGLInstance);
-  {//Shape
-    //auto scaleFactor = appScreenWidth/4;
-    //Logger::log("Creating shape object");
-    // shape = Shape3d::generateTextured3DCube(
-    // 	dice.diceCubeTexture,
-    // 	dice.diceCubeEdgeList,
-    // 	width,
-    // 	width,
-    // 	width,
-    // 	float(appScreenWidth)/2.0f,
-    // 	float(appScreenHeight)/2.0f,
-    // 	float(cameraInitialZLocation - 500),
-    // 	0,
-    // 	0,
-    // 	0,
-    // 	1
-    // );
-    //============================================
-    //shape = FileSystem::loadObjectWithColor(
-    //  Path::generateAssetPath("bunny",".obj"),
-    //  Vec3DFloat(1.0f,1.0f,1.0f),
-    //  true
-    //);
-    //shape->transformX(float(appScreenWidth)/2.0f);
-    //shape->transformY(float(appScreenHeight)/2.0f);
-    //shape->transformZ(cameraInitialZLocation - 100.0f);
-    //shape->scale(scaleFactor);
-    //===========================================
-    // shape = FileSystem::loadObjectWithColor(
-    //    Path::generateAssetPath("robot",".obj"),
-    //    Vec3DFloat(1.0f,1.0f,1.0f),
-    //    true
-    // );
-    // shape->transformX(float(appScreenWidth)/2.0f);
-    // shape->transformY(float(appScreenHeight)/2.0f);
-    // shape->transformZ(cameraInitialZLocation - 100.0f);
-    // shape->scale(10.0f);
-    //==========================================
-    // shape = FileSystem::loadObjectWithColor(
-    //   Path::generateAssetPath("plant",".obj"),
-    //   Vec3DFloat(1.0f,1.0f,1.0f),
-    //   false
-    // );
-    // shape->transformX(float(appScreenWidth) * 0.5f);
-    // shape->transformY(float(appScreenHeight) * 0.25f);
-    // shape->transformZ(cameraInitialZLocation - 100.0f);
-    // shape->scale(5.0f);
-    //==========================================
-    //Logger::log("Creating shape was successful");
+  {
+    sceneList.emplace_back(std::make_unique<BunnyScene>(openGLInstance));
+    sceneList.emplace_back(std::make_unique<ColoredCubeScene>(openGLInstance));
+    sceneList.emplace_back(std::make_unique<TexturedCubeScene>(openGLInstance));
+    sceneList.emplace_back(std::make_unique<RobotScene>(openGLInstance));
+    sceneList.emplace_back(std::make_unique<PlantScene>(openGLInstance));
+    navigateToScene(0);
   }
+
+#ifdef __DESKTOP__
+  DataAccessPoint::getInstance()->getEventHandler().subscribeToEvent<Constants::Buttons>(
+    EventHandler::EventName::keyboardKeyIsPressed,
+    "Application",
+    std::bind(&Application::notifyKeyIsPressed, this, std::placeholders::_1)
+  );
+#endif // __DESKTOP__
+
 }
 
 void Application::notifyScreenSurfaceChanged(
@@ -177,4 +148,19 @@ void Application::mainLoop(double deltaTime){
     currentFps = 1000.0f/deltaTime;
   }
   assert(openGLInstance.checkForOpenGlError());
+}
+
+void Application::navigateToScene(unsigned int sceneIndex) {
+  assert(sceneIndex >= 0 && sceneIndex <= sceneList.size());
+  currentScene = sceneList.at(sceneIndex).get();
+}
+
+void Application::notifyKeyIsPressed(Constants::Buttons key) {
+  if (key == Constants::Buttons::tab) {
+    sceneIndex++;
+    if (sceneIndex >= sceneList.size()) {
+      sceneIndex = 0;
+    }
+    currentScene = sceneList.at(sceneIndex).get();
+  }
 }

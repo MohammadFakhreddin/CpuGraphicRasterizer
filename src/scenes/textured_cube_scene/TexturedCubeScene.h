@@ -1,15 +1,15 @@
-﻿#ifndef ColoredCubeScene_Class
-#define ColoredCubeScene_Class
+#ifndef TexturedCubeScene_Class
+#define TexturedCubeScene_Class
 
 #include <memory>
-#include <vector>
 
 #include "../base_scene/BaseScene.h"
 #include "../../camera/Camera.h"
 #include "../../3d_shape/Shape3d.h"
 #include "../../open_gl/OpenGl.h"
+#include "../../3d_models/Dice.h"
 
-class ColoredCubeScene : public BaseScene {
+class TexturedCubeScene : public BaseScene {
 
 private:
 
@@ -21,7 +21,7 @@ private:
 
 public:
 
-  ColoredCubeScene(OpenGL& gl);
+  TexturedCubeScene(OpenGL& gl);
 
   void update(double deltaTime) override;
 
@@ -35,6 +35,8 @@ private:
 
   std::vector<std::unique_ptr<Light>> lightSources;
 
+  Dice dice;
+
 };
 
-#endif // !ColoredCubeScene_Class
+#endif // !TexturedCubeScene_Class

@@ -35,6 +35,10 @@ public:
   );
   
   void mainLoop(double deltaTime);
+
+  void navigateToScene(unsigned int sceneIndex);
+
+  void notifyKeyIsPressed(Constants::Buttons key);
   
 private:
 
@@ -42,7 +46,11 @@ private:
   
   void update(double deltaTime);
 
-  std::unique_ptr<BaseScene> currentScene;
+  BaseScene* currentScene;
+
+  unsigned int sceneIndex = 0;
+
+  std::vector<std::unique_ptr<BaseScene>> sceneList;
 
   double currentFps = 0;
 
