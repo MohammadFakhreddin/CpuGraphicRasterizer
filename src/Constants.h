@@ -49,14 +49,10 @@
 #   error "Unknown compiler"
 #endif
 
-class Constants {
+namespace Constants {
 
-public:
-
-  class Window {
+  namespace Window {
   
-  public:
-	
     static constexpr char appName[] = "3D CUBE";
 	
   };

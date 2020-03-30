@@ -11,8 +11,8 @@ appScreenHeight(appScreenHeight),
 physicalScreenWidth(physicalScreenWidth),
 physicalScreenHeight(physicalScreenHeight)
 {
-  Logger::log("AppScreenWidth:" + appScreenWidth);
-  Logger::log("AppScreenHeight:" + appScreenHeight);
+  Logger::log("AppScreenWidth: " + std::to_string(appScreenWidth));
+  Logger::log("AppScreenHeight: " + std::to_string(appScreenHeight));
   init();
 }
 

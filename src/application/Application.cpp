@@ -51,9 +51,8 @@ Application::Application(
 
 #ifdef __DESKTOP__
   glutKeyboardFunc(handleKeyboardEvent);
-  //TODO We need a singleton user class to store data in it
-
 #endif
+
   currentScene = std::make_unique<BunnyScene>(openGLInstance);
   {//Shape
     //auto scaleFactor = appScreenWidth/4;

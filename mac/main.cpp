@@ -45,7 +45,7 @@ int main(int argc, char** argv) {
 	glutCreateWindow(Constants::Window::appName);
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f); // Set background color to black and opaque
 	application = std::make_unique<Application>(
-		Application::Platform::Mac,
+		Constants::Platform::Mac,
 		appScreenWidth,
 		appScreenHeight,
 		realScreenWidth,
