@@ -243,9 +243,12 @@ void OpenGL::drawPixel(unsigned int x,unsigned int y,float red,float green,float
   assert(blue>=0 && blue<=1.0f);
 
 #ifdef __OPENGL__
+
   glColor3f(red,green,blue);
   glVertex2i(x,y);
+
 #else
+
   {
       position[0] = (x - xDifValue) * projectionX;
       position[1] = (y - yDifValue) * projectionY;

@@ -19,8 +19,8 @@ RobotScene::RobotScene(OpenGL& gl)
     0,
     DataAccessPoint::getInstance()->getAppScreenWidth(),
     DataAccessPoint::getInstance()->getAppScreenHeight(),
-    "Bunny main camera"
-    )
+    "Robot main camera"
+  )
 {
   {//Creating shape
     auto scaleFactor = float(DataAccessPoint::getInstance()->getAppScreenWidth()) / 50.0f;

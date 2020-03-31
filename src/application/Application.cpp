@@ -17,6 +17,13 @@
 #include "../scenes/robot_scene/RobotScene.h"
 #include "../scenes/plant_scene/PlantScene.h"
 
+//  UI Libraries
+/*
+    Source : https://philippegroarke.com/posts/2018/c++_ui_solutions/
+    GUILite
+    Juce
+*/
+
 #ifdef __DESKTOP__
 void handleKeyboardEvent(unsigned char key, int x, int y)
 {
@@ -153,6 +160,10 @@ void Application::mainLoop(double deltaTime){
 void Application::navigateToScene(unsigned int sceneIndex) {
   assert(sceneIndex >= 0 && sceneIndex <= sceneList.size());
   currentScene = sceneList.at(sceneIndex).get();
+  DataAccessPoint::getInstance()->getEventHandler().emitEvent<std::string>(
+    EventHandler::EventName::activeSceneChanged,
+    currentScene->getSceneName()
+  );
 }
 
 void Application::notifyKeyIsPressed(Constants::Buttons key) {
@@ -161,6 +172,6 @@ void Application::notifyKeyIsPressed(Constants::Buttons key) {
     if (sceneIndex >= sceneList.size()) {
       sceneIndex = 0;
     }
-    currentScene = sceneList.at(sceneIndex).get();
+    navigateToScene(sceneIndex);
   }
 }

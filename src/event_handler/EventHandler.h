@@ -16,9 +16,10 @@ private:
 
 public:
 
-  enum EventName {
+  enum class EventName {
     keyboardKeyIsPressed,
-    screenSurfaceChanged
+    screenSurfaceChanged,
+    activeSceneChanged
   };
 
   template<typename T>

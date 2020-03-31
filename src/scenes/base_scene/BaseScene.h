@@ -25,17 +25,23 @@ public:
 
 #endif // __DESKTOP__
 
+  void onActiveSceneChanged(const std::string& sceneName);
+
   std::string getSceneName();
 
 protected:
 
 #ifdef __DESKTOP__
+
   bool useKeyEvent(const Constants::Buttons& keyEvent);
+
 #endif
 
   OpenGL & gl;
 
   const std::string sceneName;
+
+  bool isPageActive = false;
 
 private:
 

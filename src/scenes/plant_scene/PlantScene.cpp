@@ -19,7 +19,7 @@ PlantScene::PlantScene(OpenGL& gl)
     0,
     DataAccessPoint::getInstance()->getAppScreenWidth(),
     DataAccessPoint::getInstance()->getAppScreenHeight(),
-    "Bunny main camera"
+    "Plant main camera"
   )
 {
   {//Creating shape
@@ -40,8 +40,8 @@ PlantScene::PlantScene(OpenGL& gl)
         float(DataAccessPoint::getInstance()->getAppScreenWidth()) / 2.0f,
         float(DataAccessPoint::getInstance()->getAppScreenHeight()),
         cameraInitialZLocation - 1.0f
-        )
-      );
+      )
+    );
     light = (DiffuseLight*)lightSources.at(lightSources.size() - 1).get();
   }
 }

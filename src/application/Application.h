@@ -49,7 +49,7 @@ private:
   BaseScene* currentScene;
 
   unsigned int sceneIndex = 0;
-
+  //TODO Maybe we need maximum 1 scene alive at same time
   std::vector<std::unique_ptr<BaseScene>> sceneList;
 
   double currentFps = 0;
@@ -59,14 +59,6 @@ private:
   _Vec2d<unsigned int> fpsDrawLocation;
 
   _Vec2d<unsigned int> sceneNameDrawLocation;
-
-  /*
-
-  Wood wood;
-  
-  Sky sky;
-  
-  Dice dice;*/
 };
 
 #endif
