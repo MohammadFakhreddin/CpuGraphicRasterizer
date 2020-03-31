@@ -6,7 +6,6 @@
 
 #include "./../data_types/VectorTemplate.h"
 #include "./../open_gl/OpenGl.h"
-#include "./../fa_texture/FaTexture.h"
 #include "./../data_types/MatrixTemplate.h"
 
 class Camera{

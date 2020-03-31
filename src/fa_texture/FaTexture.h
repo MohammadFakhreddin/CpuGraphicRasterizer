@@ -5,34 +5,57 @@
 #include <memory>
 
 #include "./../data_types/FaObject.h"
+#include "./../camera/Camera.h"
 
 class FaTexture
 {
+
 private:
+  
   int width;
+  
   int height;
+  
   int numberOfChannels;
+
   unsigned int dataLength;
+
   std::string address;
+
   float* data;
+
   float virtualImageWidth;
+
   float virtualImageHeight;
+
   float scaleX;
+
   float scaleY;
+
   unsigned int currentPosition;
+
   void getPixelForPosition(const unsigned int& x,const unsigned int& y,float *red,float *green,float *blue);
+
 public:
+  
   FaTexture(
     std::string address,
     float virtualImageWidth,
     float virtualImageHeight
   );
+  
   ~FaTexture();
+  
   int getRealImageWidth();
+  
   int getRealImageHeight();
+  
   float getVirtualImageWidth();
+  
   float getVirtualImageHeight();
+  
   int getNumberOfChannels();
+  
   void getColorForPosition(
     float positionX,
     float positionY,
@@ -40,7 +63,11 @@ public:
     float* green,
     float* blue
   );
+  
   std::string getAddress();
+  
+  void render(double deltaTime, Camera& cameraInstance);
+
 };
 
 #endif

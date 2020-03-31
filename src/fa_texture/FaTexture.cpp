@@ -6,6 +6,7 @@
 #include "../file_system/FileSystem.h"
 #include "../camera/Camera.h"
 #include "./../data_types/FaObject.h"
+#include "./../camera/Camera.h"
 
 FaTexture::FaTexture(
   std::string address,
@@ -118,33 +119,33 @@ void FaTexture::getPixelForPosition(
  * We need spritesheet in future
 */
 //TODO Move this code for spritesheet
-// void FaTexture::render(double deltaTime,Camera& cameraInstance){
-//   float red = 0;
-//   float green = 0;
-//   float blue = 0;
-//   for(int i=0;i<width;i++){
-//     for(int j=0;j<height;j++){
-//       getPixelForPosition(
-//         i,
-//         j,
-//         &red,
-//         &green,
-//         &blue
-//       );
-//       assert( red>=0 && red<=255 );
-//       assert( blue>=0 && blue<=255 );
-//       assert( green>=0 && green<=255 );
-//       cameraInstance.putPixelInMap(
-//         i,
-//         j,
-//         -100,
-//         red,
-//         green,
-//         blue
-//       );
-//     }
-//   }
-// }
+void FaTexture::render(double deltaTime,Camera& cameraInstance){
+  float red = 0;
+  float green = 0;
+  float blue = 0;
+  for(unsigned int i=0;i<width;i++){
+    for(unsigned int j=0;j<height;j++){
+      getPixelForPosition(
+        i,
+        j,
+        &red,
+        &green,
+        &blue
+      );
+      assert( red>=0 && red<=255 );
+      assert( blue>=0 && blue<=255 );
+      assert( green>=0 && green<=255 );
+      cameraInstance.putPixelInMap(
+        i,
+        j,
+        -1,
+        red,
+        green,
+        blue
+      );
+    }
+  }
+}
 
 std::string FaTexture::getAddress(){
   return address;
