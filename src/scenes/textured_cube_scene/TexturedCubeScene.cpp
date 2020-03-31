@@ -6,7 +6,7 @@ TexturedCubeScene::TexturedCubeScene(
   OpenGL& gl
   )
   :
-  BaseScene(gl, "ColoredCubeScene"),
+  BaseScene(gl, "TexturedCubeScene"),
   cameraInstance(
     gl,
     cameraInitialMaximumFov,
@@ -19,7 +19,7 @@ TexturedCubeScene::TexturedCubeScene(
     DataAccessPoint::getInstance()->getAppScreenWidth(),
     DataAccessPoint::getInstance()->getAppScreenHeight(),
     "Texture main camera"
-    )
+  )
 {
   {//Creating shape
 

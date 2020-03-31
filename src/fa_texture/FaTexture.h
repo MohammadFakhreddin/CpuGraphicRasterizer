@@ -14,18 +14,20 @@ private:
   int numberOfChannels;
   unsigned int dataLength;
   std::string address;
-  std::unique_ptr<FaObject<float>[]> data;
+  float*** data;
   float virtualImageWidth;
   float virtualImageHeight;
   float scaleX;
   float scaleY;
-  void getPixelForPosition(int x,int y,float *red,float *green,float *blue);
+  float* currentPixel;
+  void getPixelForPosition(const unsigned int& x,const unsigned int& y,float *red,float *green,float *blue);
 public:
   FaTexture(
     std::string address,
     float virtualImageWidth,
     float virtualImageHeight
   );
+  ~FaTexture();
   int getRealImageWidth();
   int getRealImageHeight();
   float getVirtualImageWidth();

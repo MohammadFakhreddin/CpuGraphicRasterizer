@@ -24,10 +24,20 @@ FaTexture::FaTexture(
   assert(tempData);
   //For data protection we copy temp data so external events won't effect data
   dataLength = (unsigned int)(width * height * numberOfChannels);
-  data = std::unique_ptr<FaObject<float>[]>(new FaObject<float>[dataLength]);
-  for(unsigned int i=0;i<dataLength;i++){
-    data[i].setValue(float(tempData[i])/255.0f);
+
+  assert(dataLength % numberOfChannels == 0);
+
+  data = new float**[height];
+  for (unsigned int i = 0; i < height; i++) {
+    data[i] = new float*[width];
+    for (unsigned int j = 0; j < width; j++) {
+      data[i][j] = new float[numberOfChannels];
+      for (unsigned int k = 0; k < numberOfChannels; k++) {
+        data[i][j][k] = float(tempData[((i * width) + j) * numberOfChannels + k]) / 255.0f;
+      }
+    }
   }
+
 #ifndef __ANDROID__
   //Removing temporary data
   delete[] tempData;
@@ -35,6 +45,16 @@ FaTexture::FaTexture(
 
   scaleX = float(width) / virtualImageWidth;
   scaleY = float(height) / virtualImageHeight;
+}
+
+FaTexture::~FaTexture() {
+  for (unsigned int i = 0; i < height; i++) {
+    for (unsigned int j = 0; j < width; j++) {
+      delete[] data[i][j];
+    }
+    delete[] data[i];
+  }
+  delete[] data;
 }
 
 int FaTexture::getRealImageWidth(){
@@ -89,17 +109,19 @@ void FaTexture::getColorForPosition(
 }
 
 void FaTexture::getPixelForPosition(
-  int positionX,
-  int positionY,
+  const unsigned int& positionX,
+  const unsigned int& positionY,
   float* red,
   float* green,
   float* blue
 ){
-  unsigned int index = numberOfChannels * (positionY * width + positionX);
-  assert(index+numberOfChannels<=dataLength);
-  *red = data[index + 0].getValue();
-  *green = data[index + 1].getValue();
-  *blue = data[index + 2].getValue();
+  assert(positionX >= 0 && positionX < width && "FaTexture::getPixelForPosition positionX must be between 0 and width");
+  assert(positionY >= 0 && positionY < height && "FaTexture::getPixelForPosition positionY must be between 0 and height");
+  
+  currentPixel = data[positionY][positionX];
+  *red = currentPixel[0];
+  *green = currentPixel[1];
+  *blue = currentPixel[2];
 }
 
 /**
