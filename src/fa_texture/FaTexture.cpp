@@ -27,15 +27,9 @@ FaTexture::FaTexture(
 
   assert(dataLength % numberOfChannels == 0);
 
-  data = new float**[height];
-  for (unsigned int i = 0; i < height; i++) {
-    data[i] = new float*[width];
-    for (unsigned int j = 0; j < width; j++) {
-      data[i][j] = new float[numberOfChannels];
-      for (unsigned int k = 0; k < numberOfChannels; k++) {
-        data[i][j][k] = float(tempData[((i * width) + j) * numberOfChannels + k]) / 255.0f;
-      }
-    }
+  data = new float[dataLength];
+  for (unsigned int i = 0; i < dataLength; i++) {
+    data[i] = float(tempData[i]) / 255.0f;
   }
 
 #ifndef __ANDROID__
@@ -48,12 +42,6 @@ FaTexture::FaTexture(
 }
 
 FaTexture::~FaTexture() {
-  for (unsigned int i = 0; i < height; i++) {
-    for (unsigned int j = 0; j < width; j++) {
-      delete[] data[i][j];
-    }
-    delete[] data[i];
-  }
   delete[] data;
 }
 
@@ -118,10 +106,11 @@ void FaTexture::getPixelForPosition(
   assert(positionX >= 0 && positionX < width && "FaTexture::getPixelForPosition positionX must be between 0 and width");
   assert(positionY >= 0 && positionY < height && "FaTexture::getPixelForPosition positionY must be between 0 and height");
   
-  currentPixel = data[positionY][positionX];
-  *red = currentPixel[0];
-  *green = currentPixel[1];
-  *blue = currentPixel[2];
+  currentPosition = (positionY * width + positionX) * numberOfChannels;
+  
+  *red = data[currentPosition];
+  *green = data[currentPosition + 1];
+  *blue = data[currentPosition + 2];
 }
 
 /**

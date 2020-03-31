@@ -14,12 +14,12 @@ private:
   int numberOfChannels;
   unsigned int dataLength;
   std::string address;
-  float*** data;
+  float* data;
   float virtualImageWidth;
   float virtualImageHeight;
   float scaleX;
   float scaleY;
-  float* currentPixel;
+  unsigned int currentPosition;
   void getPixelForPosition(const unsigned int& x,const unsigned int& y,float *red,float *green,float *blue);
 public:
   FaTexture(
