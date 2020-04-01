@@ -185,11 +185,13 @@ public:
       const auto latitudeStepDegree = Math::piFloat / float(numberOfLat);
 
       MatrixFloat latitudeRotationMatrix = MatrixFloat(3, 3, 0.0f);
+      latitudeRotationMatrix.set(2, 2, 1.0f);
      
       const auto longitudeStepDegree = (Math::piFloat * 2.0f) / float(numberOfLong);
 
       MatrixFloat longitudeRotationMatrix = MatrixFloat(3, 3, 0.0f);
-      
+      longitudeRotationMatrix.set(1, 1, 1.0f);
+
       MatrixFloat latitudePoint = MatrixFloat(3, 1, 0.0f);
 
       MatrixFloat longitudePoint = MatrixFloat(3, 1, 0.0f);
@@ -199,10 +201,10 @@ public:
 
         latitudePoint.assign(initialPoint);
 
+        latitudeRotationMatrix.set(0, 0, cosf(latitudeStepDegree * latitudeIndex));
+        latitudeRotationMatrix.set(0, 1, -sinf(latitudeStepDegree * latitudeIndex));
+        latitudeRotationMatrix.set(1, 0, sinf(latitudeStepDegree * latitudeIndex));
         latitudeRotationMatrix.set(1, 1, cosf(latitudeStepDegree * latitudeIndex));
-        latitudeRotationMatrix.set(1, 2, sinf(latitudeStepDegree * latitudeIndex));
-        latitudeRotationMatrix.set(2, 1, -sinf(latitudeStepDegree * latitudeIndex));
-        latitudeRotationMatrix.set(2, 2, cosf(latitudeStepDegree * latitudeIndex));
         
         latitudePoint.multiply(latitudeRotationMatrix);
 
@@ -261,7 +263,7 @@ public:
     {//Filling indices
       
       for (unsigned int i = 0; i < numberOfLong; i++) {
-        indices.emplace_back(std::make_unique<SimpleSurface>(
+        indices.emplace_back(std::make_unique<ColorSurface>(
           convertLatAndLongToVertices(sideLatCount, 0),
           convertLatAndLongToVertices(1, i % numberOfLong),
           convertLatAndLongToVertices(1, (i + 1) % numberOfLong),
@@ -272,9 +274,9 @@ public:
       }
       
       for (unsigned int i = 0; i < numberOfLong; i++) {
-        indices.emplace_back(std::make_unique<SimpleSurface>(
-          convertLatAndLongToVertices(sideLatCount + 1, 0),
+        indices.emplace_back(std::make_unique<ColorSurface>(
           convertLatAndLongToVertices(sideLatCount - 1, i % numberOfLong),
+          convertLatAndLongToVertices(sideLatCount + 1, 0),
           convertLatAndLongToVertices(sideLatCount - 1, (i + 1) % numberOfLong),
           color.getX(),
           color.getY(),
@@ -284,7 +286,7 @@ public:
       
       for (unsigned int i = 0; i < sideLatCount - 1; i++) {
         for (unsigned int j = 0; j < numberOfLong; j++) {
-          indices.emplace_back(std::make_unique<SimpleSurface>(
+          indices.emplace_back(std::make_unique<ColorSurface>(
             convertLatAndLongToVertices(i, (j + 1) % numberOfLong),
             convertLatAndLongToVertices(i, j % numberOfLong),
             convertLatAndLongToVertices(i + 1, (j + 1) % numberOfLong),
@@ -292,9 +294,9 @@ public:
             color.getY(),
             color.getZ()
           ));
-          indices.emplace_back(std::make_unique<SimpleSurface>(
-            convertLatAndLongToVertices(i + 1, j % numberOfLong),
+          indices.emplace_back(std::make_unique<ColorSurface>(
             convertLatAndLongToVertices(i, j % numberOfLong),
+            convertLatAndLongToVertices(i + 1, j% numberOfLong),
             convertLatAndLongToVertices(i + 1, (j + 1) % numberOfLong),
             color.getX(),
             color.getY(),
