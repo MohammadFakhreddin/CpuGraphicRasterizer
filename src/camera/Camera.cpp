@@ -150,8 +150,6 @@ void Camera::putPixelInMap(
   }
 }
 
-void Camera::update(double deltaTime){}
-
 void Camera::render(double deltaTime){
   {//Drawing screen
     gl.beginDrawingPoints();

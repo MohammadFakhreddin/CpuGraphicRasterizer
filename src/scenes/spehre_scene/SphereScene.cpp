@@ -40,15 +40,13 @@ SphereScene::SphereScene(OpenGL& gl)
 
 void SphereScene::update(double deltaTime) {
   {//Temporary code for auto rotation
-    sphere->rotateY(float(-1.0f * shapeRotationSpeed * deltaTime * 0.1f));
-    sphere->rotateX(float(-1.0f * shapeRotationSpeed * deltaTime * 0.1f));
+  //  sphere->rotateY(float(-1.0f * shapeRotationSpeed * deltaTime * 0.1f));
+  //  sphere->rotateX(float(-1.0f * shapeRotationSpeed * deltaTime * 0.1f));
     sphere->rotateZ(float(-1.0f * shapeRotationSpeed * deltaTime * 0.1f));
   }
   sphere->update(deltaTime, cameraInstance, lightSources);
-  cameraInstance.update(deltaTime);
 }
 
 void SphereScene::render(double deltaTime) {
-  sphere->render(deltaTime, cameraInstance);
   cameraInstance.render(deltaTime);
 }

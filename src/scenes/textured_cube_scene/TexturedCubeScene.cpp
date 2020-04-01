@@ -55,10 +55,8 @@ void TexturedCubeScene::update(double deltaTime) {
     cube->rotateZ(float(-1.0f * shapeRotationSpeed * deltaTime * 0.1f));
   }
   cube->update(deltaTime, cameraInstance, lightSources);
-  cameraInstance.update(deltaTime);
 }
 
 void TexturedCubeScene::render(double deltaTime) {
-  cube->render(deltaTime, cameraInstance);
   cameraInstance.render(deltaTime);
 }

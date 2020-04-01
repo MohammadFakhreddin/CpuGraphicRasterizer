@@ -32,16 +32,10 @@ void BaseSurface::update(
   computeNormalVector(worldPoints);
   computeEdgeCenter(worldPoints);
   //TODO This method is cpu demanding
-  //if(!isVisibleToCamera(cameraInstance, worldPoints)){
-  //  return;
-  //}
+  if (!isVisibleToCamera(cameraInstance, worldPoints)) {
+    return;
+  }
   computeColorIntensity(lightSources);
-}
-
-void BaseSurface::render(
-  Camera& cameraInstance,
-  std::vector<MatrixFloat>& worldPoints
-) {
   computePixelMapData(
     cameraInstance,
     worldPoints

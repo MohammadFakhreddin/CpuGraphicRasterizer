@@ -31,8 +31,6 @@ public:
 
   void update(double deltaTime, Camera& cameraInstance);
 
-  void render(double deltaTime, Camera& cameraInstance);
-
 protected:
   
   MatrixFloat worldPoint = MatrixFloat(3,1,0.0f);

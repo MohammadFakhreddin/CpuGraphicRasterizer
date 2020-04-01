@@ -50,8 +50,6 @@ public:
     const float& blue
   );
 
-  void update(double deltaTime);
-  
   void render(double deltaTime);
   
   float scaleBasedOnZDistance(float zLocation);

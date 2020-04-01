@@ -107,15 +107,8 @@ void RobotScene::update(double deltaTime) {
     }
   }
   shape->update(deltaTime, cameraInstance, lightSources);
-  cameraInstance.update(deltaTime);
 }
 
 void RobotScene::render(double deltaTime) {
-  {//Updating light
-    for (unsigned int i = 0; i < lightSources.size(); i++) {
-      lightSources.at(0)->render(deltaTime, cameraInstance);
-    }
-  }
-  shape->render(deltaTime, cameraInstance);
   cameraInstance.render(deltaTime);
 }

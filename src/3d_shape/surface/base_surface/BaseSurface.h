@@ -19,11 +19,6 @@ public:
     std::vector<std::unique_ptr<Light>>& lightSources
   );
 
-  void render(
-    Camera& cameraInstance,
-    std::vector<MatrixFloat>& worldPoints
-  );
-
   unsigned long getEdgeByIndex(short index);
 
   bool areEdgesDataValid(int nodesSize);

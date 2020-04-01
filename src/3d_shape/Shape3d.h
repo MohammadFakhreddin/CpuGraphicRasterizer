@@ -51,11 +51,6 @@ public:
     std::vector<std::unique_ptr<Light>>& lightSources
   );
 
-  void render(
-    double deltaTime,
-    Camera& cameraInstance
-  );
-
   void transformX(float x);
 
   void transformY(float y);
