@@ -259,7 +259,7 @@ public:
     std::vector<std::unique_ptr<BaseSurface>> indices;
 
     {//Filling indices
-      /*
+      
       for (unsigned int i = 0; i < numberOfLong; i++) {
         indices.emplace_back(std::make_unique<ColorSurface>(
           convertLatAndLongToVertices(0, 0),
@@ -269,9 +269,9 @@ public:
           color.getY(),
           color.getZ()
         ));
-      }*/
+      }
       
-      /*for (unsigned int i = 0; i < numberOfLong; i++) {
+      for (unsigned int i = 0; i < numberOfLong; i++) {
         indices.emplace_back(std::make_unique<ColorSurface>(
           convertLatAndLongToVertices(numberOfLat - 1, 0),
           convertLatAndLongToVertices(numberOfLat - 2, i % numberOfLong),
@@ -280,9 +280,9 @@ public:
           color.getY(),
           color.getZ()
         ));
-      }*/
+      }
 
-    /*for (unsigned int i = 1; i < numberOfLat - 2; i++) {
+      for (unsigned int i = 1; i < numberOfLat - 2; i++) {
         for (unsigned int j = 0; j <= numberOfLong; j++) {
           indices.emplace_back(std::make_unique<ColorSurface>(
             convertLatAndLongToVertices(i, (j + 1) % numberOfLong),
@@ -302,7 +302,7 @@ public:
           ));
         }
       }
-    }*/
+    }
 
     return std::make_unique<Shape3d>(
       vertices,
