@@ -1,5 +1,6 @@
 ﻿#include "./ColoredCubeScene.h"
 
+#include "../../3d_models/ShapeGenerator.h"
 #include "../../data_access_point/DataAccessPoint.h"
 
 ColoredCubeScene::ColoredCubeScene(
@@ -27,11 +28,11 @@ ColoredCubeScene::ColoredCubeScene(
     
     auto appScreenHeight = DataAccessPoint::getInstance()->getAppScreenHeight();
 
-    auto width = DataAccessPoint::getInstance()->getAppScreenWidth()/6;
+    float width = DataAccessPoint::getInstance()->getAppScreenWidth()/6.0f;
     
     Logger::log("Creating shape object");
     
-    cube = Shape3d::generateColored3DCube(
+    cube = ShapeGenerator::generateColored3DCube(
       width,
       width,
       width,

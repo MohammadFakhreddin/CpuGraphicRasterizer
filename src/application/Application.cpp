@@ -16,6 +16,7 @@
 #include "../scenes/textured_cube_scene/TexturedCubeScene.h"
 #include "../scenes/robot_scene/RobotScene.h"
 #include "../scenes/plant_scene/PlantScene.h"
+#include "../scenes/spehre_scene/SphereScene.h"
 
 //  UI Libraries
 /*
@@ -48,8 +49,8 @@ Application::Application(
     physicalDeviceScreenWidth,
     physicalDeviceScreenHeight
     ),
-  fpsDrawLocation(0.0f, 0.0f),
-  sceneNameDrawLocation(0.0f, appScreenHeight - 32)
+  fpsDrawLocation(0, 0),
+  sceneNameDrawLocation(0, appScreenHeight - 32)
 {
   {
     DataAccessPoint::createInstance();
@@ -66,6 +67,7 @@ Application::Application(
 #endif
 
   {
+    sceneList.emplace_back(std::make_unique<SphereScene>(openGLInstance));
     sceneList.emplace_back(std::make_unique<BunnyScene>(openGLInstance));
     sceneList.emplace_back(std::make_unique<ColoredCubeScene>(openGLInstance));
     sceneList.emplace_back(std::make_unique<TexturedCubeScene>(openGLInstance));

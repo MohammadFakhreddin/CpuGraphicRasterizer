@@ -1,6 +1,7 @@
 #include "./TexturedCubeScene.h"
 
 #include "../../data_access_point/DataAccessPoint.h"
+#include "../../3d_models/ShapeGenerator.h"
 
 TexturedCubeScene::TexturedCubeScene(
   OpenGL& gl
@@ -31,19 +32,17 @@ TexturedCubeScene::TexturedCubeScene(
 
     Logger::log("Creating shape object");
 
-    cube = Shape3d::generateTextured3DCube(
-      dice.diceCubeTexture,
-      dice.diceCubeEdgeList,
-      width,
-      width,
-      width,
+    cube = dice.generateCube(
+      float(width), 
+      float(width), 
+      float(width), 
       float(appScreenWidth) / 2.0f,
       float(appScreenHeight) / 2.0f,
       float(cameraInitialZLocation - 500.0f),
-      0,
-      0,
-      0,
-      1
+      0.0f,
+      0.0f,
+      0.0f,
+      1.0f
     );
 
   }

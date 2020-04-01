@@ -4,8 +4,6 @@
 #include <memory>
 
 #include "../Constants.h"
-#include "./../3d_models/Wood.h"
-#include "./../3d_models/Sky.h"
 #include "./../3d_models/Dice.h"
 #include "../3d_shape/Shape3d.h"
 #include "../open_gl/OpenGl.h"

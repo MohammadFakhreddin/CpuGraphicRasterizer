@@ -123,8 +123,8 @@ void FaTexture::render(double deltaTime,Camera& cameraInstance){
   float red = 0;
   float green = 0;
   float blue = 0;
-  for(unsigned int i=0;i<width;i++){
-    for(unsigned int j=0;j<height;j++){
+  for(int i=0;i<width;i++){
+    for(int j=0;j<height;j++){
       getPixelForPosition(
         i,
         j,

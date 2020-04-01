@@ -15,51 +15,23 @@ class Shape3d
 {
 public:
 
-  static std::unique_ptr<Shape3d> generateColored3DCube(
-    float xWidth,
-    float yWidth,
-    float zWidth,
-    float transformX,
-    float transformY,
-    float transformZ,
-    float rotationX,
-    float rotationY,
-    float rotationZ,
-    float scale
-  );
-
-  static std::unique_ptr<Shape3d> generateTextured3DCube(
-    std::unique_ptr<FaTexture>& texture,
-    const std::vector<BaseSurface*>& edgeList,
-    float xWidth,
-    float yWidth,
-    float zWidth,
-    float transformX,
-    float transformY,
-    float transformZ,
-    float rotationX,
-    float rotationY,
-    float rotationZ,
-    float scale
-  );
-
   //TODO Rename node and edge to vertices and indices
   Shape3d(
-    std::vector<MatrixFloat> nodes,
-    const std::vector<BaseSurface*>& edges
+    std::vector<MatrixFloat>& nodes,
+    std::vector<std::unique_ptr<BaseSurface>>& edges
   );
 
   Shape3d(
-    std::vector<MatrixFloat> nodes,
-    const std::vector<BaseSurface*>& edges,
+    std::vector<MatrixFloat>& nodes,
+    std::vector<std::unique_ptr<BaseSurface>>&  edges,
     float initialTransformX,
     float initialTransformY,
     float initialTransformZ
   );
 
   Shape3d(
-    std::vector<MatrixFloat> nodes,
-    const std::vector<BaseSurface*>& edges,
+    std::vector<MatrixFloat>& nodes,
+    std::vector<std::unique_ptr<BaseSurface>>& edges,
     float transformX,
     float transformY,
     float transformZ,
@@ -70,6 +42,8 @@ public:
   );
 
   bool checkForNodesValidation();
+
+  bool areAllEdgesDataValid();
 
   void update(
     double deltaTime,

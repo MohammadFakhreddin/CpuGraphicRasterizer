@@ -9,190 +9,24 @@
 #include "./surface/color_surface/ColorSurface.h"
 #include "./../shaders/light/Light.h"
 
-std::unique_ptr<Shape3d> Shape3d::generateTextured3DCube(
-  std::unique_ptr<FaTexture> &texture,
-  const std::vector<BaseSurface *>& edgeList,
-  float w,
-  float h,
-  float d,
-  float transformX,
-  float transformY,
-  float transformZ,
-  float rotationX,
-  float rotationY,
-  float rotationZ,
-  float scale
-) {
-    //TODO Move these two methods into new class
-    //Also nodeList for cube is only part that is needed    
-    float x = -w / 2;
-    float y = -h / 2;
-    float z = -d / 2;
-    std::vector<MatrixFloat> nodeList = {
-      MatrixFloat(3, 1, std::vector<std::vector<float>>{
-        std::vector<float>{x},
-        std::vector<float>{y},
-        std::vector<float>{z}
-      }),
-      MatrixFloat(3, 1, std::vector<std::vector<float>>{
-        std::vector<float>{x},
-        std::vector<float>{y},
-        std::vector<float>{z + d}
-      }),
-      MatrixFloat(3, 1, std::vector<std::vector<float>>{
-        std::vector<float>{x},
-        std::vector<float>{y + h},
-        std::vector<float>{z}
-      }),
-      MatrixFloat(3, 1, std::vector<std::vector<float>>{
-        std::vector<float>{x},
-        std::vector<float>{y + h},
-        std::vector<float>{z + d}
-      }),
-      MatrixFloat(3, 1, std::vector<std::vector<float>>{
-        std::vector<float>{x + w},
-        std::vector<float>{y},
-        std::vector<float>{z}
-      }),
-      MatrixFloat(3, 1, std::vector<std::vector<float>>{
-        std::vector<float>{x + w},
-        std::vector<float>{y},
-        std::vector<float>{z + d}
-      }),
-      MatrixFloat(3, 1, std::vector<std::vector<float>>{
-        std::vector<float>{x + w},
-        std::vector<float>{y + h},
-        std::vector<float>{z}
-      }),
-      MatrixFloat(3, 1, std::vector<std::vector<float>>{
-        std::vector<float>{x + w},
-        std::vector<float>{y + h},
-        std::vector<float>{z + d}
-      })
-    };
-    return std::make_unique<Shape3d>(
-        nodeList,
-        edgeList,
-        transformX,
-        transformY,
-        transformZ,
-        rotationX,
-        rotationY,
-        rotationZ,
-        scale
-    );
-}
-
-std::unique_ptr<Shape3d> Shape3d::generateColored3DCube(
-  float h,
-  float w,
-  float d,
-  float transformX,
-  float transformY,
-  float transformZ,
-  float rotationX,
-  float rotationY,
-  float rotationZ,
-  float scale
-) {
-    float x = -w / 2;
-    float y = -h / 2;
-    float z = -d / 2;
-    std::vector<MatrixFloat> nodeList = {
-        MatrixFloat(3, 1, std::vector<std::vector<float>>{
-          std::vector<float>{x},
-          std::vector<float>{y},
-          std::vector<float>{z}
-        }),
-        MatrixFloat(3, 1, std::vector<std::vector<float>>{
-          std::vector<float>{x},
-          std::vector<float>{y},
-          std::vector<float>{z + d}
-        }),
-        MatrixFloat(3, 1, std::vector<std::vector<float>>{
-          std::vector<float>{x},
-          std::vector<float>{y + h},
-          std::vector<float>{z}
-        }),
-        MatrixFloat(3, 1, std::vector<std::vector<float>>{
-          std::vector<float>{x},
-          std::vector<float>{y + h},
-          std::vector<float>{z + d}
-        }),
-        MatrixFloat(3, 1, std::vector<std::vector<float>>{
-          std::vector<float>{x + w},
-          std::vector<float>{y},
-          std::vector<float>{z}
-        }),
-        MatrixFloat(3, 1, std::vector<std::vector<float>>{
-          std::vector<float>{x + w},
-          std::vector<float>{y},
-          std::vector<float>{z + d}
-        }),
-        MatrixFloat(3, 1, std::vector<std::vector<float>>{
-          std::vector<float>{x + w},
-          std::vector<float>{y + h},
-          std::vector<float>{z}
-        }),
-        MatrixFloat(3, 1, std::vector<std::vector<float>>{
-          std::vector<float>{x + w},
-          std::vector<float>{y + h},
-          std::vector<float>{z + d}
-        })
-    };
-    std::vector<BaseSurface *> edgeList = {
-        new ColorSurface(2, 1, 0, 245.0f / 255.0f, 144.0f / 255.0f, 66.0f / 255.0f),
-        new ColorSurface(3, 1, 2, 245.0f / 255.0f, 144.0f / 255.0f, 66.0f / 255.0f),
-        new ColorSurface(1, 3, 5, 221.0f / 255.0f, 245.0f / 255.0f, 66.0f / 255.0f),
-        new ColorSurface(5, 3, 7, 221.0f / 255.0f, 245.0f / 255.0f, 66.0f / 255.0f),
-        new ColorSurface(4, 0, 5, 66.0f / 255.0f, 245.0f / 255.0f, 126.0f / 255.0f),
-        new ColorSurface(5, 0, 1, 66.0f / 255.0f, 245.0f / 255.0f, 126.0f / 255.0f),
-        new ColorSurface(6, 0, 4, 66.0f / 255.0f, 194.0f / 255.0f, 245.0f / 255.0f),
-        new ColorSurface(2, 0, 6, 66.0f / 255.0f, 194.0f / 255.0f, 245.0f / 255.0f),
-        new ColorSurface(7, 2, 6, 96.0f / 255.0f, 66.0f / 255.0f, 245.0f / 255.0f),
-        new ColorSurface(3, 2, 7, 96.0f / 255.0f, 66.0f / 255.0f, 245.0f / 255.0f),
-        new ColorSurface(7, 4, 5, 245.0f / 255.0f, 66.0f / 255.0f, 123.0f / 255.0f),
-        new ColorSurface(6, 4, 7, 245.0f / 255.0f, 66.0f / 255.0f, 123.0f / 255.0f)
-    };
-    return std::make_unique<Shape3d>(
-        nodeList,
-        edgeList,
-        transformX,
-        transformY,
-        transformZ,
-        rotationX,
-        rotationY,
-        rotationZ,
-        scale
-    );
-}
-
+//TODO Replace this with uniq_ptr and use std::move instead for edges
 Shape3d::Shape3d(
-  std::vector<MatrixFloat> nodes,
-  const std::vector<BaseSurface *>& edges
+  std::vector<MatrixFloat>& nodes,
+  std::vector<std::unique_ptr<BaseSurface>>& edges
 )
 :
-Shape3d(
-    std::move(nodes),
-    edges,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    1) {}
+Shape3d(nodes,edges,0,0,0,0,0,0,1) {}
 
 Shape3d::Shape3d(
-  std::vector<MatrixFloat> nodes,
-  const std::vector<BaseSurface *>& edges,
+  std::vector<MatrixFloat>& nodes,
+  std::vector<std::unique_ptr<BaseSurface>>& edges,
   float initialTransformX,
   float initialTransformY,
   float initialTransformZ
 )
 :
 Shape3d(
-  std::move(nodes),
+  nodes,
   edges,
   initialTransformX,
   initialTransformY,
@@ -204,8 +38,8 @@ Shape3d(
 ) {}
 
 Shape3d::Shape3d(
-  std::vector<MatrixFloat> nodes,
-  const std::vector<BaseSurface *>& edges,
+  std::vector<MatrixFloat>& paramNodes,
+  std::vector<std::unique_ptr<BaseSurface>>& paramEdges,
   float transformX,
   float transformY,
   float transformZ,
@@ -213,8 +47,9 @@ Shape3d::Shape3d(
   float rotationDegreeY,
   float rotationDegreeZ,
   float scaleValue
-) :
-  nodes(nodes),
+ ) :
+  nodes(std::move(paramNodes)),
+  edges(std::move(paramEdges)),
   transformMatrix(3, 1, 0.0f),
   rotationDegreeMatrix(3, 1, 0.0f),
   rotationValueXMatrix(3, 3, std::vector<std::vector<float>>{
@@ -242,27 +77,38 @@ Shape3d::Shape3d(
     std::vector<float>{0, 1, 0},
     std::vector<float>{0, 0, 1}
   }) {
-    assert(nodes.size() > 0);
-    assert(edges.size() > 0);
-    assert(checkForNodesValidation());
-    if (!nodes.empty()) {
-      for (auto &node:nodes) {
-        worldPoints.emplace_back(node.clone());
-      }
-    }
-    if (!edges.empty()) {
-      for (auto edge:edges) {
-        assert(edge->areEdgesDataValid(nodes.size()));
-        this->edges.emplace_back(std::unique_ptr<BaseSurface>(edge));
-      }
-    }
 
-    this->transformX(transformX);
-    this->transformY(transformY);
-    this->transformZ(transformZ);
-    this->rotateX(rotationDegreeX);
-    this->rotateY(rotationDegreeY);
-    this->rotateZ(rotationDegreeZ);
+  
+  assert(nodes.size() > 0);
+  assert(edges.size() > 0);
+
+  assert(checkForNodesValidation());
+  
+  if (!nodes.empty()) {
+    for (auto &node:nodes) {
+      worldPoints.emplace_back(node.clone());
+    }
+  }
+    
+  assert(areAllEdgesDataValid());
+
+  this->transformX(transformX);
+  this->transformY(transformY);
+  this->transformZ(transformZ);
+  this->rotateX(rotationDegreeX);
+  this->rotateY(rotationDegreeY);
+  this->rotateZ(rotationDegreeZ);
+}
+
+bool Shape3d::areAllEdgesDataValid() {
+  if (!edges.empty()) {
+    for (auto& edge : edges) {
+      if (!edge->areEdgesDataValid(nodes.size())) {
+        return false;
+      }
+    }
+  }
+  return true;
 }
 
 bool Shape3d::checkForNodesValidation() {
@@ -354,6 +200,7 @@ void Shape3d::scale(float value) {
 
 void Shape3d::rotateX(float x) {
   rotationDegreeMatrix.set(0, 0, rotationDegreeMatrix.get(0, 0) + x);
+  //TODO we need to generate rotation matrix in matrix class
   rotationValueXMatrix.set(0, 0, cosf(rotationDegreeMatrix.get(0, 0)));
   rotationValueXMatrix.set(0, 1, -sinf(rotationDegreeMatrix.get(0, 0)));
   rotationValueXMatrix.set(1, 0, sinf(rotationDegreeMatrix.get(0, 0)));

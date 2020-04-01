@@ -1,8 +1,11 @@
 #ifndef SphereScene_Class
 #define SphereScene_Class
 
+#include <memory>
+
 #include "../base_scene/BaseScene.h"
 #include "../../camera/Camera.h"
+#include "../../3d_shape/Shape3d.h"
 
 class SphereScene : public BaseScene {
 
@@ -20,7 +23,13 @@ private:
 
   static constexpr unsigned int cameraInitialZLocation = 1000;
 
+  static constexpr float shapeRotationSpeed = 0.01f;
+
   Camera cameraInstance;
+
+  std::unique_ptr<Shape3d> sphere;
+
+  std::vector<std::unique_ptr<Light>> lightSources;
 
 };
 

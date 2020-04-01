@@ -120,7 +120,7 @@ public:
     }
 
     std::vector<MatrixFloat> vertices;
-    std::vector<BaseSurface*> indices;
+    std::vector<std::unique_ptr<BaseSurface>> indices;
     {//Parsing .obj file using tinyObj library
       tinyobj::attrib_t attributes;
       std::vector<tinyobj::shape_t> shapes;
@@ -149,12 +149,12 @@ public:
         assert(attributes.vertices.size()%3==0);
         //Reserving space before allocating
         vertices.reserve(attributes.vertices.size()/3u);
-        for(auto i=0;i<attributes.vertices.size();i+=3){
+        for(unsigned int i=0;i<attributes.vertices.size();i+=3){
           vertices.emplace_back(
             MatrixFloat(3,1,std::vector<std::vector<float>>{
-              std::vector<float>{attributes.vertices[i+0]},
-              std::vector<float>{attributes.vertices[i+1]},
-              std::vector<float>{attributes.vertices[i+2]}
+              std::vector<float>{attributes.vertices[i + 0u]},
+              std::vector<float>{attributes.vertices[i + 1u]},
+              std::vector<float>{attributes.vertices[i + 2u]}
             })
           );
         }
@@ -167,7 +167,7 @@ public:
       // and a flat std::vector of indices. If all faces are triangles
       // then for any face f, the first index of that faces is [f * 3n]
         indices.reserve( mesh.indices.size()/3u );
-        for(auto faceIndex = 0; faceIndex < mesh.num_face_vertices.size() ; faceIndex++){
+        for(unsigned int faceIndex = 0; faceIndex < mesh.num_face_vertices.size() ; faceIndex++){
           //Because we only support triangles currently we check if contains vertices or not
           if(mesh.num_face_vertices[faceIndex]!= 3){
             Logger::exception("Number of face vertices cannot be other than "+ std::to_string(mesh.num_face_vertices[faceIndex]));
@@ -175,19 +175,19 @@ public:
           //Loading mesh indices into indices vector
           //My implementation is counter clock wise so I need to rotate before rendering
           if(isCounterClockWise){
-            indices.emplace_back(new ColorSurface(
-              mesh.indices[faceIndex * 3 + 0].vertex_index,
-              mesh.indices[faceIndex * 3 + 1].vertex_index,
-              mesh.indices[faceIndex * 3 + 2].vertex_index,
+            indices.emplace_back(std::make_unique<ColorSurface>(
+              mesh.indices[faceIndex * 3u + 0u].vertex_index,
+              mesh.indices[faceIndex * 3u + 1u].vertex_index,
+              mesh.indices[faceIndex * 3u + 2u].vertex_index,
               color.getX(),
               color.getY(),
               color.getZ()
             ));
           }else{
-            indices.emplace_back(new ColorSurface(
-              mesh.indices[faceIndex * 3 + 2].vertex_index,
-              mesh.indices[faceIndex * 3 + 1].vertex_index,
-              mesh.indices[faceIndex * 3 + 0].vertex_index,
+            indices.emplace_back(std::make_unique<ColorSurface>(
+              mesh.indices[faceIndex * 3u + 2u].vertex_index,
+              mesh.indices[faceIndex * 3u + 1u].vertex_index,
+              mesh.indices[faceIndex * 3u + 0u].vertex_index,
               color.getX(),
               color.getY(),
               color.getZ()
