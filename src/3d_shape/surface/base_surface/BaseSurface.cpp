@@ -31,9 +31,10 @@ void BaseSurface::update(
   assert(edge3<worldPoints.size() && edge3>=0);
   computeNormalVector(worldPoints);
   computeEdgeCenter(worldPoints);
-  if(!isVisibleToCamera(cameraInstance, worldPoints)){
-    return;
-  }
+  //TODO This method is cpu demanding
+  //if(!isVisibleToCamera(cameraInstance, worldPoints)){
+  //  return;
+  //}
   computeColorIntensity(lightSources);
 }
 

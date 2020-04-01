@@ -10,6 +10,7 @@
 #include "../utils/math/Math.h"
 #include "../data_types/MatrixTemplate.h"
 #include "../utils/math/Math.h"
+#include "../3d_shape/surface/simple_edge/SimpleSurface.h"
 
 class ShapeGenerator {
 
@@ -178,61 +179,62 @@ public:
     std::vector<MatrixFloat> vertices;
 
     {//Filling vertices
-      MatrixFloat vertexPoint = MatrixFloat(3, 1, 0.0f);
-      vertexPoint.set(2, 0, radius);
+      MatrixFloat initialPoint = MatrixFloat(3, 1, 0.0f);
+      initialPoint.set(1, 0, radius);
       
       const auto latitudeStepDegree = Math::piFloat / float(numberOfLat);
 
       MatrixFloat latitudeRotationMatrix = MatrixFloat(3, 3, 0.0f);
-      //TODO We have to refactor and have rotation matrix generators inside matrix class instead
-      latitudeRotationMatrix.set(1, 1, cosf(latitudeStepDegree));
-      latitudeRotationMatrix.set(1, 2, sinf(latitudeStepDegree));
-      latitudeRotationMatrix.set(2, 1, -sinf(latitudeStepDegree));
-      latitudeRotationMatrix.set(2, 2, cosf(latitudeStepDegree));
-
+     
       const auto longitudeStepDegree = (Math::piFloat * 2.0f) / float(numberOfLong);
 
       MatrixFloat longitudeRotationMatrix = MatrixFloat(3, 3, 0.0f);
-      longitudeRotationMatrix.set(0, 0, cosf(longitudeStepDegree));
-      longitudeRotationMatrix.set(0, 1, -sinf(longitudeStepDegree));
-      longitudeRotationMatrix.set(1, 0, sinf(longitudeStepDegree));
-      longitudeRotationMatrix.set(1, 1, cosf(longitudeStepDegree));
-      //longitudeRotationMatrix.set(0, 0, cosf(longitudeStepDegree));
-      //longitudeRotationMatrix.set(0, 2, sinf(longitudeStepDegree));
-      //longitudeRotationMatrix.set(2, 0, -sinf(longitudeStepDegree));
-      //longitudeRotationMatrix.set(2, 2, cosf(longitudeStepDegree));
+      
+      MatrixFloat latitudePoint = MatrixFloat(3, 1, 0.0f);
 
-      //MatrixFloat temporaryVertexPoint = MatrixFloat(3, 1, 0.0f);
+      MatrixFloat longitudePoint = MatrixFloat(3, 1, 0.0f);
 
-      //MatrixFloat finalPointLocation = MatrixFloat(3, 1, 0.0f);
-      //finalPointLocation.set(2, 0, -1 * radius);
+      //vertices.emplace_back(initialPoint);
+      for (unsigned int latitudeIndex = 1; latitudeIndex < numberOfLat - 1; latitudeIndex++) {
 
-      vertices.emplace_back(vertexPoint.clone());
-      for (unsigned int latitudeIndex = 0; latitudeIndex < numberOfLat - 1; latitudeIndex++) {
-        vertexPoint.multiply(latitudeRotationMatrix);
+        latitudePoint.assign(initialPoint);
+
+        latitudeRotationMatrix.set(1, 1, cosf(latitudeStepDegree * latitudeIndex));
+        latitudeRotationMatrix.set(1, 2, sinf(latitudeStepDegree * latitudeIndex));
+        latitudeRotationMatrix.set(2, 1, -sinf(latitudeStepDegree * latitudeIndex));
+        latitudeRotationMatrix.set(2, 2, cosf(latitudeStepDegree * latitudeIndex));
+        
+        latitudePoint.multiply(latitudeRotationMatrix);
+
         //temporaryVertexPoint.assign(vertexPoint);
-        for (unsigned int longitudeIndex = 0; longitudeIndex < numberOfLong - 1; longitudeIndex++) {
-          vertexPoint.multiply(longitudeRotationMatrix);
-          vertices.emplace_back(vertexPoint.clone());
+        for (unsigned int longitudeIndex = 0; longitudeIndex < numberOfLong ; longitudeIndex++) {
+
+          longitudePoint.assign(latitudePoint);
+            
+          longitudeRotationMatrix.set(0, 0, cosf(longitudeStepDegree * longitudeIndex));
+          longitudeRotationMatrix.set(0, 2, sinf(longitudeStepDegree * longitudeIndex));
+          longitudeRotationMatrix.set(2, 0, -sinf(longitudeStepDegree * longitudeIndex));
+          longitudeRotationMatrix.set(2, 2, cosf(longitudeStepDegree * longitudeIndex));
+          
+          longitudePoint.multiply(longitudeRotationMatrix);
+
+          vertices.emplace_back(longitudePoint.clone());
+
         }
-        //vertexPoint.assign(temporaryVertexPoint);
-        vertexPoint.multiply(longitudeRotationMatrix);
-        /*if (vertexPoint.equal(temporaryVertexPoint) == false) {
-          Logger::log("Point is:");
-          vertexPoint.print();
-          Logger::log("Iniital point is:");
-          temporaryVertexPoint.print();
-          Logger::exception("Vertex point is not equal to its inital value");
-        }*/
+
       }
-      vertexPoint.multiply(latitudeRotationMatrix);
-      vertices.emplace_back(vertexPoint.clone());
-      //vertexPoint.print();
-      //finalPointLocation.print();
-      //assert(vertexPoint.equal(finalPointLocation));
+
+      vertices.emplace_back(initialPoint.clone());
+      
+      initialPoint.set(1, 0, -1 * radius);
+
+      vertices.emplace_back(initialPoint.clone());
+    
     }
 
-    auto convertLatAndLongToVertices = [numberOfLat,numberOfLong,vertices](unsigned int latIndex,unsigned int longIndex) {
+    const auto sideLatCount = numberOfLat - 2;
+
+    auto convertLatAndLongToVertices = [numberOfLat,numberOfLong,vertices,sideLatCount](unsigned int latIndex,unsigned int longIndex) {
       assert(
         latIndex >= 0 && latIndex<numberOfLat && 
         "ShapeGenerator::sphere::convertLatAndLongToVertices latIndex must be above 0 and bellow numberOfLat"
@@ -242,16 +244,14 @@ public:
         "ShapeGenerator::sphere::convertLatAndLongToVertices longIndex must be above 0 and bellow numberOfLong"
       );
       assert(
-        ((latIndex != 0 && latIndex!=numberOfLat-1) || longIndex == 0) &&
+        (latIndex<sideLatCount || longIndex == 0) &&
         "ShapeGenerator::sphere::convertLatAndLongToVertices when latIndex is 0 or numberOfLat-1 longIndex must be 0"
       );
       unsigned int index = 0u;
-      if (latIndex == 0) {
-        index = 0u;
-      } else if (longIndex == numberOfLat - 1) {
-        index  = vertices.size() - 1;
+      if (latIndex >= sideLatCount) {
+        index = numberOfLong * sideLatCount + latIndex - sideLatCount;
       } else {
-        index = (latIndex - 1) * numberOfLong + longIndex;
+        index = latIndex * numberOfLong + longIndex;
       }
       return index;
     };
@@ -261,8 +261,8 @@ public:
     {//Filling indices
       
       for (unsigned int i = 0; i < numberOfLong; i++) {
-        indices.emplace_back(std::make_unique<ColorSurface>(
-          convertLatAndLongToVertices(0, 0),
+        indices.emplace_back(std::make_unique<SimpleSurface>(
+          convertLatAndLongToVertices(sideLatCount, 0),
           convertLatAndLongToVertices(1, i % numberOfLong),
           convertLatAndLongToVertices(1, (i + 1) % numberOfLong),
           color.getX(),
@@ -272,19 +272,19 @@ public:
       }
       
       for (unsigned int i = 0; i < numberOfLong; i++) {
-        indices.emplace_back(std::make_unique<ColorSurface>(
-          convertLatAndLongToVertices(numberOfLat - 1, 0),
-          convertLatAndLongToVertices(numberOfLat - 2, i % numberOfLong),
-          convertLatAndLongToVertices(numberOfLat - 2, (i + 1) % numberOfLong),
+        indices.emplace_back(std::make_unique<SimpleSurface>(
+          convertLatAndLongToVertices(sideLatCount + 1, 0),
+          convertLatAndLongToVertices(sideLatCount - 1, i % numberOfLong),
+          convertLatAndLongToVertices(sideLatCount - 1, (i + 1) % numberOfLong),
           color.getX(),
           color.getY(),
           color.getZ()
         ));
       }
-
-      for (unsigned int i = 1; i < numberOfLat - 2; i++) {
-        for (unsigned int j = 0; j <= numberOfLong; j++) {
-          indices.emplace_back(std::make_unique<ColorSurface>(
+      
+      for (unsigned int i = 0; i < sideLatCount - 1; i++) {
+        for (unsigned int j = 0; j < numberOfLong; j++) {
+          indices.emplace_back(std::make_unique<SimpleSurface>(
             convertLatAndLongToVertices(i, (j + 1) % numberOfLong),
             convertLatAndLongToVertices(i, j % numberOfLong),
             convertLatAndLongToVertices(i + 1, (j + 1) % numberOfLong),
@@ -292,7 +292,7 @@ public:
             color.getY(),
             color.getZ()
           ));
-          indices.emplace_back(std::make_unique<ColorSurface>(
+          indices.emplace_back(std::make_unique<SimpleSurface>(
             convertLatAndLongToVertices(i + 1, j % numberOfLong),
             convertLatAndLongToVertices(i, j % numberOfLong),
             convertLatAndLongToVertices(i + 1, (j + 1) % numberOfLong),
@@ -302,6 +302,7 @@ public:
           ));
         }
       }
+
     }
 
     return std::make_unique<Shape3d>(

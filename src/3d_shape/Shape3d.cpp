@@ -52,6 +52,7 @@ Shape3d::Shape3d(
   edges(std::move(paramEdges)),
   transformMatrix(3, 1, 0.0f),
   rotationDegreeMatrix(3, 1, 0.0f),
+  //TODO Check these rotations correctness
   rotationValueXMatrix(3, 3, std::vector<std::vector<float>>{
     std::vector<float>{cosf(0), -sinf(0), 0},
     std::vector<float>{sinf(0), cosf(0), 0},
