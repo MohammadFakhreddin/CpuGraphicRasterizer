@@ -36,8 +36,10 @@ public:
 
   void navigateToScene(unsigned int sceneIndex);
 
+#ifdef __DESKTOP__
   void notifyKeyIsPressed(Constants::Buttons key);
-  
+#endif
+
 private:
 
   void render(double deltaTime);

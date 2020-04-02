@@ -21,7 +21,7 @@ public:
 
   unsigned long getEdgeByIndex(short index);
 
-  bool areEdgesDataValid(int nodesSize);
+  bool areEdgesDataValid(unsigned long nodesSize);
 
   virtual ~BaseSurface() = default;
 

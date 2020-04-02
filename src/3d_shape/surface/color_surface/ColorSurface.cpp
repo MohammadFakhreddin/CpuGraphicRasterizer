@@ -104,6 +104,8 @@ void ColorSurface::computePixelMapData(
 
   xDifference = trianglePoint3X - triangleEndX;
   yDifference = trianglePoint3Y - triangleEndY;
+  //TODO To avoid holes in shapes I have to put single pointes
+  //TODO We have holes in 3d shapes on some situations
   if (xDifference == 0 && yDifference == 0) {
     return;
   }

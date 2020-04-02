@@ -90,9 +90,9 @@ void BaseSurface::computeColorIntensity(
   }
 }
 
-bool BaseSurface::areEdgesDataValid(int nodesSize) {
-  int currentEdge = -1;
-  for (int i = 0; i < 3; i++) {
+bool BaseSurface::areEdgesDataValid(unsigned long nodesSize) {
+  unsigned long currentEdge = 0;
+  for (unsigned short i = 0; i < 3; i++) {
     currentEdge = getEdgeByIndex(i);
     if (currentEdge < 0 || currentEdge >= nodesSize) {
       return false;

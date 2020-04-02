@@ -168,6 +168,7 @@ void Application::navigateToScene(unsigned int sceneIndex) {
   );
 }
 
+#ifdef __DESKTOP__
 void Application::notifyKeyIsPressed(Constants::Buttons key) {
   if (key == Constants::Buttons::tab) {
     sceneIndex++;
@@ -177,3 +178,4 @@ void Application::notifyKeyIsPressed(Constants::Buttons key) {
     navigateToScene(sceneIndex);
   }
 }
+#endif

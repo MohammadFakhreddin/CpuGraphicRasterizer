@@ -24,8 +24,9 @@ SphereScene::SphereScene(OpenGL& gl)
   )
 {
 
+  auto radius = float((25.0f/800.f) * DataAccessPoint::getInstance()->getAppScreenWidth());
   sphere = ShapeGenerator::sphere(
-    25,
+    radius,
     12 * 2,
     24 * 2,
     Vec3DFloat(1.0f, 1.0f, 1.0f),

@@ -130,27 +130,6 @@ void OpenGL::init(){
 
 #ifdef __GLES__
 
-//Not using right now
-void OpenGL::glesOrtho(float left, float right, float top, float bottom, float near, float far){
-
-    projMat[0] = GLfloat(2.0 / (right - left));
-    projMat[1] = 0.0;
-    projMat[2] = 0.0;
-    projMat[3] = 0.0;
-    projMat[4] = 0.0;
-    projMat[5] = GLfloat(2.0 / (top - bottom));
-    projMat[6] = 0.0;
-    projMat[7] = 0.0;
-    projMat[8] = 0.0;
-    projMat[9] = 0.0;
-    projMat[10] = (1.0f / (near - far));
-    projMat[11] = 0.0;
-    projMat[12] = ((left + right) / (left - right));
-    projMat[13] = ((top + bottom) / (bottom - top));
-    projMat[14] = (near / (near - far));
-    projMat[15] = 1;
-}
-
 GLuint OpenGL::loadShader(GLenum shaderType, const char* shaderSource){
   GLuint shader = glCreateShader(shaderType);
   if (shader)
