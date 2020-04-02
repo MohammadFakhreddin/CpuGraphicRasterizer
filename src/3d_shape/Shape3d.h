@@ -13,6 +13,7 @@
 
 class Shape3d
 {
+
 public:
 
   //TODO Rename node and edge to vertices and indices
@@ -68,15 +69,21 @@ public:
 private:
 
   std::vector<MatrixFloat> nodes;
+  
   std::vector<std::unique_ptr<BaseSurface>>edges;
+  
   std::vector<MatrixFloat> worldPoints;
 
   MatrixFloat transformMatrix;
+
   MatrixFloat rotationDegreeMatrix;
+  
   MatrixFloat rotationValueXMatrix;
   MatrixFloat rotationValueYMatrix;
   MatrixFloat rotationValueZMatrix;
+
   MatrixFloat scaleValueMatrix;
+  
   MatrixFloat zScaleMatrix;
 
   MatrixFloat transformResultMatrix = MatrixFloat(3,1,0.0f);

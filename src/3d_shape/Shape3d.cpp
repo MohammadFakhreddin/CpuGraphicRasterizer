@@ -53,21 +53,21 @@ Shape3d::Shape3d(
   transformMatrix(3, 1, 0.0f),
   rotationDegreeMatrix(3, 1, 0.0f),
   //TODO Check these rotations correctness
-  rotationValueXMatrix(3, 3, std::vector<std::vector<float>>{
+  rotationValueXMatrix(3, 3,0.0f)/* std::vector<std::vector<float>>{
     std::vector<float>{1, 0, 0},
     std::vector<float>{0, cosf(0), sinf(0)},
     std::vector<float>{0, -sinf(0), cosf(0)}
-  }),
-  rotationValueYMatrix(3, 3, std::vector<std::vector<float>>{
+  })*/,
+  rotationValueYMatrix(3, 3, 0.0f)/*std::vector<std::vector<float>>{
     std::vector<float>{cosf(0), 0, sinf(0)},
     std::vector<float>{0, 1, 0},
     std::vector<float>{-sinf(0), 0, cosf(0)}
-  }),
-  rotationValueZMatrix(3, 3, std::vector<std::vector<float>>{
+  })*/,
+  rotationValueZMatrix(3, 3, 0.0f)/*std::vector<std::vector<float>>{
     std::vector<float>{cosf(0), -sinf(0), 0},
     std::vector<float>{sinf(0), cosf(0), 0},
     std::vector<float>{0, 0, 1}
-  }),
+  })*/,
   scaleValueMatrix(3, 3, std::vector<std::vector<float>>{
     std::vector<float>{1, 0, 0},
     std::vector<float>{0, 1, 0},
@@ -185,27 +185,18 @@ void Shape3d::scale(float value) {
   scaleValueMatrix.set(2, 2, scaleValueMatrix.get(2, 2) + value);
 }
 
-void Shape3d::rotateZ(float x) {
-  rotationDegreeMatrix.set(2, 0, rotationDegreeMatrix.get(2, 0) + x);
-  //TODO we need to generate rotation matrix in matrix class
-  rotationValueXMatrix.set(0, 0, cosf(rotationDegreeMatrix.get(2, 0)));
-  rotationValueXMatrix.set(0, 1, -sinf(rotationDegreeMatrix.get(2, 0)));
-  rotationValueXMatrix.set(1, 0, sinf(rotationDegreeMatrix.get(2, 0)));
-  rotationValueXMatrix.set(1, 1, cosf(rotationDegreeMatrix.get(2, 0)));
+void Shape3d::rotateX(float x) {
+  rotationDegreeMatrix.set(0, 0, rotationDegreeMatrix.get(0, 0) + x);
+  MatrixFloat::assignAsRotationXMatrix(rotationValueXMatrix,rotationDegreeMatrix.get(0, 0));
 }
 
 void Shape3d::rotateY(float y) {
   rotationDegreeMatrix.set(1, 0, rotationDegreeMatrix.get(1, 0) + y);
-  rotationValueYMatrix.set(0, 0, cosf(rotationDegreeMatrix.get(1, 0)));
-  rotationValueYMatrix.set(0, 2, sinf(rotationDegreeMatrix.get(1, 0)));
-  rotationValueYMatrix.set(2, 0, -sinf(rotationDegreeMatrix.get(1, 0)));
-  rotationValueYMatrix.set(2, 2, cosf(rotationDegreeMatrix.get(1, 0)));
+  MatrixFloat::assignAsRoationYMatrix(rotationValueYMatrix,rotationDegreeMatrix.get(1, 0));
 }
 
-void Shape3d::rotateX(float z) {
-  rotationDegreeMatrix.set(0, 0, rotationDegreeMatrix.get(0, 0) + z);
-  rotationValueZMatrix.set(1, 1, cosf(rotationDegreeMatrix.get(0, 0)));
-  rotationValueZMatrix.set(1, 2, sinf(rotationDegreeMatrix.get(0, 0)));
-  rotationValueZMatrix.set(2, 1, -sinf(rotationDegreeMatrix.get(0, 0)));
-  rotationValueZMatrix.set(2, 2, cosf(rotationDegreeMatrix.get(0, 0)));
+void Shape3d::rotateZ(float z) {
+  rotationDegreeMatrix.set(2, 0, rotationDegreeMatrix.get(2, 0) + z);
+  MatrixFloat::assignAsRotationZMatrix(rotationValueZMatrix, rotationDegreeMatrix.get(2, 0));
 }
+

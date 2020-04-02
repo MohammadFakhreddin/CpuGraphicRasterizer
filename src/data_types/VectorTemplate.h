@@ -16,16 +16,16 @@ public:
 		x(x),
 		y(y)
 	{}
-	const T getX() const {
+	const T& getX() const {
 		return this->x;
 	};
-	const T getY() const {
+	const T& getY() const {
 		return this->y;
 	};
-	void setX(const T x) {
+	void setX(const T& x) {
 		this->x = x;
 	}
-	void setY(const T y) {
+	void setY(const T& y) {
 		this->y = y;
 	}
 
@@ -107,15 +107,15 @@ public:
 		z(z)
 	{}
 
-	const T getX() const {
+	const T& getX() const {
 		return this->x;
 	};
 
-	const T getY() const {
+	const T& getY() const {
 		return this->y;
 	};
 
-	const T getZ() const {
+	const T& getZ() const {
 		return this->z;
 	};
 

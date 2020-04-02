@@ -132,21 +132,25 @@ void BaseSurface::calculateStepCountAndStepValue(
 void BaseSurface::computeEdgeCenter(
     std::vector<MatrixFloat>& worldPoints
 ){
+  
   edgeCenter.setX((
     worldPoints.at(edge1).get(0, 0) +
     worldPoints.at(edge2).get(0, 0) +
     worldPoints.at(edge3).get(0, 0))
   / 3.0f);
+  
   edgeCenter.setY((
     worldPoints.at(edge1).get(1, 0) +
     worldPoints.at(edge2).get(1, 0) +
     worldPoints.at(edge3).get(1, 0)
   ) / 3.0f);
+  
   edgeCenter.setZ((
     worldPoints.at(edge1).get(2, 0) +
     worldPoints.at(edge2).get(2, 0) +
     worldPoints.at(edge3).get(2, 0)
   ) / 3.0f);
+
 }
 
 bool BaseSurface::isVisibleToCamera(

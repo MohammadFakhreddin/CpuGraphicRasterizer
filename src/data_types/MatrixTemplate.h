@@ -192,7 +192,7 @@ public:
     return this->cells.at(x).at(y);
   }
   
-  void set(const unsigned int& x, const unsigned int& y, T value) {
+  void set(const unsigned int& x, const unsigned int& y, const T& value) {
     assert(x < width);
     assert(y < height);
     this->cells.at(x).at(y) = value;
@@ -208,6 +208,43 @@ public:
     }
     return _Matrix<T>(width, height, cellsCopy);
   }
+
+  static void assignAsRotationXMatrix(_Matrix<T>& matrix, const float& degree) {
+    matrix.set(0, 0, 1);
+    assert(matrix.get(0, 1) == 0);
+    assert(matrix.get(0, 2) == 0);
+    assert(matrix.get(1, 0) == 0);
+    matrix.set(1, 1, cosf(degree));
+    matrix.set(1, 2, sinf(degree));
+    assert(matrix.get(2, 0) == 0);
+    matrix.set(2, 1, -sinf(degree));
+    matrix.set(2, 2, cosf(degree));
+  }
+
+  static void assignAsRoationYMatrix(_Matrix<T>& matrix, const float& degree) {
+    matrix.set(0, 0, cosf(degree));
+    assert(matrix.get(0, 1) == 0);
+    matrix.set(0, 2, sinf(degree));
+    assert(matrix.get(1, 0) == 0);
+    matrix.set(1, 1, 1);
+    assert(matrix.get(1, 2) == 0);
+    matrix.set(2, 0, -sinf(degree));
+    assert(matrix.get(2, 1) == 0);
+    matrix.set(2, 2, cosf(degree));
+  }
+
+  static void assignAsRotationZMatrix(_Matrix<T>& matrix, const float& degree) {
+    matrix.set(0, 0, cosf(degree));
+    matrix.set(0, 1, -sinf(degree));
+    assert(matrix.get(0, 2) == 0);
+    matrix.set(1, 0, sinf(degree));
+    matrix.set(1, 1, cosf(degree));
+    assert(matrix.get(1, 2) == 0);
+    assert(matrix.get(2, 0) == 0);
+    assert(matrix.get(2, 1) == 0);
+    matrix.set(2, 2, 1);
+  }
+
 };
 
 using MatrixInt = _Matrix<int>;

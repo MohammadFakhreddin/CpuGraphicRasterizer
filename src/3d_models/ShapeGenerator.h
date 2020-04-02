@@ -185,12 +185,12 @@ public:
       const auto latitudeStepDegree = Math::piFloat / float(numberOfLat);
 
       MatrixFloat latitudeRotationMatrix = MatrixFloat(3, 3, 0.0f);
-      latitudeRotationMatrix.set(2, 2, 1.0f);
+      //latitudeRotationMatrix.set(2, 2, 1.0f);
      
       const auto longitudeStepDegree = (Math::piFloat * 2.0f) / float(numberOfLong);
 
       MatrixFloat longitudeRotationMatrix = MatrixFloat(3, 3, 0.0f);
-      longitudeRotationMatrix.set(1, 1, 1.0f);
+      //longitudeRotationMatrix.set(1, 1, 1.0f);
 
       MatrixFloat latitudePoint = MatrixFloat(3, 1, 0.0f);
 
@@ -201,22 +201,27 @@ public:
 
         latitudePoint.assign(initialPoint);
 
+        MatrixFloat::assignAsRotationZMatrix(
+          latitudeRotationMatrix, 
+          latitudeStepDegree * latitudeIndex
+        );
+        /*
         latitudeRotationMatrix.set(0, 0, cosf(latitudeStepDegree * latitudeIndex));
         latitudeRotationMatrix.set(0, 1, -sinf(latitudeStepDegree * latitudeIndex));
         latitudeRotationMatrix.set(1, 0, sinf(latitudeStepDegree * latitudeIndex));
         latitudeRotationMatrix.set(1, 1, cosf(latitudeStepDegree * latitudeIndex));
-        
+        */
         latitudePoint.multiply(latitudeRotationMatrix);
 
         //temporaryVertexPoint.assign(vertexPoint);
         for (unsigned int longitudeIndex = 0; longitudeIndex < numberOfLong ; longitudeIndex++) {
 
           longitudePoint.assign(latitudePoint);
-            
-          longitudeRotationMatrix.set(0, 0, cosf(longitudeStepDegree * longitudeIndex));
-          longitudeRotationMatrix.set(0, 2, sinf(longitudeStepDegree * longitudeIndex));
-          longitudeRotationMatrix.set(2, 0, -sinf(longitudeStepDegree * longitudeIndex));
-          longitudeRotationMatrix.set(2, 2, cosf(longitudeStepDegree * longitudeIndex));
+          
+          MatrixFloat::assignAsRoationYMatrix(
+            longitudeRotationMatrix,
+            longitudeStepDegree * longitudeIndex
+          );
           
           longitudePoint.multiply(longitudeRotationMatrix);
 
