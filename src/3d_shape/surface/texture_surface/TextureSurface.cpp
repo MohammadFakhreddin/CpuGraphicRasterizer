@@ -17,10 +17,10 @@ TextureSurface::TextureSurface(
   Vec2DFloat edge3TexturePoint
 )
 :
-textureReference(textureReference),
 edge1TexturePoint(edge1TexturePoint),
 edge2TexturePoint(edge2TexturePoint),
-edge3TexturePoint(edge3TexturePoint)
+edge3TexturePoint(edge3TexturePoint),
+textureReference(textureReference)
 {
   this->edge1 = edge1;
   this->edge2 = edge2;

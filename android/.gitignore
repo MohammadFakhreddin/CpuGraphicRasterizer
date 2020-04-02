@@ -8,3 +8,10 @@
 /build
 /captures
 .externalNativeBuild
+
+3d-cube.build/*
+3d-cube.build
+3d-cube.xcodeproj
+3d-cube.xcodeproj/*
+CMakeScripts/*
+CMakeScripts

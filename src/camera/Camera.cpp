@@ -23,11 +23,11 @@ Camera::Camera(
   std::string cameraName
 ) :
   cameraName(cameraName),
-  gl(gl),
   cameraFieldOfView(cameraFieldOfView),
   zDefaultValue(cameraFieldOfView * -1),
   appScreenWidth(appScreenWidth),
   appScreenHeight(appScreenHeight),
+  gl(gl),
   transformMatrix(3, 1, 0.0f),
   rotationDegreeMatrix(3, 1, 0.0f),
   rotationValueXMatrix(3, 3, std::vector<std::vector<float>>{

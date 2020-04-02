@@ -153,14 +153,12 @@ bool BaseSurface::isVisibleToCamera(
     Camera& cameraInstance,
     std::vector<MatrixFloat>& worldPoints
 ) {
-  float halfScreenWidth = cameraInstance.getAppScreenWidth() / 2.0f;
-  float halfScreenHeight = cameraInstance.getAppScreenHeight() / 2.0f;
-  float cameraX = halfScreenWidth;
-  float cameraY = halfScreenHeight;
+    
   auto left = 0;
   auto right = cameraInstance.getAppScreenWidth();
   auto top = 0;
   auto bottom = cameraInstance.getAppScreenHeight();
+  
   if (
     (
       worldPoints.at(edge1).get(0, 0) < left &&

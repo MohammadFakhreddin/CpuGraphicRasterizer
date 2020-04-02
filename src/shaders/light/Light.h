@@ -17,6 +17,8 @@ public:
     float transformZ
   );
 
+  virtual ~Light() = default;
+
   virtual void computeLightIntensity(
     Vec3DFloat& surfaceNormalVector,
     Vec3DFloat& surfaceCenter,

@@ -55,9 +55,6 @@ public:
   void glesOrtho(float left, float right, float top, float bottom, float near, float far);
 #endif // GLES
 private:
-  GLuint programObject;
-  GLint colorParamLocation = 0;
-  GLint pointParamLocation = 0;
   unsigned int appScreenWidth = 0;
   unsigned int appScreenHeight = 0;
   unsigned int physicalScreenWidth = 0;

@@ -23,7 +23,6 @@ PlantScene::PlantScene(OpenGL& gl)
   )
 {
   {//Creating shape
-    auto scaleFactor = float(DataAccessPoint::getInstance()->getAppScreenWidth()) / 50.0f;
     shape = FileSystem::loadObjectWithColor(
        Path::generateAssetPath("plant",".obj"),
        Vec3DFloat(1.0f,1.0f,1.0f),

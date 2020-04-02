@@ -53,20 +53,20 @@ Shape3d::Shape3d(
   transformMatrix(3, 1, 0.0f),
   rotationDegreeMatrix(3, 1, 0.0f),
   //TODO Check these rotations correctness
-  rotationValueZMatrix(3, 3, std::vector<std::vector<float>>{
-    std::vector<float>{cosf(0), -sinf(0), 0},
-    std::vector<float>{sinf(0), cosf(0), 0},
-    std::vector<float>{0, 0, 1}
+  rotationValueXMatrix(3, 3, std::vector<std::vector<float>>{
+    std::vector<float>{1, 0, 0},
+    std::vector<float>{0, cosf(0), sinf(0)},
+    std::vector<float>{0, -sinf(0), cosf(0)}
   }),
   rotationValueYMatrix(3, 3, std::vector<std::vector<float>>{
     std::vector<float>{cosf(0), 0, sinf(0)},
     std::vector<float>{0, 1, 0},
     std::vector<float>{-sinf(0), 0, cosf(0)}
   }),
-  rotationValueXMatrix(3, 3, std::vector<std::vector<float>>{
-    std::vector<float>{1, 0, 0},
-    std::vector<float>{0, cosf(0), sinf(0)},
-    std::vector<float>{0, -sinf(0), cosf(0)}
+  rotationValueZMatrix(3, 3, std::vector<std::vector<float>>{
+    std::vector<float>{cosf(0), -sinf(0), 0},
+    std::vector<float>{sinf(0), cosf(0), 0},
+    std::vector<float>{0, 0, 1}
   }),
   scaleValueMatrix(3, 3, std::vector<std::vector<float>>{
     std::vector<float>{1, 0, 0},

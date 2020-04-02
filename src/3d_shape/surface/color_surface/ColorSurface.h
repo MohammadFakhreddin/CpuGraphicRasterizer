@@ -20,8 +20,6 @@ private:
   
   float blue = 0.0f;
   
-  MatrixFloat* currentWorldPoint = nullptr;
-  
   void drawLineBetweenPoints(
     Camera& cameraInstance,
     float startX,

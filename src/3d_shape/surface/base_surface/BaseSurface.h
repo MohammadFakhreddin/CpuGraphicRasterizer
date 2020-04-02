@@ -23,6 +23,8 @@ public:
 
   bool areEdgesDataValid(int nodesSize);
 
+  virtual ~BaseSurface() = default;
+
 protected:
 
   unsigned int edge1 = 0;
@@ -113,12 +115,6 @@ private:
    * 
   */
   Vec3DFloat edgeCenter = Vec3DFloat(0.0f,0.0f,0.0f);
-  /*
-  *
-  * Vector from camera to center of shape to check if edge is visible in camera
-  * 
-  */
-  Vec3DFloat edgeCenterToPolygonCenterPoint = Vec3DFloat(0.0f,0.0f,0.0f);
   /*
   *
   * Value of dot product stores here to avoid duplicate data storing

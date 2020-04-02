@@ -13,7 +13,7 @@ public:
 
   BaseScene(OpenGL& gl,std::string sceneName);
   
-  ~BaseScene();
+  virtual ~BaseScene();
   
   virtual void update(double deltaTime);
   
