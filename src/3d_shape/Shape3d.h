@@ -6,10 +6,10 @@
 #include <memory>
 
 #include "../data_types/MatrixTemplate.h"
-#include "../fa_texture/FaTexture.h"
+#include "../texture/Texture.h"
 #include "../data_types/VectorTemplate.h"
-#include "./surface/base_surface/BaseSurface.h"
 #include "./../camera/Camera.h"
+#include "../surface/Surface.h"
 
 class Shape3d
 {
@@ -19,12 +19,14 @@ public:
   //TODO Rename node and edge to vertices and indices
   Shape3d(
     std::vector<MatrixFloat>& nodes,
-    std::vector<std::unique_ptr<BaseSurface>>& edges
+    std::vector<std::unique_ptr<Surface>>& surfaces,
+    std::vector<MatrixFloat>& normals
   );
 
   Shape3d(
     std::vector<MatrixFloat>& nodes,
-    std::vector<std::unique_ptr<BaseSurface>>&  edges,
+    std::vector<std::unique_ptr<Surface>>&  surfaces,
+    std::vector<MatrixFloat>& normals,
     float initialTransformX,
     float initialTransformY,
     float initialTransformZ
@@ -32,7 +34,8 @@ public:
 
   Shape3d(
     std::vector<MatrixFloat>& nodes,
-    std::vector<std::unique_ptr<BaseSurface>>& edges,
+    std::vector<std::unique_ptr<Surface>>& surfaces,
+    std::vector<MatrixFloat>& normals,
     float transformX,
     float transformY,
     float transformZ,
@@ -41,10 +44,6 @@ public:
     float rotationDegreeZ,
     float scaleValue
   );
-
-  bool checkForNodesValidation();
-
-  bool areAllEdgesDataValid();
 
   void update(
     double deltaTime,
@@ -70,23 +69,39 @@ private:
 
   std::vector<MatrixFloat> nodes;
   
-  std::vector<std::unique_ptr<BaseSurface>>edges;
+  std::vector<std::unique_ptr<Surface>>surfaces;
+
+  std::vector<MatrixFloat> normals;
   
   std::vector<MatrixFloat> worldPoints;
+
+  std::vector<MatrixFloat> worldNormals;
 
   MatrixFloat transformMatrix;
 
   MatrixFloat rotationDegreeMatrix;
   
   MatrixFloat rotationValueXMatrix;
+
   MatrixFloat rotationValueYMatrix;
+  
   MatrixFloat rotationValueZMatrix;
 
   MatrixFloat scaleValueMatrix;
   
   MatrixFloat zScaleMatrix;
 
-  MatrixFloat transformResultMatrix = MatrixFloat(3,1,0.0f);
+  /*Temporary variables*/
+
+  MatrixFloat currentWorldPoint = MatrixFloat(3,1,0.0f);
+
+  MatrixFloat currentWorldNormal = MatrixFloat(3,1,0.0f);
+
+  unsigned int i = 0;
+
+  float zLocation = 0;
+
+  float scaleValue = 0;
 
 };
 

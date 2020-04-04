@@ -98,7 +98,11 @@ private:
 	T z;
 public:
 	
-	_Vec3d() = delete;
+	_Vec3d() {
+		x = T(0);
+		y = T(0);
+		z = T(0);
+	};
 
 	_Vec3d(T x, T y, T z)
 		:
@@ -138,7 +142,7 @@ public:
 		return Math::sqrt(this->x * this->x + this->y * this->y + this->z * this->z);
 	}
 
-	_Vec3d<double> hat() {
+	_Vec3d<double> hat() const {
 		const double size = this->size();
 		return _Vec3d<double>(double(this->x) / size, double(this->y) / size, double(this->z) / size);
 	}
@@ -210,7 +214,7 @@ public:
 
 	template <typename A>
 	T dotProduct(_Vec3d<A>& rhs){
-		return (this->x * T(rhs.x)) + (this->y * T(rhs.y)) + (this->z * T(rhs.z));
+		return (this->x * T(rhs.getX())) + (this->y * T(rhs.getY())) + (this->z * T(rhs.getZ()));
 	}
 
 	template <typename A>

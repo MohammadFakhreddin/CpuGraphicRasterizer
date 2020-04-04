@@ -36,13 +36,13 @@ BunnyScene::BunnyScene(OpenGL& gl)
   }
   {//Creating light source
     lightSources.emplace_back(
-      std::make_unique<DiffuseLight>(
+      std::make_unique<DirectionalLight>(
         float(DataAccessPoint::getInstance()->getAppScreenWidth()) / 2.0f,
         float(DataAccessPoint::getInstance()->getAppScreenHeight()),
         cameraInitialZLocation - 1.0f
       )
     );
-    light = (DiffuseLight*)lightSources.at(lightSources.size()-1).get();
+    light = (DirectionalLight*)lightSources.at(lightSources.size()-1).get();
   }
 }
 
@@ -81,10 +81,10 @@ void BunnyScene::update(double deltaTime) {
     }
   }
   {//Rotating shape by keyboard
-    if (useKeyEvent(Constants::Buttons::keyU)) {
+    if (useKeyEvent(Constants::Buttons::keyI)) {
       shape->rotateZ(float(1.0 * shapeRotationSpeed * deltaTime));
     }
-    if (useKeyEvent(Constants::Buttons::keyJ)) {
+    if (useKeyEvent(Constants::Buttons::keyY)) {
       shape->rotateZ(float(-1.0 * shapeRotationSpeed * deltaTime));
     }
     if (useKeyEvent(Constants::Buttons::keyK)) {
@@ -93,18 +93,18 @@ void BunnyScene::update(double deltaTime) {
     if (useKeyEvent(Constants::Buttons::keyH)) {
       shape->rotateY(float(-1.0 * shapeRotationSpeed * deltaTime));
     }
-    if (useKeyEvent(Constants::Buttons::keyI)) {
+    if (useKeyEvent(Constants::Buttons::keyU)) {
       shape->rotateX(float(1.0 * shapeRotationSpeed * deltaTime));
     }
-    if (useKeyEvent(Constants::Buttons::keyY)) {
+    if (useKeyEvent(Constants::Buttons::keyJ)) {
       shape->rotateX(float(-1.0 * shapeRotationSpeed * deltaTime));
     }
   }
 #endif
   {//Temporary code for auto rotation
-    shape->rotateY(float(-1.0f * shapeRotationSpeed * deltaTime * 0.1f));
-    shape->rotateX(float(-1.0f * shapeRotationSpeed * deltaTime * 0.1f));
-    shape->rotateZ(float(-1.0f * shapeRotationSpeed * deltaTime * 0.1f));
+  //  shape->rotateY(float(-1.0f * shapeRotationSpeed * deltaTime * 0.1f));
+  //  shape->rotateX(float(-1.0f * shapeRotationSpeed * deltaTime * 0.1f));
+  //  shape->rotateZ(float(-1.0f * shapeRotationSpeed * deltaTime * 0.1f));
   }
   {//Updating light
     for (unsigned int i = 0; i < lightSources.size(); i++) {

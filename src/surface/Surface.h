@@ -1,0 +1,287 @@
+#ifndef BaseSurface_class
+#define BaseSurface_class
+
+#include <vector>
+#include <memory>
+
+#include "../data_types/MatrixTemplate.h"
+#include "../data_types/VectorTemplate.h"
+#include "../camera/Camera.h"
+#include "../shaders/light/Light.h"
+#include "../texture/Texture.h"
+
+class Surface
+{
+
+protected:
+
+  static constexpr unsigned long edgeCount = 3;
+
+public:
+
+  Surface(
+    std::unique_ptr<Texture>& texture,
+    const unsigned long& edge1Index,
+    const unsigned long& edge2Index,
+    const unsigned long& edge3Index,
+    const unsigned long& normal1Index,
+    const unsigned long& normal2Index,
+    const unsigned long& normal3Index,
+    const float& edge1TexturePointX,
+    const float& edge1TexturePointY,
+    const float& edge2TexturePointX,
+    const float& edge2TexturePointY,
+    const float& edge3TexturePointX,
+    const float& edge3TexturePointY
+  );
+
+  void update(
+    Camera& cameraInstance,
+    std::vector<MatrixFloat>& worldPoints,
+    std::vector<MatrixFloat>& normals,
+    std::vector<std::unique_ptr<Light>>& lightSources
+  );
+
+  const unsigned long& getEdgeByIndex(const unsigned short& index);
+
+  const unsigned long& getNormalIndex(const unsigned short& index);
+
+  bool areEdgeAndNormalsValid(
+    const unsigned long& worldPointsSize,
+    const unsigned long& normalsSize
+  );
+
+  virtual ~Surface() = default;
+
+private:
+
+  std::unique_ptr<Texture>& texture;
+
+  unsigned long edgeIndices[edgeCount];
+
+  unsigned long normalVectorIndices[edgeCount];
+
+  MatrixFloat colorIntensity[edgeCount] = {
+    MatrixFloat(3,1,0.0f),
+    MatrixFloat(3,1,0.0f),
+    MatrixFloat(3,1,0.0f)
+  };
+
+  Vec2DFloat edge1TexturePoint;
+  Vec2DFloat edge2TexturePoint;
+  Vec2DFloat edge3TexturePoint;
+ 
+  void computePixelMapData(
+    Camera& cameraInstance,
+    std::vector<MatrixFloat>& worldPoints
+  );
+
+  void calculateStepCount(
+    Camera& cameraInstance,
+    float difference,
+    unsigned int* totalStepCount
+  );
+
+  void calculateStepValueBasedOnStepCount(
+    const float& difference,
+    const unsigned int& stepCount,
+    float* stepValue
+  );
+
+  void drawLineBetweenPoints(
+    Camera& cameraInstance,
+    
+    const float& triangleStartX,
+    const float& triangleStartY,
+    const float& triangleStartZ,
+
+    const float& triangleEndX,
+    const float& triangleEndY,
+    const float& triangleEndZ,
+
+    const float& textureStartX,
+    const float& textureStartY,
+
+    const float& textureEndX,
+    const float& textureEndY,
+
+    const float& lightColorStartR,
+    const float& lightColorStartG,
+    const float& lightColorStartB,
+
+    const float& lightColorEndR,
+    const float& lightColorEndG,
+    const float& lightColorEndB
+  );
+  //TODO Write unit tests
+  /**
+   * 
+   * Jump value in draw steps
+   * 
+  */
+  //TODO It must be 1, Current value is cpu expensive
+  static constexpr float drawStepValue = 0.5;
+  /**
+   * 
+   * Checks if we need to render shape or not
+   * 
+   */
+  bool isVisibleToCamera(
+    Camera& cameraInstance,
+    std::vector<MatrixFloat>& worldPoints,
+    std::vector<MatrixFloat>& normals
+  );
+  /**
+  *
+  * Intensity of color based on light
+  *
+  */
+  void computeColorIntensity(
+    std::vector<MatrixFloat>& normals,
+    std::vector<std::unique_ptr<Light>>& lightSources  
+  );
+
+  /*
+  *
+  * Vector from camera boundary to center of shape
+  *
+  */
+  MatrixFloat cameraVector = MatrixFloat(3, 1, 0.0f);
+
+  /*
+  *
+  * Trmporary data
+  * Because these variables are used in for loop we have to keep them 
+  * 
+  */
+  float dotProductValue = 0;
+  
+  MatrixFloat colorIntensityOutput = MatrixFloat(3, 1, 0.0f);
+
+  MatrixFloat* currentWorldPoint = nullptr;
+
+  unsigned int cameraLeft = 0;
+  
+  unsigned int cameraRight = 0;
+  
+  unsigned int cameraTop = 0;
+  
+  unsigned int cameraBottom = 0;
+
+  bool isShapeCompletlyOutOfCamera = false;
+
+  float red = 0;
+
+  float green = 0;
+  
+  float blue = 0;
+
+  unsigned int lineTriangleTotalStepCount = 0;
+  
+  float lineTriangleXStepValue = 0.0f;
+  
+  float lineTriangleYStepValue = 0.0f;
+  
+  float lineTriangleZStepValue = 0.0f;
+
+  float xDifference = 0.0f;
+
+  float yDifference = 0.0f;
+
+  float textureXStepValue = 0.0f;
+
+  float textureYStepValue = 0.0f;
+
+  float lightColorRStepValue = 0.0f;
+
+  float lightColorGStepValue = 0.0f;
+
+  float lightColorBStepValue = 0.0f;
+
+  unsigned int i = 0;
+
+  unsigned int edgeIndex = 0;
+
+  float lineTriangleStartX = 0.0f;
+  float lineTriangleStartY = 0.0f;
+  float lineTriangleStartZ = 0.0f;
+
+  float lineTriangleEndX = 0.0f;
+  float lineTriangleEndY = 0.0f;
+  float lineTriangleEndZ = 0.0f;
+
+  float lineTextureStartX = 0.0f;
+  float lineTextureStartY = 0.0f;
+
+  float lineTextureEndX = 0.0f;
+  float lineTextureEndY = 0.0f;
+
+  float lineLightColorStartR = 0.0f;
+  float lineLightColorStartG = 0.0f;
+  float lineLightColorStartB = 0.0f;
+
+  float lineLightColorEndR = 0.0f;
+  float lineLightColorEndG = 0.0f;
+  float lineLightColorEndB = 0.0f;
+
+  float textureStartX = 0.0f;
+  float textureStartY = 0.0f;
+
+  float textureEndX = 0.0f;
+  float textureEndY = 0.0f;
+
+  float textureFinalX = 0.0f;
+  float textureFinalY = 0.0f;
+
+  float textureStartStepValueX = 0.0f;
+  float textureStartStepValueY = 0.0f;
+
+  float textureEndStepValueX = 0.0f;
+  float textureEndStepValueY = 0.0f;
+
+  float triangleStartX = 0.0f;
+  float triangleStartY = 0.0f;
+  float triangleStartZ = 0.0f;
+
+  float triangleEndX = 0.0f;
+  float triangleEndY = 0.0f;
+  float triangleEndZ = 0.0f;
+
+  float triangleFinalX = 0.0f;
+  float triangleFinalY = 0.0f;
+  float triangleFinalZ = 0.0f;
+
+  unsigned int totalStepCount = 0;
+
+  float triangleStartStepValueX = 0.0f;
+  float triangleStartStepValueY = 0.0f;
+  float triangleStartStepValueZ = 0.0f;
+
+  float triangleEndStepValueX = 0.0f;
+  float triangleEndStepValueY = 0.0f;
+  float triangleEndStepValueZ = 0.0f;
+
+  float lightColorStartR = 0.0f;
+  float lightColorStartG = 0.0f;
+  float lightColorStartB = 0.0f;
+
+  float lightColorEndR = 0.0f;
+  float lightColorEndG = 0.0f;
+  float lightColorEndB = 0.0f;
+
+  float lightColorFinalR = 0.0f;
+  float lightColorFinalG = 0.0f;
+  float lightColorFinalB = 0.0f;
+
+  float lightColorStartStepValueR = 0.0f;
+  float lightColorStartStepValueG = 0.0f;
+  float lightColorStartStepValueB = 0.0f;
+
+  float lightColorEndStepValueR = 0.0f;
+  float lightColorEndStepValueG = 0.0f;
+  float lightColorEndStepValueB = 0.0f;
+
+};
+
+#endif
+

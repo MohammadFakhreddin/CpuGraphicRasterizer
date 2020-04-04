@@ -27,6 +27,7 @@ Camera::Camera(
   zDefaultValue(cameraFieldOfView * -1),
   appScreenWidth(appScreenWidth),
   appScreenHeight(appScreenHeight),
+  pixelMapSize(appScreenWidth * appScreenHeight),
   gl(gl),
   transformMatrix(3, 1, 0.0f),
   rotationDegreeMatrix(3, 1, 0.0f),
@@ -99,7 +100,7 @@ void Camera::initPixelMap(){
   if(DEBUG_MODE){
     Logger::log("Initiating pixel map:");
   }
-  pixelMap = new DrawPixel[appScreenWidth * appScreenHeight];
+  pixelMap = new DrawPixel[pixelMapSize];
   unsigned int rowValue = 0;
   for(unsigned int i=0;i<appScreenWidth;i++){
     rowValue = i * appScreenHeight;
@@ -153,24 +154,15 @@ void Camera::putPixelInMap(
 void Camera::render(double deltaTime){
   {//Drawing screen
     gl.beginDrawingPoints();
-    unsigned int rowValue = 0;
-    for(unsigned int i=0;i<appScreenWidth;i++){
-      rowValue = i * appScreenHeight;
-      for(unsigned int j=0;j<appScreenHeight;j++){
-        currentPixel = &pixelMap[rowValue + j];
-        if(currentPixel->blue!=0 || currentPixel->green!=0 || currentPixel->red!=0){
-          gl.drawPixel(
-            i,
-            j,
-            currentPixel->red,
-            currentPixel->green,
-            currentPixel->blue
-          );
-          currentPixel->blue = 0;
-          currentPixel->red = 0;
-          currentPixel->green = 0;
-        }
-        currentPixel->zValue = zDefaultValue;
+    for (unsigned int i = 0; i < pixelMapSize; i++) {
+      if (currentPixel->zValue != zDefaultValue) {
+        gl.drawPixel(
+          currentPixel->x,
+          currentPixel->y,
+          currentPixel->red,
+          currentPixel->green,
+          currentPixel->blue
+        );
       }
     }
     gl.resetProgram();

@@ -41,7 +41,7 @@ public:
   ) {
 
 
-    std::vector<std::unique_ptr<BaseSurface>> diceCubeEdgeList;
+    std::vector<std::unique_ptr<Surface>> diceCubeEdgeList;
       //1
     diceCubeEdgeList.emplace_back(std::make_unique<TextureSurface>(2, 1, 0,
       diceCubeTexture,

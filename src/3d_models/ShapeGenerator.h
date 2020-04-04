@@ -29,7 +29,7 @@ public:
     float rotationZ,
     float scale
   ) {
-    std::vector<std::unique_ptr<BaseSurface>> edgeList;
+    std::vector<std::unique_ptr<Surface>> edgeList;
     edgeList.emplace_back(std::make_unique<ColorSurface>(2, 1, 0, 245.0f / 255.0f, 144.0f / 255.0f, 66.0f / 255.0f));
     edgeList.emplace_back(std::make_unique<ColorSurface>(3, 1, 2, 245.0f / 255.0f, 144.0f / 255.0f, 66.0f / 255.0f));
     edgeList.emplace_back(std::make_unique<ColorSurface>(1, 3, 5, 221.0f / 255.0f, 245.0f / 255.0f, 66.0f / 255.0f));
@@ -58,7 +58,7 @@ public:
   }
 
   static std::unique_ptr<Shape3d> generateTextured3DCube(
-    std::vector<std::unique_ptr<BaseSurface>>& edgeList,
+    std::vector<std::unique_ptr<Surface>>& edgeList,
     float w,
     float h,
     float d,
@@ -263,7 +263,7 @@ public:
       return index;
     };
 
-    std::vector<std::unique_ptr<BaseSurface>> indices;
+    std::vector<std::unique_ptr<Surface>> indices;
 
     {//Filling indices
       

@@ -14,10 +14,10 @@
 #include "../utils/operators/Operators.h"
 #include "../utils/log/Logger.h"
 #include "../data_types/MatrixTemplate.h"
-#include "../3d_shape/surface/base_surface/BaseSurface.h"
+#include "../surface/Surface.h"
 #include "../3d_shape/Shape3d.h"
-#include "../3d_shape/surface/color_surface/ColorSurface.h"
 #include "../libs/mini_ball/Miniball.h"
+#include "../surface/Surface.h"
 #ifdef __DESKTOP__
 #include "./../libs/stb_image/open_gl_stb_image.h"
 #endif
@@ -60,9 +60,12 @@ public:
   }
   static std::unique_ptr<Shape3d> loadObjectWithColor(
     std::string filename,
-    Vec3DFloat color,
-    bool requireCentralizing
+    std::unique_ptr<Texture>& texture,
+    bool requireCentralizing,
+    bool useFileNormals,
+    bool useFileTextureCoordinates
   ){
+    //TODO Start from here
     assert(color.getX()>=0.0f && color.getX()<=1.0f);
     assert(color.getY()>=0.0f && color.getY()<=1.0f);
     assert(color.getZ()>=0.0f && color.getZ()<=1.0f);
@@ -120,7 +123,7 @@ public:
     }
 
     std::vector<MatrixFloat> vertices;
-    std::vector<std::unique_ptr<BaseSurface>> indices;
+    std::vector<std::unique_ptr<Surface>> indices;
     {//Parsing .obj file using tinyObj library
       tinyobj::attrib_t attributes;
       std::vector<tinyobj::shape_t> shapes;
@@ -147,6 +150,7 @@ public:
       // attrib.vertices is a flat std::vector of floats corresponding
       // to vertex positions, laid out as xyzxyzxyz... etc.
         assert(attributes.vertices.size()%3==0);
+        
         //Reserving space before allocating
         vertices.reserve(attributes.vertices.size()/3u);
         for(unsigned int i=0;i<attributes.vertices.size();i+=3){
@@ -175,7 +179,7 @@ public:
           //Loading mesh indices into indices vector
           //My implementation is counter clock wise so I need to rotate before rendering
           if(isCounterClockWise){
-            indices.emplace_back(std::make_unique<ColorSurface>(
+            indices.emplace_back(std::make_unique<Surface>(
               mesh.indices[faceIndex * 3u + 0u].vertex_index,
               mesh.indices[faceIndex * 3u + 1u].vertex_index,
               mesh.indices[faceIndex * 3u + 2u].vertex_index,
@@ -184,7 +188,7 @@ public:
               color.getZ()
             ));
           }else{
-            indices.emplace_back(std::make_unique<ColorSurface>(
+            indices.emplace_back(std::make_unique<Surface>(
               mesh.indices[faceIndex * 3u + 2u].vertex_index,
               mesh.indices[faceIndex * 3u + 1u].vertex_index,
               mesh.indices[faceIndex * 3u + 0u].vertex_index,
@@ -220,6 +224,11 @@ public:
       }
       Logger::log("Centralizing 3dShape was successful,Creating shape3d");
     }
+
+#ifdef __ANDROID__
+    remove(temporaryFileName)
+#endif // __ANDROID__
+
     return std::make_unique<Shape3d>(
       vertices,
       indices

@@ -35,13 +35,13 @@ PlantScene::PlantScene(OpenGL& gl)
   }
   {//Creating light source
     lightSources.emplace_back(
-      std::make_unique<DiffuseLight>(
+      std::make_unique<DirectionalLight>(
         float(DataAccessPoint::getInstance()->getAppScreenWidth()) / 2.0f,
         float(DataAccessPoint::getInstance()->getAppScreenHeight()),
         cameraInitialZLocation - 1.0f
       )
     );
-    light = (DiffuseLight*)lightSources.at(lightSources.size() - 1).get();
+    light = (DirectionalLight*)lightSources.at(lightSources.size() - 1).get();
   }
 }
 

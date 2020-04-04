@@ -39,7 +39,7 @@ SphereScene::SphereScene(OpenGL& gl)
     1.0f
   );
 
-  lightSources.emplace_back(std::make_unique<DiffuseLight>(0,0, cameraInitialZLocation - 100));
+  lightSources.emplace_back(std::make_unique<DirectionalLight>(0,0, cameraInitialZLocation - 100));
 }
 
 void SphereScene::update(double deltaTime) {

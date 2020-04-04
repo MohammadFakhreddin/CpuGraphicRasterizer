@@ -90,6 +90,8 @@ private:
 
   unsigned int appScreenHeight;
 
+  unsigned int pixelMapSize;
+
   DrawPixel* pixelMap;
 
   DrawPixel* currentPixel = nullptr;

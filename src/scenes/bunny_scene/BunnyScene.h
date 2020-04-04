@@ -5,9 +5,9 @@
 
 #include "../base_scene/BaseScene.h"
 #include "../../open_gl/OpenGl.h"
-#include "../../shaders/diffuse_light/DiffuseLight.h"
 #include "../../camera/Camera.h"
 #include "../../3d_shape/Shape3d.h"
+#include "../../shaders/directional_light/DirectionalLight.h"
 
 class BunnyScene : public BaseScene {
 
@@ -35,7 +35,7 @@ public:
 
 private:
 
-  DiffuseLight* light;
+  DirectionalLight* light;
 
   Camera cameraInstance;
 

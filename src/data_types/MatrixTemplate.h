@@ -186,7 +186,7 @@ public:
     Logger::log("-----------------------");
   }
   
-  T get(const unsigned int& x, const unsigned int& y) const {
+  const T& get(const unsigned int& x, const unsigned int& y) const {
     assert(x < width);
     assert(y < height);
     return this->cells.at(x).at(y);
@@ -243,6 +243,32 @@ public:
     assert(matrix.get(2, 0) == 0);
     assert(matrix.get(2, 1) == 0);
     matrix.set(2, 2, 1);
+  }
+
+  template<typename A>
+  double dotProduct(_Matrix<A>& rhs) {
+    assert(this->width == 3 && this->height == 1);
+    assert(rhs.width == 3 && rhs.height == 1);
+    return 
+      (double(this->get(0, 0)) * double(rhs.get(0, 0))) + 
+      (double(this->get(1, 0)) * double(rhs.get(1, 0))) + 
+      (double(this->get(2, 0)) * double(rhs.get(2, 0)));
+  }
+  //TODO Write unit tests for project
+  template<typename A,typename B>
+  void crossPoduct(_Matrix<A>& mat1, _Matrix<B>& mat2) {
+    this->set(0, 0, 
+      (T(mat1.get(1, 0)) * T(mat2.get(2, 0)))
+      - (T(mat1.get(2, 0)) * T(mat2.get(1, 0)))
+    );
+    this->set(1, 0,
+      (T(mat1.get(2, 0)) * T(mat2.get(0, 0)))
+      - (T(mat1.get(0, 0)) * T(mat2.get(2, 0)))
+    );
+    this->set(2, 0
+      (T(mat1.get(0, 0)) * T(mat2.get(1, 0)))
+      - (T(mat1.get(1, 0)) * T(mat2.get(0, 0)))
+    );
   }
 
 };

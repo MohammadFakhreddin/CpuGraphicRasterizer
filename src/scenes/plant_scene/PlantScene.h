@@ -5,7 +5,6 @@
 
 #include "../base_scene/BaseScene.h"
 #include "../../open_gl/OpenGl.h"
-#include "../../shaders/diffuse_light/DiffuseLight.h"
 #include "../../camera/Camera.h"
 #include "../../3d_shape/Shape3d.h"
 
@@ -35,7 +34,7 @@ public:
 
 private:
 
-  DiffuseLight* light;
+  DirectionalLight* light;
 
   Camera cameraInstance;
 
