@@ -6,6 +6,7 @@
 #include "../base_scene/BaseScene.h"
 #include "../../camera/Camera.h"
 #include "../../3d_shape/Shape3d.h"
+#include "../../shaders/directional_light/DirectionalLight.h"
 #include "../../texture/ColorTexture/ColorTexture.h"
 
 class SphereScene : public BaseScene {
@@ -26,6 +27,8 @@ private:
 
   static constexpr float shapeRotationSpeed = 0.01f;
 
+  static constexpr float lightTransformSpeed = 0.01f;
+
   Camera cameraInstance;
 
   std::unique_ptr<Shape3d> sphere;
@@ -33,6 +36,8 @@ private:
   std::vector<std::unique_ptr<Light>> lightSources;
 
   std::unique_ptr<ColorTexture> whiteColor;
+
+  DirectionalLight* light;
 
 };
 
