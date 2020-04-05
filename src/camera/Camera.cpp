@@ -127,6 +127,7 @@ void Camera::putPixelInMap(
   const float& green,
   const float& blue
 ) {
+
   assert(red>=0 && red<=1.0f);
   assert(green>=0 && green<=1.0f);
   assert(blue>=0 && blue<=1.0f);
@@ -155,6 +156,7 @@ void Camera::render(double deltaTime){
   {//Drawing screen
     gl.beginDrawingPoints();
     for (unsigned int i = 0; i < pixelMapSize; i++) {
+      currentPixel = &pixelMap[i];
       if (currentPixel->zValue != zDefaultValue) {
         gl.drawPixel(
           currentPixel->x,
@@ -163,6 +165,10 @@ void Camera::render(double deltaTime){
           currentPixel->green,
           currentPixel->blue
         );
+        currentPixel->zValue = zDefaultValue;
+        currentPixel->red = 0.0f;
+        currentPixel->green = 0.0f;
+        currentPixel->blue = 0.0f;
       }
     }
     gl.resetProgram();

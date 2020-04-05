@@ -1,3 +1,6 @@
+#ifndef ColorTexture_Class
+#define ColorTexture_Class
+
 #include "../Texture.h"
 
 class ColorTexture : public Texture {
@@ -25,3 +28,5 @@ private:
   float blue;
 
 };
+
+#endif // !ColorTexture_Class

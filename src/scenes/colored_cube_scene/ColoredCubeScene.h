@@ -8,6 +8,7 @@
 #include "../../camera/Camera.h"
 #include "../../3d_shape/Shape3d.h"
 #include "../../open_gl/OpenGl.h"
+#include "../../3d_models/ColoredCube.h"
 
 class ColoredCubeScene : public BaseScene {
 
@@ -34,6 +35,8 @@ private:
   std::unique_ptr<Shape3d> cube;
 
   std::vector<std::unique_ptr<Light>> lightSources;
+
+  ColorCube colorCube;
 
 };
 

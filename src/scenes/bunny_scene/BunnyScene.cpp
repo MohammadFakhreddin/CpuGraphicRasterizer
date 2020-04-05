@@ -22,12 +22,17 @@ BunnyScene::BunnyScene(OpenGL& gl)
     "Bunny main camera"
   )
 {
+  whiteColor = std::make_unique<ColorTexture>(
+    1.0f,1.0f,1.0f  
+  );
   {//Creating shape
     auto scaleFactor = float(DataAccessPoint::getInstance()->getAppScreenWidth()) / 4.0f;
     shape = FileSystem::loadObjectWithColor(
       Path::generateAssetPath("bunny", ".obj"),
-      Vec3DFloat(1.0f, 1.0f, 1.0f),
-      true
+      (std::unique_ptr<Texture>&)whiteColor,
+      true,
+      false,
+      false
     );
     shape->transformX(float(DataAccessPoint::getInstance()->getAppScreenWidth()) / 2.0f);
     shape->transformY(float(DataAccessPoint::getInstance()->getAppScreenHeight()) / 2.0f);
@@ -36,12 +41,7 @@ BunnyScene::BunnyScene(OpenGL& gl)
   }
   {//Creating light source
     lightSources.emplace_back(
-      std::make_unique<DirectionalLight>(
-        float(DataAccessPoint::getInstance()->getAppScreenWidth()) / 2.0f,
-        float(DataAccessPoint::getInstance()->getAppScreenHeight()),
-        cameraInitialZLocation - 1.0f
-      )
-    );
+      std::make_unique<DirectionalLight>(1.0f,1.0f,1.0f,0.2f));
     light = (DirectionalLight*)lightSources.at(lightSources.size()-1).get();
   }
 }
@@ -50,32 +50,32 @@ void BunnyScene::update(double deltaTime) {
 #ifdef __DESKTOP__
   {//We rotate light by keyboard
     if (useKeyEvent(Constants::Buttons::keyA)) {
-      light->transformX(
+      light->rotateX(
         float(deltaTime * lightTransformSpeed * -1.0f)
       );
     }
     if (useKeyEvent(Constants::Buttons::keyD)) {
-      light->transformX(
+      light->rotateX(
         float(deltaTime * lightTransformSpeed)
       );
     }
     if (useKeyEvent(Constants::Buttons::keyW)) {
-      light->transformY(
+      light->rotateY(
         float(deltaTime * lightTransformSpeed)
       );
     }
     if (useKeyEvent(Constants::Buttons::keyS)) {
-      light->transformY(
+      light->rotateY(
         float(deltaTime * lightTransformSpeed * -1.0)
       );
     }
     if (useKeyEvent(Constants::Buttons::keyC)) {
-      light->transformZ(
+      light->rotateZ(
         float(deltaTime * lightTransformSpeed * -1.0 * 0.5)
       );
     }
     if (useKeyEvent(Constants::Buttons::keyV)) {
-      light->transformZ(
+      light->rotateZ(
         float(deltaTime * lightTransformSpeed * 1.0 * 0.5)
       );
     }

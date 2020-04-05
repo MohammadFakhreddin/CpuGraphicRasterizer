@@ -4,7 +4,7 @@
 
 #include "../../data_access_point/DataAccessPoint.h"
 #include "../../3d_models/ShapeGenerator.h"
-#include "../../shaders/diffuse_light/DiffuseLight.h"
+#include "../../shaders/directional_light/DirectionalLight.h"
 
 SphereScene::SphereScene(OpenGL& gl)
   :
@@ -23,9 +23,10 @@ SphereScene::SphereScene(OpenGL& gl)
     "Plant main camera"
   )
 {
-
+  whiteColor = std::make_unique<ColorTexture>(1.0f, 1.0f, 1.0f);
   auto radius = float((25.0f/800.f) * DataAccessPoint::getInstance()->getAppScreenWidth());
   sphere = ShapeGenerator::sphere(
+    (std::unique_ptr<Texture>&)whiteColor,
     radius,
     12 * 1,
     24 * 1,
@@ -39,7 +40,7 @@ SphereScene::SphereScene(OpenGL& gl)
     1.0f
   );
 
-  lightSources.emplace_back(std::make_unique<DirectionalLight>(0,0, cameraInitialZLocation - 100));
+  lightSources.emplace_back(std::make_unique<DirectionalLight>(-1.0f, -1.0f, -1.0f, 0.05f));
 }
 
 void SphereScene::update(double deltaTime) {

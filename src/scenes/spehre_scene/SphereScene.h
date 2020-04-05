@@ -6,6 +6,7 @@
 #include "../base_scene/BaseScene.h"
 #include "../../camera/Camera.h"
 #include "../../3d_shape/Shape3d.h"
+#include "../../texture/ColorTexture/ColorTexture.h"
 
 class SphereScene : public BaseScene {
 
@@ -30,6 +31,8 @@ private:
   std::unique_ptr<Shape3d> sphere;
 
   std::vector<std::unique_ptr<Light>> lightSources;
+
+  std::unique_ptr<ColorTexture> whiteColor;
 
 };
 

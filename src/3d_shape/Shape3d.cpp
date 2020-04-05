@@ -7,7 +7,62 @@
 #include "../open_gl/OpenGl.h"
 #include "./../shaders/light/Light.h"
 
-//TODO Replace this with uniq_ptr and use std::move instead for edges
+
+std::vector<MatrixFloat> Shape3d::generateNormals(
+  std::vector<std::unique_ptr<Surface>>& surfaceList,
+  std::vector<MatrixFloat>& nodes
+) {
+  assert(!surfaceList.empty());
+  assert(!nodes.empty());
+  
+  std::vector<MatrixFloat> normals;
+
+  MatrixFloat vector1 = MatrixFloat(3, 1, 0.0f);
+  MatrixFloat vector2 = MatrixFloat(3, 1, 0.0f);
+  MatrixFloat* targetNode = nullptr;
+  MatrixFloat* sideNode1 = nullptr;
+  MatrixFloat* sideNode2 = nullptr;
+  MatrixFloat normalVector = MatrixFloat(3, 1, 0.0f);
+
+  const auto computeEdgeIndex = [](short int index) {
+    return index % 3;
+  };
+
+  const auto generateDiffrenceVector = [](
+    MatrixFloat& output,
+    const MatrixFloat* vector2,
+    const MatrixFloat* vector1
+  ) {
+      for (short int i = 0; i < 3; i++) {
+        output.set(i, 0, vector2->get(i, 0) - vector1->get(i, 0));
+      }
+  };
+
+  for (auto& surface : surfaceList) {
+    
+    for (short int i = 0; i < 3; i++) {
+
+      targetNode = &nodes.at(surface->getEdgeByIndex(computeEdgeIndex(i)));
+      sideNode1 = &nodes.at(surface->getEdgeByIndex(computeEdgeIndex(i + 1)));
+      sideNode2 = &nodes.at(surface->getEdgeByIndex(computeEdgeIndex(i + 2)));
+
+      generateDiffrenceVector(vector1, targetNode, sideNode1);
+      generateDiffrenceVector(vector2, sideNode2, targetNode);
+
+      MatrixFloat normalVector = MatrixFloat(3, 1, 0.0f);
+      normalVector.crossPoduct(vector1, vector2);
+      normals.emplace_back(normalVector.hat<float>());
+
+      surface->setNormalIndex(i, (unsigned long)(normals.size() - 1));
+
+    }
+
+  }
+
+  return normals;
+
+}
+
 Shape3d::Shape3d(
   std::vector<MatrixFloat>& nodes,
   std::vector<std::unique_ptr<Surface>>& surfaces,
@@ -69,11 +124,7 @@ zScaleMatrix(3, 3, std::vector<std::vector<float>>{
     std::vector<float>{0, 0, 1}
 }) {
 
-
-  assert(nodes.size() > 0);
-  assert(edges.size() > 0);
-
-  assert(checkForNodesValidation());
+  assert(checkDataValidation());
 
   if (!nodes.empty()) {
     for (auto& node : nodes) {
@@ -87,45 +138,54 @@ zScaleMatrix(3, 3, std::vector<std::vector<float>>{
     }
   }
 
-  assert([nodes]() {
-    if (!nodes.empty()) {
-      for (auto& node : nodes) {
-        if (node.getWidth() != 3 || node.getHeight() != 1) {
-          return false;
-        }
-      }
-    }
-    return true
-    } && "Shape3d::constructor On of the nodes matrix width or height is invalid");
-
-  assert([normals]() {
-    if (!normals.empty()) {
-      for (const auto& normal : normals) {
-        if (normals.getWidth() != 3 || normals.getHeight() != 1) {
-          return false;
-        }
-      }
-    }
-    return true;
-    } && "Shape3d::constructor On of the normals width or height is invalid");
-
-  assert([nodes, normals,surfaces]() {
-    if (!surfaces.empty()) {
-      for (const auto& surface : surfaces) {
-        if (!surface->areEdgeAndNormalsValid(nodes.size(), normals.size())) {
-          return false;
-        }
-      }
-    }
-    return true;
-    } && "Shape3d::constructor surface->areEdgeAndNormalsValid failed");
-
   this->transformX(transformX);
   this->transformY(transformY);
   this->transformZ(transformZ);
   this->rotateX(rotationDegreeX);
   this->rotateY(rotationDegreeY);
   this->rotateZ(rotationDegreeZ);
+}
+
+bool Shape3d::checkDataValidation() {
+
+  if (nodes.empty()) {
+    Logger::log("Shape3d nodes cannot be empty");
+    return false;
+  }
+
+  if (surfaces.empty()) {
+    Logger::log("Shap3d surfaces cannot be empty");
+    return false;
+  }
+
+  if (normals.empty()) {
+    Logger::log("Normals cannot be empty");
+    return false;
+  }
+  
+  for (auto& node : nodes) {
+    if (node.getWidth() != 3 || node.getHeight() != 1) {
+      Logger::log("Shape3d::constructor On of the nodes matrix width or height is invalid");
+      return false;
+    }
+  }
+  
+  for (const auto& normal : normals) {
+    if (normal.getWidth() != 3 || normal.getHeight() != 1) {
+      Logger::log("Shape3d::constructor On of the normals width or height is invalid");
+      return false;
+    }
+  }
+  
+  for (const auto& surface : surfaces) {
+    if (!surface->areEdgeAndNormalsValid((unsigned long)nodes.size(), (unsigned long)normals.size())) {
+      Logger::log("Shape3d::constructor surface->areEdgeAndNormalsValid failed");
+      return false;
+    }
+  }
+
+  return true;
+
 }
 
 void Shape3d::update(

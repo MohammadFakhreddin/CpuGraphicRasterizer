@@ -7,32 +7,33 @@ Surface::Surface(
   std::unique_ptr<Texture>& texture,
   const unsigned long& edge1Index,
   const unsigned long& edge2Index,
-  const unsigned long& edge3Index,
-  const unsigned long& normal1Index,
-  const unsigned long& normal2Index,
-  const unsigned long& normal3Index,
-  const float& edge1TexturePointX,
-  const float& edge1TexturePointY,
-  const float& edge2TexturePointX,
-  const float& edge2TexturePointY,
-  const float& edge3TexturePointX,
-  const float& edge3TexturePointY
+  const unsigned long& edge3Index
 )
   :
-  texture(texture),
-  edge1TexturePoint(edge1TexturePointX,edge1TexturePointY),
-  edge2TexturePoint(edge2TexturePointX,edge2TexturePointY),
-  edge3TexturePoint(edge3TexturePointX,edge3TexturePointY)
+  texture(texture)
 {
   
+  assert(texture);
+
   edgeIndices[0] = edge1Index;
   edgeIndices[1] = edge2Index;
   edgeIndices[2] = edge3Index;
 
-  normalVectorIndices[0] = normal1Index;
-  normalVectorIndices[1] = normal2Index;
-  normalVectorIndices[2] = normal3Index;
+  setTextureCoordinates(0, 0, 0);
+  setTextureCoordinates(1, 0, 0);
+  setTextureCoordinates(2, 0, 0);
 
+}
+
+void Surface::setNormalIndex(const short& edgeNumber, const unsigned long& index) {
+  assert(edgeNumber >= 0 && edgeNumber < edgeCount);
+  assert(index >= 0);
+  normalVectorIndices[edgeNumber] = index;
+}
+
+void Surface::setTextureCoordinates(const short& edgeNumber, const float& x, const float& y) {
+  assert(edgeNumber >= 0 && edgeNumber < edgeCount);
+  textureCoordinate[edgeNumber].setXY(x,y);
 }
 
 const unsigned long& Surface::getEdgeByIndex(const unsigned short& index) {
@@ -61,14 +62,6 @@ void Surface::update(
   std::vector<MatrixFloat>& normals,
   std::vector<std::unique_ptr<Light>>& lightSources
 ) {
-  assert([worldPoints]() {
-    for (auto i = 0; i < edgeCount; i++) {
-      if (edges[0] >= worldPoints.size() || edges[0] < 0) {
-        return false;
-      }
-    }
-    return true;
-  });
   //TODO This method is cpu demanding
   if (!isVisibleToCamera(cameraInstance, worldPoints, normals)) {
     return;
@@ -113,6 +106,9 @@ void Surface::computePixelMapData(
 
   xDifference = triangleFinalX - triangleStartX;
   yDifference = triangleFinalY - triangleStartY;
+  if (xDifference == 0 && yDifference == 0) {
+    return;
+  }
   {//Computing total step count
     if (abs(xDifference) > abs(yDifference)) {
       assert(xDifference != 0);
@@ -120,7 +116,7 @@ void Surface::computePixelMapData(
         cameraInstance,
         xDifference,
         &totalStepCount
-        );
+      );
     }
     else {
       assert(yDifference != 0);
@@ -128,7 +124,7 @@ void Surface::computePixelMapData(
         cameraInstance,
         yDifference,
         &totalStepCount
-        );
+      );
     }
     if (totalStepCount == 0) {
       return;
@@ -167,14 +163,14 @@ void Surface::computePixelMapData(
     );
   }
 
-  textureStartX = edge1TexturePoint.getX();
-  textureStartY = edge1TexturePoint.getY();
+  textureStartX = textureCoordinate[0].getX();
+  textureStartY = textureCoordinate[0].getY();
 
-  textureEndX = edge2TexturePoint.getX();
-  textureEndY = edge2TexturePoint.getY();
+  textureEndX = textureCoordinate[1].getX();
+  textureEndY = textureCoordinate[1].getY();
 
-  textureFinalX = edge3TexturePoint.getX();
-  textureFinalY = edge3TexturePoint.getY();
+  textureFinalX = textureCoordinate[2].getX();
+  textureFinalY = textureCoordinate[2].getY();
 
   textureStartStepValueX = 0;
   textureStartStepValueY = 0;
@@ -258,8 +254,8 @@ void Surface::computePixelMapData(
       );
   }
 
-  for (i = 0; i < totalStepCount; i++) {
-
+  for (unsigned long i = 0; i < totalStepCount; i++) {
+    
     drawLineBetweenPoints(
       cameraInstance,
 
@@ -285,16 +281,16 @@ void Surface::computePixelMapData(
       lightColorEndG,
       lightColorEndB
     );
-
+    
     triangleStartX += triangleStartStepValueX;
     triangleEndX += triangleEndStepValueX;
-    
-    triangleStartY += triangleStartStepValueY;
-    triangleEndY += triangleEndStepValueY;
-    
+
     triangleStartZ += triangleStartStepValueZ;
     triangleEndZ += triangleEndStepValueZ;
 
+    triangleStartY += triangleStartStepValueY;
+    triangleEndY += triangleEndStepValueY;
+    
     textureStartX += textureStartStepValueX;
     textureEndX += textureEndStepValueX;
     
@@ -319,7 +315,7 @@ void Surface::computeColorIntensity(
 ) {
   if (lightSources.empty() == false) {
 
-    for (edgeIndex = 0; edgeIndex < edgeCount; edgeIndex++) {
+    for (short edgeIndex = 0; edgeIndex < edgeCount; edgeIndex++) {
       
       colorIntensity[edgeIndex].set(0, 0, 0.0f);
       colorIntensity[edgeIndex].set(1, 0, 0.0f);
@@ -332,8 +328,8 @@ void Surface::computeColorIntensity(
           colorIntensityOutput
         );
         
-        for (i = 0; i < 3; i++) {
-          colorIntensity->set(
+        for (short i = 0; i < 3; i++) {
+          colorIntensity[edgeIndex].set(
             i, 
             0, 
             Math::max(
@@ -346,9 +342,9 @@ void Surface::computeColorIntensity(
     }
   } else {
     
-    for (edgeIndex = 0; edgeIndex < edgeCount; edgeIndex++) {
+    for (unsigned short edgeIndex = 0; edgeIndex < edgeCount; edgeIndex++) {
     
-      for (i = 0; i < 3; i++) {
+      for (unsigned short i = 0; i < 3; i++) {
       
         colorIntensity[edgeIndex].set(i, 0, 1.0f);
       
@@ -361,12 +357,12 @@ bool Surface::areEdgeAndNormalsValid(
   const unsigned long& worldPointsSize,
   const unsigned long& normalsSize
 ) {
-  for (i = 0; i < 3; i++) {
+  for (unsigned short i = 0; i < 3; i++) {
     if (
       edgeIndices[i] < 0 ||
       edgeIndices[i] >= worldPointsSize ||
       normalVectorIndices[i] < 0 ||
-      normalVectorIndices[i] >= worldPointsSize
+      normalVectorIndices[i] >= normalsSize
     ) {
       return false;
     }
@@ -393,7 +389,7 @@ void Surface::calculateStepValueBasedOnStepCount(
   float* stepValue
 ) {
   assert(stepCount > 0);
-  *stepValue = difference / stepCount;
+  *stepValue = difference / float(stepCount);
 }
 
 bool Surface::isVisibleToCamera(
@@ -409,7 +405,7 @@ bool Surface::isVisibleToCamera(
 
   isShapeCompletlyOutOfCamera = true;
   //Need to clip when shape is out of camera
-  for (i = 0; i < edgeCount; i++) {
+  for (unsigned short i = 0; i < edgeCount; i++) {
     
     currentWorldPoint = &worldPoints.at(edgeIndices[i]);
     
@@ -519,22 +515,25 @@ void Surface::drawLineBetweenPoints(
   lineTriangleYStepValue = 0;
   lineTriangleZStepValue = 0;
 
-  xDifference = lineTriangleEndX - lineTriangleStartX;
-  yDifference = lineTriangleEndY - lineTriangleStartY;
+  lineXDifference = lineTriangleEndX - lineTriangleStartX;
+  lineYDifference = lineTriangleEndY - lineTriangleStartY;
+  if (lineXDifference == 0 && lineYDifference == 0) {
+    return;
+  }
   {//TriangleStepValue
-    if (abs(xDifference) > abs(yDifference)) {
-      assert(xDifference != 0);
+    if (abs(lineXDifference) > abs(lineYDifference)) {
+      assert(lineXDifference != 0);
       calculateStepCount(
         cameraInstance,
-        xDifference,
+        lineXDifference,
         &lineTriangleTotalStepCount
       );
     }
     else {
-      assert(yDifference != 0);
+      assert(lineYDifference != 0);
       calculateStepCount(
         cameraInstance,
-        yDifference,
+        lineYDifference,
         &lineTriangleTotalStepCount
       );
     }
@@ -542,12 +541,12 @@ void Surface::drawLineBetweenPoints(
       return;
     }
     calculateStepValueBasedOnStepCount(
-      xDifference,
+      lineXDifference,
       lineTriangleTotalStepCount,
       &lineTriangleXStepValue
     );
     calculateStepValueBasedOnStepCount(
-      yDifference,
+      lineYDifference,
       lineTriangleTotalStepCount, 
       &lineTriangleYStepValue
     );
@@ -558,43 +557,43 @@ void Surface::drawLineBetweenPoints(
     );
   }
 
-  textureXStepValue = 0;
-  textureYStepValue = 0;
+  lineTextureXStepValue = 0;
+  lineTextureYStepValue = 0;
   {//TextureStepValue
     calculateStepValueBasedOnStepCount(
       lineTextureEndX - lineTextureStartX,
       lineTriangleTotalStepCount,
-      &textureXStepValue
+      &lineTextureXStepValue
     );
     calculateStepValueBasedOnStepCount(
       lineTextureEndY - lineTextureStartY,
       lineTriangleTotalStepCount,
-      &textureYStepValue
+      &lineTextureYStepValue
     );
   }
 
-  lightColorRStepValue = 0;
-  lightColorGStepValue = 0;
-  lightColorBStepValue = 0;
+  lineLightColorRStepValue = 0;
+  lineLightColorGStepValue = 0;
+  lineLightColorBStepValue = 0;
   {//ColorStepValue
     calculateStepValueBasedOnStepCount(
       lineLightColorEndR - lineLightColorStartR,
       lineTriangleTotalStepCount,
-      &lightColorRStepValue
+      &lineLightColorRStepValue
     );
     calculateStepValueBasedOnStepCount(
       lineLightColorEndG - lineLightColorStartG,
       lineTriangleTotalStepCount,
-      &lightColorGStepValue
+      &lineLightColorGStepValue
     );
     calculateStepValueBasedOnStepCount(
       lineLightColorEndB - lineLightColorStartB,
       lineTriangleTotalStepCount,
-      &lightColorBStepValue
+      &lineLightColorBStepValue
     );
   }
 
-  for (i = 0; i < lineTriangleTotalStepCount; i++) {
+  for (unsigned long j = 0; j < lineTriangleTotalStepCount; j++) {
     texture->getPixelForPosition(lineTextureStartX, lineTextureStartY, &red, &green, &blue);
 
     // Multiply color by light value
@@ -606,20 +605,20 @@ void Surface::drawLineBetweenPoints(
       int(lineTriangleStartX),
       int(lineTriangleStartY),
       lineTriangleStartZ,
-      red,
-      green,
-      blue
+      Math::max(red, 0.0f),
+      Math::max(green, 0.0f),
+      Math::max(blue, 0.0f)
     );
-    
+
     lineTriangleStartX += lineTriangleXStepValue;
     lineTriangleStartY += lineTriangleYStepValue;
     lineTriangleStartZ += lineTriangleZStepValue;
 
-    lineTextureStartX += textureXStepValue;
-    lineTextureStartY += textureYStepValue;
+    lineTextureStartX += lineTextureXStepValue;
+    lineTextureStartY += lineTextureYStepValue;
 
-    lineLightColorStartR += lightColorRStepValue;
-    lineLightColorStartG += lightColorGStepValue;
-    lineLightColorStartB += lightColorBStepValue;
+    lineLightColorStartR += lineLightColorRStepValue;
+    lineLightColorStartG += lineLightColorGStepValue;
+    lineLightColorStartB += lineLightColorBStepValue;
   }
 }

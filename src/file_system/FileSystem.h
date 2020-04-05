@@ -40,12 +40,12 @@ public:
     #if defined(__DESKTOP__)
       return stbi_load(textureAddress.c_str(), width, height, numberOfChannels, STBI_rgb);
     #elif defined(__ANDROID__)
-        return AndroidEnvironment::getInstance()->loadImage(
-                textureAddress,
-                width,
-                height,
-                numberOfChannels
-        );
+      return AndroidEnvironment::getInstance()->loadImage(
+              textureAddress,
+              width,
+              height,
+              numberOfChannels
+      );
     #elif defined(__IOS__)
       return IPhoneHelperAbstraction::getInstance()->callObjectiveCToLoadImage(
         textureAddress,
@@ -58,6 +58,7 @@ public:
     #endif
     return nullptr;
   }
+  //TODO Remove texture coordinates
   static std::unique_ptr<Shape3d> loadObjectWithColor(
     std::string filename,
     std::unique_ptr<Texture>& texture,
@@ -65,11 +66,7 @@ public:
     bool useFileNormals,
     bool useFileTextureCoordinates
   ){
-    //TODO Start from here
-    assert(color.getX()>=0.0f && color.getX()<=1.0f);
-    assert(color.getY()>=0.0f && color.getY()<=1.0f);
-    assert(color.getZ()>=0.0f && color.getZ()<=1.0f);
-
+    
     Logger::log("Loading 3d object with name:"+filename);
 
     std::ifstream* file; 
@@ -124,6 +121,8 @@ public:
 
     std::vector<MatrixFloat> vertices;
     std::vector<std::unique_ptr<Surface>> indices;
+    std::vector<MatrixFloat> normals;
+    std::vector<MatrixFloat> textureCoordinates;
     {//Parsing .obj file using tinyObj library
       tinyobj::attrib_t attributes;
       std::vector<tinyobj::shape_t> shapes;
@@ -149,24 +148,71 @@ public:
       // extract vertex data
       // attrib.vertices is a flat std::vector of floats corresponding
       // to vertex positions, laid out as xyzxyzxyz... etc.
-        assert(attributes.vertices.size()%3==0);
-        
+        assert(attributes.vertices.size() % 3 == 0);
+
         //Reserving space before allocating
-        vertices.reserve(attributes.vertices.size()/3u);
-        for(unsigned int i=0;i<attributes.vertices.size();i+=3){
+        vertices.reserve(attributes.vertices.size() / 3u);
+        for (unsigned int i = 0; i < attributes.vertices.size(); i += 3) {
           vertices.emplace_back(
-            MatrixFloat(3,1,std::vector<std::vector<float>>{
+            MatrixFloat(3, 1, std::vector<std::vector<float>>{
               std::vector<float>{attributes.vertices[i + 0u]},
               std::vector<float>{attributes.vertices[i + 1u]},
               std::vector<float>{attributes.vertices[i + 2u]}
-            })
-          );
+          }));
         }
+
+      }
+      {//Normals
+        //TODO Auto generate normals when size is zero instead of asking
+        if (useFileNormals) {
+          assert(attributes.normals.size() % 3 == 0);
+          normals.reserve(attributes.normals.size() / 3u);
+          for (unsigned int i = 0; i < attributes.normals.size(); i += 3) {
+            normals.emplace_back(
+              MatrixFloat(3, 1, std::vector<std::vector<float>>{
+                std::vector<float>{attributes.normals[i + 0u]},
+                std::vector<float>{attributes.normals[i + 1u]},
+                std::vector<float>{attributes.normals[i + 2u]}
+            }));
+          }
+        }
+      }
+      {//Texture coordinates
+        if (useFileTextureCoordinates) {
+          assert(attributes.texcoords.size() % 2 == 0);
+          textureCoordinates.reserve(attributes.texcoords.size() / 2u);
+          for (unsigned int i = 0; i < attributes.texcoords.size(); i += 2) {
+            textureCoordinates.emplace_back(
+              MatrixFloat(2, 1, std::vector<std::vector<float>>{
+                std::vector<float>{attributes.texcoords[i + 0u]},
+                std::vector<float>{attributes.texcoords[i + 1u]}
+              })
+            );
+          }
+        }
+        //TODO We have to load texture coordinates
       }
       {//Loading mesh
       // extract index data
       // obj file can contain multiple meshes, we assume just 1
         const auto& mesh = shapes[0].mesh;
+
+        unsigned short edge1Index = 2u;
+        unsigned short edge2Index = 1u;
+        unsigned short edge3Index = 0u;
+        //My implementation is counter clock wise so I need to rotate before rendering
+        if (isCounterClockWise==true) {
+          edge1Index = 0u;
+          edge2Index = 1u;
+          edge3Index = 2u;
+        }
+
+        float edge1TexturePointX = 0.0f;
+        float edge1TexturePointY = 0.0f;
+        float edge2TexturePointX = 0.0f;
+        float edge2TexturePointY = 0.0f;
+        float edge3TexturePointX = 0.0f;
+        float edge3TexturePointY = 0.0f;
       // mesh contains a std::vector of num_face_vertices (uchar)
       // and a flat std::vector of indices. If all faces are triangles
       // then for any face f, the first index of that faces is [f * 3n]
@@ -177,28 +223,35 @@ public:
             Logger::exception("Number of face vertices cannot be other than "+ std::to_string(mesh.num_face_vertices[faceIndex]));
           }
           //Loading mesh indices into indices vector
-          //My implementation is counter clock wise so I need to rotate before rendering
-          if(isCounterClockWise){
-            indices.emplace_back(std::make_unique<Surface>(
-              mesh.indices[faceIndex * 3u + 0u].vertex_index,
-              mesh.indices[faceIndex * 3u + 1u].vertex_index,
-              mesh.indices[faceIndex * 3u + 2u].vertex_index,
-              color.getX(),
-              color.getY(),
-              color.getZ()
-            ));
-          }else{
-            indices.emplace_back(std::make_unique<Surface>(
-              mesh.indices[faceIndex * 3u + 2u].vertex_index,
-              mesh.indices[faceIndex * 3u + 1u].vertex_index,
-              mesh.indices[faceIndex * 3u + 0u].vertex_index,
-              color.getX(),
-              color.getY(),
-              color.getZ()
-            ));
+          indices.emplace_back(std::make_unique<Surface>(
+            texture,
+            mesh.indices[faceIndex * 3u + edge1Index].vertex_index,
+            mesh.indices[faceIndex * 3u + edge2Index].vertex_index,
+            mesh.indices[faceIndex * 3u + edge3Index].vertex_index
+          ));
+          if (useFileNormals) {
+            indices.back()->setNormalIndex(edge1Index, mesh.indices[faceIndex * 3u + edge1Index].normal_index);
+            indices.back()->setNormalIndex(edge2Index, mesh.indices[faceIndex * 3u + edge2Index].normal_index);
+            indices.back()->setNormalIndex(edge3Index, mesh.indices[faceIndex * 3u + edge3Index].normal_index);
+          }
+          if (useFileTextureCoordinates) {
+            edge1TexturePointX = textureCoordinates.at(mesh.indices[faceIndex * 3u + edge1Index].texcoord_index).get(0, 0);
+            edge1TexturePointY = textureCoordinates.at(mesh.indices[faceIndex * 3u + edge1Index].texcoord_index).get(1, 0);
+            indices.back()->setTextureCoordinates(edge1Index, edge1TexturePointX, edge1TexturePointY);
+
+            edge2TexturePointX = textureCoordinates.at(mesh.indices[faceIndex * 3u + edge2Index].texcoord_index).get(0, 0);
+            edge2TexturePointY = textureCoordinates.at(mesh.indices[faceIndex * 3u + edge2Index].texcoord_index).get(1, 0);
+            indices.back()->setTextureCoordinates(edge2Index, edge2TexturePointX, edge2TexturePointY);
+
+            edge3TexturePointX = textureCoordinates.at(mesh.indices[faceIndex * 3u + edge3Index].texcoord_index).get(0, 0);
+            edge3TexturePointY = textureCoordinates.at(mesh.indices[faceIndex * 3u + edge3Index].texcoord_index).get(1, 0);
+            indices.back()->setTextureCoordinates(edge3Index, edge3TexturePointX, edge3TexturePointY);
           }
         }
       }
+    }
+    if (!useFileNormals) {
+       normals = Shape3d::generateNormals(indices, vertices);
     }
     Logger::log("Reading from object file is successful");    
     delete file;
@@ -231,7 +284,8 @@ public:
 
     return std::make_unique<Shape3d>(
       vertices,
-      indices
+      indices,
+      normals
     );
   }
 private:

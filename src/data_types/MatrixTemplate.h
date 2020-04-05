@@ -265,10 +265,40 @@ public:
       (T(mat1.get(2, 0)) * T(mat2.get(0, 0)))
       - (T(mat1.get(0, 0)) * T(mat2.get(2, 0)))
     );
-    this->set(2, 0
+    this->set(2, 0,
       (T(mat1.get(0, 0)) * T(mat2.get(1, 0)))
       - (T(mat1.get(1, 0)) * T(mat2.get(0, 0)))
     );
+  }
+
+  template<typename A>
+  _Matrix<A> hat() {
+    
+    assert(width == 3);
+    assert(height == 1);
+    
+    const A vectorSize = size<A>();
+    
+    _Matrix<A> matrix = _Matrix<A>(3, 1, 0.0f);
+    
+    for (unsigned short i = 0; i < 3; i++) {
+    
+      matrix.set(i, 0, A(this->get(i, 0)) / vectorSize);
+    
+    }
+    
+    return matrix;
+  }
+ 
+  template<typename A>
+  A size() {
+    assert(width == 3);
+    assert(height == 1);
+    return Math::sqrt(A(
+      this->get(0, 0) * this->get(0, 0) +
+      this->get(1, 0) * this->get(1, 0) +
+      this->get(2, 0) * this->get(2, 0)
+    ));
   }
 
 };

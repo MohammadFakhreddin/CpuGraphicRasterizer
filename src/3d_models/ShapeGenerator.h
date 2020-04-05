@@ -4,20 +4,16 @@
 #include <memory>
 
 #include "../3d_shape/Shape3d.h"
-#include "../fa_texture/FaTexture.h"
-#include "../3d_shape/surface/base_surface/BaseSurface.h"
-#include "../3d_shape/surface/color_surface/ColorSurface.h"
 #include "../utils/math/Math.h"
 #include "../data_types/MatrixTemplate.h"
 #include "../utils/math/Math.h"
-#include "../3d_shape/surface/simple_edge/SimpleSurface.h"
 
 class ShapeGenerator {
 
 public:
 
-
-  static std::unique_ptr<Shape3d> generateColored3DCube(
+  static std::unique_ptr<Shape3d> cube(
+    std::vector<std::unique_ptr<Surface>>& surfaceList,
     float w,
     float h,
     float d,
@@ -29,49 +25,9 @@ public:
     float rotationZ,
     float scale
   ) {
-    std::vector<std::unique_ptr<Surface>> edgeList;
-    edgeList.emplace_back(std::make_unique<ColorSurface>(2, 1, 0, 245.0f / 255.0f, 144.0f / 255.0f, 66.0f / 255.0f));
-    edgeList.emplace_back(std::make_unique<ColorSurface>(3, 1, 2, 245.0f / 255.0f, 144.0f / 255.0f, 66.0f / 255.0f));
-    edgeList.emplace_back(std::make_unique<ColorSurface>(1, 3, 5, 221.0f / 255.0f, 245.0f / 255.0f, 66.0f / 255.0f));
-    edgeList.emplace_back(std::make_unique<ColorSurface>(5, 3, 7, 221.0f / 255.0f, 245.0f / 255.0f, 66.0f / 255.0f));
-    edgeList.emplace_back(std::make_unique<ColorSurface>(4, 0, 5, 66.0f / 255.0f, 245.0f / 255.0f, 126.0f / 255.0f));
-    edgeList.emplace_back(std::make_unique<ColorSurface>(5, 0, 1, 66.0f / 255.0f, 245.0f / 255.0f, 126.0f / 255.0f));
-    edgeList.emplace_back(std::make_unique<ColorSurface>(6, 0, 4, 66.0f / 255.0f, 194.0f / 255.0f, 245.0f / 255.0f));
-    edgeList.emplace_back(std::make_unique<ColorSurface>(2, 0, 6, 66.0f / 255.0f, 194.0f / 255.0f, 245.0f / 255.0f));
-    edgeList.emplace_back(std::make_unique<ColorSurface>(7, 2, 6, 96.0f / 255.0f, 66.0f / 255.0f, 245.0f / 255.0f));
-    edgeList.emplace_back(std::make_unique<ColorSurface>(3, 2, 7, 96.0f / 255.0f, 66.0f / 255.0f, 245.0f / 255.0f));
-    edgeList.emplace_back(std::make_unique<ColorSurface>(7, 4, 5, 245.0f / 255.0f, 66.0f / 255.0f, 123.0f / 255.0f));
-    edgeList.emplace_back(std::make_unique<ColorSurface>(6, 4, 7, 245.0f / 255.0f, 66.0f / 255.0f, 123.0f / 255.0f));
-    return ShapeGenerator::generateTextured3DCube(
-      edgeList,
-      w,
-      h,
-      d,
-      transformX,
-      transformY,
-      transformZ,
-      rotationX,
-      rotationY,
-      rotationZ,
-      scale
-    );
-  }
 
-  static std::unique_ptr<Shape3d> generateTextured3DCube(
-    std::vector<std::unique_ptr<Surface>>& edgeList,
-    float w,
-    float h,
-    float d,
-    float transformX,
-    float transformY,
-    float transformZ,
-    float rotationX,
-    float rotationY,
-    float rotationZ,
-    float scale
-  ) {
-    //TODO Move these two methods into new class
-    //Also nodeList for cube is only part that is needed    
+    assert(surfaceList.size() == 12);
+
     float x = -w / 2;
     float y = -h / 2;
     float z = -d / 2;
@@ -117,9 +73,15 @@ public:
         std::vector<float>{z + d}
       })
     };
+    //Generating normals
+    std::vector<MatrixFloat> normals = Shape3d::generateNormals(
+      surfaceList,
+      nodeList
+    );
     return std::make_unique<Shape3d>(
       nodeList,
-      edgeList,
+      surfaceList,
+      normals,
       transformX,
       transformY,
       transformZ,
@@ -162,6 +124,7 @@ public:
   }
 
   static std::unique_ptr<Shape3d> sphere(
+    std::unique_ptr<Texture>& texture,
     const float& radius,
     const unsigned int& numberOfLat,
     const unsigned int& numberOfLong,
@@ -180,23 +143,21 @@ public:
 
     {//Filling vertices
       MatrixFloat initialPoint = MatrixFloat(3, 1, 0.0f);
+      
       initialPoint.set(1, 0, radius);
       
       const auto latitudeStepDegree = Math::piFloat / float(numberOfLat);
 
       MatrixFloat latitudeRotationMatrix = MatrixFloat(3, 3, 0.0f);
-      //latitudeRotationMatrix.set(2, 2, 1.0f);
      
       const auto longitudeStepDegree = (Math::piFloat * 2.0f) / float(numberOfLong);
 
       MatrixFloat longitudeRotationMatrix = MatrixFloat(3, 3, 0.0f);
-      //longitudeRotationMatrix.set(1, 1, 1.0f);
-
+   
       MatrixFloat latitudePoint = MatrixFloat(3, 1, 0.0f);
 
       MatrixFloat longitudePoint = MatrixFloat(3, 1, 0.0f);
 
-      //vertices.emplace_back(initialPoint);
       for (unsigned int latitudeIndex = 1; latitudeIndex < numberOfLat - 1; latitudeIndex++) {
 
         latitudePoint.assign(initialPoint);
@@ -205,15 +166,9 @@ public:
           latitudeRotationMatrix, 
           latitudeStepDegree * latitudeIndex
         );
-        /*
-        latitudeRotationMatrix.set(0, 0, cosf(latitudeStepDegree * latitudeIndex));
-        latitudeRotationMatrix.set(0, 1, -sinf(latitudeStepDegree * latitudeIndex));
-        latitudeRotationMatrix.set(1, 0, sinf(latitudeStepDegree * latitudeIndex));
-        latitudeRotationMatrix.set(1, 1, cosf(latitudeStepDegree * latitudeIndex));
-        */
+      
         latitudePoint.multiply(latitudeRotationMatrix);
 
-        //temporaryVertexPoint.assign(vertexPoint);
         for (unsigned int longitudeIndex = 0; longitudeIndex < numberOfLong ; longitudeIndex++) {
 
           longitudePoint.assign(latitudePoint);
@@ -268,53 +223,48 @@ public:
     {//Filling indices
       
       for (unsigned int i = 0; i < numberOfLong; i++) {
-        indices.emplace_back(std::make_unique<ColorSurface>(
+        indices.emplace_back(std::make_unique<Surface>(
+          texture,
           convertLatAndLongToVertices(sideLatCount, 0),
-          convertLatAndLongToVertices(1, i % numberOfLong),
           convertLatAndLongToVertices(1, (i + 1) % numberOfLong),
-          color.getX(),
-          color.getY(),
-          color.getZ()
+          convertLatAndLongToVertices(1, i % numberOfLong)
         ));
       }
       
       for (unsigned int i = 0; i < numberOfLong; i++) {
-        indices.emplace_back(std::make_unique<ColorSurface>(
+        indices.emplace_back(std::make_unique<Surface>(
+          texture,
           convertLatAndLongToVertices(sideLatCount - 1, i % numberOfLong),
-          convertLatAndLongToVertices(sideLatCount + 1, 0),
           convertLatAndLongToVertices(sideLatCount - 1, (i + 1) % numberOfLong),
-          color.getX(),
-          color.getY(),
-          color.getZ()
+          convertLatAndLongToVertices(sideLatCount + 1, 0)
         ));
       }
       
       for (unsigned int i = 0; i < sideLatCount - 1; i++) {
         for (unsigned int j = 0; j < numberOfLong; j++) {
-          indices.emplace_back(std::make_unique<ColorSurface>(
+          indices.emplace_back(std::make_unique<Surface>(
+            texture,
+            convertLatAndLongToVertices(i, j% numberOfLong),
             convertLatAndLongToVertices(i, (j + 1) % numberOfLong),
-            convertLatAndLongToVertices(i, j % numberOfLong),
-            convertLatAndLongToVertices(i + 1, (j + 1) % numberOfLong),
-            color.getX(),
-            color.getY(),
-            color.getZ()
+            convertLatAndLongToVertices(i + 1, (j + 1) % numberOfLong)
           ));
-          indices.emplace_back(std::make_unique<ColorSurface>(
-            convertLatAndLongToVertices(i, j % numberOfLong),
+          indices.emplace_back(std::make_unique<Surface>(
+            texture,
             convertLatAndLongToVertices(i + 1, j% numberOfLong),
-            convertLatAndLongToVertices(i + 1, (j + 1) % numberOfLong),
-            color.getX(),
-            color.getY(),
-            color.getZ()
+            convertLatAndLongToVertices(i, j % numberOfLong),
+            convertLatAndLongToVertices(i + 1, (j + 1) % numberOfLong)
           ));
         }
       }
 
     }
 
+    std::vector<MatrixFloat> normals = Shape3d::generateNormals(indices, vertices);
+
     return std::make_unique<Shape3d>(
       vertices,
       indices,
+      normals,
       transform.getX(),
       transform.getY(),
       transform.getZ(),

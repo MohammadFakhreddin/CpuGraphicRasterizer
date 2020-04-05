@@ -83,10 +83,10 @@ void ImageTexture::getPixelForPosition(
     ) {
     return;
   }
-  assert(positionX < virtualImageWidth);
-  assert(positionX >= 0);
-  assert(positionY < virtualImageHeight);
-  assert(positionY >= 0);
+  assert(x < virtualImageWidth);
+  assert(x >= 0);
+  assert(y < virtualImageHeight);
+  assert(y >= 0);
   
   realPositionX = unsigned int(scaleX * x);
   realPositionY = unsigned int(scaleY * y);
@@ -107,8 +107,8 @@ void ImageTexture::getDirectPixelColor(
   float* green,
   float* blue
   ) {
-  assert(positionX >= 0 && positionX < width && "FaImageTexture::getPixelForPosition positionX must be between 0 and width");
-  assert(positionY >= 0 && positionY < height && "FaImageTexture::getPixelForPosition positionY must be between 0 and height");
+  assert(positionX >= 0u && positionX < (unsigned int)width && "FaImageTexture::getPixelForPosition positionX must be between 0 and width");
+  assert(positionY >= 0u && positionY < (unsigned int)height && "FaImageTexture::getPixelForPosition positionY must be between 0 and height");
 
   currentPosition = (positionY * width + positionX) * numberOfChannels;
 
@@ -126,11 +126,11 @@ void ImageTexture::update(double deltaTime, Camera& cameraInstance) {
   float red = 0;
   float green = 0;
   float blue = 0;
-  for (unsigned int i = 0; i < width; i++) {
-    for (unsigned int j = 0; j < height; j++) {
+  for (int i = 0; i < width; i++) {
+    for (int j = 0; j < height; j++) {
       getPixelForPosition(
-        i,
-        j,
+        (float)i,
+        (float)j,
         &red,
         &green,
         &blue

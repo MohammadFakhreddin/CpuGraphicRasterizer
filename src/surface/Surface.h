@@ -18,21 +18,23 @@ protected:
   static constexpr unsigned long edgeCount = 3;
 
 public:
-
+  
   Surface(
     std::unique_ptr<Texture>& texture,
     const unsigned long& edge1Index,
     const unsigned long& edge2Index,
-    const unsigned long& edge3Index,
-    const unsigned long& normal1Index,
-    const unsigned long& normal2Index,
-    const unsigned long& normal3Index,
-    const float& edge1TexturePointX,
-    const float& edge1TexturePointY,
-    const float& edge2TexturePointX,
-    const float& edge2TexturePointY,
-    const float& edge3TexturePointX,
-    const float& edge3TexturePointY
+    const unsigned long& edge3Index
+  );
+
+  void setNormalIndex(
+    const short& edgeNumber, 
+    const unsigned long& index
+  );
+
+  void setTextureCoordinates(
+    const short& edgeNumber, 
+    const float& x, 
+    const float& y
   );
 
   void update(
@@ -67,9 +69,7 @@ private:
     MatrixFloat(3,1,0.0f)
   };
 
-  Vec2DFloat edge1TexturePoint;
-  Vec2DFloat edge2TexturePoint;
-  Vec2DFloat edge3TexturePoint;
+  Vec2DFloat textureCoordinate[edgeCount];
  
   void computePixelMapData(
     Camera& cameraInstance,
@@ -154,7 +154,7 @@ private:
   * Because these variables are used in for loop we have to keep them 
   * 
   */
-  float dotProductValue = 0;
+  double dotProductValue = 0;
   
   MatrixFloat colorIntensityOutput = MatrixFloat(3, 1, 0.0f);
 
@@ -188,97 +188,132 @@ private:
 
   float yDifference = 0.0f;
 
-  float textureXStepValue = 0.0f;
+  float lineXDifference = 0.0f;
 
-  float textureYStepValue = 0.0f;
+  float lineYDifference = 0.0f;
 
-  float lightColorRStepValue = 0.0f;
+  float lineTextureXStepValue = 0.0f;
 
-  float lightColorGStepValue = 0.0f;
+  float lineTextureYStepValue = 0.0f;
 
-  float lightColorBStepValue = 0.0f;
+  float lineLightColorRStepValue = 0.0f;
 
-  unsigned int i = 0;
+  float lineLightColorGStepValue = 0.0f;
 
-  unsigned int edgeIndex = 0;
+  float lineLightColorBStepValue = 0.0f;
 
   float lineTriangleStartX = 0.0f;
+
   float lineTriangleStartY = 0.0f;
+  
   float lineTriangleStartZ = 0.0f;
 
   float lineTriangleEndX = 0.0f;
+  
   float lineTriangleEndY = 0.0f;
+  
   float lineTriangleEndZ = 0.0f;
 
   float lineTextureStartX = 0.0f;
+  
   float lineTextureStartY = 0.0f;
 
   float lineTextureEndX = 0.0f;
+  
   float lineTextureEndY = 0.0f;
 
   float lineLightColorStartR = 0.0f;
+  
   float lineLightColorStartG = 0.0f;
+  
   float lineLightColorStartB = 0.0f;
 
   float lineLightColorEndR = 0.0f;
+  
   float lineLightColorEndG = 0.0f;
+  
   float lineLightColorEndB = 0.0f;
 
   float textureStartX = 0.0f;
+  
   float textureStartY = 0.0f;
 
   float textureEndX = 0.0f;
+  
   float textureEndY = 0.0f;
 
   float textureFinalX = 0.0f;
+  
   float textureFinalY = 0.0f;
 
   float textureStartStepValueX = 0.0f;
+  
   float textureStartStepValueY = 0.0f;
 
   float textureEndStepValueX = 0.0f;
+  
   float textureEndStepValueY = 0.0f;
 
   float triangleStartX = 0.0f;
+  
   float triangleStartY = 0.0f;
+  
   float triangleStartZ = 0.0f;
 
   float triangleEndX = 0.0f;
+  
   float triangleEndY = 0.0f;
+  
   float triangleEndZ = 0.0f;
 
   float triangleFinalX = 0.0f;
+  
   float triangleFinalY = 0.0f;
+  
   float triangleFinalZ = 0.0f;
 
   unsigned int totalStepCount = 0;
 
   float triangleStartStepValueX = 0.0f;
+  
   float triangleStartStepValueY = 0.0f;
+  
   float triangleStartStepValueZ = 0.0f;
 
   float triangleEndStepValueX = 0.0f;
+  
   float triangleEndStepValueY = 0.0f;
+  
   float triangleEndStepValueZ = 0.0f;
 
   float lightColorStartR = 0.0f;
+  
   float lightColorStartG = 0.0f;
+  
   float lightColorStartB = 0.0f;
 
   float lightColorEndR = 0.0f;
+  
   float lightColorEndG = 0.0f;
+  
   float lightColorEndB = 0.0f;
 
   float lightColorFinalR = 0.0f;
+  
   float lightColorFinalG = 0.0f;
+  
   float lightColorFinalB = 0.0f;
 
   float lightColorStartStepValueR = 0.0f;
+  
   float lightColorStartStepValueG = 0.0f;
+  
   float lightColorStartStepValueB = 0.0f;
 
   float lightColorEndStepValueR = 0.0f;
+  
   float lightColorEndStepValueG = 0.0f;
+  
   float lightColorEndStepValueB = 0.0f;
 
 };

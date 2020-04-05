@@ -16,51 +16,69 @@ public:
 		x(x),
 		y(y)
 	{}
+	
 	const T& getX() const {
 		return this->x;
 	};
+	
 	const T& getY() const {
 		return this->y;
 	};
-	void setX(const T& x) {
-		this->x = x;
+	
+	template<typename A>
+	void setX(const A& x) {
+		this->x = T(x);
 	}
-	void setY(const T& y) {
-		this->y = y;
+	
+	template<typename A>
+	void setY(const A& y) {
+		this->y = A(y);
 	}
 
+	template<typename A,typename B>
+	void setXY(const A& x, const B& y) {
+		this->x = T(x);
+		this->y = T(y);
+	}
 	const double size() const {
 		return Math::sqrt(this->x * this->x + this->y * this->y);
 	}
+	
 	_Vec2d<double> hat() {
 		const double size = this->size();
 		return _Vec2d<double>(double(this->x) / size, double(this->y) / size);
 	}
+	
 	template <typename A>
 	_Vec2d& operator+=(const _Vec2d<A>& rhs) {
 		this->x += T(rhs.getX());
 		this->y += T(rhs.getY());
 		return *this;
 	}
+	
 	template <typename A>
 	_Vec2d<T> operator+(const _Vec2d<A>& rhs) {
 		return _Vec2d<T>(this->x + T(rhs.getX()), this->y + T(rhs.getY()));
 	}
+	
 	template <typename A>
 	_Vec2d<T> operator-(_Vec2d<A>& rhs) {
 		return _Vec2d<T>(this->x - T(rhs.getX()), this->y - T(rhs.getY()));
 	}
+	
 	template <typename A>
 	_Vec2d<T>& operator-=(_Vec2d<A>& rhs) {
 		this->x -= T(rhs.getX()); 
 		this->y -= T(rhs.getY());
 	}
+	
 	template <typename A>
 	_Vec2d<T>& operator*=(const A value) {
 		this->x *= T(value);
 		this->y *= T(value);
 		return *this;
 	}
+	
 	template <typename A>
 	_Vec2d<T> operator*(const A value){
 		return _Vec2d<T>(
@@ -68,22 +86,26 @@ public:
 			this->y * T(value)
 		);
 	}
+
 	template <typename A>
 	_Vec2d<T>& operator=(const _Vec2d<A>& rhs) {
 		this->x = T(rhs.x);
 		this->y = T(rhs.y);
 		return *this;
 	}
+
 	template <typename A>
 	explicit operator _Vec2d<A>() const {
 		return _Vec2d<A>(A(this->x), A(this->y));
 	}
+
 	void print(){
 		Logger::log("Vector ---------------------");
 		Logger::log("X:"+std::to_string(x));
 		Logger::log("Y:"+std::to_string(y));
 		Logger::log("End ------------------------");
 	}
+
 };
 
 using Vec2DInt = _Vec2d<int>;
@@ -129,12 +151,12 @@ public:
 	}
 
 	template <typename A>
-	void setY(const A y) {
+	void setY(const A& y) {
 		this->y = T(y);
 	}
 
 	template <typename A>
-	void setZ(const A z) {
+	void setZ(const A& z) {
 		this->z = T(z);
 	}
 

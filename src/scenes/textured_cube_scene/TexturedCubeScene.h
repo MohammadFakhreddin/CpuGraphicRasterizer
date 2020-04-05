@@ -7,7 +7,7 @@
 #include "../../camera/Camera.h"
 #include "../../3d_shape/Shape3d.h"
 #include "../../open_gl/OpenGl.h"
-#include "../../3d_models/Dice.h"
+#include "../../3d_models/DiceCube.h"
 
 class TexturedCubeScene : public BaseScene {
 
@@ -35,7 +35,7 @@ private:
 
   std::vector<std::unique_ptr<Light>> lightSources;
 
-  Dice dice;
+  DiceCube dice;
 
 };
 

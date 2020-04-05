@@ -16,7 +16,11 @@ class Shape3d
 
 public:
 
-  //TODO Rename node and edge to vertices and indices
+  static std::vector<MatrixFloat> generateNormals(
+    std::vector<std::unique_ptr<Surface>>& surfaceList,
+    std::vector<MatrixFloat>& nodes
+  );
+
   Shape3d(
     std::vector<MatrixFloat>& nodes,
     std::vector<std::unique_ptr<Surface>>& surfaces,
@@ -67,6 +71,8 @@ public:
 
 private:
 
+  bool checkDataValidation();
+
   std::vector<MatrixFloat> nodes;
   
   std::vector<std::unique_ptr<Surface>>surfaces;
@@ -102,6 +108,7 @@ private:
   float zLocation = 0;
 
   float scaleValue = 0;
+
 
 };
 

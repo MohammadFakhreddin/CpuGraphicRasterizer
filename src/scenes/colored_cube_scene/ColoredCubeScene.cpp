@@ -32,7 +32,7 @@ ColoredCubeScene::ColoredCubeScene(
     
     Logger::log("Creating shape object");
     
-    cube = ShapeGenerator::generateColored3DCube(
+    cube = colorCube.generateCube(
       width,
       width,
       width,

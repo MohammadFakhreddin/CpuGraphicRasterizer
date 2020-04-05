@@ -7,6 +7,8 @@
 #include "../../open_gl/OpenGl.h"
 #include "../../camera/Camera.h"
 #include "../../3d_shape/Shape3d.h"
+#include "../../shaders/directional_light/DirectionalLight.h"
+#include "../../texture/ColorTexture/ColorTexture.h"
 
 class PlantScene : public BaseScene {
 
@@ -18,7 +20,7 @@ private:
 
   static constexpr float shapeScaleSpeed = 0.1f;
 
-  static constexpr float lightTransformSpeed = 0.2f;
+  static constexpr float lightRotationSpeed = 0.01f;
 
   static constexpr float cameraInitialZLocation = 1000.0f;
 
@@ -34,13 +36,15 @@ public:
 
 private:
 
-  DirectionalLight* light;
+  DirectionalLight* light = nullptr;
 
   Camera cameraInstance;
 
   std::unique_ptr<Shape3d> shape;
 
   std::vector<std::unique_ptr<Light>> lightSources;
+
+  std::unique_ptr<ColorTexture> colorTexture;
 
 };
 

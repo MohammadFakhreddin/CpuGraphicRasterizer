@@ -4,6 +4,7 @@
 #include "../../data_access_point/DataAccessPoint.h"
 #include "../../file_system/FileSystem.h"
 #include "../../utils/path/Path.h"
+#include "../../shaders/directional_light/DirectionalLight.h"
 
 PlantScene::PlantScene(OpenGL& gl)
   :
@@ -22,11 +23,16 @@ PlantScene::PlantScene(OpenGL& gl)
     "Plant main camera"
   )
 {
+
+  colorTexture = std::make_unique<ColorTexture>(1.0f, 1.0f, 1.0f);
+
   {//Creating shape
     shape = FileSystem::loadObjectWithColor(
-       Path::generateAssetPath("plant",".obj"),
-       Vec3DFloat(1.0f,1.0f,1.0f),
-       false
+      Path::generateAssetPath("plant",".obj"),
+      (std::unique_ptr<Texture>&)colorTexture,
+      false,
+      true,
+      false
     );
     shape->transformX(float(DataAccessPoint::getInstance()->getAppScreenWidth()) * 0.5f);
     shape->transformY(float(DataAccessPoint::getInstance()->getAppScreenHeight()) * 0.25f);
@@ -34,13 +40,7 @@ PlantScene::PlantScene(OpenGL& gl)
     shape->scale(5.0f);
   }
   {//Creating light source
-    lightSources.emplace_back(
-      std::make_unique<DirectionalLight>(
-        float(DataAccessPoint::getInstance()->getAppScreenWidth()) / 2.0f,
-        float(DataAccessPoint::getInstance()->getAppScreenHeight()),
-        cameraInitialZLocation - 1.0f
-      )
-    );
+    lightSources.emplace_back(std::make_unique<DirectionalLight>(1.0f,1.0f,1.0f,0.2f));
     light = (DirectionalLight*)lightSources.at(lightSources.size() - 1).get();
   }
 }
@@ -49,34 +49,34 @@ void PlantScene::update(double deltaTime) {
 #ifdef __DESKTOP__
   {//We rotate light by keyboard
     if (useKeyEvent(Constants::Buttons::keyA)) {
-      light->transformX(
-        float(deltaTime * lightTransformSpeed * -1.0f)
-        );
+      light->rotateX(
+        float(deltaTime * lightRotationSpeed * -1.0f)
+      );
     }
     if (useKeyEvent(Constants::Buttons::keyD)) {
-      light->transformX(
-        float(deltaTime * lightTransformSpeed)
-        );
+      light->rotateX(
+        float(deltaTime * lightRotationSpeed)
+      );
     }
     if (useKeyEvent(Constants::Buttons::keyW)) {
-      light->transformY(
-        float(deltaTime * lightTransformSpeed)
-        );
+      light->rotateY(
+        float(deltaTime * lightRotationSpeed)
+      );
     }
     if (useKeyEvent(Constants::Buttons::keyS)) {
-      light->transformY(
-        float(deltaTime * lightTransformSpeed * -1.0)
-        );
+      light->rotateY(
+        float(deltaTime * lightRotationSpeed * -1.0)
+      );
     }
     if (useKeyEvent(Constants::Buttons::keyC)) {
-      light->transformZ(
-        float(deltaTime * lightTransformSpeed * -1.0 * 0.5)
-        );
+      light->rotateZ(
+        float(deltaTime * lightRotationSpeed * -1.0)
+      );
     }
     if (useKeyEvent(Constants::Buttons::keyV)) {
-      light->transformZ(
-        float(deltaTime * lightTransformSpeed * 1.0 * 0.5)
-        );
+      light->rotateZ(
+        float(deltaTime * lightRotationSpeed * 1.0)
+      );
     }
   }
   {//Rotating shape by keyboard

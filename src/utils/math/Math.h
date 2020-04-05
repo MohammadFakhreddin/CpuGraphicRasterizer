@@ -38,8 +38,8 @@ public:
         }
         return value;
     };
-
-    static double sqrt(double x) {
+    template<typename A>
+    static A sqrt(A x) {
       if (x <= 0)
         return 0;       // if negative number throw an exception?
       int exp = 0;
@@ -48,8 +48,8 @@ public:
         exp--;
         x *= 2;
       }
-      double y = (1 + x) / 2; // first approximation
-      double z = 0;
+      A y = (1 + x) / 2; // first approximation
+      A z = 0;
       while (y != z) {    // yes, we CAN compare doubles here!
         z = y;
         y = (y + x / y) / 2;
