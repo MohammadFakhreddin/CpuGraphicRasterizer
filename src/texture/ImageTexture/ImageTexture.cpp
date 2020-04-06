@@ -88,8 +88,8 @@ void ImageTexture::getPixelForPosition(
   assert(y < virtualImageHeight);
   assert(y >= 0);
   
-  realPositionX = unsigned int(scaleX * x);
-  realPositionY = unsigned int(scaleY * y);
+  realPositionX = (unsigned int)(scaleX * x);
+  realPositionY = (unsigned int)(scaleY * y);
   
   getDirectPixelColor(
     realPositionX,

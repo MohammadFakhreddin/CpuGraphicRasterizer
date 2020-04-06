@@ -379,7 +379,7 @@ void Surface::calculateStepCount(
   assert(difference != 0 && "Difference must be above 0 in BaseSurface::calculateStepCountAndStepValue");
   assert(drawStepValue != 0 && "Draw step value must be above 0 in BaseSurface::calculateStepCountAndStepValue");
   *totalStepCount = Math::min(
-    (unsigned int)abs(difference/drawStepValue),
+    (unsigned int)abs(difference/drawStepValue) + 1,
     cameraInstance.getAppScreenWidth()
   );
 }

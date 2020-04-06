@@ -102,9 +102,9 @@ void BunnyScene::update(double deltaTime) {
   }
 #endif
   {//Temporary code for auto rotation
-  //  shape->rotateY(float(-1.0f * shapeRotationSpeed * deltaTime * 0.1f));
-  //  shape->rotateX(float(-1.0f * shapeRotationSpeed * deltaTime * 0.1f));
-  //  shape->rotateZ(float(-1.0f * shapeRotationSpeed * deltaTime * 0.1f));
+   shape->rotateY(float(-1.0f * shapeRotationSpeed * deltaTime * 0.1f));
+   shape->rotateX(float(-1.0f * shapeRotationSpeed * deltaTime * 0.1f));
+   shape->rotateZ(float(-1.0f * shapeRotationSpeed * deltaTime * 0.1f));
   }
   {//Updating light
     for (unsigned int i = 0; i < lightSources.size(); i++) {

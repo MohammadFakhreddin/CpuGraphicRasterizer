@@ -4,8 +4,10 @@
 #include <assert.h>
 #include <vector>
 #include <memory>
+#include <cmath>
 
 #include "../utils/log/Logger.h"
+#include "../utils/math/Math.h"
 
 template <typename T>
 class _Matrix {

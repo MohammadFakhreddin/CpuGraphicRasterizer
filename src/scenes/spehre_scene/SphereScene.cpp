@@ -28,8 +28,8 @@ SphereScene::SphereScene(OpenGL& gl)
   sphere = ShapeGenerator::sphere(
     (std::unique_ptr<Texture>&)whiteColor,
     radius,
-    12 * 4,
-    24 * 4,
+    12 * 2,
+    24 * 2,
     Vec3DFloat(1.0f, 1.0f, 1.0f),
     Vec3DFloat(
       DataAccessPoint::getInstance()->getAppScreenWidth() / 2.0f,
