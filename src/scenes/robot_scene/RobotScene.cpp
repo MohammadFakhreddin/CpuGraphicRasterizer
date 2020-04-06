@@ -26,11 +26,11 @@ RobotScene::RobotScene(OpenGL& gl)
   colorTexture = std::make_unique<ColorTexture>(1.0f,1.0f,1.0f);
   {//Creating shape
     auto scaleFactor = float(DataAccessPoint::getInstance()->getAppScreenWidth()) / 50.0f;
-    shape = FileSystem::loadObjectWithColor(
+    shape = FileSystem::loadObject(
       Path::generateAssetPath("robot", ".obj"),
       (std::unique_ptr<Texture>&)colorTexture,
       true,
-      true,
+      Shape3d::NormalType::smooth,
       false
       );
     shape->transformX(float(DataAccessPoint::getInstance()->getAppScreenWidth()) / 2.0f);

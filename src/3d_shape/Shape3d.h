@@ -16,9 +16,16 @@ class Shape3d
 
 public:
 
+  enum class NormalType {
+    smooth,
+    sharp,
+    fileDefault
+  };
+
   static std::vector<MatrixFloat> generateNormals(
     std::vector<std::unique_ptr<Surface>>& surfaceList,
-    std::vector<MatrixFloat>& nodes
+    std::vector<MatrixFloat>& nodes,
+    NormalType normalType
   );
 
   Shape3d(

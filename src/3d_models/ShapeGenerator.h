@@ -76,7 +76,8 @@ public:
     //Generating normals
     std::vector<MatrixFloat> normals = Shape3d::generateNormals(
       surfaceList,
-      nodeList
+      nodeList,
+      Shape3d::NormalType::sharp
     );
     return std::make_unique<Shape3d>(
       nodeList,
@@ -251,7 +252,7 @@ public:
           indices.emplace_back(std::make_unique<Surface>(
             texture,
             convertLatAndLongToVertices(i + 1, j% numberOfLong),
-            convertLatAndLongToVertices(i, j % numberOfLong),
+            convertLatAndLongToVertices(i, j% numberOfLong),
             convertLatAndLongToVertices(i + 1, (j + 1) % numberOfLong)
           ));
         }
@@ -259,7 +260,7 @@ public:
 
     }
 
-    std::vector<MatrixFloat> normals = Shape3d::generateNormals(indices, vertices);
+    std::vector<MatrixFloat> normals = Shape3d::generateNormals(indices, vertices, Shape3d::NormalType::smooth);
 
     return std::make_unique<Shape3d>(
       vertices,

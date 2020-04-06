@@ -2,6 +2,7 @@
 
 #include <cassert>
 #include "../texture/Texture.h"
+#include "../data_types/MatrixTemplate.h"
 
 Surface::Surface(
   std::unique_ptr<Texture>& texture,
@@ -334,7 +335,7 @@ void Surface::computeColorIntensity(
             0, 
             Math::max(
               colorIntensityOutput.get(i,0),
-              colorIntensity->get(i, 0)
+              colorIntensity[edgeIndex].get(i, 0)
             )
           );
         }

@@ -27,11 +27,11 @@ BunnyScene::BunnyScene(OpenGL& gl)
   );
   {//Creating shape
     auto scaleFactor = float(DataAccessPoint::getInstance()->getAppScreenWidth()) / 4.0f;
-    shape = FileSystem::loadObjectWithColor(
+    shape = FileSystem::loadObject(
       Path::generateAssetPath("bunny", ".obj"),
       (std::unique_ptr<Texture>&)whiteColor,
       true,
-      false,
+      Shape3d::NormalType::smooth,
       false
     );
     shape->transformX(float(DataAccessPoint::getInstance()->getAppScreenWidth()) / 2.0f);

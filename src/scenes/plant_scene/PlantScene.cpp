@@ -27,11 +27,11 @@ PlantScene::PlantScene(OpenGL& gl)
   colorTexture = std::make_unique<ColorTexture>(1.0f, 1.0f, 1.0f);
 
   {//Creating shape
-    shape = FileSystem::loadObjectWithColor(
+    shape = FileSystem::loadObject(
       Path::generateAssetPath("plant",".obj"),
       (std::unique_ptr<Texture>&)colorTexture,
       false,
-      true,
+      Shape3d::NormalType::fileDefault,
       false
     );
     shape->transformX(float(DataAccessPoint::getInstance()->getAppScreenWidth()) * 0.5f);

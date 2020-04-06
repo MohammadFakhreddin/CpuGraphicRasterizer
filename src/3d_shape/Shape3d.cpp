@@ -10,8 +10,11 @@
 
 std::vector<MatrixFloat> Shape3d::generateNormals(
   std::vector<std::unique_ptr<Surface>>& surfaceList,
-  std::vector<MatrixFloat>& nodes
+  std::vector<MatrixFloat>& nodes,
+  NormalType normalType
 ) {
+
+  assert(normalType != NormalType::fileDefault);
   assert(!surfaceList.empty());
   assert(!nodes.empty());
   
@@ -33,30 +36,111 @@ std::vector<MatrixFloat> Shape3d::generateNormals(
     const MatrixFloat* vector2,
     const MatrixFloat* vector1
   ) {
-      for (short int i = 0; i < 3; i++) {
-        output.set(i, 0, vector2->get(i, 0) - vector1->get(i, 0));
-      }
+    for (short int i = 0; i < 3; i++) {
+      output.set(i, 0, vector2->get(i, 0) - vector1->get(i, 0));
+    }
   };
 
-  for (auto& surface : surfaceList) {
-    
-    for (short int i = 0; i < 3; i++) {
+  if (normalType == Shape3d::NormalType::sharp) {
 
-      targetNode = &nodes.at(surface->getEdgeByIndex(computeEdgeIndex(i)));
-      sideNode1 = &nodes.at(surface->getEdgeByIndex(computeEdgeIndex(i + 1)));
-      sideNode2 = &nodes.at(surface->getEdgeByIndex(computeEdgeIndex(i + 2)));
+    for (auto& surface : surfaceList) {
 
-      generateDiffrenceVector(vector1, targetNode, sideNode1);
-      generateDiffrenceVector(vector2, sideNode2, targetNode);
+      for (short int i = 0; i < 3; i++) {
 
-      MatrixFloat normalVector = MatrixFloat(3, 1, 0.0f);
-      normalVector.crossPoduct(vector1, vector2);
-      normals.emplace_back(normalVector.hat<float>());
+        targetNode = &nodes.at(surface->getEdgeByIndex(computeEdgeIndex(i)));
+        sideNode1 = &nodes.at(surface->getEdgeByIndex(computeEdgeIndex(i + 1)));
+        sideNode2 = &nodes.at(surface->getEdgeByIndex(computeEdgeIndex(i + 2)));
 
-      surface->setNormalIndex(i, (unsigned long)(normals.size() - 1));
+        generateDiffrenceVector(vector1, sideNode1, targetNode);
+        generateDiffrenceVector(vector2, targetNode, sideNode2);
+
+        MatrixFloat normalVector = MatrixFloat(3, 1, 0.0f);
+        normalVector.crossPoduct(vector1, vector2);
+        normals.emplace_back(normalVector.hat<float>());
+
+        surface->setNormalIndex(i, (unsigned long)(normals.size() - 1));
+
+      }
 
     }
 
+  }
+  else if(normalType==Shape3d::NormalType::smooth)
+  {
+
+    std::vector<MatrixFloat> currentNodeNormals;
+
+    size_t nodeIndex;
+
+    unsigned short surfaceEdgeIndex;
+
+    size_t currentNodeNormalsIndex;
+
+    unsigned short vectorIndex;
+
+    for (nodeIndex = 0; nodeIndex < nodes.size(); nodeIndex++) {
+
+      currentNodeNormals.clear();
+
+      targetNode = &nodes.at(nodeIndex);
+      
+      for (auto& surface : surfaceList) {
+        
+        for (surfaceEdgeIndex = 0; surfaceEdgeIndex < 3; surfaceEdgeIndex++) {
+
+          if (surface->getEdgeByIndex(surfaceEdgeIndex) == nodeIndex) {
+            
+            sideNode1 = &nodes.at(surface->getEdgeByIndex(computeEdgeIndex(surfaceEdgeIndex + 1)));
+            sideNode2 = &nodes.at(surface->getEdgeByIndex(computeEdgeIndex(surfaceEdgeIndex + 2)));
+
+            generateDiffrenceVector(vector1, sideNode1, targetNode);
+            generateDiffrenceVector(vector2, targetNode, sideNode2);
+            
+            MatrixFloat normalVector = MatrixFloat(3, 1, 0.0f);
+            normalVector.crossPoduct(vector1, vector2);
+            currentNodeNormals.emplace_back(normalVector.hat<float>());
+
+            surface->setNormalIndex(surfaceEdgeIndex, (unsigned long)normals.size());
+
+            break;
+          }
+
+        }
+
+      }
+
+      normals.emplace_back(MatrixFloat(3, 1, 0.0f));
+
+      for (
+        currentNodeNormalsIndex = 0;
+        currentNodeNormalsIndex < currentNodeNormals.size();
+        currentNodeNormalsIndex++
+      ) {
+
+        for (vectorIndex = 0; vectorIndex < 3; vectorIndex++) {
+        
+          normals.back().set(
+            vectorIndex, 0, 
+            normals.back().get(vectorIndex, 0) + 
+            currentNodeNormals.at(currentNodeNormalsIndex).get(vectorIndex,0));
+        
+        }
+      }
+
+      for (vectorIndex = 0; vectorIndex < 3; vectorIndex++) {
+
+        normals.back().set(vectorIndex, 0, normals.back().get(vectorIndex, 0) / currentNodeNormals.size());
+
+        normals.back().assign(normals.back().hat<float>());
+
+      }
+
+    }
+
+  }
+  else
+  {
+    Logger::exception("Unhandled normal type ");
   }
 
   return normals;

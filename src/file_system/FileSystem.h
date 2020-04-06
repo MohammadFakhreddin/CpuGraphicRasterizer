@@ -58,12 +58,12 @@ public:
     #endif
     return nullptr;
   }
-  //TODO Remove texture coordinates
-  static std::unique_ptr<Shape3d> loadObjectWithColor(
+  //TODO Sperate this function into multiple parts
+  static std::unique_ptr<Shape3d> loadObject(
     std::string filename,
     std::unique_ptr<Texture>& texture,
     bool requireCentralizing,
-    bool useFileNormals,
+    Shape3d::NormalType normalType,
     bool useFileTextureCoordinates
   ){
     
@@ -127,19 +127,19 @@ public:
       tinyobj::attrib_t attributes;
       std::vector<tinyobj::shape_t> shapes;
       std::string error;
-      auto isSuccess = tinyobj::LoadObj(&attributes,&shapes,nullptr,&error,file);
+      auto isSuccess = tinyobj::LoadObj(&attributes, &shapes, nullptr, &error, file);
       // check for errors
-      if( !error.empty() && error.substr( 0,4 ) != "WARN" )
+      if (!error.empty() && error.substr(0, 4) != "WARN")
       {
         Logger::exception("LoadObj returned error:" + error + " File:" + filename);
         return nullptr;
       }
-      if( !isSuccess )
+      if (!isSuccess)
       {
         Logger::exception("LoadObj returned false  File:" + filename);
         return nullptr;
       }
-      if( shapes.size() == 0u )
+      if (shapes.size() == 0u)
       {
         Logger::exception("LoadObj object file had no shapes  File:" + filename);
         return nullptr;
@@ -155,7 +155,7 @@ public:
         for (unsigned int i = 0; i < attributes.vertices.size(); i += 3) {
           vertices.emplace_back(
             MatrixFloat(3, 1, std::vector<std::vector<float>>{
-              std::vector<float>{attributes.vertices[i + 0u]},
+            std::vector<float>{attributes.vertices[i + 0u]},
               std::vector<float>{attributes.vertices[i + 1u]},
               std::vector<float>{attributes.vertices[i + 2u]}
           }));
@@ -164,13 +164,13 @@ public:
       }
       {//Normals
         //TODO Auto generate normals when size is zero instead of asking
-        if (useFileNormals) {
+        if (normalType == Shape3d::NormalType::fileDefault) {
           assert(attributes.normals.size() % 3 == 0);
           normals.reserve(attributes.normals.size() / 3u);
           for (unsigned int i = 0; i < attributes.normals.size(); i += 3) {
             normals.emplace_back(
               MatrixFloat(3, 1, std::vector<std::vector<float>>{
-                std::vector<float>{attributes.normals[i + 0u]},
+              std::vector<float>{attributes.normals[i + 0u]},
                 std::vector<float>{attributes.normals[i + 1u]},
                 std::vector<float>{attributes.normals[i + 2u]}
             }));
@@ -178,19 +178,19 @@ public:
         }
       }
       {//Texture coordinates
+        //TODO Test this part
         if (useFileTextureCoordinates) {
           assert(attributes.texcoords.size() % 2 == 0);
           textureCoordinates.reserve(attributes.texcoords.size() / 2u);
           for (unsigned int i = 0; i < attributes.texcoords.size(); i += 2) {
             textureCoordinates.emplace_back(
               MatrixFloat(2, 1, std::vector<std::vector<float>>{
-                std::vector<float>{attributes.texcoords[i + 0u]},
+              std::vector<float>{attributes.texcoords[i + 0u]},
                 std::vector<float>{attributes.texcoords[i + 1u]}
-              })
+            })
             );
           }
         }
-        //TODO We have to load texture coordinates
       }
       {//Loading mesh
       // extract index data
@@ -201,7 +201,7 @@ public:
         unsigned short edge2Index = 1u;
         unsigned short edge3Index = 0u;
         //My implementation is counter clock wise so I need to rotate before rendering
-        if (isCounterClockWise==true) {
+        if (isCounterClockWise == true) {
           edge1Index = 0u;
           edge2Index = 1u;
           edge3Index = 2u;
@@ -213,14 +213,14 @@ public:
         float edge2TexturePointY = 0.0f;
         float edge3TexturePointX = 0.0f;
         float edge3TexturePointY = 0.0f;
-      // mesh contains a std::vector of num_face_vertices (uchar)
-      // and a flat std::vector of indices. If all faces are triangles
-      // then for any face f, the first index of that faces is [f * 3n]
-        indices.reserve( mesh.indices.size()/3u );
-        for(unsigned int faceIndex = 0; faceIndex < mesh.num_face_vertices.size() ; faceIndex++){
+        // mesh contains a std::vector of num_face_vertices (uchar)
+        // and a flat std::vector of indices. If all faces are triangles
+        // then for any face f, the first index of that faces is [f * 3n]
+        indices.reserve(mesh.indices.size() / 3u);
+        for (unsigned int faceIndex = 0; faceIndex < mesh.num_face_vertices.size(); faceIndex++) {
           //Because we only support triangles currently we check if contains vertices or not
-          if(mesh.num_face_vertices[faceIndex]!= 3){
-            Logger::exception("Number of face vertices cannot be other than "+ std::to_string(mesh.num_face_vertices[faceIndex]));
+          if (mesh.num_face_vertices[faceIndex] != 3) {
+            Logger::exception("Number of face vertices cannot be other than " + std::to_string(mesh.num_face_vertices[faceIndex]));
           }
           //Loading mesh indices into indices vector
           indices.emplace_back(std::make_unique<Surface>(
@@ -228,8 +228,8 @@ public:
             mesh.indices[faceIndex * 3u + edge1Index].vertex_index,
             mesh.indices[faceIndex * 3u + edge2Index].vertex_index,
             mesh.indices[faceIndex * 3u + edge3Index].vertex_index
-          ));
-          if (useFileNormals) {
+            ));
+          if (normalType == Shape3d::NormalType::fileDefault) {
             indices.back()->setNormalIndex(edge1Index, mesh.indices[faceIndex * 3u + edge1Index].normal_index);
             indices.back()->setNormalIndex(edge2Index, mesh.indices[faceIndex * 3u + edge2Index].normal_index);
             indices.back()->setNormalIndex(edge3Index, mesh.indices[faceIndex * 3u + edge3Index].normal_index);
@@ -250,8 +250,8 @@ public:
         }
       }
     }
-    if (!useFileNormals) {
-       normals = Shape3d::generateNormals(indices, vertices);
+    if (normalType != Shape3d::NormalType::fileDefault) {
+      normals = Shape3d::generateNormals(indices, vertices, normalType);
     }
     Logger::log("Reading from object file is successful");    
     delete file;
