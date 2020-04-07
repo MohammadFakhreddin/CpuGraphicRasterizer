@@ -137,6 +137,36 @@ else()
    set(LIBRARY_OUTPUT_PATH ${CMAKE_BINARY_DIR})
    set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR})
 #  file(COPY assets DESTINATION ${CMAKE_BINARY_DIR})
+
+
+   set(UNIT_TEST "unit-test")
+   
+   FILE(GLOB_RECURSE SRC_TEST_H "src/*.test.h")
+   FILE(GLOB_RECURSE SRC_TEST_C "src/*.test.cpp")
+   FILE(GLOB_RECURSE TEST_C "tests/*.cpp")
+   FILE(GLOB_RECURSE TEST_H "tests/*.h")
+
+   list(
+       APPEND TEST_SOURCE
+       ${SRC_TEST_C}
+       ${TEST_C}
+   )
+   list(
+       APPEND TEST_HEADER
+       ${SRC_TEST_H}
+       ${TEST_H}
+   )
+
+   enable_testing()
+
+   find_package(GTest CONFIG REQUIRED)
+
+   add_executable(${UNIT_TEST} ${TEST_SOURCE} ${TEST_HEADER})
+
+   target_link_libraries(${UNIT_TEST} GTest::gtest GTest::gtest_main GTest::gmock GTest::gmock_main)
+
+   add_test("unit-test" ${UNIT_TEST})
+
 endif()
 
 
