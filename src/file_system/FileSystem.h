@@ -279,7 +279,7 @@ public:
     }
 
 #ifdef __ANDROID__
-    remove(temporaryFileName)
+    remove(temporaryFileName.c_str());
 #endif // __ANDROID__
 
     return std::make_unique<Shape3d>(

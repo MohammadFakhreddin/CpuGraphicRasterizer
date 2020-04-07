@@ -41,7 +41,7 @@ BunnyScene::BunnyScene(OpenGL& gl)
   }
   {//Creating light source
     lightSources.emplace_back(
-      std::make_unique<DirectionalLight>(1.0f,1.0f,1.0f,0.2f));
+      std::make_unique<DirectionalLight>(-1.0f,-1.0f,-1.0f,0.2f));
     light = (DirectionalLight*)lightSources.at(lightSources.size()-1).get();
   }
 }

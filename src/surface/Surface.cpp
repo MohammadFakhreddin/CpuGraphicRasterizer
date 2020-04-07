@@ -39,8 +39,6 @@ void Surface::setTextureCoordinates(const short& edgeNumber, const float& x, con
 
 const unsigned long& Surface::getEdgeByIndex(const unsigned short& index) {
 
-  assert(index > -1);
-  
   assert(index < 3);
   
   return edgeIndices[index];
@@ -49,8 +47,6 @@ const unsigned long& Surface::getEdgeByIndex(const unsigned short& index) {
 
 const unsigned long& Surface::getNormalIndex(const unsigned short& index) {
 
-  assert(index > -1);
-  
   assert(index < 3);
 
   return normalVectorIndices[index];
