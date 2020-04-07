@@ -30,22 +30,7 @@ Camera::Camera(
   pixelMapSize(appScreenWidth * appScreenHeight),
   gl(gl),
   transformMatrix(3, 1, 0.0f),
-  rotationDegreeMatrix(3, 1, 0.0f),
-  rotationValueXMatrix(3, 3, std::vector<std::vector<float>>{
-  std::vector<float>{cosf(0), -sinf(0), 0},
-    std::vector<float>{sinf(0), cosf(0), 0},
-    std::vector<float>{0, 0, 1}
-  }),
-  rotationValueYMatrix(3, 3, std::vector<std::vector<float>>{
-    std::vector<float>{cosf(0), 0, sinf(0)},
-    std::vector<float>{0, 1, 0},
-    std::vector<float>{-sinf(0), 0, cosf(0)}
-  }),
-  rotationValueZMatrix(3, 3, std::vector<std::vector<float>>{
-    std::vector<float>{1, 0, 0},
-    std::vector<float>{0, cosf(0), sinf(0)},
-    std::vector<float>{0, -sinf(0), cosf(0)}
-  })
+  rotationDegreeMatrix(3, 1, 0.0f)
 {
 
   assert(cameraFieldOfView>0);
@@ -53,9 +38,7 @@ Camera::Camera(
   assert(appScreenHeight>0);
 
   this->transform(transformX,transformY,transformZ);
-  this->rotateX(rotationDegreeX);
-  this->rotateY(rotationDegreeY);
-  this->rotateZ(rotationDegreeZ);
+  this->rotateXYZ(rotationDegreeX, rotationDegreeY, rotationDegreeZ);
 
   DataAccessPoint::getInstance()->getEventHandler().subscribeToEvent<bool>(
     EventHandler::EventName::screenSurfaceChanged,
@@ -190,59 +173,35 @@ unsigned int Camera::getAppScreenHeight(){
 //TODO Check this code again
 //It must transform based on theta
 void Camera::transform(float transformX, float transformY, float transformZ) {
+  
   transformationPlaceholder.set(0, 0, transformX);
   transformationPlaceholder.set(1, 0, transformY);
   transformationPlaceholder.set(2, 0, transformZ);
   
-  transformationPlaceholder.multiply(rotationValueXMatrix);
-  transformationPlaceholder.multiply(rotationValueYMatrix);
-  transformationPlaceholder.multiply(rotationValueZMatrix);
-
   transformMatrix.sum(transformationPlaceholder);
+
 }
 
 //TODO We can use other ways instead of sin and cos for new matrix calculation
-void Camera::rotateX(float x) {
+void Camera::rotateXYZ(const float& x,const float& y,const float& z) {
   //For camera we reverse the rotation to apply to pipeline shapes
   rotationDegreeMatrix.set(0, 0, rotationDegreeMatrix.get(0, 0) - x);
-  rotationValueXMatrix.set(0, 0, cosf(rotationDegreeMatrix.get(0, 0)));
-  rotationValueXMatrix.set(0, 1, -sinf(rotationDegreeMatrix.get(0, 0)));
-  rotationValueXMatrix.set(1, 0, sinf(rotationDegreeMatrix.get(0, 0)));
-  rotationValueXMatrix.set(1, 1, cosf(rotationDegreeMatrix.get(0, 0)));
-}
-
-//TODO We can use other ways instead of sin and cos for new matrix calculation
-void Camera::rotateY(float y) {
-  //For camera we reverse the rotation to apply to pipeline shapes
   rotationDegreeMatrix.set(1, 0, rotationDegreeMatrix.get(1, 0) - y);
-  rotationValueYMatrix.set(0, 0, cosf(rotationDegreeMatrix.get(1, 0)));
-  rotationValueYMatrix.set(0, 2, sinf(rotationDegreeMatrix.get(1, 0)));
-  rotationValueYMatrix.set(2, 0, -sinf(rotationDegreeMatrix.get(1, 0)));
-  rotationValueYMatrix.set(2, 2, cosf(rotationDegreeMatrix.get(1, 0)));
-}
-
-//TODO We can use other ways instead of sin and cos for new matrix calculation
-void Camera::rotateZ(float z) {
-  //For camera we reverse the rotation to apply to pipeline shapes
   rotationDegreeMatrix.set(2, 0, rotationDegreeMatrix.get(2, 0) - z);
-  rotationValueZMatrix.set(1, 1, cosf(rotationDegreeMatrix.get(2, 0)));
-  rotationValueZMatrix.set(1, 2, sinf(rotationDegreeMatrix.get(2, 0)));
-  rotationValueZMatrix.set(2, 1, -sinf(rotationDegreeMatrix.get(2, 0)));
-  rotationValueZMatrix.set(2, 2, cosf(rotationDegreeMatrix.get(2, 0)));
+
+  MatrixFloat::assignAsRotationXYZMatrix(
+    rotationValueXYZMatrix,
+    rotationDegreeMatrix.get(0, 0),
+    rotationDegreeMatrix.get(1, 0),
+    rotationDegreeMatrix.get(2, 0)
+  );
+
 }
 
 const MatrixFloat& Camera::getTransformMatrix() {
   return transformMatrix;
 }
 
-const MatrixFloat& Camera::getRotationX() {
-  return rotationValueXMatrix;
-}
-
-const MatrixFloat& Camera::getRotationY() {
-  return rotationValueYMatrix;
-}
-
-const MatrixFloat& Camera::getRotationZ() {
-  return rotationValueZMatrix;
+const MatrixFloat& Camera::getRotationXYZ() {
+  return rotationValueXYZMatrix;
 }

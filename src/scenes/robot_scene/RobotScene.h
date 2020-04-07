@@ -46,6 +46,18 @@ private:
 
   std::unique_ptr<ColorTexture> colorTexture;
 
+  float shapeRotationX = 0.0f;
+
+  float shapeRotationY = 0.0f;
+
+  float shapeRotationZ = 0.0f;
+
+  float lightRotationX = 0.0f;
+
+  float lightRotationY = 0.0f;
+
+  float lightRotationZ = 0.0f;
+
 };
 
 #endif // !RobotScene_Class

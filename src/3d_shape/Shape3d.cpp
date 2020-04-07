@@ -188,15 +188,13 @@ Shape3d::Shape3d(
   float rotationDegreeY,
   float rotationDegreeZ,
   float scaleValue
-  ) :
+) :
   nodes(std::move(paramNodes)),
   surfaces(std::move(paramSurfaces)),
   normals(std::move(paramNormals)),
   transformMatrix(3, 1, 0.0f),
   rotationDegreeMatrix(3, 1, 0.0f),
-  rotationValueXMatrix(3, 3, 0.0f),
-  rotationValueYMatrix(3, 3, 0.0f),
-  rotationValueZMatrix(3, 3, 0.0f),
+  rotationXYZMatrix(3, 3, 0.0f),
   scaleValueMatrix(3, 3, std::vector<std::vector<float>>{
   std::vector<float>{1, 0, 0},
     std::vector<float>{0, 1, 0},
@@ -225,9 +223,8 @@ zScaleMatrix(3, 3, std::vector<std::vector<float>>{
   this->transformX(transformX);
   this->transformY(transformY);
   this->transformZ(transformZ);
-  this->rotateX(rotationDegreeX);
-  this->rotateY(rotationDegreeY);
-  this->rotateZ(rotationDegreeZ);
+  this->rotateXYZ(rotationDegreeX, rotationDegreeY, rotationDegreeZ);
+
 }
 
 bool Shape3d::checkDataValidation() {
@@ -285,15 +282,13 @@ void Shape3d::update(
     //TODO Create pipleline class from this part
     //TODO Needs optimization
     currentWorldPoint.assign(nodes[i]);
-    currentWorldPoint.multiply(rotationValueXMatrix);
-    currentWorldPoint.multiply(rotationValueYMatrix);
-    currentWorldPoint.multiply(rotationValueZMatrix);
+ 
+    currentWorldPoint.multiply(rotationXYZMatrix);
+    
     currentWorldPoint.multiply(scaleValueMatrix);
 
-    currentWorldPoint.multiply(cameraInstance.getRotationX());
-    currentWorldPoint.multiply(cameraInstance.getRotationY());
-    currentWorldPoint.multiply(cameraInstance.getRotationZ());
-
+    currentWorldPoint.multiply(cameraInstance.getRotationXYZ());
+    
     zLocation = currentWorldPoint.get(2, 0) + transformMatrix.get(2, 0);
     scaleValue = cameraInstance.scaleBasedOnZDistance(zLocation);
     zScaleMatrix.set(0, 0, scaleValue);
@@ -311,9 +306,10 @@ void Shape3d::update(
 
     currentWorldNormal.assign(normals[i]);
 
-    currentWorldNormal.multiply(rotationValueXMatrix);
-    currentWorldNormal.multiply(rotationValueYMatrix);
-    currentWorldNormal.multiply(rotationValueZMatrix);
+    currentWorldNormal.multiply(rotationXYZMatrix);
+
+    //TODO We need pipline
+    currentWorldNormal.multiply(cameraInstance.getRotationXYZ());
     
     worldNormals.at(i).assign(currentWorldNormal);
 
@@ -346,19 +342,18 @@ void Shape3d::scale(float value) {
   scaleValueMatrix.set(1, 1, scaleValueMatrix.get(1, 1) + value);
   scaleValueMatrix.set(2, 2, scaleValueMatrix.get(2, 2) + value);
 }
-
-void Shape3d::rotateX(float x) {
+//TODO Maybe we can multiply current rotation matrix instead of re-assigning everything
+void Shape3d::rotateXYZ(const float& x, const float& y, const float& z) {
+  //TODO Degree might overflow
   rotationDegreeMatrix.set(0, 0, rotationDegreeMatrix.get(0, 0) + x);
-  MatrixFloat::assignAsRotationXMatrix(rotationValueXMatrix,rotationDegreeMatrix.get(0, 0));
-}
-
-void Shape3d::rotateY(float y) {
   rotationDegreeMatrix.set(1, 0, rotationDegreeMatrix.get(1, 0) + y);
-  MatrixFloat::assignAsRoationYMatrix(rotationValueYMatrix,rotationDegreeMatrix.get(1, 0));
-}
-
-void Shape3d::rotateZ(float z) {
   rotationDegreeMatrix.set(2, 0, rotationDegreeMatrix.get(2, 0) + z);
-  MatrixFloat::assignAsRotationZMatrix(rotationValueZMatrix, rotationDegreeMatrix.get(2, 0));
-}
 
+  MatrixFloat::assignAsRotationXYZMatrix(
+    rotationXYZMatrix,
+    rotationDegreeMatrix.get(0, 0),
+    rotationDegreeMatrix.get(1, 0),
+    rotationDegreeMatrix.get(2, 0)
+  );
+
+}

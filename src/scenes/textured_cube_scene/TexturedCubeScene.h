@@ -42,6 +42,12 @@ private:
 
   DirectionalLight* light;
 
+  float lightRotationX = 0.0f;
+
+  float lightRotationY = 0.0f;
+
+  float lightRotationZ = 0.0f;
+
 };
 
 #endif // !TexturedCubeScene_Class

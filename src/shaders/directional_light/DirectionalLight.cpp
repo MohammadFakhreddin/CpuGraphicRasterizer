@@ -18,10 +18,8 @@ DirectionalLight::DirectionalLight(
   
   worldLightDirectionHat.assign(lightDirectionHat);
 
-  rotateX(0.0f);
-  rotateY(0.0f);
-  rotateZ(0.0f);
-
+  rotateXYZ(0.0f,0.0f,0.0f);
+ 
 }
 
 //Source: https://en.wikipedia.org/wiki/Computer_graphics_lighting
@@ -44,27 +42,20 @@ void DirectionalLight::update(double deltaTime, Camera& cameraInstance) {
 
   worldLightDirectionHat.assign(lightDirectionHat);
 
-  worldLightDirectionHat.multiply(roationXMatrix);
-  worldLightDirectionHat.multiply(rotationYMatrix);
-  worldLightDirectionHat.multiply(rotationZMatrix);
-
-  worldLightDirectionHat.multiply(cameraInstance.getRotationX());
-  worldLightDirectionHat.multiply(cameraInstance.getRotationY());
-  worldLightDirectionHat.multiply(cameraInstance.getRotationZ());
+  worldLightDirectionHat.multiply(roationXYZMatrix);
+  
+  worldLightDirectionHat.multiply(cameraInstance.getRotationXYZ());
 
 }
 
-void DirectionalLight::rotateX(float value) {
-  rotationDegreeMatrix.set(0, 0, rotationDegreeMatrix.get(0, 0) + value);
-  MatrixFloat::assignAsRotationXMatrix(roationXMatrix, rotationDegreeMatrix.get(0, 0));
-}
-
-void DirectionalLight::rotateY(float value) {
-  rotationDegreeMatrix.set(1, 0, rotationDegreeMatrix.get(1, 0) + value);
-  MatrixFloat::assignAsRoationYMatrix(rotationYMatrix, rotationDegreeMatrix.get(1, 0));
-}
-
-void DirectionalLight::rotateZ(float value) {
-  rotationDegreeMatrix.set(2, 0, rotationDegreeMatrix.get(2, 0) + value);
-  MatrixFloat::assignAsRotationZMatrix(rotationZMatrix, rotationDegreeMatrix.get(2, 0));
+void DirectionalLight::rotateXYZ(const float& x, const float& y, const float& z) {
+  rotationDegreeMatrix.set(0, 0, rotationDegreeMatrix.get(0, 0) + x);
+  rotationDegreeMatrix.set(1, 0, rotationDegreeMatrix.get(1, 0) + y);
+  rotationDegreeMatrix.set(2, 0, rotationDegreeMatrix.get(2, 0) + z);
+  MatrixFloat::assignAsRotationXYZMatrix(
+    roationXYZMatrix, 
+    rotationDegreeMatrix.get(0, 0),
+    rotationDegreeMatrix.get(1, 0),
+    rotationDegreeMatrix.get(2, 0)
+  );
 }

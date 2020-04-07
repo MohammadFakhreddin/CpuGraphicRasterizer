@@ -60,19 +60,12 @@ public:
 
   void transform(float transformX, float transformY, float transformZ);
 
-  void rotateX(float x);
-
-  void rotateY(float y);
-
-  void rotateZ(float z);
+  void rotateXYZ(const float& x, const float& y, const float& z);
 
   const MatrixFloat& getTransformMatrix();
 
-  const MatrixFloat& getRotationX();
+  const MatrixFloat& getRotationXYZ();
 
-  const MatrixFloat& getRotationY();
-
-  const MatrixFloat& getRotationZ();
 
 private:
 
@@ -102,11 +95,7 @@ private:
 
   MatrixFloat rotationDegreeMatrix;
   
-  MatrixFloat rotationValueXMatrix;
-  
-  MatrixFloat rotationValueYMatrix;
-  
-  MatrixFloat rotationValueZMatrix;
+  MatrixFloat rotationValueXYZMatrix = MatrixFloat(3,3,0.0f);
 
   MatrixFloat transformationPlaceholder = MatrixFloat(3, 1, 0.0f);
 

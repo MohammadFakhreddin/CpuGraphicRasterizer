@@ -247,6 +247,23 @@ public:
     matrix.set(2, 2, 1);
   }
 
+  static void assignAsRotationXYZMatrix(
+    _Matrix<T>& matrix, 
+    const float& xDegree, 
+    const float& yDegree, 
+    const float& zDegree
+  ) {
+    matrix.set(0, 0, cosf(yDegree) * cosf(zDegree));
+    matrix.set(0, 1, cosf(yDegree) * (-sinf(zDegree)));
+    matrix.set(0, 2, -sinf(yDegree));
+    matrix.set(1, 0, ((-sinf(xDegree)) * sinf(yDegree) * cosf(zDegree)) + (cosf(xDegree) * sinf(zDegree)));
+    matrix.set(1, 1, (sinf(xDegree) * sinf(yDegree) * sinf(zDegree)) + (cosf(xDegree) * cosf(zDegree)));
+    matrix.set(1, 2, (-sinf(xDegree)) * cosf(yDegree));
+    matrix.set(2, 0, (cosf(xDegree) * sinf(yDegree) * cosf(zDegree)) + (sinf(xDegree) * sinf(zDegree)));
+    matrix.set(2, 1, (cosf(xDegree) * sinf(yDegree) * (-1 * sinf(zDegree))) + (sinf(xDegree) * cosf(zDegree)));
+    matrix.set(2, 2, cosf(xDegree) * cosf(yDegree));
+  }
+
   template<typename A>
   double dotProduct(_Matrix<A>& rhs) {
     assert(this->width == 3 && this->height == 1);

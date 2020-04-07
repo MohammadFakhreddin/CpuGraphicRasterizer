@@ -49,63 +49,64 @@ BunnyScene::BunnyScene(OpenGL& gl)
 void BunnyScene::update(double deltaTime) {
 #ifdef __DESKTOP__
   {//We rotate light by keyboard
+    lightRotationX = 0.0f;
+    lightRotationY = 0.0f;
+    lightRotationZ = 0.0f;
     if (useKeyEvent(Constants::Buttons::keyA)) {
-      light->rotateX(
-        float(deltaTime * lightTransformSpeed * -1.0f)
-      );
+      lightRotationX += float(deltaTime * lightTransformSpeed * -1.0f);
     }
     if (useKeyEvent(Constants::Buttons::keyD)) {
-      light->rotateX(
-        float(deltaTime * lightTransformSpeed)
-      );
+      lightRotationX += float(deltaTime * lightTransformSpeed);
     }
     if (useKeyEvent(Constants::Buttons::keyW)) {
-      light->rotateY(
-        float(deltaTime * lightTransformSpeed)
-      );
+      lightRotationY += float(deltaTime * lightTransformSpeed);
     }
     if (useKeyEvent(Constants::Buttons::keyS)) {
-      light->rotateY(
-        float(deltaTime * lightTransformSpeed * -1.0)
-      );
+      lightRotationY += float(deltaTime * lightTransformSpeed * -1.0);
     }
     if (useKeyEvent(Constants::Buttons::keyC)) {
-      light->rotateZ(
-        float(deltaTime * lightTransformSpeed * -1.0 * 0.5)
-      );
+      lightRotationZ += float(deltaTime * lightTransformSpeed * -1.0 * 0.5);
     }
     if (useKeyEvent(Constants::Buttons::keyV)) {
-      light->rotateZ(
-        float(deltaTime * lightTransformSpeed * 1.0 * 0.5)
-      );
+      lightRotationZ += float(deltaTime * lightTransformSpeed * 1.0 * 0.5);
+    }
+    if (lightRotationX != 0 || lightRotationY != 0 || lightRotationZ != 0) {
+      light->rotateXYZ(lightRotationX, lightRotationY, lightRotationZ);
     }
   }
   {//Rotating shape by keyboard
+    shapeRotationX = 0.0f;
+    shapeRotationY = 0.0f;
+    shapeRotationZ = 0.0f;
     if (useKeyEvent(Constants::Buttons::keyI)) {
-      shape->rotateZ(float(1.0 * shapeRotationSpeed * deltaTime));
+      shapeRotationX += float(1.0 * shapeRotationSpeed * deltaTime);
     }
     if (useKeyEvent(Constants::Buttons::keyY)) {
-      shape->rotateZ(float(-1.0 * shapeRotationSpeed * deltaTime));
+      shapeRotationX += float(-1.0 * shapeRotationSpeed * deltaTime);
     }
     if (useKeyEvent(Constants::Buttons::keyK)) {
-      shape->rotateY(float(1.0 * shapeRotationSpeed * deltaTime));
+      shapeRotationY += float(1.0 * shapeRotationSpeed * deltaTime);
     }
     if (useKeyEvent(Constants::Buttons::keyH)) {
-      shape->rotateY(float(-1.0 * shapeRotationSpeed * deltaTime));
+      shapeRotationY += float(-1.0 * shapeRotationSpeed * deltaTime);
     }
     if (useKeyEvent(Constants::Buttons::keyU)) {
-      shape->rotateX(float(1.0 * shapeRotationSpeed * deltaTime));
+      shapeRotationZ += float(1.0 * shapeRotationSpeed * deltaTime);
     }
     if (useKeyEvent(Constants::Buttons::keyJ)) {
-      shape->rotateX(float(-1.0 * shapeRotationSpeed * deltaTime));
+      shapeRotationZ += float(-1.0 * shapeRotationSpeed * deltaTime);
+    }
+    if (shapeRotationX != 0 || shapeRotationY != 0 || shapeRotationZ != 0) {
+      //We need seperate rotation methods as well
+      shape->rotateXYZ(shapeRotationX, shapeRotationY, shapeRotationZ);
     }
   }
 #endif
-  {//Temporary code for auto rotation
-   shape->rotateY(float(-1.0f * shapeRotationSpeed * deltaTime * 0.1f));
-   shape->rotateX(float(-1.0f * shapeRotationSpeed * deltaTime * 0.1f));
-   shape->rotateZ(float(-1.0f * shapeRotationSpeed * deltaTime * 0.1f));
-  }
+  shape->rotateXYZ(
+    float(-1.0f * shapeRotationSpeed * deltaTime * 0.1f), 
+    float(-1.0f * shapeRotationSpeed * deltaTime * 0.1f),
+    float(-1.0f * shapeRotationSpeed * deltaTime * 0.1f)
+  );
   {//Updating light
     for (unsigned int i = 0; i < lightSources.size(); i++) {
       lightSources.at(i)->update(deltaTime, cameraInstance);

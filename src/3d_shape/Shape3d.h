@@ -70,11 +70,7 @@ public:
 
   void scale(float value);
 
-  void rotateX(float x);
-
-  void rotateY(float y);
-
-  void rotateZ(float z);
+  void rotateXYZ(const float& x, const float& y, const float& z);
 
 private:
 
@@ -94,11 +90,13 @@ private:
 
   MatrixFloat rotationDegreeMatrix;
   
-  MatrixFloat rotationValueXMatrix;
+  /*MatrixFloat rotationValueXMatrix;
 
   MatrixFloat rotationValueYMatrix;
   
-  MatrixFloat rotationValueZMatrix;
+  MatrixFloat rotationValueZMatrix;*/
+
+  MatrixFloat rotationXYZMatrix;
 
   MatrixFloat scaleValueMatrix;
   

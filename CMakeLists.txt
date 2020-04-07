@@ -138,7 +138,6 @@ else()
    set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR})
 #  file(COPY assets DESTINATION ${CMAKE_BINARY_DIR})
 
-
    set(UNIT_TEST "unit-test")
    
    FILE(GLOB_RECURSE SRC_TEST_H "src/*.test.h")

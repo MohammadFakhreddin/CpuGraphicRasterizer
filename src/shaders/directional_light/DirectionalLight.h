@@ -23,11 +23,7 @@ public:
 
   void update(double deltaTime, Camera& cameraInstance) override;
 
-  void rotateX(float value);
-
-  void rotateY(float value);
-
-  void rotateZ(float value);
+  void rotateXYZ(const float& x,const float& y,const float& z);
 
 private:
 
@@ -37,11 +33,7 @@ private:
 
   MatrixFloat worldLightDirectionHat = MatrixFloat(3, 1, 0.0f);
 
-  MatrixFloat roationXMatrix = MatrixFloat(3, 3, 0.0f);
-
-  MatrixFloat rotationYMatrix = MatrixFloat(3, 3, 0.0f);
-
-  MatrixFloat rotationZMatrix = MatrixFloat(3, 3, 0.0f);
+  MatrixFloat roationXYZMatrix = MatrixFloat(3, 3, 0.0f);
 
   MatrixFloat rotationDegreeMatrix = MatrixFloat(3, 1, 0.0f);
   

@@ -47,55 +47,56 @@ RobotScene::RobotScene(OpenGL& gl)
 void RobotScene::update(double deltaTime) {
 #ifdef __DESKTOP__
   {//We rotate light by keyboard
+    lightRotationX = 0.0f;
+    lightRotationY = 0.0f;
+    lightRotationZ = 0.0f;
     if (useKeyEvent(Constants::Buttons::keyA)) {
-      light->rotateX(
-        float(deltaTime * lightRotationSpeed * -1.0f)
-      );
+      lightRotationX += float(deltaTime * lightRotationSpeed * -1.0f);
     }
     if (useKeyEvent(Constants::Buttons::keyD)) {
-      light->rotateX(
-        float(deltaTime * lightRotationSpeed)
-      );
+      lightRotationX += float(deltaTime * lightRotationSpeed);
     }
     if (useKeyEvent(Constants::Buttons::keyW)) {
-      light->rotateY(
-        float(deltaTime * lightRotationSpeed)
-      );
+      lightRotationY += float(deltaTime * lightRotationSpeed);
     }
     if (useKeyEvent(Constants::Buttons::keyS)) {
-      light->rotateY(
-        float(deltaTime * lightRotationSpeed * -1.0)
-      );
+      lightRotationY += float(deltaTime * lightRotationSpeed * -1.0);
     }
     if (useKeyEvent(Constants::Buttons::keyC)) {
-      light->rotateZ(
-        float(deltaTime * lightRotationSpeed * -1.0)
-      );
+      lightRotationZ += float(deltaTime * lightRotationSpeed * -1.0 * 0.5);
     }
     if (useKeyEvent(Constants::Buttons::keyV)) {
-      light->rotateZ(
-        float(deltaTime * lightRotationSpeed * 1.0)
-      );
+      lightRotationZ += float(deltaTime * lightRotationSpeed * 1.0 * 0.5);
+    }
+    if (lightRotationX != 0 || lightRotationY != 0 || lightRotationZ != 0) {
+      light->rotateXYZ(lightRotationX, lightRotationY, lightRotationZ);
     }
   }
   {//Rotating shape by keyboard
-    if (useKeyEvent(Constants::Buttons::keyU)) {
-      shape->rotateZ(float(1.0 * shapeRotationSpeed * deltaTime));
-    }
-    if (useKeyEvent(Constants::Buttons::keyJ)) {
-      shape->rotateZ(float(-1.0 * shapeRotationSpeed * deltaTime));
-    }
-    if (useKeyEvent(Constants::Buttons::keyK)) {
-      shape->rotateY(float(1.0 * shapeRotationSpeed * deltaTime));
-    }
-    if (useKeyEvent(Constants::Buttons::keyH)) {
-      shape->rotateY(float(-1.0 * shapeRotationSpeed * deltaTime));
-    }
+    shapeRotationX = 0.0f;
+    shapeRotationY = 0.0f;
+    shapeRotationZ = 0.0f;
     if (useKeyEvent(Constants::Buttons::keyI)) {
-      shape->rotateX(float(1.0 * shapeRotationSpeed * deltaTime));
+      shapeRotationX += float(1.0 * shapeRotationSpeed * deltaTime);
     }
     if (useKeyEvent(Constants::Buttons::keyY)) {
-      shape->rotateX(float(-1.0 * shapeRotationSpeed * deltaTime));
+      shapeRotationX += float(-1.0 * shapeRotationSpeed * deltaTime);
+    }
+    if (useKeyEvent(Constants::Buttons::keyK)) {
+      shapeRotationY += float(1.0 * shapeRotationSpeed * deltaTime);
+    }
+    if (useKeyEvent(Constants::Buttons::keyH)) {
+      shapeRotationY += float(-1.0 * shapeRotationSpeed * deltaTime);
+    }
+    if (useKeyEvent(Constants::Buttons::keyU)) {
+      shapeRotationZ += float(1.0 * shapeRotationSpeed * deltaTime);
+    }
+    if (useKeyEvent(Constants::Buttons::keyJ)) {
+      shapeRotationZ += float(-1.0 * shapeRotationSpeed * deltaTime);
+    }
+    if (shapeRotationX != 0 || shapeRotationY != 0 || shapeRotationZ != 0) {
+      //We need seperate rotation methods as well
+      shape->rotateXYZ(shapeRotationX, shapeRotationY, shapeRotationZ);
     }
   }
 #endif
