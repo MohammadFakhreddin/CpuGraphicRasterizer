@@ -106,14 +106,9 @@ void OpenGL::init(){
   glOrtho(-0.5f, float(appScreenWidth) - 0.5f, -0.5f, float(appScreenHeight) - 0.5f, -1.0, 1.0);
 #endif
 #if defined(__GLES__)
-  #ifdef __ANDROID__
+  
   viewPortWidth = physicalScreenWidth * 2;
   viewPortHeight = physicalScreenHeight * 2;
-  #endif
-  #ifdef __IOS__
-  viewPortWidth = physicalScreenWidth * 2;
-  viewPortHeight = physicalScreenHeight * 2;
-  #endif
 
   viewPortStartX = int(-1 * (float(viewPortWidth)/2.0f));
   viewPortStartY = int(-1 * (float(viewPortHeight)/2.0f));
