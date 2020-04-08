@@ -1,20 +1,30 @@
 #include "./DirectionalLight.h"
 
+#include <cassert>
+
 DirectionalLight::DirectionalLight(
+  const float& colorR,
+  const float& colorG,
+  const float& colorB,
   const float& directionX,
   const float& directionY,
-  const float& directionZ,
-  const float& ambiantLight
+  const float& directionZ
 )
   :
-  ambiantLight(ambiantLight)
+  colorR(colorR),
+  colorG(colorG),
+  colorB(colorB)
 {
+
+  assert(colorR >= 0 && colorR <= 1.0f);
+  assert(colorG >= 0 && colorG <= 1.0f);
+  assert(colorB >= 0 && colorB <= 1.0f);
 
   lightDirection.set(0, 0, directionX);
   lightDirection.set(1, 0, directionY);
   lightDirection.set(2, 0, directionZ);
 
-  lightDirectionHat.assign(lightDirection.hat<float>());
+  lightDirection.hat<float>(lightDirectionHat);
   
   worldLightDirectionHat.assign(lightDirectionHat);
 
@@ -25,27 +35,24 @@ DirectionalLight::DirectionalLight(
 //Source: https://en.wikipedia.org/wiki/Computer_graphics_lighting
 void DirectionalLight::computeLightIntensity(
     MatrixFloat& surfaceNormal,
+    MatrixFloat& surfaceLocation,
     MatrixFloat& output
 ){
   
-  dotProductValue = worldLightDirectionHat.dotProduct(surfaceNormal) * -1;
+  lightIntensityFactor = worldLightDirectionHat.dotProduct(surfaceNormal) * -1;
   
-  lightIntensityFactor = float(Math::max(dotProductValue, ambiantLight));
+  assert(lightIntensityFactor <= 1);
   
-  output.set(0, 0, lightIntensityFactor);
-  output.set(1, 0, lightIntensityFactor);
-  output.set(2, 0, lightIntensityFactor);
+  output.set(0, 0, lightIntensityFactor * colorR);
+  output.set(1, 0, lightIntensityFactor * colorG);
+  output.set(2, 0, lightIntensityFactor * colorB);
 
 }
 //This method must be called before other objects update
 void DirectionalLight::update(double deltaTime, Camera& cameraInstance) {
-
   worldLightDirectionHat.assign(lightDirectionHat);
-
   worldLightDirectionHat.multiply(roationXYZMatrix);
-  
   worldLightDirectionHat.multiply(cameraInstance.getRotationXYZ());
-
 }
 
 void DirectionalLight::rotateXYZ(const float& x, const float& y, const float& z) {

@@ -137,6 +137,7 @@ private:
   *
   */
   void computeColorIntensity(
+    std::vector<MatrixFloat> & worldPoints,
     std::vector<MatrixFloat>& normals,
     std::vector<std::unique_ptr<Light>>& lightSources  
   );
@@ -159,6 +160,8 @@ private:
   MatrixFloat colorIntensityOutput = MatrixFloat(3, 1, 0.0f);
 
   MatrixFloat* currentWorldPoint = nullptr;
+
+  MatrixFloat* currentNormal = nullptr;
 
   unsigned int cameraLeft = 0;
   

@@ -26,6 +26,7 @@ std::vector<MatrixFloat> Shape3d::generateNormals(
   MatrixFloat* sideNode1 = nullptr;
   MatrixFloat* sideNode2 = nullptr;
   MatrixFloat normalVector = MatrixFloat(3, 1, 0.0f);
+  MatrixFloat normalVectorHat = MatrixFloat(3, 1, 0.0f);
 
   const auto computeEdgeIndex = [](short int index) {
     return index % 3;
@@ -48,15 +49,18 @@ std::vector<MatrixFloat> Shape3d::generateNormals(
       for (short int i = 0; i < 3; i++) {
 
         targetNode = &nodes.at(surface->getEdgeByIndex(computeEdgeIndex(i)));
+        
         sideNode1 = &nodes.at(surface->getEdgeByIndex(computeEdgeIndex(i + 1)));
+        
         sideNode2 = &nodes.at(surface->getEdgeByIndex(computeEdgeIndex(i + 2)));
 
         generateDiffrenceVector(vector1, sideNode1, targetNode);
+        
         generateDiffrenceVector(vector2, targetNode, sideNode2);
 
-        MatrixFloat normalVector = MatrixFloat(3, 1, 0.0f);
         normalVector.crossPoduct(vector1, vector2);
-        normals.emplace_back(normalVector.hat<float>());
+        
+        normalVector.hat<float>(normalVectorHat);
 
         surface->setNormalIndex(i, (unsigned long)(normals.size() - 1));
 
@@ -91,14 +95,16 @@ std::vector<MatrixFloat> Shape3d::generateNormals(
           if (surface->getEdgeByIndex(surfaceEdgeIndex) == nodeIndex) {
             
             sideNode1 = &nodes.at(surface->getEdgeByIndex(computeEdgeIndex(surfaceEdgeIndex + 1)));
+            
             sideNode2 = &nodes.at(surface->getEdgeByIndex(computeEdgeIndex(surfaceEdgeIndex + 2)));
 
             generateDiffrenceVector(vector1, sideNode1, targetNode);
+            
             generateDiffrenceVector(vector2, targetNode, sideNode2);
             
-            MatrixFloat normalVector = MatrixFloat(3, 1, 0.0f);
             normalVector.crossPoduct(vector1, vector2);
-            currentNodeNormals.emplace_back(normalVector.hat<float>());
+            
+            normalVector.hat<float>(normalVectorHat);
 
             surface->setNormalIndex(surfaceEdgeIndex, (unsigned long)normals.size());
 
@@ -131,7 +137,10 @@ std::vector<MatrixFloat> Shape3d::generateNormals(
 
         normals.back().set(vectorIndex, 0, normals.back().get(vectorIndex, 0) / currentNodeNormals.size());
 
-        normals.back().assign(normals.back().hat<float>());
+
+        normals.back().hat<float>(normalVectorHat);
+
+        normals.back().assign(normalVectorHat);
 
       }
 
@@ -280,7 +289,6 @@ void Shape3d::update(
 
   for (i = 0; i < nodes.size(); i++) {
     //TODO Create pipleline class from this part
-    //TODO Needs optimization
     currentWorldPoint.assign(nodes[i]);
  
     currentWorldPoint.multiply(rotationXYZMatrix);

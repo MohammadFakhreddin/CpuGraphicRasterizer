@@ -1,14 +1,15 @@
-#include "./BunnyScene.h"
+#include "./MonkeyScene.h"
 
 #include "../base_scene/BaseScene.h"
 #include "../../data_access_point/DataAccessPoint.h"
 #include "../../file_system/FileSystem.h"
 #include "../../utils/path/Path.h"
+#include "../../shaders/directional_light/DirectionalLight.h"
 #include "../../shaders/ambient_light/AmbientLight.h"
 
-BunnyScene::BunnyScene(OpenGL& gl)
-  : 
-  BaseScene(gl, "BunnyScene"),
+MonkeyScene::MonkeyScene(OpenGL& gl) 
+  :
+  BaseScene(gl,"MonkeyScene"),
   cameraInstance(
     gl,
     cameraInitialMaximumFov,
@@ -20,19 +21,21 @@ BunnyScene::BunnyScene(OpenGL& gl)
     0,
     DataAccessPoint::getInstance()->getAppScreenWidth(),
     DataAccessPoint::getInstance()->getAppScreenHeight(),
-    "Bunny main camera"
+    "Monkey main camera"
   )
 {
+  
   whiteColor = std::make_unique<ColorTexture>(
-    1.0f,1.0f,1.0f  
+    1.0f, 1.0f, 1.0f
   );
+  
   {//Creating shape
-    auto scaleFactor = float(DataAccessPoint::getInstance()->getAppScreenWidth()) / 4.0f;
+    auto scaleFactor = float(DataAccessPoint::getInstance()->getAppScreenWidth()) / 50.0f;
     shape = FileSystem::loadObject(
-      Path::generateAssetPath("bunny", ".obj"),
+      Path::generateAssetPath("monkey", ".obj"),
       (std::unique_ptr<Texture>&)whiteColor,
       true,
-      Shape3d::NormalType::smooth,
+      Shape3d::NormalType::fileDefault,
       false
     );
     shape->transformX(float(DataAccessPoint::getInstance()->getAppScreenWidth()) / 2.0f);
@@ -40,41 +43,43 @@ BunnyScene::BunnyScene(OpenGL& gl)
     shape->transformZ(cameraInitialZLocation - 100.0f);
     shape->scale(scaleFactor);
   }
+
   {//Creating light source
+    //lightSources.emplace_back(std::make_unique<DirectionalLight>(1.0f, 1.0f, 1.0f, -1.0f, -1.0f, -1.0f));
     lightSources.emplace_back(std::make_unique<AmbientLight>(0.2f, 0.2f, 0.2f));
-    lightSources.emplace_back(std::make_unique<DirectionalLight>(
-      1.0f, 1.0f, 1.0f, -1.0f, -1.0f, -1.0f
+    lightSources.emplace_back(std::make_unique<PointLight>(
+      1.0f, 
+      1.0f,
+      1.0f,
+      1.0f,
+      float(DataAccessPoint::getInstance()->getAppScreenWidth()) / 2.0f, 
+      0.0f, 
+      cameraInitialZLocation - 50.0f
     ));
-    light = (DirectionalLight*)lightSources.back().get();
+    light = (PointLight*)lightSources.back().get();
   }
 }
 
-void BunnyScene::update(double deltaTime) {
+void MonkeyScene::update(double deltaTime) {
 #ifdef __DESKTOP__
   {//We rotate light by keyboard
-    lightRotationX = 0.0f;
-    lightRotationY = 0.0f;
-    lightRotationZ = 0.0f;
     if (useKeyEvent(Constants::Buttons::keyA)) {
-      lightRotationX += float(deltaTime * lightTransformSpeed * -1.0f);
+      light->transformX(float(deltaTime * lightTransformSpeed * -1.0f));
     }
     if (useKeyEvent(Constants::Buttons::keyD)) {
-      lightRotationX += float(deltaTime * lightTransformSpeed);
+      light->transformX(float(deltaTime * lightTransformSpeed));
     }
     if (useKeyEvent(Constants::Buttons::keyW)) {
-      lightRotationY += float(deltaTime * lightTransformSpeed);
+      light->transformY(float(deltaTime * lightTransformSpeed));
     }
     if (useKeyEvent(Constants::Buttons::keyS)) {
-      lightRotationY += float(deltaTime * lightTransformSpeed * -1.0);
+      light->transformY(float(deltaTime * lightTransformSpeed * -1.0));
     }
     if (useKeyEvent(Constants::Buttons::keyC)) {
-      lightRotationZ += float(deltaTime * lightTransformSpeed * -1.0 * 0.5);
+      light->transformZ(float(deltaTime * lightTransformSpeed * -1.0 * 0.5));
     }
     if (useKeyEvent(Constants::Buttons::keyV)) {
-      lightRotationZ += float(deltaTime * lightTransformSpeed * 1.0 * 0.5);
-    }
-    if (lightRotationX != 0 || lightRotationY != 0 || lightRotationZ != 0) {
-      light->rotateXYZ(lightRotationX, lightRotationY, lightRotationZ);
+      light->transformZ(float(deltaTime * lightTransformSpeed * 1.0 * 0.5));
     }
   }
   {//Rotating shape by keyboard
@@ -105,11 +110,11 @@ void BunnyScene::update(double deltaTime) {
     }
   }
 #endif
-  shape->rotateXYZ(
-    float(-1.0f * shapeRotationSpeed * deltaTime * 0.1f), 
-    float(-1.0f * shapeRotationSpeed * deltaTime * 0.1f),
-    float(-1.0f * shapeRotationSpeed * deltaTime * 0.1f)
-  );
+  //shape->rotateXYZ(
+  //  float(-1.0f * shapeRotationSpeed * deltaTime * 0.1f),
+  //  float(-1.0f * shapeRotationSpeed * deltaTime * 0.1f),
+  //  float(-1.0f * shapeRotationSpeed * deltaTime * 0.1f)
+  //);
   {//Updating light
     for (unsigned int i = 0; i < lightSources.size(); i++) {
       lightSources.at(i)->update(deltaTime, cameraInstance);
@@ -118,6 +123,6 @@ void BunnyScene::update(double deltaTime) {
   shape->update(deltaTime, cameraInstance, lightSources);
 }
 
-void BunnyScene::render(double deltaTime) {
+void MonkeyScene::render(double deltaTime) {
   cameraInstance.render(deltaTime);
 }

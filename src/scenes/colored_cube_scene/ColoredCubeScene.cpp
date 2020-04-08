@@ -2,6 +2,7 @@
 
 #include "../../3d_models/ShapeGenerator.h"
 #include "../../data_access_point/DataAccessPoint.h"
+#include "../../shaders/ambient_light/AmbientLight.h"
 
 ColoredCubeScene::ColoredCubeScene(
   OpenGL& gl
@@ -46,8 +47,8 @@ ColoredCubeScene::ColoredCubeScene(
     );
 
   }
-
-  lightSources.emplace_back(std::make_unique<DirectionalLight>(-1.0f, -1.0f, -1.0f, 0.05f));
+  lightSources.emplace_back(std::make_unique<AmbientLight>(0.2f, 0.2f, 0.2f));
+  lightSources.emplace_back(std::make_unique<DirectionalLight>(1.0f, 1.0f, 1.0f, -1.0f, -1.0f, -1.0f));
   light = (DirectionalLight*)lightSources.back().get();
 
 }

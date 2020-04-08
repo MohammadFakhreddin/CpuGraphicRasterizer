@@ -63,7 +63,7 @@ void Surface::update(
   if (!isVisibleToCamera(cameraInstance, worldPoints, normals)) {
     return;
   }
-  computeColorIntensity(normals,lightSources);
+  computeColorIntensity(worldPoints,normals,lightSources);
   computePixelMapData(
     cameraInstance,
     worldPoints
@@ -307,6 +307,7 @@ void Surface::computePixelMapData(
 }
 
 void Surface::computeColorIntensity(
+  std::vector<MatrixFloat>& worldPoints,
   std::vector<MatrixFloat>& normals,
   std::vector<std::unique_ptr<Light>>& lightSources
 ) {
@@ -317,11 +318,15 @@ void Surface::computeColorIntensity(
       colorIntensity[edgeIndex].set(0, 0, 0.0f);
       colorIntensity[edgeIndex].set(1, 0, 0.0f);
       colorIntensity[edgeIndex].set(2, 0, 0.0f);
+
+      currentWorldPoint = &worldPoints.at(edgeIndices[edgeIndex]);
+      currentNormal = &normals.at(normalVectorIndices[edgeIndex]);
       
       for (auto& light : lightSources) {
         
         light->computeLightIntensity(
-          normals[normalVectorIndices[edgeIndex]],
+          *currentNormal,
+          *currentWorldPoint,
           colorIntensityOutput
         );
         

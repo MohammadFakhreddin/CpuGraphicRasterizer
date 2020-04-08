@@ -230,22 +230,22 @@ public:
             mesh.indices[faceIndex * 3u + edge3Index].vertex_index
             ));
           if (normalType == Shape3d::NormalType::fileDefault) {
-            indices.back()->setNormalIndex(edge1Index, mesh.indices[faceIndex * 3u + edge1Index].normal_index);
-            indices.back()->setNormalIndex(edge2Index, mesh.indices[faceIndex * 3u + edge2Index].normal_index);
-            indices.back()->setNormalIndex(edge3Index, mesh.indices[faceIndex * 3u + edge3Index].normal_index);
+            indices.back()->setNormalIndex(0, mesh.indices[faceIndex * 3u + edge1Index].normal_index);
+            indices.back()->setNormalIndex(1, mesh.indices[faceIndex * 3u + edge2Index].normal_index);
+            indices.back()->setNormalIndex(2, mesh.indices[faceIndex * 3u + edge3Index].normal_index);
           }
           if (useFileTextureCoordinates) {
             edge1TexturePointX = textureCoordinates.at(mesh.indices[faceIndex * 3u + edge1Index].texcoord_index).get(0, 0);
             edge1TexturePointY = textureCoordinates.at(mesh.indices[faceIndex * 3u + edge1Index].texcoord_index).get(1, 0);
-            indices.back()->setTextureCoordinates(edge1Index, edge1TexturePointX, edge1TexturePointY);
+            indices.back()->setTextureCoordinates(0, edge1TexturePointX, edge1TexturePointY);
 
             edge2TexturePointX = textureCoordinates.at(mesh.indices[faceIndex * 3u + edge2Index].texcoord_index).get(0, 0);
             edge2TexturePointY = textureCoordinates.at(mesh.indices[faceIndex * 3u + edge2Index].texcoord_index).get(1, 0);
-            indices.back()->setTextureCoordinates(edge2Index, edge2TexturePointX, edge2TexturePointY);
+            indices.back()->setTextureCoordinates(1, edge2TexturePointX, edge2TexturePointY);
 
             edge3TexturePointX = textureCoordinates.at(mesh.indices[faceIndex * 3u + edge3Index].texcoord_index).get(0, 0);
             edge3TexturePointY = textureCoordinates.at(mesh.indices[faceIndex * 3u + edge3Index].texcoord_index).get(1, 0);
-            indices.back()->setTextureCoordinates(edge3Index, edge3TexturePointX, edge3TexturePointY);
+            indices.back()->setTextureCoordinates(2, edge3TexturePointX, edge3TexturePointY);
           }
         }
       }

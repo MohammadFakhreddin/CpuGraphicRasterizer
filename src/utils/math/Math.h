@@ -38,7 +38,7 @@ public:
         }
         return value;
     };
-    template<typename A>
+/*    template<typename A>
     static A sqrt(A x) {
       if (x <= 0)
         return 0;       // if negative number throw an exception?
@@ -55,7 +55,7 @@ public:
         y = (y + x / y) / 2;
       }
       return ldexp(y, exp / 2); // multiply answer by 2^(exp/2)
-    }
+    }*/
 
 };
 

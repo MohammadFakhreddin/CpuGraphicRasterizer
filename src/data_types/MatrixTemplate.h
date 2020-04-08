@@ -265,13 +265,13 @@ public:
   }
 
   template<typename A>
-  double dotProduct(_Matrix<A>& rhs) {
+  T dotProduct(_Matrix<A>& rhs) {
     assert(this->width == 3 && this->height == 1);
     assert(rhs.width == 3 && rhs.height == 1);
     return 
-      (double(this->get(0, 0)) * double(rhs.get(0, 0))) + 
+      T((double(this->get(0, 0)) * double(rhs.get(0, 0))) + 
       (double(this->get(1, 0)) * double(rhs.get(1, 0))) + 
-      (double(this->get(2, 0)) * double(rhs.get(2, 0)));
+      (double(this->get(2, 0)) * double(rhs.get(2, 0))));
   }
   //TODO Write unit tests for project
   template<typename A,typename B>
@@ -290,34 +290,41 @@ public:
     );
   }
 
-  template<typename A>
-  _Matrix<A> hat() {
+  template<typename A,typename B>
+  void hat(_Matrix<B>& matrix) {
     
     assert(width == 3);
     assert(height == 1);
+
+    assert(matrix.getWidth() == 3);
+    assert(matrix.getHeight() == 1);
     
     const A vectorSize = size<A>();
-    
-    _Matrix<A> matrix = _Matrix<A>(3, 1, 0.0f);
     
     for (unsigned short i = 0; i < 3; i++) {
     
       matrix.set(i, 0, A(this->get(i, 0)) / vectorSize);
     
     }
-    
-    return matrix;
+
+  }
+
+  template<typename A>
+  A squareSize() {
+    assert(width == 3);
+    assert(height == 1);
+    return A(
+      this->get(0, 0) * this->get(0, 0) +
+      this->get(1, 0) * this->get(1, 0) +
+      this->get(2, 0) * this->get(2, 0)
+    );
   }
  
   template<typename A>
   A size() {
     assert(width == 3);
     assert(height == 1);
-    return Math::sqrt(A(
-      this->get(0, 0) * this->get(0, 0) +
-      this->get(1, 0) * this->get(1, 0) +
-      this->get(2, 0) * this->get(2, 0)
-    ));
+    return sqrt(squareSize<A>());
   }
 
 };

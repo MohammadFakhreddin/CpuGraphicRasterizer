@@ -6,6 +6,7 @@
 
 void Light::computeLightIntensity(
   MatrixFloat& surfaceNormalVector,
+  MatrixFloat& surfaceLocation,
   MatrixFloat& output
 ) {
   Logger::log("Method getLightIntensity is not implemented correctly in child class");

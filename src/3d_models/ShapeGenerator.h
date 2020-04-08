@@ -129,7 +129,6 @@ public:
     const float& radius,
     const unsigned int& numberOfLat,
     const unsigned int& numberOfLong,
-    const Vec3DFloat& color,
     const Vec3DFloat& transform,
     const Vec3DFloat& rotation,
     const float& scale

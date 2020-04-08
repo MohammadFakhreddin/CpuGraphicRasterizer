@@ -14,6 +14,7 @@ public:
 
   virtual void computeLightIntensity(
     MatrixFloat& surfaceNormalVector,
+    MatrixFloat& surfaceLocation,
     MatrixFloat& output
   );
 

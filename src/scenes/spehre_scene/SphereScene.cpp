@@ -5,6 +5,7 @@
 #include "../../data_access_point/DataAccessPoint.h"
 #include "../../3d_models/ShapeGenerator.h"
 #include "../../shaders/directional_light/DirectionalLight.h"
+#include "../../shaders/ambient_light/AmbientLight.h"
 
 SphereScene::SphereScene(OpenGL& gl)
   :
@@ -24,13 +25,13 @@ SphereScene::SphereScene(OpenGL& gl)
   )
 {
   whiteColor = std::make_unique<ColorTexture>(1.0f, 1.0f, 1.0f);
+  
   auto radius = float((25.0f / 800.f) * DataAccessPoint::getInstance()->getAppScreenWidth());
   sphere = ShapeGenerator::sphere(
     (std::unique_ptr<Texture>&)whiteColor,
     radius,
     12 * 2,
     24 * 2,
-    Vec3DFloat(1.0f, 1.0f, 1.0f),
     Vec3DFloat(
       DataAccessPoint::getInstance()->getAppScreenWidth() / 2.0f,
       DataAccessPoint::getInstance()->getAppScreenHeight() / 2.0f,
@@ -40,7 +41,8 @@ SphereScene::SphereScene(OpenGL& gl)
     1.0f
   );
 
-  lightSources.emplace_back(std::make_unique<DirectionalLight>(-1.0f, -1.0f, -1.0f, 0.05f));
+  lightSources.emplace_back(std::make_unique<AmbientLight>(0.2f, 0.2f, 0.2f));
+  lightSources.emplace_back(std::make_unique<DirectionalLight>(1.0f, 1.0f, 1.0f, -1.0f, -1.0f, -1.0f));
   light = (DirectionalLight*)lightSources.back().get();
 }
 

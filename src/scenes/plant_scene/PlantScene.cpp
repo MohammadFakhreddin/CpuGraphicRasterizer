@@ -5,6 +5,7 @@
 #include "../../file_system/FileSystem.h"
 #include "../../utils/path/Path.h"
 #include "../../shaders/directional_light/DirectionalLight.h"
+#include "../../shaders/ambient_light/AmbientLight.h"
 
 PlantScene::PlantScene(OpenGL& gl)
   :
@@ -40,7 +41,8 @@ PlantScene::PlantScene(OpenGL& gl)
     shape->scale(5.0f);
   }
   {//Creating light source
-    lightSources.emplace_back(std::make_unique<DirectionalLight>(1.0f,1.0f,1.0f,0.2f));
+    lightSources.emplace_back(std::make_unique<AmbientLight>(0.2f, 0.2f, 0.2f));
+    lightSources.emplace_back(std::make_unique<DirectionalLight>(1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f));
     light = (DirectionalLight*)lightSources.at(lightSources.size() - 1).get();
   }
 }

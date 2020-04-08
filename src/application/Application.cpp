@@ -15,6 +15,7 @@
 #include "../data_access_point/DataAccessPoint.h"
 #include "../scenes/textured_cube_scene/TexturedCubeScene.h"
 #include "../scenes/spehre_scene/SphereScene.h"
+#include "../scenes/monkey_scene/MonkeyScene.h"
 
 //  UI Libraries
 /*
@@ -65,10 +66,11 @@ Application::Application(
 #endif
 
   {
-    sceneList.emplace_back(std::make_unique<BunnyScene>(openGLInstance));
-    sceneList.emplace_back(std::make_unique<SphereScene>(openGLInstance));
-    sceneList.emplace_back(std::make_unique<ColoredCubeScene>(openGLInstance));
-    sceneList.emplace_back(std::make_unique<TexturedCubeScene>(openGLInstance));
+    sceneList.emplace_back(std::make_unique<MonkeyScene>(openGLInstance));
+    //sceneList.emplace_back(std::make_unique<BunnyScene>(openGLInstance));
+    //sceneList.emplace_back(std::make_unique<SphereScene>(openGLInstance));
+    //sceneList.emplace_back(std::make_unique<ColoredCubeScene>(openGLInstance));
+    //sceneList.emplace_back(std::make_unique<TexturedCubeScene>(openGLInstance));
     navigateToScene(0);
   }
 
