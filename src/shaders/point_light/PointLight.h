@@ -16,7 +16,9 @@ public:
     const float& colorB,
     const float& initialTransformX,
     const float& initialTransformY,
-    const float& initialTransformZ
+    const float& initialTransformZ,
+    const float& cameraFieldOfView,
+    const float& attenuation
   );
 
   void transformX(const float& value);
@@ -59,7 +61,19 @@ private:
 
   double squareDistance = 0.0;
 
+  double distance = 0.0f;
+
+  double angleFactor = 0.0;
+
+  double distanceFactor = 0.0;
+
   double lightIntensity = 0.0;
+
+  double computationPercision = 1000.0;
+
+  float cameraFieldOfView;
+
+  float attenuation;
 
 };
 

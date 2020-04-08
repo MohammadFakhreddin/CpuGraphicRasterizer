@@ -66,6 +66,8 @@ public:
 
   const MatrixFloat& getRotationXYZ();
 
+  float getCamerFieldOfView();
+
 
 private:
 

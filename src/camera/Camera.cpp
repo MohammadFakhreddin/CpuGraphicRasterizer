@@ -205,3 +205,7 @@ const MatrixFloat& Camera::getTransformMatrix() {
 const MatrixFloat& Camera::getRotationXYZ() {
   return rotationValueXYZMatrix;
 }
+
+float Camera::getCamerFieldOfView() {
+  return cameraFieldOfView;
+}

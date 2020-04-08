@@ -22,7 +22,7 @@ private:
 
   static constexpr float cameraInitialZLocation = 1000.0f;
 
-  static constexpr float cameraInitialMaximumFov = 1000.0f;
+  static constexpr float cameraInitialMaximumFov = 10000.0f;
 
 public:
   

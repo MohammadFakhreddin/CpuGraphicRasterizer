@@ -12,12 +12,16 @@ PointLight::PointLight(
   const float& colorB,
   const float& initialTransformX,
   const float& initialTransformY,
-  const float& initialTransformZ
+  const float& initialTransformZ,
+  const float& cameraFieldOfView,
+  const float& attenuation
 ) :
   radius(radius),
   colorR(colorR),
   colorG(colorG),
-  colorB(colorB)
+  colorB(colorB),
+  cameraFieldOfView(cameraFieldOfView),
+  attenuation(attenuation)
 {
 
   assert(radius >= 0);
@@ -29,7 +33,7 @@ PointLight::PointLight(
 
   sphere = ShapeGenerator::sphere(
     (std::unique_ptr<Texture>&)lightColor,
-    radius, 12, 24,
+    radius, 12 * 2, 24 * 2,
     Vec3DFloat(0.0f, 0.0f, 0.0f),
     Vec3DFloat(0.0f, 0.0f, 0.0f),
     1.0f
@@ -38,6 +42,7 @@ PointLight::PointLight(
   transformX(initialTransformX);
   transformY(initialTransformY);
   transformZ(initialTransformZ);
+
 }
 
 void PointLight::transformX(const float& value) {
@@ -58,13 +63,11 @@ void PointLight::transformZ(const float& value) {
 void PointLight::update(double deltaTime, Camera& cameraInstance) {
 
   worldPoint.assign(transform);
-
-  worldPoint.sum(cameraInstance.getTransformMatrix());
-
+  worldPoint.minus(cameraInstance.getTransformMatrix());
   sphere->update(deltaTime, cameraInstance, lightSources);
 
 }
-//I use y = 1/(x*x + 1) instead of y = 1/(x*x + x + 1)
+//I use y = 1/(x*x + x + 1)
 void PointLight::computeLightIntensity(
   MatrixFloat& surfaceNormalVector,
   MatrixFloat& surfaceLocation,
@@ -75,26 +78,29 @@ void PointLight::computeLightIntensity(
   assert(surfaceNormalVector.getHeight() == 1);
   assert(surfaceLocation.getWidth() == 3);
   assert(surfaceLocation.getHeight() == 1);
-
-  //distanceMatrix.assign(worldPoint);
-  //TODO Assign radius as light factor too
-  //distanceMatrix.minus(surfaceLocation);
+  
   distanceMatrix.set(0, 0, surfaceLocation.get(0, 0) - worldPoint.get(0, 0));
   distanceMatrix.set(1, 0, surfaceLocation.get(1, 0) - worldPoint.get(1, 0));
   distanceMatrix.set(2, 0, surfaceLocation.get(2, 0) - worldPoint.get(2, 0));
 
-  //squareDistance = distanceMatrix.squareSize<double>();
+  squareDistance = distanceMatrix.squareSize<double>();
 
-  distanceMatrix.hat<float>(distanceMatrixHat);
+  distance = sqrt(squareDistance);
 
-  lightIntensity = distanceMatrixHat.dotProduct(surfaceNormalVector) * -1.0;
-  //double squareValue = 1.0 / (squareDistance + 1.0);
-  //lightIntensity *= squareValue;
+  distanceMatrixHat.set(0, 0, float(double(distanceMatrix.get(0, 0)) / distance));
+  distanceMatrixHat.set(1, 0, float(double(distanceMatrix.get(1, 0)) / distance));
+  distanceMatrixHat.set(2, 0, float(double(distanceMatrix.get(2, 0)) / distance));
 
-  assert(lightIntensity <= 1);
+  angleFactor = distanceMatrixHat.dotProduct(surfaceNormalVector) * -1.0;
 
-  output.set(0, 0, float(lightIntensity * colorR));
-  output.set(1, 0, float(lightIntensity * colorG));
-  output.set(2, 0, float(lightIntensity * colorB));
+  distanceFactor = cameraFieldOfView / ((long long)(squareDistance + distance + 1));
+
+  lightIntensity = Math::clamp(distanceFactor * angleFactor * attenuation, 0.0, 1.0);
+
+  if (lightIntensity > 0) {
+    output.set(0, 0, float(lightIntensity * colorR));
+    output.set(1, 0, float(lightIntensity * colorG));
+    output.set(2, 0, float(lightIntensity * colorB));
+  }
   
 }

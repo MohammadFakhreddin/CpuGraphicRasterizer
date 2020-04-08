@@ -18,6 +18,7 @@ private:
   unsigned int j = 0;
   unsigned int k = 0;
   //TODO Vectors are a bit slow try to replace them in future
+  //Atlease replace them with 1D equavalant that is much faster
   std::vector<std::vector<T>> cells;
   std::vector<std::vector<T>> placeholderCells;
 public:
@@ -275,7 +276,7 @@ public:
   }
   //TODO Write unit tests for project
   template<typename A,typename B>
-  void crossPoduct(_Matrix<A>& mat1, _Matrix<B>& mat2) {
+  void crossProduct(_Matrix<A>& mat1, _Matrix<B>& mat2) {
     this->set(0, 0, 
       (T(mat1.get(1, 0)) * T(mat2.get(2, 0)))
       - (T(mat1.get(2, 0)) * T(mat2.get(1, 0)))

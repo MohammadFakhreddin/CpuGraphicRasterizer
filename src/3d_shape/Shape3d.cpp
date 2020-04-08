@@ -32,7 +32,7 @@ std::vector<MatrixFloat> Shape3d::generateNormals(
     return index % 3;
   };
 
-  const auto generateDiffrenceVector = [](
+  const auto generateDifferenceVector = [](
     MatrixFloat& output,
     const MatrixFloat* vector2,
     const MatrixFloat* vector1
@@ -54,13 +54,15 @@ std::vector<MatrixFloat> Shape3d::generateNormals(
         
         sideNode2 = &nodes.at(surface->getEdgeByIndex(computeEdgeIndex(i + 2)));
 
-        generateDiffrenceVector(vector1, sideNode1, targetNode);
+        generateDifferenceVector(vector1, sideNode1, targetNode);
         
-        generateDiffrenceVector(vector2, targetNode, sideNode2);
+        generateDifferenceVector(vector2, targetNode, sideNode2);
 
-        normalVector.crossPoduct(vector1, vector2);
+        normalVector.crossProduct(vector1, vector2);
         
         normalVector.hat<float>(normalVectorHat);
+
+        normals.emplace_back(normalVectorHat);
 
         surface->setNormalIndex(i, (unsigned long)(normals.size() - 1));
 
@@ -98,13 +100,15 @@ std::vector<MatrixFloat> Shape3d::generateNormals(
             
             sideNode2 = &nodes.at(surface->getEdgeByIndex(computeEdgeIndex(surfaceEdgeIndex + 2)));
 
-            generateDiffrenceVector(vector1, sideNode1, targetNode);
+            generateDifferenceVector(vector1, sideNode1, targetNode);
             
-            generateDiffrenceVector(vector2, targetNode, sideNode2);
+            generateDifferenceVector(vector2, targetNode, sideNode2);
             
-            normalVector.crossPoduct(vector1, vector2);
+            normalVector.crossProduct(vector1, vector2);
             
             normalVector.hat<float>(normalVectorHat);
+
+            currentNodeNormals.emplace_back(normalVectorHat);
 
             surface->setNormalIndex(surfaceEdgeIndex, (unsigned long)normals.size());
 
@@ -114,6 +118,8 @@ std::vector<MatrixFloat> Shape3d::generateNormals(
         }
 
       }
+
+      assert(currentNodeNormals.size() != 0);
 
       normals.emplace_back(MatrixFloat(3, 1, 0.0f));
 
@@ -133,16 +139,27 @@ std::vector<MatrixFloat> Shape3d::generateNormals(
         }
       }
 
+      assert(
+        isnan(normals.back().get(0, 0)) == false &&
+        isnan(normals.back().get(1, 0)) == false &&
+        isnan(normals.back().get(2, 0)) == false
+      );
+
       for (vectorIndex = 0; vectorIndex < 3; vectorIndex++) {
 
         normals.back().set(vectorIndex, 0, normals.back().get(vectorIndex, 0) / currentNodeNormals.size());
 
-
-        normals.back().hat<float>(normalVectorHat);
-
-        normals.back().assign(normalVectorHat);
-
       }
+
+      normals.back().hat<float>(normalVectorHat);
+
+      normals.back().assign(normalVectorHat);
+
+      assert(
+        isnan(normals.back().get(0, 0)) == false && 
+        isnan(normals.back().get(1, 0)) == false && 
+        isnan(normals.back().get(2, 0)) == false
+      );
 
     }
 

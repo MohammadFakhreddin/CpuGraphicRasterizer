@@ -30,7 +30,7 @@ MonkeyScene::MonkeyScene(OpenGL& gl)
   );
   
   {//Creating shape
-    auto scaleFactor = float(DataAccessPoint::getInstance()->getAppScreenWidth()) / 50.0f;
+    auto scaleFactor = float(DataAccessPoint::getInstance()->getAppScreenWidth()) / 500.0f;
     shape = FileSystem::loadObject(
       Path::generateAssetPath("monkey", ".obj"),
       (std::unique_ptr<Texture>&)whiteColor,
@@ -48,13 +48,13 @@ MonkeyScene::MonkeyScene(OpenGL& gl)
     //lightSources.emplace_back(std::make_unique<DirectionalLight>(1.0f, 1.0f, 1.0f, -1.0f, -1.0f, -1.0f));
     lightSources.emplace_back(std::make_unique<AmbientLight>(0.2f, 0.2f, 0.2f));
     lightSources.emplace_back(std::make_unique<PointLight>(
-      1.0f, 
-      1.0f,
-      1.0f,
-      1.0f,
-      float(DataAccessPoint::getInstance()->getAppScreenWidth()) / 2.0f, 
-      0.0f, 
-      cameraInitialZLocation - 50.0f
+      0.1f, 
+      255.0f/256.0f, 214.0f/256.0f, 170.0f/256.0f,
+      float(DataAccessPoint::getInstance()->getAppScreenWidth()) / 30.0f, 
+      float(DataAccessPoint::getInstance()->getAppScreenHeight()) - float(DataAccessPoint::getInstance()->getAppScreenWidth()) / 30.0f,
+      cameraInitialZLocation - 50.0f,
+      cameraInstance.getCamerFieldOfView(),
+      10.0f
     ));
     light = (PointLight*)lightSources.back().get();
   }
@@ -110,14 +110,14 @@ void MonkeyScene::update(double deltaTime) {
     }
   }
 #endif
-  //shape->rotateXYZ(
-  //  float(-1.0f * shapeRotationSpeed * deltaTime * 0.1f),
-  //  float(-1.0f * shapeRotationSpeed * deltaTime * 0.1f),
-  //  float(-1.0f * shapeRotationSpeed * deltaTime * 0.1f)
-  //);
+  shape->rotateXYZ(
+    float(-1.0f * shapeRotationSpeed * deltaTime * 0.1f),
+    float(-1.0f * shapeRotationSpeed * deltaTime * 0.1f),
+    float(-1.0f * shapeRotationSpeed * deltaTime * 0.1f)
+  );
   {//Updating light
-    for (unsigned int i = 0; i < lightSources.size(); i++) {
-      lightSources.at(i)->update(deltaTime, cameraInstance);
+    for (auto& light:lightSources) {
+      light->update(deltaTime, cameraInstance);
     }
   }
   shape->update(deltaTime, cameraInstance, lightSources);
