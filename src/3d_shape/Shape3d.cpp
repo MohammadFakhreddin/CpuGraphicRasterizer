@@ -3,16 +3,20 @@
 #include <cassert>
 #include <cmath>
 #include <memory>
+#include <functional>
+#include <thread>
 
 #include "../open_gl/OpenGl.h"
 #include "./../shaders/light/Light.h"
+#include "../data_access_point/DataAccessPoint.h"
 
 
 std::vector<MatrixFloat> Shape3d::generateNormals(
   std::vector<std::unique_ptr<Surface>>& surfaceList,
   std::vector<MatrixFloat>& nodes,
   NormalType normalType
-) {
+)
+{
 
   assert(normalType != NormalType::fileDefault);
   assert(!surfaceList.empty());
@@ -134,7 +138,8 @@ std::vector<MatrixFloat> Shape3d::generateNormals(
           normals.back().set(
             vectorIndex, 0, 
             normals.back().get(vectorIndex, 0) + 
-            currentNodeNormals.at(currentNodeNormalsIndex).get(vectorIndex,0));
+            currentNodeNormals.at(currentNodeNormalsIndex).get(vectorIndex,0)
+          );
         
         }
       }
@@ -213,7 +218,7 @@ Shape3d::Shape3d(
   float rotationDegreeX,
   float rotationDegreeY,
   float rotationDegreeZ,
-  float scaleValue
+  float paramScaleValue
 ) :
   nodes(std::move(paramNodes)),
   surfaces(std::move(paramSurfaces)),
@@ -225,13 +230,11 @@ Shape3d::Shape3d(
   std::vector<float>{1, 0, 0},
     std::vector<float>{0, 1, 0},
     std::vector<float>{0, 0, 1}
-}),
-zScaleMatrix(3, 3, std::vector<std::vector<float>>{
-  std::vector<float>{1, 0, 0},
-    std::vector<float>{0, 1, 0},
-    std::vector<float>{0, 0, 1}
-}) {
-
+  }),
+  numberOfSupportedThreads(DataAccessPoint::getInstance()->getThreadPool().getNumberOfAvailableThreads()),
+  threadPool(DataAccessPoint::getInstance()->getThreadPool())
+ {
+  assert(numberOfSupportedThreads > 0);
   assert(checkDataValidation());
 
   if (!nodes.empty()) {
@@ -250,6 +253,24 @@ zScaleMatrix(3, 3, std::vector<std::vector<float>>{
   this->transformY(transformY);
   this->transformZ(transformZ);
   this->rotateXYZ(rotationDegreeX, rotationDegreeY, rotationDegreeZ);
+  //TODO Fix this and restore initial scale
+  //this->scale(paramScaleValue);
+
+  for (threadNumberIndex = 0; threadNumberIndex < numberOfSupportedThreads; threadNumberIndex++) {
+    zScaleMatrix.emplace_back(std::move(MatrixFloat(3, 3, std::vector<std::vector<float>>{
+      std::vector<float>{1, 0, 0},
+      std::vector<float>{0, 1, 0},
+      std::vector<float>{0, 0, 1}
+    })));
+    currentWorldPoint.emplace_back(std::move(MatrixFloat(3, 1, 0.0f)));
+    currentWorldNormal.emplace_back(std::move(MatrixFloat(3, 1, 0.0f)));
+    zLocation.emplace_back(0.0f);
+    scaleValue.emplace_back(0.0f);
+    nodeIndex.emplace_back(0);
+    surfaceIndex.emplace_back(0);
+    normalIndex.emplace_back(0);
+    zScaleMatrix.emplace_back(std::move(MatrixFloat(3, 3, 0.0f)));
+  }
 
 }
 
@@ -295,58 +316,118 @@ bool Shape3d::checkDataValidation() {
 
 }
 
+void Shape3d::updateNodeAndNormals(
+  const unsigned int& threadNumber
+) {
+  for (
+    nodeIndex[threadNumber] = threadNumber;
+    nodeIndex[threadNumber] < nodes.size();
+    nodeIndex[threadNumber] += numberOfSupportedThreads
+  ) {
+    //TODO Create pipleline class from this part
+    currentWorldPoint[threadNumber].assign(nodes[nodeIndex[threadNumber]]);
+
+    currentWorldPoint[threadNumber].multiply(rotationXYZMatrix);
+
+    currentWorldPoint[threadNumber].multiply(scaleValueMatrix);
+
+    currentWorldPoint[threadNumber].multiply(cameraInstance->getRotationXYZ());
+
+    zLocation[threadNumber] = currentWorldPoint[threadNumber].get(2, 0) + transformMatrix.get(2, 0);
+    scaleValue[threadNumber] = cameraInstance->scaleBasedOnZDistance(zLocation[threadNumber]);
+    zScaleMatrix[threadNumber].set(0, 0, scaleValue[threadNumber]);
+    zScaleMatrix[threadNumber].set(1, 1, scaleValue[threadNumber]);
+
+    currentWorldPoint[threadNumber].multiply(zScaleMatrix[threadNumber]);
+    currentWorldPoint[threadNumber].sum(transformMatrix);
+    currentWorldPoint[threadNumber].minus(cameraInstance->getTransformMatrix());
+
+    worldPoints[nodeIndex[threadNumber]].assign(currentWorldPoint[threadNumber]);
+
+  }
+
+  for (
+    normalIndex[threadNumber] = threadNumber;
+    normalIndex[threadNumber] < normals.size();
+    normalIndex[threadNumber] += numberOfSupportedThreads
+    ) {
+
+    currentWorldNormal[threadNumber].assign(normals[normalIndex[threadNumber]]);
+
+    currentWorldNormal[threadNumber].multiply(rotationXYZMatrix);
+
+    //TODO We need pipline
+    currentWorldNormal[threadNumber].multiply(cameraInstance->getRotationXYZ());
+
+    worldNormals.at(normalIndex[threadNumber]).assign(currentWorldNormal[threadNumber]);
+
+  }
+
+}
+
+void Shape3d::updateSurfaces(
+  const unsigned int& threadNumber
+) {
+
+  for (
+    surfaceIndex[threadNumber] = threadNumber;
+    surfaceIndex[threadNumber] < surfaces.size();
+    surfaceIndex[threadNumber] += numberOfSupportedThreads
+    ) {
+    surfaces.at(surfaceIndex[threadNumber])->update(
+      *cameraInstance,
+      worldPoints,
+      worldNormals,
+      *lightSources
+    );
+  }
+}
+
 void Shape3d::update(
   double deltaTime,
   Camera& cameraInstance,
   std::vector<std::unique_ptr<Light>>& lightSources
-  ) {
-
-  zLocation = 0;
-  scaleValue = 0;
-
-  for (i = 0; i < nodes.size(); i++) {
-    //TODO Create pipleline class from this part
-    currentWorldPoint.assign(nodes[i]);
- 
-    currentWorldPoint.multiply(rotationXYZMatrix);
-    
-    currentWorldPoint.multiply(scaleValueMatrix);
-
-    currentWorldPoint.multiply(cameraInstance.getRotationXYZ());
-    
-    zLocation = currentWorldPoint.get(2, 0) + transformMatrix.get(2, 0);
-    scaleValue = cameraInstance.scaleBasedOnZDistance(zLocation);
-    zScaleMatrix.set(0, 0, scaleValue);
-    zScaleMatrix.set(1, 1, scaleValue);
-
-    currentWorldPoint.multiply(zScaleMatrix);
-    currentWorldPoint.sum(transformMatrix);
-    currentWorldPoint.minus(cameraInstance.getTransformMatrix());
-
-    worldPoints.at(i).assign(currentWorldPoint);
-
+) {
+  this->cameraInstance = &cameraInstance;
+  this->lightSources = &lightSources;
+  if (numberOfSupportedThreads == 1) {
+    updateNodeAndNormals(0);
+    updateSurfaces(0);
   }
-
-  for (i = 0; i < normals.size(); i++) {
-
-    currentWorldNormal.assign(normals[i]);
-
-    currentWorldNormal.multiply(rotationXYZMatrix);
-
-    //TODO We need pipline
-    currentWorldNormal.multiply(cameraInstance.getRotationXYZ());
-    
-    worldNormals.at(i).assign(currentWorldNormal);
-
-  }
-    
-  for (auto &edge:surfaces) {
-    edge->update(
-      cameraInstance,
-      worldPoints,
-      worldNormals,
-      lightSources
-    );
+  else {
+    {//Updating nodes and normals
+      for (
+        threadNumberIndex = 0;
+        threadNumberIndex < numberOfSupportedThreads;
+        threadNumberIndex++
+        ) {
+        threadPool.assignTask(threadNumberIndex, &updateNodeAndNormalsRefrence);
+      }
+      for (
+        threadNumberIndex = 0;
+        threadNumberIndex < numberOfSupportedThreads;
+        threadNumberIndex++
+        ) {
+        //TODO Start from here we have deadlock
+        threadPool.joinThread(threadNumberIndex);
+      }
+    }
+    {//Updating surface
+      for (
+        threadNumberIndex = 0;
+        threadNumberIndex < numberOfSupportedThreads;
+        threadNumberIndex++
+        ) {
+        threadPool.assignTask(threadNumberIndex, &updatSurfacesRefrence);
+      }
+      for (
+        threadNumberIndex = 0;
+        threadNumberIndex < numberOfSupportedThreads;
+        threadNumberIndex++
+        ) {
+        threadPool.joinThread(threadNumberIndex);
+      }
+    }
   }
 }
 

@@ -23,6 +23,10 @@
     GUILite
     Juce
 */
+//Use this source to assign process to all cpu cores
+/*
+https://stackoverflow.com/questions/150355/programmatically-find-the-number-of-cores-on-a-machine
+*/
 
 #ifdef __DESKTOP__
 void handleKeyboardEvent(unsigned char key, int x, int y)

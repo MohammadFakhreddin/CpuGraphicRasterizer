@@ -46,7 +46,7 @@ MonkeyScene::MonkeyScene(OpenGL& gl)
 
   {//Creating light source
     //lightSources.emplace_back(std::make_unique<DirectionalLight>(1.0f, 1.0f, 1.0f, -1.0f, -1.0f, -1.0f));
-    lightSources.emplace_back(std::make_unique<AmbientLight>(0.2f, 0.2f, 0.2f));
+    lightSources.emplace_back(std::make_unique<AmbientLight>(0.1f, 0.1f, 0.1f));
     lightSources.emplace_back(std::make_unique<PointLight>(
       0.1f, 
       255.0f/256.0f, 214.0f/256.0f, 170.0f/256.0f,

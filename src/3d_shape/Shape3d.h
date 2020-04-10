@@ -4,12 +4,15 @@
 #include <vector>
 #include <iostream>
 #include <memory>
+#include <functional>
+#include <thread>
 
 #include "../data_types/MatrixTemplate.h"
 #include "../texture/Texture.h"
 #include "../data_types/VectorTemplate.h"
 #include "./../camera/Camera.h"
 #include "../surface/Surface.h"
+#include "../utils/thread_pool/ThreadPool.h"
 
 class Shape3d
 {
@@ -76,6 +79,14 @@ private:
 
   bool checkDataValidation();
 
+  void updateSurfaces(
+    const unsigned int& threadNumber
+  );
+
+  void updateNodeAndNormals(
+    const unsigned int& threadNumber
+  );
+
   std::vector<MatrixFloat> nodes;
   
   std::vector<std::unique_ptr<Surface>>surfaces;
@@ -89,31 +100,40 @@ private:
   MatrixFloat transformMatrix;
 
   MatrixFloat rotationDegreeMatrix;
-  
-  /*MatrixFloat rotationValueXMatrix;
-
-  MatrixFloat rotationValueYMatrix;
-  
-  MatrixFloat rotationValueZMatrix;*/
-
+ 
   MatrixFloat rotationXYZMatrix;
 
   MatrixFloat scaleValueMatrix;
   
-  MatrixFloat zScaleMatrix;
+  std::vector<MatrixFloat> zScaleMatrix;
 
-  /*Temporary variables*/
+  unsigned int numberOfSupportedThreads;
 
-  MatrixFloat currentWorldPoint = MatrixFloat(3,1,0.0f);
+  unsigned int threadNumberIndex;
 
-  MatrixFloat currentWorldNormal = MatrixFloat(3,1,0.0f);
+  std::vector<MatrixFloat> currentWorldPoint;
 
-  unsigned int i = 0;
+  std::vector<MatrixFloat> currentWorldNormal;
 
-  float zLocation = 0;
+  std::vector<float> zLocation;
 
-  float scaleValue = 0;
+  std::vector<float> scaleValue;
 
+  std::vector<unsigned int> nodeIndex;
+
+  std::vector<unsigned int> surfaceIndex;
+
+  std::vector<unsigned int> normalIndex;
+
+  Camera* cameraInstance;
+  
+  std::vector<std::unique_ptr<Light>>* lightSources;
+
+  std::function<void(const unsigned int&)> updateNodeAndNormalsRefrence = std::bind(&Shape3d::updateNodeAndNormals, this, std::placeholders::_1);
+
+  std::function<void(const unsigned int&)> updatSurfacesRefrence = std::bind(&Shape3d::updateSurfaces, this, std::placeholders::_1);
+
+  ThreadPool& threadPool;
 
 };
 

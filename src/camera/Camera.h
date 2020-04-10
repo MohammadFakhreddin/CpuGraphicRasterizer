@@ -68,6 +68,13 @@ public:
 
   float getCamerFieldOfView();
 
+  void assignToPixel(
+    const unsigned int& index,
+    const float& zValue,
+    const float& red,
+    const float& green,
+    const float& blue
+  );
 
 private:
 

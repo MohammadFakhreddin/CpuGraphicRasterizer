@@ -126,12 +126,22 @@ void Camera::putPixelInMap(
     return;
   }  
 
-  currentPixel = &pixelMap[x * appScreenHeight + y];
-  if(currentPixel->zValue < zValue){
-    currentPixel->blue = blue;
-    currentPixel->green = green;
-    currentPixel->red = red;
-    currentPixel->zValue = zValue;
+  assignToPixel(x * appScreenHeight + y, zValue, red, green, blue);
+
+}
+
+void Camera::assignToPixel(
+  const unsigned int& index,
+  const float& zValue,
+  const float& red,
+  const float& green,
+  const float& blue
+) {
+  if (pixelMap[index].zValue < zValue) {
+    pixelMap[index].blue = blue;
+    pixelMap[index].green = green;
+    pixelMap[index].red = red;
+    pixelMap[index].zValue = zValue;
   }
 }
 

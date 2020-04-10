@@ -6,6 +6,7 @@
 
 #include "../Constants.h"
 #include "../event_handler/EventHandler.h"
+#include "../utils/thread_pool/ThreadPool.h"
 
 class DataAccessPoint {
 
@@ -39,6 +40,8 @@ public:
 
   EventHandler& getEventHandler();
 
+  ThreadPool& getThreadPool();
+
 #ifdef __DESKTOP__
 
   Constants::Buttons getKeyCode(const unsigned char& key);
@@ -66,6 +69,8 @@ private:
   Constants::Platform platform = Constants::Platform::Unknown;
 
   EventHandler eventHandler;
+
+  ThreadPool threadPool;
 
 };
 

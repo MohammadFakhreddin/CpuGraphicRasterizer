@@ -1,4 +1,3 @@
-
 #include "./DataAccessPoint.h"
 
 #include "../open_gl/OpenGl.h"
@@ -108,4 +107,8 @@ Constants::Platform DataAccessPoint::getPlatform() {
 
 EventHandler& DataAccessPoint::getEventHandler() {
   return this->eventHandler;
+}
+
+ThreadPool& DataAccessPoint::getThreadPool() {
+  return threadPool;
 }
