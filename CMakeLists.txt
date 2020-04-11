@@ -115,6 +115,16 @@ else()
       find_package(OpenGL REQUIRED)
       find_package(GLUT REQUIRED)
       target_link_libraries( ${PROJECT_NAME} ${GLUT_LIBRARY} ${OPENGL_LIBRARIES})
+      set(CMAKE_THREAD_LIBS_INIT "-lpthread")
+      set(CMAKE_HAVE_THREADS_LIBRARY 1)
+      set(CMAKE_USE_WIN32_THREADS_INIT 0)
+      set(CMAKE_USE_PTHREADS_INIT 1)
+      set(THREADS_PREFER_PTHREAD_FLAG ON)
+      # Lets bundle it:
+      set_target_properties(${PROJECT_NAME} PROPERTIES
+         MACOSX_BUNDLE TRUE
+         MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/Info.plist
+      )
    elseif(WIN32)
       find_package(OpenGL REQUIRED)
       find_package(GLUT REQUIRED)

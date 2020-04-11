@@ -1,6 +1,8 @@
 #ifndef VectorTemplate_class
 #define VectorTemplate_class
 
+#include <cmath>
+
 #include "../utils/log/Logger.h"
 #include "../utils/math/Math.h"
 
@@ -41,7 +43,7 @@ public:
 		this->y = T(y);
 	}
 	const double size() const {
-		return Math::sqrt(this->x * this->x + this->y * this->y);
+		return sqrt(this->x * this->x + this->y * this->y);
 	}
 	
 	_Vec2d<double> hat() {
@@ -161,7 +163,7 @@ public:
 	}
 
 	const double size() const {
-		return Math::sqrt(this->x * this->x + this->y * this->y + this->z * this->z);
+		return sqrt(this->x * this->x + this->y * this->y + this->z * this->z);
 	}
 
 	_Vec3d<double> hat() const {

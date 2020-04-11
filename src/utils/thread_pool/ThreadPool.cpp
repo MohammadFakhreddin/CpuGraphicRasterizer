@@ -2,6 +2,7 @@
 
 #include "../log/Logger.h"
 
+//TODO Add preference for using threads for applications//For example using threads is not efficient in android
 ThreadPool::ThreadPool()
   :
   isThreadPoolAlive(true),
@@ -10,7 +11,7 @@ ThreadPool::ThreadPool()
 {
 
   numberOfThreads = (unsigned int)(float(std::thread::hardware_concurrency())/2);
-  //numberOfThreads = 1;
+//  numberOfThreads = 1;
   if (numberOfThreads == 0) {
     numberOfThreads = 1;
   }
