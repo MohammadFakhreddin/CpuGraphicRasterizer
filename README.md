@@ -1,10 +1,13 @@
 # 3D-Cube 
 ### Using c++,cmake, pure math and putPixel equivalent in openGL
+### Currently entire game engine processes runs only on cpu (But multi threaded)
+
+### Point light (Runs multi-thread on cpu)
+![Alt Text](point_light.gif)
 
 ### Smooth shadows using auto generated normal vectors
 ![Alt Text](smooth_shadows.gif)
-### Defuse light on bunny model (New support for .Obj is added)
-![Alt Text](bunny.gif)
+
 ### Drawing 3d-cube with texture
 ![Alt Text](dice.gif)
 ### Android port
