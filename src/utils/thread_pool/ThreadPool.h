@@ -7,6 +7,7 @@
 #include <functional>
 #include <vector>
 #include <queue>
+#include <exception>
 
 class ThreadPool
 {
@@ -22,15 +23,17 @@ public:
     std::function<void(const unsigned int&)>* task
   );
 
-  void joinThread(const unsigned int& threadNumber);
-
   const unsigned int& getNumberOfAvailableThreads();
+
+  void waitForThreadsToFinish();
 
   class ThreadObject{
 
   public:
 
-    ThreadObject(const unsigned int& threadNumber);
+    ThreadObject(const unsigned int& threadNumber,ThreadPool& parent);
+
+    ~ThreadObject();
 
     void mainLoop();
 
@@ -38,13 +41,9 @@ public:
       std::function<void(const unsigned int&)>* task
     );
 
-    void join();
+    bool sleepCondition();
 
-    void notifyThreadPoolIsDead();
-
-    bool isThreadPoolAlive;
-
-  private:
+    ThreadPool& parent;
 
     unsigned int threadNumber;
 
@@ -58,8 +57,6 @@ public:
 
     std::unique_ptr<std::thread> thread;
 
-    bool sleepCondition();
-
     std::function<bool(void)> sleepConditionRefrence = std::bind(
       &ThreadPool::ThreadObject::sleepCondition, 
       this
@@ -70,15 +67,36 @@ public:
       this
     );
 
+    std::mutex conditionVariablesMutex;
+
+    bool isBusy = false;
+
   };
 
 private:
+  
+  bool mainThreadSleepCondition();
+
+  std::function<bool(void)> mainThreadSleepConditionRefrence = std::bind(
+    &ThreadPool::mainThreadSleepCondition,
+    this
+  );
 
   std::vector<std::unique_ptr<ThreadObject>> threadObjects;
 
   bool isThreadPoolAlive;
 
   unsigned int numberOfThreads = 0;
+
+  unsigned int threadIndex = 0;
+
+  std::mutex mainThreadMutex;
+
+  std::unique_lock<std::mutex> mainThreadLock;
+
+  std::condition_variable mainThreadCondition;
+
+  std::queue<std::string> exceptions;
 
 };
 

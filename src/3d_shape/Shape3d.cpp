@@ -226,11 +226,7 @@ Shape3d::Shape3d(
   transformMatrix(3, 1, 0.0f),
   rotationDegreeMatrix(3, 1, 0.0f),
   rotationXYZMatrix(3, 3, 0.0f),
-  scaleValueMatrix(3, 3, std::vector<std::vector<float>>{
-  std::vector<float>{1, 0, 0},
-    std::vector<float>{0, 1, 0},
-    std::vector<float>{0, 0, 1}
-  }),
+  scaleValueMatrix(3,3,0.0f),
   numberOfSupportedThreads(DataAccessPoint::getInstance()->getThreadPool().getNumberOfAvailableThreads()),
   threadPool(DataAccessPoint::getInstance()->getThreadPool())
  {
@@ -253,23 +249,11 @@ Shape3d::Shape3d(
   this->transformY(transformY);
   this->transformZ(transformZ);
   this->rotateXYZ(rotationDegreeX, rotationDegreeY, rotationDegreeZ);
-  //TODO Fix this and restore initial scale
-  //this->scale(paramScaleValue);
+  this->scale(paramScaleValue);
 
-  for (threadNumberIndex = 0; threadNumberIndex < numberOfSupportedThreads; threadNumberIndex++) {
-    zScaleMatrix.emplace_back(std::move(MatrixFloat(3, 3, std::vector<std::vector<float>>{
-      std::vector<float>{1, 0, 0},
-      std::vector<float>{0, 1, 0},
-      std::vector<float>{0, 0, 1}
-    })));
-    currentWorldPoint.emplace_back(std::move(MatrixFloat(3, 1, 0.0f)));
-    currentWorldNormal.emplace_back(std::move(MatrixFloat(3, 1, 0.0f)));
-    zLocation.emplace_back(0.0f);
-    scaleValue.emplace_back(0.0f);
-    nodeIndex.emplace_back(0);
-    surfaceIndex.emplace_back(0);
-    normalIndex.emplace_back(0);
-    zScaleMatrix.emplace_back(std::move(MatrixFloat(3, 3, 0.0f)));
+  //For simple shapes using threads have overhead
+  if (surfaces.size() < 100) {
+    numberOfSupportedThreads = 1;
   }
 
 }
@@ -316,53 +300,48 @@ bool Shape3d::checkDataValidation() {
 
 }
 
-void Shape3d::updateNodeAndNormals(
-  const unsigned int& threadNumber
-) {
+void Shape3d::updateNodes(const unsigned int& threadNumber) {
   for (
-    nodeIndex[threadNumber] = threadNumber;
-    nodeIndex[threadNumber] < nodes.size();
-    nodeIndex[threadNumber] += numberOfSupportedThreads
-  ) {
+    unsigned int nodeIndex = threadNumber;
+    nodeIndex < nodes.size();
+    nodeIndex += numberOfSupportedThreads
+    ) {
     //TODO Create pipleline class from this part
-    currentWorldPoint[threadNumber].assign(nodes[nodeIndex[threadNumber]]);
+    worldPoints[nodeIndex].assign(nodes[nodeIndex]);
 
-    currentWorldPoint[threadNumber].multiply(rotationXYZMatrix);
+    worldPoints[nodeIndex].multiply(rotationXYZMatrix);
 
-    currentWorldPoint[threadNumber].multiply(scaleValueMatrix);
+    worldPoints[nodeIndex].multiply(scaleValueMatrix);
 
-    currentWorldPoint[threadNumber].multiply(cameraInstance->getRotationXYZ());
+    worldPoints[nodeIndex].multiply(cameraInstance->getRotationXYZ());
 
-    zLocation[threadNumber] = currentWorldPoint[threadNumber].get(2, 0) + transformMatrix.get(2, 0);
-    scaleValue[threadNumber] = cameraInstance->scaleBasedOnZDistance(zLocation[threadNumber]);
-    zScaleMatrix[threadNumber].set(0, 0, scaleValue[threadNumber]);
-    zScaleMatrix[threadNumber].set(1, 1, scaleValue[threadNumber]);
+    float scaleValue = cameraInstance->scaleBasedOnZDistance(worldPoints[nodeIndex].get(2, 0) + transformMatrix.get(2, 0));
 
-    currentWorldPoint[threadNumber].multiply(zScaleMatrix[threadNumber]);
-    currentWorldPoint[threadNumber].sum(transformMatrix);
-    currentWorldPoint[threadNumber].minus(cameraInstance->getTransformMatrix());
+    worldPoints[nodeIndex].set(0, 0, worldPoints[nodeIndex].get(0, 0) * scaleValue);
 
-    worldPoints[nodeIndex[threadNumber]].assign(currentWorldPoint[threadNumber]);
+    worldPoints[nodeIndex].set(1, 0, worldPoints[nodeIndex].get(1, 0) * scaleValue);
 
+    worldPoints[nodeIndex].sum(transformMatrix);
+
+    worldPoints[nodeIndex].minus(cameraInstance->getTransformMatrix());
   }
+}
 
+void Shape3d::updateNormals(const unsigned int& threadNumber) {
   for (
-    normalIndex[threadNumber] = threadNumber;
-    normalIndex[threadNumber] < normals.size();
-    normalIndex[threadNumber] += numberOfSupportedThreads
+    unsigned int normalIndex = threadNumber;
+    normalIndex < normals.size();
+    normalIndex += numberOfSupportedThreads
     ) {
 
-    currentWorldNormal[threadNumber].assign(normals[normalIndex[threadNumber]]);
+    worldNormals[normalIndex].assign(normals[normalIndex]);
 
-    currentWorldNormal[threadNumber].multiply(rotationXYZMatrix);
+    worldNormals[normalIndex].multiply(rotationXYZMatrix);
 
     //TODO We need pipline
-    currentWorldNormal[threadNumber].multiply(cameraInstance->getRotationXYZ());
-
-    worldNormals.at(normalIndex[threadNumber]).assign(currentWorldNormal[threadNumber]);
+    worldNormals[normalIndex].multiply(cameraInstance->getRotationXYZ());
 
   }
-
 }
 
 void Shape3d::updateSurfaces(
@@ -370,11 +349,11 @@ void Shape3d::updateSurfaces(
 ) {
 
   for (
-    surfaceIndex[threadNumber] = threadNumber;
-    surfaceIndex[threadNumber] < surfaces.size();
-    surfaceIndex[threadNumber] += numberOfSupportedThreads
+    unsigned int surfaceIndex = threadNumber;
+    surfaceIndex < surfaces.size();
+    surfaceIndex += numberOfSupportedThreads
     ) {
-    surfaces.at(surfaceIndex[threadNumber])->update(
+    surfaces.at(surfaceIndex)->update(
       *cameraInstance,
       worldPoints,
       worldNormals,
@@ -391,27 +370,30 @@ void Shape3d::update(
   this->cameraInstance = &cameraInstance;
   this->lightSources = &lightSources;
   if (numberOfSupportedThreads == 1) {
-    updateNodeAndNormals(0);
+    updateNodes(0);
+    updateNormals(0);
     updateSurfaces(0);
   }
   else {
-    {//Updating nodes and normals
+    {//Updating nodes
       for (
         threadNumberIndex = 0;
         threadNumberIndex < numberOfSupportedThreads;
         threadNumberIndex++
         ) {
-        threadPool.assignTask(threadNumberIndex, &updateNodeAndNormalsRefrence);
-      }
-      for (
-        threadNumberIndex = 0;
-        threadNumberIndex < numberOfSupportedThreads;
-        threadNumberIndex++
-        ) {
-        //TODO Start from here we have deadlock
-        threadPool.joinThread(threadNumberIndex);
+        threadPool.assignTask(threadNumberIndex, &updateNodesRefrence);
       }
     }
+    {//Updating normals
+      for (
+        threadNumberIndex = 0;
+        threadNumberIndex < numberOfSupportedThreads;
+        threadNumberIndex++
+        ) {
+        threadPool.assignTask(threadNumberIndex, &updateNormalsRefrence);
+      }
+    }
+    threadPool.waitForThreadsToFinish();
     {//Updating surface
       for (
         threadNumberIndex = 0;
@@ -420,14 +402,8 @@ void Shape3d::update(
         ) {
         threadPool.assignTask(threadNumberIndex, &updatSurfacesRefrence);
       }
-      for (
-        threadNumberIndex = 0;
-        threadNumberIndex < numberOfSupportedThreads;
-        threadNumberIndex++
-        ) {
-        threadPool.joinThread(threadNumberIndex);
-      }
     }
+    threadPool.waitForThreadsToFinish();
   }
 }
 

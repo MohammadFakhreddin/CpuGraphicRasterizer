@@ -55,20 +55,6 @@ private:
   //TODO Remove this
   std::vector<std::unique_ptr<Light>> lightSources;
 
-  MatrixFloat distanceMatrix = MatrixFloat(3, 1, 0.0f);
-
-  MatrixFloat distanceMatrixHat = MatrixFloat(3, 1, 0.0f);
-
-  double squareDistance = 0.0;
-
-  double distance = 0.0f;
-
-  double angleFactor = 0.0;
-
-  double distanceFactor = 0.0;
-
-  double lightIntensity = 0.0;
-
   double computationPercision = 1000.0;
 
   float cameraFieldOfView;

@@ -39,7 +39,7 @@ void DirectionalLight::computeLightIntensity(
     MatrixFloat& output
 ){
   
-  lightIntensityFactor = worldLightDirectionHat.dotProduct(surfaceNormal) * -1;
+  float lightIntensityFactor = worldLightDirectionHat.dotProduct(surfaceNormal) * -1;
   
   assert(lightIntensityFactor <= 1);
   

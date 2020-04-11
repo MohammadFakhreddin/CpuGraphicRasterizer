@@ -13,7 +13,7 @@ public:
     static constexpr double piDouble = _piTemplate<double>;
 
     template<typename A,typename B>
-    static A max(A value,B max){
+    static A max(const A& value,B max){
         if(value>max){
             return value;
         }
@@ -21,7 +21,7 @@ public:
     };
     
     template<typename A,typename B>
-    static A min(A value,B min){
+    static A min(const A& value,B min){
         if(value<min){
             return value;
         }
@@ -29,7 +29,7 @@ public:
     };
 
     template<typename A,typename B,typename C>
-    static A clamp(A value,B min,C max){
+    static A clamp(const A& value,B min,C max){
         if(value>max){
             return A(max);
         }
@@ -38,24 +38,6 @@ public:
         }
         return value;
     };
-/*    template<typename A>
-    static A sqrt(A x) {
-      if (x <= 0)
-        return 0;       // if negative number throw an exception?
-      int exp = 0;
-      x = frexp(x, &exp); // extract binary exponent from x
-      if (exp & 1) {      // we want exponent to be even
-        exp--;
-        x *= 2;
-      }
-      A y = (1 + x) / 2; // first approximation
-      A z = 0;
-      while (y != z) {    // yes, we CAN compare doubles here!
-        z = y;
-        y = (y + x / y) / 2;
-      }
-      return ldexp(y, exp / 2); // multiply answer by 2^(exp/2)
-    }*/
 
 };
 

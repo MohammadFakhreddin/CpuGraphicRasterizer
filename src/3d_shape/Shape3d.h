@@ -83,7 +83,11 @@ private:
     const unsigned int& threadNumber
   );
 
-  void updateNodeAndNormals(
+  void updateNodes(
+    const unsigned int& threadNumber
+  );
+
+  void updateNormals(
     const unsigned int& threadNumber
   );
 
@@ -111,25 +115,13 @@ private:
 
   unsigned int threadNumberIndex;
 
-  std::vector<MatrixFloat> currentWorldPoint;
-
-  std::vector<MatrixFloat> currentWorldNormal;
-
-  std::vector<float> zLocation;
-
-  std::vector<float> scaleValue;
-
-  std::vector<unsigned int> nodeIndex;
-
-  std::vector<unsigned int> surfaceIndex;
-
-  std::vector<unsigned int> normalIndex;
-
   Camera* cameraInstance;
   
   std::vector<std::unique_ptr<Light>>* lightSources;
 
-  std::function<void(const unsigned int&)> updateNodeAndNormalsRefrence = std::bind(&Shape3d::updateNodeAndNormals, this, std::placeholders::_1);
+  std::function<void(const unsigned int&)> updateNodesRefrence = std::bind(&Shape3d::updateNodes, this, std::placeholders::_1);
+
+  std::function<void(const unsigned int&)> updateNormalsRefrence = std::bind(&Shape3d::updateNormals, this, std::placeholders::_1);
 
   std::function<void(const unsigned int&)> updatSurfacesRefrence = std::bind(&Shape3d::updateSurfaces, this, std::placeholders::_1);
 

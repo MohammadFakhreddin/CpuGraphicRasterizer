@@ -46,8 +46,6 @@ private:
 
   MatrixFloat rotationDegreeMatrix = MatrixFloat(3, 1, 0.0f);
   
-  float lightIntensityFactor = 0.0f;
-
 };
 
 #endif

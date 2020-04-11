@@ -79,28 +79,33 @@ void PointLight::computeLightIntensity(
   assert(surfaceLocation.getWidth() == 3);
   assert(surfaceLocation.getHeight() == 1);
   
-  distanceMatrix.set(0, 0, surfaceLocation.get(0, 0) - worldPoint.get(0, 0));
-  distanceMatrix.set(1, 0, surfaceLocation.get(1, 0) - worldPoint.get(1, 0));
-  distanceMatrix.set(2, 0, surfaceLocation.get(2, 0) - worldPoint.get(2, 0));
+  output.set(0, 0, surfaceLocation.get(0, 0) - worldPoint.get(0, 0));
+  output.set(1, 0, surfaceLocation.get(1, 0) - worldPoint.get(1, 0));
+  output.set(2, 0, surfaceLocation.get(2, 0) - worldPoint.get(2, 0));
 
-  squareDistance = distanceMatrix.squareSize<double>();
+  double squareDistance = output.squareSize<double>();
 
-  distance = sqrt(squareDistance);
+  double distance = sqrt(squareDistance);
 
-  distanceMatrixHat.set(0, 0, float(double(distanceMatrix.get(0, 0)) / distance));
-  distanceMatrixHat.set(1, 0, float(double(distanceMatrix.get(1, 0)) / distance));
-  distanceMatrixHat.set(2, 0, float(double(distanceMatrix.get(2, 0)) / distance));
+  output.set(0, 0, float(double(output.get(0, 0)) / distance));
+  output.set(1, 0, float(double(output.get(1, 0)) / distance));
+  output.set(2, 0, float(double(output.get(2, 0)) / distance));
 
-  angleFactor = distanceMatrixHat.dotProduct(surfaceNormalVector) * -1.0;
+  double angleFactor = output.dotProduct(surfaceNormalVector) * -1.0;
 
-  distanceFactor = cameraFieldOfView / ((long long)(squareDistance + distance + 1));
+  double distanceFactor = cameraFieldOfView / ((long long)(squareDistance + distance + 1));
 
-  lightIntensity = Math::clamp(distanceFactor * angleFactor * attenuation, 0.0, 1.0);
+  double lightIntensity = Math::min(distanceFactor * angleFactor * attenuation, 1.0f);
 
   if (lightIntensity > 0) {
     output.set(0, 0, float(lightIntensity * colorR));
     output.set(1, 0, float(lightIntensity * colorG));
     output.set(2, 0, float(lightIntensity * colorB));
+  }
+  else {
+    output.set(0, 0, 0.0f);
+    output.set(1, 0, 0.0f);
+    output.set(2, 0, 0.0f);
   }
   
 }
