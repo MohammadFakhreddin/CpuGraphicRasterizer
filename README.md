@@ -10,6 +10,7 @@
 
 ### Drawing 3d-cube with texture
 ![Alt Text](dice.gif)
+
 ### Android port
 <div
     style="flex-direction:row"
@@ -19,7 +20,12 @@
 </div>
 
 ### IOS port
+<div
+    style="flex-direction:row"
+>
 <img src="iphone.gif" height="500">
+<img src="iphone_point_light.gif" height="500">
+</div>
 
 ## How to run project ?
 

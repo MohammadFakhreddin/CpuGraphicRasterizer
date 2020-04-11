@@ -16,6 +16,8 @@
 #include "../scenes/textured_cube_scene/TexturedCubeScene.h"
 #include "../scenes/spehre_scene/SphereScene.h"
 #include "../scenes/monkey_scene/MonkeyScene.h"
+#include "../scenes/plant_scene/PlantScene.h"
+#include "../scenes/robot_scene/RobotScene.h"
 
 //  UI Libraries
 /*
@@ -75,6 +77,8 @@ Application::Application(
     sceneList.emplace_back(std::make_unique<SphereScene>(openGLInstance));
     sceneList.emplace_back(std::make_unique<ColoredCubeScene>(openGLInstance));
     sceneList.emplace_back(std::make_unique<TexturedCubeScene>(openGLInstance));
+    sceneList.emplace_back(std::make_unique<RobotScene>(openGLInstance));
+    sceneList.emplace_back(std::make_unique<PlantScene>(openGLInstance));
     navigateToScene(0);
   }
 
