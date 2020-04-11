@@ -37,7 +37,7 @@ JNIEXPORT void JNICALL Java_co_fakhreddin_cube_Fa3dCube_init(
     unsigned int deviceScreenWidth = (unsigned int)phyiscalScreenWidth;
     unsigned int deviceScreenHeight = (unsigned int)phyiscalScreenHeight;
     //TODO Implement dynamic resolution
-    unsigned int appScreenWidth = (unsigned int)(float(deviceScreenWidth)/4.0f);
+    unsigned int appScreenWidth = (unsigned int)(float(deviceScreenWidth) / 4.0f);
     unsigned int appScreenHeight = (unsigned int)(float(appScreenWidth) * (float(deviceScreenHeight)/float(deviceScreenWidth)));
 
     if(isAppInitOnce){

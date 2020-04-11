@@ -15,6 +15,7 @@ ThreadPool::ThreadPool()
     numberOfThreads = 1;
   }
 
+  Logger::log("Maximum number of threads: " + std::to_string(std::thread::hardware_concurrency()));
   Logger::log("Initiating thread pool with " + std::to_string(numberOfThreads) + " threads.");
 
   if (numberOfThreads < 2) {
