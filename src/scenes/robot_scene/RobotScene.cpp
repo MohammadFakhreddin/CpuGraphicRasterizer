@@ -31,7 +31,7 @@ RobotScene::RobotScene(OpenGL& gl)
       Path::generateAssetPath("robot", ".obj"),
       (std::unique_ptr<Texture>&)colorTexture,
       true,
-      Shape3d::NormalType::smooth,
+      Shape3d::NormalType::fileDefault,
       false
       );
     shape->transformX(float(DataAccessPoint::getInstance()->getAppScreenWidth()) / 2.0f);

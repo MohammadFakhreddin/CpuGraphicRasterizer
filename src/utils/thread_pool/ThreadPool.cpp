@@ -1,16 +1,22 @@
 #include "./ThreadPool.h"
 
+#include "../../Constants.h"
 #include "../log/Logger.h"
 
+//TODO Add preference for using threads for applications//For example using threads is not efficient in android
+//TODO CPU multi threading currently does not seem efficient on mobile devices
 ThreadPool::ThreadPool()
   :
-  isThreadPoolAlive(true),
   mainThreadMutex(),
   mainThreadLock(std::unique_lock<std::mutex>(mainThreadMutex))
 {
-
-  numberOfThreads = (unsigned int)(float(std::thread::hardware_concurrency())/2);
-  //numberOfThreads = 1;
+#ifdef __DESKTOP__
+  numberOfThreads = (unsigned int)(float(std::thread::hardware_concurrency()) / 2);
+#endif // __DESKTOP__
+#ifdef __MOBILE__
+  //Cpu threads does not seem to work efficiently on mobiles
+  numberOfThreads = 0;
+#endif
   if (numberOfThreads == 0) {
     numberOfThreads = 1;
   }
@@ -21,9 +27,11 @@ ThreadPool::ThreadPool()
   if (numberOfThreads < 2) {
 
     Logger::log("This system cannot use threads");
-    isThreadPoolAlive = false;
+    isThreadPoolActive = false;
   
   } else {
+
+    isThreadPoolActive = true;
 
     threadObjects.reserve(numberOfThreads);
     
@@ -36,7 +44,7 @@ ThreadPool::ThreadPool()
 }
 
 ThreadPool::~ThreadPool() {
-  isThreadPoolAlive = false;
+  isThreadPoolActive = false;
 }
 
 void ThreadPool::assignTask(
@@ -45,7 +53,15 @@ void ThreadPool::assignTask(
 ) {
   assert(threadNumber >= 0 && threadNumber < numberOfThreads);
   assert(isThreadPoolAlive == true);
-  threadObjects[threadNumber]->assign(task);
+  if (numberOfThreads > 1) {
+    threadObjects[threadNumber]->assign(task);
+  }
+  else
+  {
+    if (task != nullptr) {
+      (*task)(threadNumber);
+    }
+  }
 }
 
 ThreadPool::ThreadObject::ThreadObject(const unsigned int& threadNumber, ThreadPool& parent)
@@ -77,7 +93,7 @@ bool ThreadPool::ThreadObject::sleepCondition() {
 }
 
 void ThreadPool::ThreadObject::mainLoop() {
-  while (parent.isThreadPoolAlive)
+  while (parent.isThreadPoolActive)
   {
     condition.wait(lock, sleepConditionRefrence);
     conditionVariablesMutex.lock();
@@ -111,15 +127,17 @@ bool ThreadPool::mainThreadSleepCondition() {
 }
 
 void ThreadPool::waitForThreadsToFinish() {
-  assert(numberOfThreads > 1);
-  for (auto& threadObject : threadObjects) {
-    threadObject->conditionVariablesMutex.lock();
-    threadObject->conditionVariablesMutex.unlock();
-  }
-  mainThreadCondition.wait(mainThreadLock, mainThreadSleepConditionRefrence);
-  while (exceptions.size() != 0)
-  {
-    Logger::log(exceptions.front());
-    exceptions.pop();
+  //When number of threads is 2 it means that platform only uses main thread
+  if (isThreadPoolActive) {
+    for (auto& threadObject : threadObjects) {
+      threadObject->conditionVariablesMutex.lock();
+      threadObject->conditionVariablesMutex.unlock();
+    }
+    mainThreadCondition.wait(mainThreadLock, mainThreadSleepConditionRefrence);
+    while (exceptions.size() != 0)
+    {
+      Logger::log(exceptions.front());
+      exceptions.pop();
+    }
   }
 }

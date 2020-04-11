@@ -33,11 +33,11 @@ int main(int argc, char** argv) {
   	glutInitDisplayMode ( GLUT_SINGLE | GLUT_RGB );
 	auto mainDisplayId = CGMainDisplayID();
 
-	int appScreenWidth = 800;
-	int appScreenHeight = 600;
 	unsigned int realScreenWidth = CGDisplayPixelsWide(mainDisplayId);
 	unsigned int realScreenHeight = CGDisplayPixelsHigh(mainDisplayId);
-
+	unsigned int appScreenWidth = 800;
+	unsigned int appScreenHeight = 600;
+	
 	glutInitWindowSize(appScreenWidth,appScreenHeight);
 	glutInitWindowPosition(
 			(int)(realScreenWidth/2 - appScreenWidth/2),

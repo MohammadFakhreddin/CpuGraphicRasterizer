@@ -84,7 +84,7 @@ private:
 
   std::vector<std::unique_ptr<ThreadObject>> threadObjects;
 
-  bool isThreadPoolAlive;
+  bool isThreadPoolActive = true;
 
   unsigned int numberOfThreads = 0;
 

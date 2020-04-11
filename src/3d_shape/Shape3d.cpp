@@ -227,7 +227,6 @@ Shape3d::Shape3d(
   rotationDegreeMatrix(3, 1, 0.0f),
   rotationXYZMatrix(3, 3, 0.0f),
   scaleValueMatrix(3,3,0.0f),
-  numberOfSupportedThreads(DataAccessPoint::getInstance()->getThreadPool().getNumberOfAvailableThreads()),
   threadPool(DataAccessPoint::getInstance()->getThreadPool())
  {
   assert(numberOfSupportedThreads > 0);
@@ -254,6 +253,10 @@ Shape3d::Shape3d(
   //For simple shapes using threads have overhead
   if (surfaces.size() < 100) {
     numberOfSupportedThreads = 1;
+  }
+  else
+  {
+    numberOfSupportedThreads = DataAccessPoint::getInstance()->getThreadPool().getNumberOfAvailableThreads() + 1;
   }
 
 }
@@ -378,30 +381,33 @@ void Shape3d::update(
     {//Updating nodes
       for (
         threadNumberIndex = 0;
-        threadNumberIndex < numberOfSupportedThreads;
+        threadNumberIndex < numberOfSupportedThreads - 1;
         threadNumberIndex++
         ) {
         threadPool.assignTask(threadNumberIndex, &updateNodesRefrence);
       }
+      updateNodesRefrence(numberOfSupportedThreads - 1);
     }
     {//Updating normals
       for (
         threadNumberIndex = 0;
-        threadNumberIndex < numberOfSupportedThreads;
+        threadNumberIndex < numberOfSupportedThreads - 1;
         threadNumberIndex++
         ) {
         threadPool.assignTask(threadNumberIndex, &updateNormalsRefrence);
       }
+      updateNormalsRefrence(numberOfSupportedThreads - 1);
     }
     threadPool.waitForThreadsToFinish();
     {//Updating surface
       for (
         threadNumberIndex = 0;
-        threadNumberIndex < numberOfSupportedThreads;
+        threadNumberIndex < numberOfSupportedThreads - 1;
         threadNumberIndex++
         ) {
         threadPool.assignTask(threadNumberIndex, &updatSurfacesRefrence);
       }
+      updatSurfacesRefrence(numberOfSupportedThreads - 1);
     }
     threadPool.waitForThreadsToFinish();
   }
