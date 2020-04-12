@@ -3,6 +3,7 @@
 #include <cassert>
 
 #include "../../3d_models/ShapeGenerator.h"
+#include "../ambient_light/AmbientLight.h"
 
 
 PointLight::PointLight(
@@ -31,7 +32,10 @@ PointLight::PointLight(
 
   lightColor = std::make_unique<ColorTexture>(colorR, colorG, colorB);
 
+  lightSources.emplace_back(std::make_unique<AmbientLight>(colorR, colorG, colorB));
+
   sphere = ShapeGenerator::sphere(
+    Surface::LightPercision::perSurface,
     (std::unique_ptr<Texture>&)lightColor,
     radius, 12 * 2, 24 * 2,
     Vec3DFloat(0.0f, 0.0f, 0.0f),
@@ -67,12 +71,13 @@ void PointLight::update(double deltaTime, Camera& cameraInstance) {
   sphere->update(deltaTime, cameraInstance, lightSources);
 
 }
+
 //I use y = 1/(x*x + x + 1)
 void PointLight::computeLightIntensity(
-  MatrixFloat& surfaceNormalVector,
-  MatrixFloat& surfaceLocation,
+  const MatrixFloat& surfaceNormalVector,
+  const MatrixFloat& surfaceLocation,
   MatrixFloat& output
-) {
+) const {
 
   assert(surfaceNormalVector.getWidth() == 3);
   assert(surfaceNormalVector.getHeight() == 1);

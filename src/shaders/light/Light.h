@@ -13,10 +13,10 @@ public:
   virtual ~Light() = default;
 
   virtual void computeLightIntensity(
-    MatrixFloat& surfaceNormalVector,
-    MatrixFloat& surfaceLocation,
+    const MatrixFloat& surfaceNormalVector,
+    const MatrixFloat& surfaceLocation,
     MatrixFloat& output
-  );
+  ) const;
 
   virtual void update(double deltaTime, Camera& cameraInstance);
 

@@ -19,10 +19,10 @@ public:
   );
 
   void computeLightIntensity(
-    MatrixFloat& surfaceNormalVector,
-    MatrixFloat& surfaceLocation,
+    const MatrixFloat& surfaceNormalVector,
+    const MatrixFloat& surfaceLocation,
     MatrixFloat& output
-  ) override;
+  ) const override;
 
   void update(double deltaTime, Camera& cameraInstance) override;
 

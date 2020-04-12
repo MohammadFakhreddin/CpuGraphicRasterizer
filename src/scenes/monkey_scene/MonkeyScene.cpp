@@ -33,6 +33,7 @@ MonkeyScene::MonkeyScene(OpenGL& gl)
     auto scaleFactor = float(DataAccessPoint::getInstance()->getAppScreenWidth()) / 50.0f;
     shape = FileSystem::loadObject(
       Path::generateAssetPath("monkey", ".obj"),
+      Surface::LightPercision::perSurface,
       (std::unique_ptr<Texture>&)whiteColor,
       true,
       Shape3d::NormalType::fileDefault,

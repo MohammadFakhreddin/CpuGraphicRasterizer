@@ -5,10 +5,11 @@
 #include "./../../utils/log/Logger.h"
 
 void Light::computeLightIntensity(
-  MatrixFloat& surfaceNormalVector,
-  MatrixFloat& surfaceLocation,
+  const MatrixFloat& surfaceNormalVector, 
+  const MatrixFloat& surfaceLocation, 
   MatrixFloat& output
-) {
+) const
+{
   Logger::log("Method getLightIntensity is not implemented correctly in child class");
   assert(false);
 }

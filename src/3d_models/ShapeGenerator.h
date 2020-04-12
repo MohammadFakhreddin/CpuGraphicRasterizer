@@ -93,38 +93,8 @@ public:
     );
   }
 
-  static std::vector<Vec2DFloat> gear(
-    const float radius,
-    const int numberOfCorners
-  )
-  {
-    std::vector<Vec2DFloat> polyLines;
-    {
-      //I assume that center is zero in both x and y
-      const double rectAngle = (2.0f * Math::piDouble) / (numberOfCorners);
-      const double startingAngle = numberOfCorners % 2 == 0 ? 0 : rectAngle / 2;
-      {
-        double x = 0;
-        double y = 0;
-        double currentAngle = startingAngle;
-        for (int i = 0; i < numberOfCorners; i++) {
-          x = radius * cos(currentAngle);
-          y = radius * sin(currentAngle);
-          currentAngle += rectAngle;
-          polyLines.emplace_back(Vec2DFloat((float)x, (float)y));
-        }
-        polyLines.emplace_back(
-          Vec2DFloat(
-            polyLines.at(0).getX(),
-            polyLines.at(0).getY()
-          )
-        );
-      }
-    }
-    return polyLines;
-  }
-
   static std::unique_ptr<Shape3d> sphere(
+    Surface::LightPercision lightPercision,
     std::unique_ptr<Texture>& texture,
     const float& radius,
     const unsigned int& numberOfLat,
@@ -224,6 +194,7 @@ public:
       
       for (unsigned int i = 0; i < numberOfLong; i++) {
         indices.emplace_back(std::make_unique<Surface>(
+          lightPercision,
           texture,
           convertLatAndLongToVertices(sideLatCount, 0),
           convertLatAndLongToVertices(1, (i + 1) % numberOfLong),
@@ -233,6 +204,7 @@ public:
       
       for (unsigned int i = 0; i < numberOfLong; i++) {
         indices.emplace_back(std::make_unique<Surface>(
+          lightPercision,
           texture,
           convertLatAndLongToVertices(sideLatCount - 1, i % numberOfLong),
           convertLatAndLongToVertices(sideLatCount - 1, (i + 1) % numberOfLong),
@@ -243,12 +215,14 @@ public:
       for (unsigned int i = 0; i < sideLatCount - 1; i++) {
         for (unsigned int j = 0; j < numberOfLong; j++) {
           indices.emplace_back(std::make_unique<Surface>(
+            lightPercision,
             texture,
             convertLatAndLongToVertices(i, j% numberOfLong),
             convertLatAndLongToVertices(i, (j + 1) % numberOfLong),
             convertLatAndLongToVertices(i + 1, (j + 1) % numberOfLong)
           ));
           indices.emplace_back(std::make_unique<Surface>(
+            lightPercision,
             texture,
             convertLatAndLongToVertices(i + 1, j% numberOfLong),
             convertLatAndLongToVertices(i, j% numberOfLong),

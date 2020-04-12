@@ -61,13 +61,14 @@ public:
   //TODO Sperate this function into multiple parts
   static std::unique_ptr<Shape3d> loadObject(
     std::string filename,
+    Surface::LightPercision lightPercision,
     std::unique_ptr<Texture>& texture,
     bool requireCentralizing,
     Shape3d::NormalType normalType,
     bool useFileTextureCoordinates
   ){
     
-    Logger::log("Loading 3d object with name:"+filename);
+    Logger::log("Loading 3d object with name:" + filename);
 
     std::ifstream* file; 
     //TODO We have two options
@@ -224,11 +225,12 @@ public:
           }
           //Loading mesh indices into indices vector
           indices.emplace_back(std::make_unique<Surface>(
+            lightPercision,
             texture,
             mesh.indices[faceIndex * 3u + edge1Index].vertex_index,
             mesh.indices[faceIndex * 3u + edge2Index].vertex_index,
             mesh.indices[faceIndex * 3u + edge3Index].vertex_index
-            ));
+          ));
           if (normalType == Shape3d::NormalType::fileDefault) {
             indices.back()->setNormalIndex(0, mesh.indices[faceIndex * 3u + edge1Index].normal_index);
             indices.back()->setNormalIndex(1, mesh.indices[faceIndex * 3u + edge2Index].normal_index);

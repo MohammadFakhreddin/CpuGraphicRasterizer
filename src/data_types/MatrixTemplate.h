@@ -266,9 +266,9 @@ public:
   }
 
   template<typename A>
-  T dotProduct(_Matrix<A>& rhs) {
+  T dotProduct(const _Matrix<A>& rhs) const {
     assert(this->width == 3 && this->height == 1);
-    assert(rhs.width == 3 && rhs.height == 1);
+    assert(rhs.getWidth() == 3 && rhs.getHeight() == 1);
     return 
       T((double(this->get(0, 0)) * double(rhs.get(0, 0))) + 
       (double(this->get(1, 0)) * double(rhs.get(1, 0))) + 
@@ -276,7 +276,7 @@ public:
   }
   //TODO Write unit tests for project
   template<typename A,typename B>
-  void crossProduct(_Matrix<A>& mat1, _Matrix<B>& mat2) {
+  void crossProduct(const _Matrix<A>& mat1, const _Matrix<B>& mat2) {
     this->set(0, 0, 
       (T(mat1.get(1, 0)) * T(mat2.get(2, 0)))
       - (T(mat1.get(2, 0)) * T(mat2.get(1, 0)))
@@ -292,7 +292,7 @@ public:
   }
 
   template<typename A,typename B>
-  void hat(_Matrix<B>& matrix) {
+  void hat(_Matrix<B>& matrix) const {
     
     assert(width == 3);
     assert(height == 1);
@@ -311,7 +311,7 @@ public:
   }
 
   template<typename A>
-  A squareSize() {
+  A squareSize() const {
     assert(width == 3);
     assert(height == 1);
     return A(
@@ -322,7 +322,7 @@ public:
   }
  
   template<typename A>
-  A size() {
+  A size() const {
     assert(width == 3);
     assert(height == 1);
     return sqrt(squareSize<A>());

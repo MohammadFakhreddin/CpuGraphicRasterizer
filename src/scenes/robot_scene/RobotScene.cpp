@@ -29,11 +29,12 @@ RobotScene::RobotScene(OpenGL& gl)
     auto scaleFactor = float(DataAccessPoint::getInstance()->getAppScreenWidth()) / 50.0f;
     shape = FileSystem::loadObject(
       Path::generateAssetPath("robot", ".obj"),
+      Surface::LightPercision::perSurface,
       (std::unique_ptr<Texture>&)colorTexture,
       true,
       Shape3d::NormalType::fileDefault,
       false
-      );
+    );
     shape->transformX(float(DataAccessPoint::getInstance()->getAppScreenWidth()) / 2.0f);
     shape->transformY(float(DataAccessPoint::getInstance()->getAppScreenHeight()) / 2.0f);
     shape->transformZ(cameraInitialZLocation - 100.0f);

@@ -34,10 +34,10 @@ DirectionalLight::DirectionalLight(
 
 //Source: https://en.wikipedia.org/wiki/Computer_graphics_lighting
 void DirectionalLight::computeLightIntensity(
-    MatrixFloat& surfaceNormal,
-    MatrixFloat& surfaceLocation,
+    const MatrixFloat& surfaceNormal,
+    const MatrixFloat& surfaceLocation,
     MatrixFloat& output
-){
+) const {
   
   float lightIntensityFactor = worldLightDirectionHat.dotProduct(surfaceNormal) * -1;
   
@@ -48,6 +48,7 @@ void DirectionalLight::computeLightIntensity(
   output.set(2, 0, lightIntensityFactor * colorB);
 
 }
+
 //This method must be called before other objects update
 void DirectionalLight::update(double deltaTime, Camera& cameraInstance) {
   worldLightDirectionHat.assign(lightDirectionHat);

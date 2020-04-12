@@ -34,6 +34,7 @@ TexturedCubeScene::TexturedCubeScene(
     Logger::log("Creating shape object");
 
     cube = dice.generateCube(
+      Surface::LightPercision::perSurface,
       float(width), 
       float(width), 
       float(width), 

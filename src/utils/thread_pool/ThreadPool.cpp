@@ -52,7 +52,6 @@ void ThreadPool::assignTask(
   std::function<void(const unsigned int&)>* task
 ) {
   assert(threadNumber >= 0 && threadNumber < numberOfThreads);
-  assert(isThreadPoolAlive == true);
   if (numberOfThreads > 1) {
     threadObjects[threadNumber]->assign(task);
   }
@@ -79,7 +78,6 @@ ThreadPool::ThreadObject::~ThreadObject() {
 }
 
 void ThreadPool::ThreadObject::assign(std::function<void(const unsigned int&)>* task) {
-  assert(parent.isThreadPoolAlive);
   tasks.push(task);
   condition.notify_one();
 }

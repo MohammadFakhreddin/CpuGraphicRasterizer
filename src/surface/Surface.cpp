@@ -5,13 +5,15 @@
 #include "../data_types/MatrixTemplate.h"
 
 Surface::Surface(
+  LightPercision lightPercision,
   std::unique_ptr<Texture>& texture,
   const unsigned long& edge1Index,
   const unsigned long& edge2Index,
   const unsigned long& edge3Index
 )
   :
-  texture(texture)
+  texture(texture),
+  lightPercision(lightPercision)
 {
   
   assert(texture);
@@ -63,17 +65,25 @@ void Surface::update(
   if (!isVisibleToCamera(cameraInstance, worldPoints, normals)) {
     return;
   }
-  computeColorIntensity(worldPoints,normals,lightSources);
+  if (lightPercision == LightPercision::perSurface) {
+    computeColorIntensity(worldPoints, normals, lightSources);
+  }
   computePixelMapData(
     cameraInstance,
-    worldPoints
+    worldPoints,
+    normals,
+    lightSources
   );
 }
 
 void Surface::computePixelMapData(
   Camera& cameraInstance,
-  std::vector<MatrixFloat>& worldPoints
+  std::vector<MatrixFloat>& worldPoints,
+  std::vector<MatrixFloat>& normals,
+  std::vector<std::unique_ptr<Light>>& lightSources
 ){
+
+  assert(lightPercision == LightPercision::perPixel || lightPercision == LightPercision::perSurface);
 
   const auto& point1 = worldPoints.at(edgeIndices[0]);
   const auto& point2 = worldPoints.at(edgeIndices[1]);
@@ -93,16 +103,9 @@ void Surface::computePixelMapData(
 
   totalStepCount = 0;
 
-  triangleStartStepValueX = 0;
-  triangleStartStepValueY = 0;
-  triangleStartStepValueZ = 0;
-
-  triangleEndStepValueX = 0;
-  triangleEndStepValueY = 0;
-  triangleEndStepValueZ = 0;
-
   xDifference = triangleFinalX - triangleStartX;
   yDifference = triangleFinalY - triangleStartY;
+
   if (xDifference == 0 && yDifference == 0) {
     return;
   }
@@ -169,12 +172,6 @@ void Surface::computePixelMapData(
   textureFinalX = textureCoordinate[2].getX();
   textureFinalY = textureCoordinate[2].getY();
 
-  textureStartStepValueX = 0;
-  textureStartStepValueY = 0;
-
-  textureEndStepValueX = 0;
-  textureEndStepValueY = 0;
-
   {//Computing texture step value
     calculateStepValueBasedOnStepCount(
       textureFinalX - textureStartX,
@@ -198,57 +195,109 @@ void Surface::computePixelMapData(
     );
   }
 
-  lightColorStartR = colorIntensity[0].get(0, 0);
-  lightColorStartG = colorIntensity[0].get(1, 0);
-  lightColorStartB = colorIntensity[0].get(2, 0);
+  if (lightPercision == LightPercision::perSurface) {
 
-  lightColorEndR = colorIntensity[1].get(0, 0);
-  lightColorEndG = colorIntensity[1].get(1, 0);
-  lightColorEndB = colorIntensity[1].get(2, 0);
- 
-  lightColorFinalR = colorIntensity[2].get(0, 0);
-  lightColorFinalG = colorIntensity[2].get(1, 0);
-  lightColorFinalB = colorIntensity[2].get(2, 0);
+    lightColorStartR = colorIntensity[0].get(0, 0);
+    lightColorStartG = colorIntensity[0].get(1, 0);
+    lightColorStartB = colorIntensity[0].get(2, 0);
 
-  lightColorStartStepValueR = 0.0f;
-  lightColorStartStepValueG = 0.0f;
-  lightColorStartStepValueB = 0.0f;
+    lightColorEndR = colorIntensity[1].get(0, 0);
+    lightColorEndG = colorIntensity[1].get(1, 0);
+    lightColorEndB = colorIntensity[1].get(2, 0);
 
-  lightColorEndStepValueR = 0.0f;
-  lightColorEndStepValueG = 0.0f;
-  lightColorEndStepValueB = 0.0f;
+    lightColorFinalR = colorIntensity[2].get(0, 0);
+    lightColorFinalG = colorIntensity[2].get(1, 0);
+    lightColorFinalB = colorIntensity[2].get(2, 0);
 
-  {//Calculating light stepValue
-    calculateStepValueBasedOnStepCount(
-      lightColorFinalR - lightColorStartR,
-      totalStepCount,
-      &lightColorStartStepValueR
+    {//Calculating light stepValue
+      calculateStepValueBasedOnStepCount(
+        lightColorFinalR - lightColorStartR,
+        totalStepCount,
+        &lightColorStartStepValueR
       );
-    calculateStepValueBasedOnStepCount(
-      lightColorFinalG - lightColorStartG,
-      totalStepCount,
-      &lightColorStartStepValueG
+      calculateStepValueBasedOnStepCount(
+        lightColorFinalG - lightColorStartG,
+        totalStepCount,
+        &lightColorStartStepValueG
       );
-    calculateStepValueBasedOnStepCount(
-      lightColorFinalB - lightColorStartB,
-      totalStepCount,
-      &lightColorStartStepValueB
+      calculateStepValueBasedOnStepCount(
+        lightColorFinalB - lightColorStartB,
+        totalStepCount,
+        &lightColorStartStepValueB
       );
-    calculateStepValueBasedOnStepCount(
-      lightColorFinalR - lightColorEndR,
-      totalStepCount,
-      &lightColorEndStepValueR
+      calculateStepValueBasedOnStepCount(
+        lightColorFinalR - lightColorEndR,
+        totalStepCount,
+        &lightColorEndStepValueR
       );
-    calculateStepValueBasedOnStepCount(
-      lightColorFinalG - lightColorEndG,
-      totalStepCount,
-      &lightColorEndStepValueG
+      calculateStepValueBasedOnStepCount(
+        lightColorFinalG - lightColorEndG,
+        totalStepCount,
+        &lightColorEndStepValueG
       );
-    calculateStepValueBasedOnStepCount(
-      lightColorFinalB - lightColorEndB,
-      totalStepCount,
-      &lightColorEndStepValueB
+      calculateStepValueBasedOnStepCount(
+        lightColorFinalB - lightColorEndB,
+        totalStepCount,
+        &lightColorEndStepValueB
       );
+    }
+  }
+  else if (lightPercision == LightPercision::perPixel)
+  {
+    currentNormal = &normals.at(normalVectorIndices[0]);
+   
+    normalStartX = currentNormal->get(0, 0);
+    normalStartY = currentNormal->get(1, 0);
+    normalStartZ = currentNormal->get(2, 0);
+  
+    currentNormal = &normals.at(normalVectorIndices[1]);
+
+    normalEndX = currentNormal->get(0, 0);
+    normalEndY = currentNormal->get(1, 0);
+    normalEndZ = currentNormal->get(2, 0);
+
+    currentNormal = &normals.at(normalVectorIndices[2]);
+
+    normalFinalX = currentNormal->get(0, 0);
+    normalFinalY = currentNormal->get(1, 0);
+    normalFinalZ = currentNormal->get(2, 0);
+
+    calculateStepValueBasedOnStepCount(
+      normalFinalX - normalStartX,
+      totalStepCount,
+      &normalStartStepValueX
+    );
+
+    calculateStepValueBasedOnStepCount(
+      normalFinalY - normalStartY,
+      totalStepCount,
+      &normalStartStepValueY
+    );
+
+    calculateStepValueBasedOnStepCount(
+      normalFinalZ - normalStartZ,
+      totalStepCount,
+      &normalStartStepValueZ
+    );
+
+    calculateStepValueBasedOnStepCount(
+      normalFinalX - normalEndX,
+      totalStepCount,
+      &normalEndStepValueX
+    );
+    
+    calculateStepValueBasedOnStepCount(
+      normalFinalY - normalEndY,
+      totalStepCount,
+      &normalEndStepValueY
+    );
+
+    calculateStepValueBasedOnStepCount(
+      normalFinalZ - normalEndZ,
+      totalStepCount,
+      &normalEndStepValueZ
+    );
+
   }
 
   for (unsigned long i = 0; i < totalStepCount; i++) {
@@ -276,7 +325,17 @@ void Surface::computePixelMapData(
 
       lightColorEndR,
       lightColorEndG,
-      lightColorEndB
+      lightColorEndB,
+
+      normalStartX,
+      normalStartY,
+      normalStartZ,
+
+      normalEndX,
+      normalEndY,
+      normalEndZ,
+
+      lightSources
     );
     
     triangleStartX += triangleStartStepValueX;
@@ -294,15 +353,53 @@ void Surface::computePixelMapData(
     textureStartY += textureStartStepValueY;
     textureEndY += textureEndStepValueY;
 
-    lightColorStartR += lightColorStartStepValueR;
-    lightColorEndR += lightColorEndStepValueR;
+    if (lightPercision == LightPercision::perSurface) {
+      lightColorStartR += lightColorStartStepValueR;
+      lightColorEndR += lightColorEndStepValueR;
 
-    lightColorStartG += lightColorStartStepValueG;
-    lightColorEndG += lightColorEndStepValueG;
-    
-    lightColorStartB += lightColorStartStepValueB;
-    lightColorEndB += lightColorEndStepValueB;
+      lightColorStartG += lightColorStartStepValueG;
+      lightColorEndG += lightColorEndStepValueG;
 
+      lightColorStartB += lightColorStartStepValueB;
+      lightColorEndB += lightColorEndStepValueB;
+    }
+    else if (lightPercision == LightPercision::perPixel)
+    {
+      normalStartX += normalStartStepValueX;
+      normalStartY += normalStartStepValueY;
+      normalStartZ += normalStartStepValueZ;
+
+      normalEndX += normalEndStepValueX;
+      normalEndY += normalEndStepValueY;
+      normalEndZ += normalEndStepValueZ;
+    }
+  }
+}
+
+void Surface::computeColorIntensityForPoint(
+  const MatrixFloat& worldPoint,
+  const MatrixFloat& worldNormal,
+  std::vector<std::unique_ptr<Light>>& lightSources,
+  MatrixFloat& output
+) {
+  for (auto& light : lightSources) {
+
+    light->computeLightIntensity(
+      worldNormal,
+      worldPoint,
+      colorIntensityOutput
+    );
+
+    for (short i = 0; i < 3; i++) {
+      output.set(
+        i,
+        0,
+        Math::max(
+          colorIntensityOutput.get(i, 0),
+          output.get(i, 0)
+        )
+      );
+    }
   }
 }
 
@@ -322,35 +419,12 @@ void Surface::computeColorIntensity(
       currentWorldPoint = &worldPoints.at(edgeIndices[edgeIndex]);
       currentNormal = &normals.at(normalVectorIndices[edgeIndex]);
       
-      for (auto& light : lightSources) {
-        
-        light->computeLightIntensity(
-          *currentNormal,
-          *currentWorldPoint,
-          colorIntensityOutput
-        );
-        
-        for (short i = 0; i < 3; i++) {
-          colorIntensity[edgeIndex].set(
-            i, 
-            0, 
-            Math::max(
-              colorIntensityOutput.get(i,0),
-              colorIntensity[edgeIndex].get(i, 0)
-            )
-          );
-        }
-      }
-    }
-  } else {
-    
-    for (unsigned short edgeIndex = 0; edgeIndex < edgeCount; edgeIndex++) {
-    
-      for (unsigned short i = 0; i < 3; i++) {
-      
-        colorIntensity[edgeIndex].set(i, 0, 1.0f);
-      
-      }
+      computeColorIntensityForPoint(
+        worldPoints.at(edgeIndices[edgeIndex]),
+        normals.at(normalVectorIndices[edgeIndex]),
+        lightSources,
+        colorIntensity[edgeIndex]
+      );
     }
   }
 }
@@ -486,7 +560,17 @@ void Surface::drawLineBetweenPoints(
 
   const float& lightColorEndR,
   const float& lightColorEndG,
-  const float& lightColorEndB
+  const float& lightColorEndB,
+
+  const float& normalStartX,
+  const float& normalStartY,
+  const float& normalStartZ,
+
+  const float& normalEndX,
+  const float& normalEndY,
+  const float& normalEndZ,
+
+  std::vector<std::unique_ptr<Light>>& lightSources
 
   ) {
 
@@ -494,35 +578,16 @@ void Surface::drawLineBetweenPoints(
   lineTriangleStartY = triangleStartY;
   lineTriangleStartZ = triangleStartZ;
 
-  lineTriangleEndX = triangleEndX;
-  lineTriangleEndY = triangleEndY;
-  lineTriangleEndZ = triangleEndZ;
 
-  lineTextureStartX = textureStartX;
-  lineTextureStartY = textureStartY;
-
-  lineTextureEndX = textureEndX;
-  lineTextureEndY = textureEndY;
-
-  lineLightColorStartR = lightColorStartR;
-  lineLightColorStartG = lightColorStartG;
-  lineLightColorStartB = lightColorStartB;
-
-  lineLightColorEndR = lightColorEndR;
-  lineLightColorEndG = lightColorEndG;
-  lineLightColorEndB = lightColorEndB;
-
-  lineTriangleTotalStepCount = 0;
-  lineTriangleXStepValue = 0;
-  lineTriangleYStepValue = 0;
-  lineTriangleZStepValue = 0;
-
-  lineXDifference = lineTriangleEndX - lineTriangleStartX;
-  lineYDifference = lineTriangleEndY - lineTriangleStartY;
-  if (lineXDifference == 0 && lineYDifference == 0) {
-    return;
-  }
   {//TriangleStepValue
+    lineTextureStartX = textureStartX;
+    lineTextureStartY = textureStartY;
+
+    lineXDifference = triangleEndX - lineTriangleStartX;
+    lineYDifference = triangleEndY - lineTriangleStartY;
+    if (lineXDifference == 0 && lineYDifference == 0) {
+      return;
+    }
     if (abs(lineXDifference) > abs(lineYDifference)) {
       assert(lineXDifference != 0);
       calculateStepCount(
@@ -553,55 +618,105 @@ void Surface::drawLineBetweenPoints(
       &lineTriangleYStepValue
     );
     calculateStepValueBasedOnStepCount(
-      (lineTriangleEndZ - lineTriangleStartZ),
+      triangleEndZ - lineTriangleStartZ,
       lineTriangleTotalStepCount,
       &lineTriangleZStepValue
     );
   }
 
-  lineTextureXStepValue = 0;
-  lineTextureYStepValue = 0;
   {//TextureStepValue
     calculateStepValueBasedOnStepCount(
-      lineTextureEndX - lineTextureStartX,
+      textureEndX - lineTextureStartX,
       lineTriangleTotalStepCount,
       &lineTextureXStepValue
     );
     calculateStepValueBasedOnStepCount(
-      lineTextureEndY - lineTextureStartY,
+      textureEndY - lineTextureStartY,
       lineTriangleTotalStepCount,
       &lineTextureYStepValue
     );
   }
 
-  lineLightColorRStepValue = 0;
-  lineLightColorGStepValue = 0;
-  lineLightColorBStepValue = 0;
-  {//ColorStepValue
+
+  if (lightPercision == LightPercision::perSurface) {
+    lineLightColorStartR = lightColorStartR;
+    lineLightColorStartG = lightColorStartG;
+    lineLightColorStartB = lightColorStartB;
+
+    {//ColorStepValue
+      calculateStepValueBasedOnStepCount(
+        lightColorEndR - lightColorStartR,
+        lineTriangleTotalStepCount,
+        &lineLightColorRStepValue
+      );
+      calculateStepValueBasedOnStepCount(
+        lightColorEndG - lightColorStartG,
+        lineTriangleTotalStepCount,
+        &lineLightColorGStepValue
+      );
+      calculateStepValueBasedOnStepCount(
+        lightColorEndB - lightColorStartB,
+        lineTriangleTotalStepCount,
+        &lineLightColorBStepValue
+      );
+    }
+  }
+  else if (lightPercision == LightPercision::perPixel)
+  {
+    lineNormalStartValue.set(0, 0, normalStartX);
+    lineNormalStartValue.set(1, 0, normalStartY);
+    lineNormalStartValue.set(2, 0, normalStartZ);
+
     calculateStepValueBasedOnStepCount(
-      lineLightColorEndR - lineLightColorStartR,
-      lineTriangleTotalStepCount,
-      &lineLightColorRStepValue
+      normalEndX - normalStartX,
+      totalStepCount,
+      &lineNormalStepValueX
     );
     calculateStepValueBasedOnStepCount(
-      lineLightColorEndG - lineLightColorStartG,
-      lineTriangleTotalStepCount,
-      &lineLightColorGStepValue
+      normalEndY - normalStartY,
+      totalStepCount,
+      &lineNormalStepValueY
     );
     calculateStepValueBasedOnStepCount(
-      lineLightColorEndB - lineLightColorStartB,
-      lineTriangleTotalStepCount,
-      &lineLightColorBStepValue
+      normalEndZ - normalStartZ,
+      totalStepCount,
+      &lineNormalStepValueZ
     );
   }
-
+  
   for (unsigned long j = 0; j < lineTriangleTotalStepCount; j++) {
     texture->getPixelForPosition(lineTextureStartX, lineTextureStartY, &red, &green, &blue);
 
-    // Multiply color by light value
-    red *= lineLightColorStartR;
-    green *= lineLightColorStartG;
-    blue *= lineLightColorStartB;
+    if (lightPercision == LightPercision::perSurface) {
+      // Multiply color by light value
+      red *= lineLightColorStartR;
+      green *= lineLightColorStartG;
+      blue *= lineLightColorStartB;
+    }
+    else if(lightPercision == LightPercision::perPixel)
+    {
+      worldPointPlaceholder.set(0, 0, lineTriangleStartX);
+      worldPointPlaceholder.set(1, 0, lineTriangleStartY);
+      worldPointPlaceholder.set(2, 0, lineTriangleStartZ);
+
+      lineNormalStartValue.hat<float>(worldNormalPlaceholder);
+      
+      colorIntensity->set(0, 0, 0.0f);
+      colorIntensity->set(1, 0, 0.0f);
+      colorIntensity->set(2, 0, 0.0f);
+
+      computeColorIntensityForPoint(
+        worldPointPlaceholder, 
+        worldNormalPlaceholder, 
+        lightSources, 
+        colorIntensity[0]
+      );
+
+      red *= colorIntensity[0].get(0, 0);
+      green *= colorIntensity[0].get(1, 0);
+      blue *= colorIntensity[0].get(2, 0);
+
+    }
 
     cameraInstance.putPixelInMap(
       int(lineTriangleStartX),
@@ -619,8 +734,15 @@ void Surface::drawLineBetweenPoints(
     lineTextureStartX += lineTextureXStepValue;
     lineTextureStartY += lineTextureYStepValue;
 
-    lineLightColorStartR += lineLightColorRStepValue;
-    lineLightColorStartG += lineLightColorGStepValue;
-    lineLightColorStartB += lineLightColorBStepValue;
+    if (lightPercision == LightPercision::perSurface) {
+      lineLightColorStartR += lineLightColorRStepValue;
+      lineLightColorStartG += lineLightColorGStepValue;
+      lineLightColorStartB += lineLightColorBStepValue;
+    }
+    else if (lightPercision == LightPercision::perPixel) {
+      lineNormalStartValue.set(0, 0, lineNormalStartValue.get(0, 0) + lineNormalStepValueX);
+      lineNormalStartValue.set(1, 0, lineNormalStartValue.get(1, 0) + lineNormalStepValueY);
+      lineNormalStartValue.set(2, 0, lineNormalStartValue.get(2, 0) + lineNormalStepValueZ);
+    }
   }
 }

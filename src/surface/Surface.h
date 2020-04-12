@@ -18,8 +18,14 @@ protected:
   static constexpr unsigned long edgeCount = 3;
 
 public:
+
+  enum class LightPercision {
+    perPixel,
+    perSurface
+  };
   
   Surface(
+    LightPercision lightPercision,
     std::unique_ptr<Texture>& texture,
     const unsigned long& edge1Index,
     const unsigned long& edge2Index,
@@ -73,7 +79,9 @@ private:
  
   void computePixelMapData(
     Camera& cameraInstance,
-    std::vector<MatrixFloat>& worldPoints
+    std::vector<MatrixFloat>& worldPoints,
+    std::vector<MatrixFloat>& normals,
+    std::vector<std::unique_ptr<Light>>& lightSources
   );
 
   void calculateStepCount(
@@ -89,8 +97,9 @@ private:
   );
 
   void drawLineBetweenPoints(
+
     Camera& cameraInstance,
-    
+
     const float& triangleStartX,
     const float& triangleStartY,
     const float& triangleStartZ,
@@ -111,7 +120,18 @@ private:
 
     const float& lightColorEndR,
     const float& lightColorEndG,
-    const float& lightColorEndB
+    const float& lightColorEndB,
+
+    const float& normalStartX,
+    const float& normalStartY,
+    const float& normalStartZ,
+
+    const float& normalEndX,
+    const float& normalEndY,
+    const float& normalEndZ,
+
+    std::vector<std::unique_ptr<Light>>& lightSources
+
   );
   //TODO Write unit tests
   /**
@@ -142,6 +162,13 @@ private:
     std::vector<std::unique_ptr<Light>>& lightSources  
   );
 
+  void Surface::computeColorIntensityForPoint(
+    const MatrixFloat& worldPoint,
+    const MatrixFloat& worldNormal,
+    std::vector<std::unique_ptr<Light>>& lightSources,
+    MatrixFloat& output
+  );
+
   /*
   *
   * Vector from camera boundary to center of shape
@@ -156,6 +183,8 @@ private:
   * 
   */
   double dotProductValue = 0;
+
+  LightPercision lightPercision;
   
   MatrixFloat colorIntensityOutput = MatrixFloat(3, 1, 0.0f);
 
@@ -211,31 +240,15 @@ private:
   
   float lineTriangleStartZ = 0.0f;
 
-  float lineTriangleEndX = 0.0f;
-  
-  float lineTriangleEndY = 0.0f;
-  
-  float lineTriangleEndZ = 0.0f;
-
   float lineTextureStartX = 0.0f;
   
   float lineTextureStartY = 0.0f;
-
-  float lineTextureEndX = 0.0f;
-  
-  float lineTextureEndY = 0.0f;
 
   float lineLightColorStartR = 0.0f;
   
   float lineLightColorStartG = 0.0f;
   
   float lineLightColorStartB = 0.0f;
-
-  float lineLightColorEndR = 0.0f;
-  
-  float lineLightColorEndG = 0.0f;
-  
-  float lineLightColorEndB = 0.0f;
 
   float textureStartX = 0.0f;
   
@@ -289,6 +302,44 @@ private:
   
   float triangleEndStepValueZ = 0.0f;
 
+  float normalStartX = 0.0f;
+
+  float normalStartY = 0.0f;
+
+  float normalStartZ = 0.0f;
+
+  float normalEndX = 0.0f;
+
+  float normalEndY = 0.0f;
+
+  float normalEndZ = 0.0f;
+
+  float normalFinalX = 0.0f;
+
+  float normalFinalY = 0.0f;
+
+  float normalFinalZ = 0.0f;
+
+  float normalStartStepValueX = 0.0f;
+
+  float normalStartStepValueY = 0.0f;
+
+  float normalStartStepValueZ = 0.0f;
+
+  float normalEndStepValueX = 0.0f;
+
+  float normalEndStepValueY = 0.0f;
+
+  float normalEndStepValueZ = 0.0f;
+
+  float lineNormalStepValueX = 0.0f;
+
+  float lineNormalStepValueY = 0.0f;
+
+  float lineNormalStepValueZ = 0.0f;
+
+  MatrixFloat lineNormalStartValue = MatrixFloat(3, 1, 0.0f);
+
   float lightColorStartR = 0.0f;
   
   float lightColorStartG = 0.0f;
@@ -318,6 +369,10 @@ private:
   float lightColorEndStepValueG = 0.0f;
   
   float lightColorEndStepValueB = 0.0f;
+
+  MatrixFloat worldPointPlaceholder = MatrixFloat(3,1,0.0f);
+
+  MatrixFloat worldNormalPlaceholder = MatrixFloat(3, 1, 0.0f);
 
 };
 

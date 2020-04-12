@@ -28,6 +28,7 @@ SphereScene::SphereScene(OpenGL& gl)
   
   auto radius = float((25.0f / 800.f) * DataAccessPoint::getInstance()->getAppScreenWidth());
   sphere = ShapeGenerator::sphere(
+    Surface::LightPercision::perSurface,
     (std::unique_ptr<Texture>&)whiteColor,
     radius,
     12 * 2,

@@ -30,6 +30,7 @@ PlantScene::PlantScene(OpenGL& gl)
   {//Creating shape
     shape = FileSystem::loadObject(
       Path::generateAssetPath("plant",".obj"),
+      Surface::LightPercision::perSurface,
       (std::unique_ptr<Texture>&)colorTexture,
       false,
       Shape3d::NormalType::fileDefault,

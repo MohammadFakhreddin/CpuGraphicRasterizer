@@ -25,7 +25,7 @@ public:
 #endif
   }
   static void exception(std::string text){
-    //TODO Check and improve this function
+    //TODO We have to throw custom exception
     Logger::log(text);
     assert(false);
   }

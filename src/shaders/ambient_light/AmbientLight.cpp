@@ -20,10 +20,10 @@ AmbientLight::AmbientLight(
 }
 
 void AmbientLight::computeLightIntensity(
-  MatrixFloat& surfaceNormalVector,
-  MatrixFloat& surfaceLocation,
+  const MatrixFloat& surfaceNormalVector,
+  const MatrixFloat& surfaceLocation,
   MatrixFloat& output
-) {
+) const {
   output.set(0, 0, colorR);
   output.set(1, 0,colorG);
   output.set(2, 0, colorB);

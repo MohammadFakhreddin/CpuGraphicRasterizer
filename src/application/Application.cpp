@@ -18,6 +18,7 @@
 #include "../scenes/monkey_scene/MonkeyScene.h"
 #include "../scenes/plant_scene/PlantScene.h"
 #include "../scenes/robot_scene/RobotScene.h"
+#include "../scenes/light_per_pixel_scene/LightPerPixelScene.h"
 
 //  UI Libraries
 /*
@@ -72,6 +73,7 @@ Application::Application(
 #endif
 
   {
+    sceneList.emplace_back(std::make_unique<LightPerPixelScene>(openGLInstance));
     sceneList.emplace_back(std::make_unique<MonkeyScene>(openGLInstance));
     sceneList.emplace_back(std::make_unique<BunnyScene>(openGLInstance));
     sceneList.emplace_back(std::make_unique<SphereScene>(openGLInstance));
