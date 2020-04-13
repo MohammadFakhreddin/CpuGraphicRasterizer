@@ -18,7 +18,11 @@ public:
     const float& initialTransformY,
     const float& initialTransformZ,
     const float& cameraFieldOfView,
-    const float& attenuation
+    const float& constantAttenuation,
+    const float& linearAttenuation,
+    const float& quadricAttenuation,
+    const float& specularIntensity,
+    const unsigned int& specularPower
   );
 
   void transformX(const float& value);
@@ -59,7 +63,15 @@ private:
 
   float cameraFieldOfView;
 
-  float attenuation;
+  float constantAttenuation;
+
+  float linearAttenuation;
+
+  float quadricAttenuation;
+
+  float specularIntensity;
+
+  unsigned int specularPower;
 
 };
 

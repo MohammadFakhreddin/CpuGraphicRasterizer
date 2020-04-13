@@ -15,20 +15,33 @@ PointLight::PointLight(
   const float& initialTransformY,
   const float& initialTransformZ,
   const float& cameraFieldOfView,
-  const float& attenuation
+  const float& constantAttenuation,
+  const float& linearAttenuation,
+  const float& quadricAttenuation,
+  const float& specularIntensity,
+  const unsigned int& specularPower
 ) :
   radius(radius),
   colorR(colorR),
   colorG(colorG),
   colorB(colorB),
   cameraFieldOfView(cameraFieldOfView),
-  attenuation(attenuation)
+  constantAttenuation(constantAttenuation),
+  linearAttenuation(linearAttenuation),
+  quadricAttenuation(quadricAttenuation),
+  specularIntensity(specularIntensity),
+  specularPower(specularPower)
 {
 
   assert(radius >= 0);
   assert(colorR >= 0 && colorR <= 1.0f);
   assert(colorG >= 0 && colorG <= 1.0f);
   assert(colorB >= 0 && colorB <= 1.0f);
+  assert(constantAttenuation >= 1);
+  assert(linearAttenuation > 0);
+  assert(quadricAttenuation > 0);
+  assert(specularIntensity > 0);
+  assert(specularPower >= 2);
 
   lightColor = std::make_unique<ColorTexture>(colorR, colorG, colorB);
 
@@ -83,7 +96,7 @@ void PointLight::computeLightIntensity(
   assert(surfaceNormalVector.getHeight() == 1);
   assert(surfaceLocation.getWidth() == 3);
   assert(surfaceLocation.getHeight() == 1);
-  
+  //Light vector
   output.set(0, 0, surfaceLocation.get(0, 0) - worldPoint.get(0, 0));
   output.set(1, 0, surfaceLocation.get(1, 0) - worldPoint.get(1, 0));
   output.set(2, 0, surfaceLocation.get(2, 0) - worldPoint.get(2, 0));
@@ -91,21 +104,54 @@ void PointLight::computeLightIntensity(
   double squareDistance = output.squareSize<double>();
 
   double distance = sqrt(squareDistance);
-
+  //Light hat
   output.set(0, 0, float(double(output.get(0, 0)) / distance));
   output.set(1, 0, float(double(output.get(1, 0)) / distance));
   output.set(2, 0, float(double(output.get(2, 0)) / distance));
 
   double angleFactor = output.dotProduct(surfaceNormalVector) * -1.0;
 
-  double distanceFactor = cameraFieldOfView / ((long long)(squareDistance + distance + 1));
+  double distanceFactor = cameraFieldOfView / ((long long)
+    (
+      squareDistance * quadricAttenuation +
+      distance * linearAttenuation +
+      constantAttenuation
+    )
+  );
+  //TODO We need memory pool
+  //TODO I need a memory manger that I request objects from it
+  //Like matrix& a = Memory.RequestMatrix; and then I free it
+  double lightIntensity = Math::min(distanceFactor * angleFactor, 1.0f);
 
-  double lightIntensity = Math::min(distanceFactor * angleFactor * attenuation, 1.0f);
+  //LightReflection
+  MatrixFloat lightReflection = MatrixFloat(3, 1, 0.0f);
+  lightReflection.assign(surfaceNormalVector);
+  lightReflection.multiply(2 * angleFactor);
+  lightReflection.minus(output);
+
+  //Camera vector
+  MatrixFloat cameraVector = MatrixFloat(3, 1, 0.0f);
+  cameraVector.set(2, 0, worldPoint.get(2,0));
+  MatrixDouble cameraVectorHat = MatrixDouble(3, 1, 0.0f);
+  cameraVector.hat(cameraVectorHat);
+
+  MatrixDouble lightReflectionHat = MatrixDouble(3, 1, 0.0f);
+
+  lightReflection.hat(lightReflectionHat);
+  
+  double specularDotProduct = double(-1.0 * lightReflectionHat.dotProduct(cameraVectorHat));
+  if (specularDotProduct > 0) {
+    double specularHighlight = Math::max(specularIntensity * pow(
+      specularDotProduct,
+      specularPower
+    ), 0.0f);
+    lightIntensity += float(specularHighlight);
+  }
 
   if (lightIntensity > 0) {
-    output.set(0, 0, float(lightIntensity * colorR));
-    output.set(1, 0, float(lightIntensity * colorG));
-    output.set(2, 0, float(lightIntensity * colorB));
+    output.set(0, 0, Math::clamp(float(lightIntensity * colorR), 0.0f, 1.0f));
+    output.set(1, 0, Math::clamp(float(lightIntensity * colorG), 0.0f, 1.0f));
+    output.set(2, 0, Math::clamp(float(lightIntensity * colorB), 0.0f, 1.0f));
   }
   else {
     output.set(0, 0, 0.0f);

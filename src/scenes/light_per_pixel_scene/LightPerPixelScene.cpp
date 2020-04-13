@@ -42,7 +42,11 @@ LightPerPixelScene::LightPerPixelScene(OpenGL& gl)
       float(DataAccessPoint::getInstance()->getAppScreenHeight()) - float(DataAccessPoint::getInstance()->getAppScreenWidth()) / 30.0f,
       cameraInitialZLocation - 80.0f,
       cameraInstance.getCamerFieldOfView(),
-      10.0f
+      1.1f,
+      1,
+      1,
+      1,
+      2
     ));
     light = (PointLight*)lightSources.back().get();
   }

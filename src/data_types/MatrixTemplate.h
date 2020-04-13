@@ -136,6 +136,15 @@ public:
     }
   }
 
+  template<typename A>
+  void multiply(const A rhs) {
+    for (i = 0; i < width; i++) {
+      for (j = 0; j < height; j++) {
+        cells[i][j] *= rhs;
+      }
+    }
+  }
+
   template <typename A>
   void operator*=(_Matrix<A> rhs) = delete;
 
@@ -291,8 +300,8 @@ public:
     );
   }
 
-  template<typename A,typename B>
-  void hat(_Matrix<B>& matrix) const {
+  template<typename A>
+  void hat(_Matrix<A>& matrix) const {
     
     assert(width == 3);
     assert(height == 1);

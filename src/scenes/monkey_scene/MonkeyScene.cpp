@@ -47,7 +47,7 @@ MonkeyScene::MonkeyScene(OpenGL& gl)
 
   {//Creating light source
     //lightSources.emplace_back(std::make_unique<DirectionalLight>(1.0f, 1.0f, 1.0f, -1.0f, -1.0f, -1.0f));
-    lightSources.emplace_back(std::make_unique<AmbientLight>(0.1f, 0.1f, 0.1f));
+    lightSources.emplace_back(std::make_unique<AmbientLight>(0.05f, 0.05f, 0.05f));
     lightSources.emplace_back(std::make_unique<PointLight>(
       2.0f, 
       255.0f/256.0f, 214.0f/256.0f, 170.0f/256.0f,
@@ -55,7 +55,11 @@ MonkeyScene::MonkeyScene(OpenGL& gl)
       float(DataAccessPoint::getInstance()->getAppScreenHeight()) - float(DataAccessPoint::getInstance()->getAppScreenWidth()) / 30.0f,
       cameraInitialZLocation - 80.0f,
       cameraInstance.getCamerFieldOfView(),
-      100.0f
+      10.0f,
+      1.0f,
+      0.1F,
+      4.0f,
+      5
     ));
     light = (PointLight*)lightSources.back().get();
   }
