@@ -57,11 +57,6 @@ public:
         std::vector<float>{y},
         std::vector<float>{z}
     });
-    /*nodeList.emplace_back(3, 1, std::vector<std::vector<float>>{
-      std::vector<float>{x + w},
-        std::vector<float>{y},
-        std::vector<float>{z}
-    });*/
     nodeList.emplace_back(3, 1, std::vector<std::vector<float>>{
       std::vector<float>{x + w},
         std::vector<float>{y},
