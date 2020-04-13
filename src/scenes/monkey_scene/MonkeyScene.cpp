@@ -30,7 +30,7 @@ MonkeyScene::MonkeyScene(OpenGL& gl)
   );
   
   {//Creating shape
-    auto scaleFactor = float(DataAccessPoint::getInstance()->getAppScreenWidth()) / 50.0f;
+    auto scaleFactor = float(DataAccessPoint::getInstance()->getAppScreenWidth()) / 10.0f;
     shape = FileSystem::loadObject(
       Path::generateAssetPath("monkey", ".obj"),
       Surface::LightPercision::perSurface,
@@ -41,7 +41,7 @@ MonkeyScene::MonkeyScene(OpenGL& gl)
     );
     shape->transformX(float(DataAccessPoint::getInstance()->getAppScreenWidth()) / 2.0f);
     shape->transformY(float(DataAccessPoint::getInstance()->getAppScreenHeight()) / 2.0f);
-    shape->transformZ(cameraInitialZLocation - 100.0f);
+    shape->transformZ(cameraInitialZLocation - 500.0f);
     shape->scale(scaleFactor);
   }
 
@@ -53,9 +53,9 @@ MonkeyScene::MonkeyScene(OpenGL& gl)
       255.0f/256.0f, 214.0f/256.0f, 170.0f/256.0f,
       float(DataAccessPoint::getInstance()->getAppScreenWidth()) / 30.0f, 
       float(DataAccessPoint::getInstance()->getAppScreenHeight()) - float(DataAccessPoint::getInstance()->getAppScreenWidth()) / 30.0f,
-      cameraInitialZLocation - 80.0f,
+      cameraInitialZLocation - 300.0f,
       cameraInstance.getCamerFieldOfView(),
-      10.0f,
+      100.0f,
       1.0f,
       0.1F,
       4.0f,

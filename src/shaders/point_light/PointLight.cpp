@@ -141,11 +141,12 @@ void PointLight::computeLightIntensity(
   
   double specularDotProduct = double(-1.0 * lightReflectionHat.dotProduct(cameraVectorHat));
   if (specularDotProduct > 0) {
+    //TODO Write a pow function to constantly cast value to float to prevent overflow
     double specularHighlight = Math::max(specularIntensity * pow(
       specularDotProduct,
       specularPower
     ), 0.0f);
-    lightIntensity += float(specularHighlight);
+    lightIntensity *= float(specularHighlight);
   }
 
   if (lightIntensity > 0) {
