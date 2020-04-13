@@ -15,7 +15,7 @@ ThreadPool::ThreadPool()
 #endif // __DESKTOP__
 #ifdef __MOBILE__
   //Cpu threads does not seem to work efficiently on mobiles
-  numberOfThreads = 0;
+  //numberOfThreads = 0;
 #endif
   if (numberOfThreads == 0) {
     numberOfThreads = 1;

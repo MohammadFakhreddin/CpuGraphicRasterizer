@@ -158,7 +158,7 @@ private:
     std::vector<std::unique_ptr<Light>>& lightSources  
   );
 
-  void Surface::computeColorIntensityForPoint(
+  void computeColorIntensityForPoint(
     const MatrixFloat& worldPoint,
     const MatrixFloat& worldNormal,
     std::vector<std::unique_ptr<Light>>& lightSources,
