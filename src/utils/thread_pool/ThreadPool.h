@@ -57,12 +57,12 @@ public:
 
     std::unique_ptr<std::thread> thread;
 
-    std::function<bool(void)> sleepConditionRefrence = std::bind(
+    std::function<bool(void)> sleepConditionReference = std::bind(
       &ThreadPool::ThreadObject::sleepCondition, 
       this
     );
 
-    std::function<void(void)> mainLoopRefrence = std::bind(
+    std::function<void(void)> mainLoopReference = std::bind(
       &ThreadPool::ThreadObject::mainLoop,
       this
     );
@@ -77,7 +77,7 @@ private:
   
   bool mainThreadSleepCondition();
 
-  std::function<bool(void)> mainThreadSleepConditionRefrence = std::bind(
+  std::function<bool(void)> mainThreadSleepConditionReference = std::bind(
     &ThreadPool::mainThreadSleepCondition,
     this
   );

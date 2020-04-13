@@ -119,11 +119,11 @@ private:
   
   std::vector<std::unique_ptr<Light>>* lightSources;
 
-  std::function<void(const unsigned int&)> updateNodesRefrence = std::bind(&Shape3d::updateNodes, this, std::placeholders::_1);
+  std::function<void(const unsigned int&)> updateNodesReference = std::bind(&Shape3d::updateNodes, this, std::placeholders::_1);
 
-  std::function<void(const unsigned int&)> updateNormalsRefrence = std::bind(&Shape3d::updateNormals, this, std::placeholders::_1);
+  std::function<void(const unsigned int&)> updateNormalsReference = std::bind(&Shape3d::updateNormals, this, std::placeholders::_1);
 
-  std::function<void(const unsigned int&)> updatSurfacesRefrence = std::bind(&Shape3d::updateSurfaces, this, std::placeholders::_1);
+  std::function<void(const unsigned int&)> updateSurfacesReference = std::bind(&Shape3d::updateSurfaces, this, std::placeholders::_1);
 
   ThreadPool& threadPool;
 

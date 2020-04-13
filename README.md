@@ -2,11 +2,14 @@
 ### Using c++,cmake, pure math and putPixel equivalent in openGL
 ### Currently entire game engine processes runs only on cpu (But multi threaded)
 
-### Point light (Runs multi-thread on cpu)
-![Alt Text](point_light.gif)
-
-### Smooth shadows using auto generated normal vectors
-![Alt Text](smooth_shadows.gif)
+<div>
+    <h2>Point light (Runs multi-thread on cpu)</h2>
+    <img src="point_light.gif">
+</div>
+<div>
+    <h2>Smooth shadows using auto generated normal vectors</h2>
+    <img src="smooth_shadows.gif">
+</div>
 
 ### Drawing 3d-cube with texture
 ![Alt Text](dice.gif)

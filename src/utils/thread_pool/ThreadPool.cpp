@@ -70,7 +70,7 @@ ThreadPool::ThreadObject::ThreadObject(const unsigned int& threadNumber, ThreadP
   lock(std::unique_lock<std::mutex>(mutex)),
   parent(parent)
 {
-  thread = std::make_unique<std::thread>(mainLoopRefrence);
+  thread = std::make_unique<std::thread>(mainLoopReference);
 }
 
 ThreadPool::ThreadObject::~ThreadObject() {
@@ -93,7 +93,7 @@ bool ThreadPool::ThreadObject::sleepCondition() {
 void ThreadPool::ThreadObject::mainLoop() {
   while (parent.isThreadPoolActive)
   {
-    condition.wait(lock, sleepConditionRefrence);
+    condition.wait(lock, sleepConditionReference);
     conditionVariablesMutex.lock();
     isBusy = true;
     conditionVariablesMutex.unlock();
@@ -131,7 +131,7 @@ void ThreadPool::waitForThreadsToFinish() {
       threadObject->conditionVariablesMutex.lock();
       threadObject->conditionVariablesMutex.unlock();
     }
-    mainThreadCondition.wait(mainThreadLock, mainThreadSleepConditionRefrence);
+    mainThreadCondition.wait(mainThreadLock, mainThreadSleepConditionReference);
     while (exceptions.size() != 0)
     {
       Logger::log(exceptions.front());

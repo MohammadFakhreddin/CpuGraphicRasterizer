@@ -389,19 +389,21 @@ void Shape3d::update(
         threadNumberIndex < numberOfSupportedThreads - 1;
         threadNumberIndex++
         ) {
-        threadPool.assignTask(threadNumberIndex, &updateNodesRefrence);
+        threadPool.assignTask(threadNumberIndex, &updateNodesReference);
       }
-      updateNodesRefrence(numberOfSupportedThreads - 1);
+      updateNodesReference(numberOfSupportedThreads - 1);
     }
+    //This line prevent macos android and IOS from cashing for unknown reasons
+    threadPool.waitForThreadsToFinish();
     {//Updating normals
       for (
         threadNumberIndex = 0;
         threadNumberIndex < numberOfSupportedThreads - 1;
         threadNumberIndex++
         ) {
-        threadPool.assignTask(threadNumberIndex, &updateNormalsRefrence);
+        threadPool.assignTask(threadNumberIndex, &updateNormalsReference);
       }
-      updateNormalsRefrence(numberOfSupportedThreads - 1);
+      updateNormalsReference(numberOfSupportedThreads - 1);
     }
     threadPool.waitForThreadsToFinish();
     {//Updating surface
@@ -410,9 +412,9 @@ void Shape3d::update(
         threadNumberIndex < numberOfSupportedThreads - 1;
         threadNumberIndex++
         ) {
-        threadPool.assignTask(threadNumberIndex, &updatSurfacesRefrence);
+        threadPool.assignTask(threadNumberIndex, &updateSurfacesReference);
       }
-      updatSurfacesRefrence(numberOfSupportedThreads - 1);
+      updateSurfacesReference(numberOfSupportedThreads - 1);
     }
     threadPool.waitForThreadsToFinish();
   }
