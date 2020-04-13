@@ -26,7 +26,7 @@ private:
 public:
 
   std::unique_ptr<Shape3d> generateCube(
-    Surface::LightPercision percision,
+    Surface::LightPrecision precision,
     float w,
     float h,
     float d,
@@ -43,7 +43,7 @@ public:
     std::vector<std::unique_ptr<Surface>> diceCubeEdgeList;
       //1
     diceCubeEdgeList.emplace_back(std::make_unique<Surface>(
-      percision,
+      precision,
       (std::unique_ptr<Texture>&)diceCubeTexture,
       2, 1, 0
     ));
@@ -52,7 +52,7 @@ public:
     diceCubeEdgeList.back()->setTextureCoordinates(2, diceCubeSquare, diceCubeSquare);
       //2
     diceCubeEdgeList.emplace_back(std::make_unique<Surface>(
-      percision,
+      precision,
       (std::unique_ptr<Texture>&)diceCubeTexture,
       3, 1, 2
     ));
@@ -61,7 +61,7 @@ public:
     diceCubeEdgeList.back()->setTextureCoordinates(2, diceCubeSquare, 0);
       //3
     diceCubeEdgeList.emplace_back(std::make_unique<Surface>(
-      percision,
+      precision,
       (std::unique_ptr<Texture>&)diceCubeTexture,
       1, 3, 5 
     ));
@@ -70,7 +70,7 @@ public:
     diceCubeEdgeList.back()->setTextureCoordinates(2, 2 * diceCubeSquare, 0);
       //4
     diceCubeEdgeList.emplace_back(std::make_unique<Surface>(
-      percision,
+      precision,
       (std::unique_ptr<Texture>&)diceCubeTexture,
       5, 3, 7
     ));
@@ -79,7 +79,7 @@ public:
     diceCubeEdgeList.back()->setTextureCoordinates(2, diceCubeSquare, 0);
     // 5
     diceCubeEdgeList.emplace_back(std::make_unique<Surface>(
-      percision,
+      precision,
       (std::unique_ptr<Texture>&)diceCubeTexture,
       4, 0, 5
     ));
@@ -88,7 +88,7 @@ public:
     diceCubeEdgeList.back()->setTextureCoordinates(2, diceCubeSquare * 3 - 1, 0);
     // 6
     diceCubeEdgeList.emplace_back(std::make_unique<Surface>(
-      percision,
+      precision,
       (std::unique_ptr<Texture>&)diceCubeTexture,
       5, 0, 1
     ));
@@ -97,7 +97,7 @@ public:
     diceCubeEdgeList.back()->setTextureCoordinates(2, diceCubeSquare * 2, 0);
       //7
     diceCubeEdgeList.emplace_back(std::make_unique<Surface>(
-      percision,
+      precision,
       (std::unique_ptr<Texture>&)diceCubeTexture,
       6, 0, 4
     ));
@@ -106,7 +106,7 @@ public:
     diceCubeEdgeList.back()->setTextureCoordinates(2, diceCubeSquare, diceCubeSquare * 2 - 1);
       //8
     diceCubeEdgeList.emplace_back(std::make_unique<Surface>(
-      percision,
+      precision,
       (std::unique_ptr<Texture>&)diceCubeTexture,
       2, 0, 6
     ));
@@ -115,7 +115,7 @@ public:
     diceCubeEdgeList.back()->setTextureCoordinates(2, diceCubeSquare, diceCubeSquare);
       //9
     diceCubeEdgeList.emplace_back(std::make_unique<Surface>(
-      percision,
+      precision,
       (std::unique_ptr<Texture>&)diceCubeTexture,
       7, 2, 6
     ));
@@ -124,7 +124,7 @@ public:
     diceCubeEdgeList.back()->setTextureCoordinates(2, diceCubeSquare * 2, diceCubeSquare * 2 - 1);
       //10
     diceCubeEdgeList.emplace_back(std::make_unique<Surface>(
-      percision,
+      precision,
       (std::unique_ptr<Texture>&)diceCubeTexture,
       3, 2, 7
     ));
@@ -133,7 +133,7 @@ public:
     diceCubeEdgeList.back()->setTextureCoordinates(2, diceCubeSquare * 2, diceCubeSquare);
       //11
     diceCubeEdgeList.emplace_back(std::make_unique<Surface>(
-      percision,
+      precision,
       (std::unique_ptr<Texture>&)diceCubeTexture,
       7, 4, 5
     ));
@@ -142,7 +142,7 @@ public:
     diceCubeEdgeList.back()->setTextureCoordinates(2, diceCubeSquare * 3 - 1, diceCubeSquare * 2 - 1);
       //12
     diceCubeEdgeList.emplace_back(std::make_unique<Surface>(
-      percision,
+      precision,
       (std::unique_ptr<Texture>&)diceCubeTexture,
       6, 4, 7
     ));

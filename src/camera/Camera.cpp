@@ -30,7 +30,9 @@ Camera::Camera(
   pixelMapSize(appScreenWidth * appScreenHeight),
   gl(gl),
   transformMatrix(3, 1, 0.0f),
-  rotationDegreeMatrix(3, 1, 0.0f)
+  rotationDegreeMatrix(3, 1, 0.0f),
+  rotationValueXYZMatrix(3, 3, 0.0f),
+  transformationPlaceholder(3, 1, 0.0f)
 {
 
   assert(cameraFieldOfView>0);

@@ -49,13 +49,13 @@ private:
 
   float colorB;
 
-  MatrixFloat transform = MatrixFloat(3, 1, 0.0f);
+  MatrixFloat transform;
 
   std::unique_ptr<ColorTexture> lightColor;
 
   std::unique_ptr<Shape3d> sphere;
 
-  MatrixFloat worldPoint = MatrixFloat(3, 1, 0.0f);
+  MatrixFloat worldPoint;
   //TODO Remove this
   std::vector<std::unique_ptr<Light>> lightSources;
 

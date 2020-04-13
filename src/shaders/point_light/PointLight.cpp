@@ -30,7 +30,9 @@ PointLight::PointLight(
   linearAttenuation(linearAttenuation),
   quadricAttenuation(quadricAttenuation),
   specularIntensity(specularIntensity),
-  specularPower(specularPower)
+  specularPower(specularPower),
+  transform(3,1,0.0f),
+  worldPoint(3,1,0.0f)
 {
 
   assert(radius >= 0);
@@ -48,7 +50,7 @@ PointLight::PointLight(
   lightSources.emplace_back(std::make_unique<AmbientLight>(colorR, colorG, colorB));
 
   sphere = ShapeGenerator::sphere(
-    Surface::LightPercision::perSurface,
+    Surface::LightPrecision::perSurface,
     (std::unique_ptr<Texture>&)lightColor,
     radius, 12 * 2, 24 * 2,
     Vec3DFloat(0.0f, 0.0f, 0.0f),
@@ -124,18 +126,18 @@ void PointLight::computeLightIntensity(
   double lightIntensity = Math::min(distanceFactor * angleFactor, 1.0f);
 
   //LightReflection
-  MatrixFloat lightReflection = MatrixFloat(3, 1, 0.0f);
+  MatrixFloat lightReflection(3, 1, 0.0f);
   lightReflection.assign(surfaceNormalVector);
   lightReflection.multiply(2 * angleFactor);
   lightReflection.minus(output);
 
   //Camera vector
-  MatrixFloat cameraVector = MatrixFloat(3, 1, 0.0f);
+  MatrixFloat cameraVector(3, 1, 0.0f);
   cameraVector.set(2, 0, worldPoint.get(2,0));
-  MatrixDouble cameraVectorHat = MatrixDouble(3, 1, 0.0f);
+  MatrixDouble cameraVectorHat(3, 1, 0.0f);
   cameraVector.hat(cameraVectorHat);
 
-  MatrixDouble lightReflectionHat = MatrixDouble(3, 1, 0.0f);
+  MatrixDouble lightReflectionHat(3, 1, 0.0f);
 
   lightReflection.hat(lightReflectionHat);
   

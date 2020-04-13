@@ -5,7 +5,7 @@
 #include "../data_types/MatrixTemplate.h"
 
 Surface::Surface(
-  LightPercision lightPercision,
+  LightPrecision lightPercision,
   std::unique_ptr<Texture>& texture,
   const unsigned long& edge1Index,
   const unsigned long& edge2Index,
@@ -13,10 +13,19 @@ Surface::Surface(
 )
   :
   texture(texture),
-  lightPercision(lightPercision)
+  lightPercision(lightPercision),
+  lineNormalStartValue(3, 1, 0.0f),
+  worldPointPlaceholder(3, 1, 0.0f),
+  worldNormalPlaceholder(3, 1, 0.0f),
+  cameraVector(3, 1, 0.0f),
+  colorIntensityOutput(3, 1, 0.0f)
 {
-  
+
   assert(texture);
+
+  colorIntensity[0].reset(3, 1, 0.0f);
+  colorIntensity[1].reset(3, 1, 0.0f);
+  colorIntensity[2].reset(3, 1, 0.0f);
 
   edgeIndices[0] = edge1Index;
   edgeIndices[1] = edge2Index;
@@ -65,7 +74,7 @@ void Surface::update(
   if (!isVisibleToCamera(cameraInstance, worldPoints, normals)) {
     return;
   }
-  if (lightPercision == LightPercision::perSurface) {
+  if (lightPercision == LightPrecision::perSurface) {
     computeColorIntensity(worldPoints, normals, lightSources);
   }
   computePixelMapData(
@@ -83,7 +92,7 @@ void Surface::computePixelMapData(
   std::vector<std::unique_ptr<Light>>& lightSources
 ){
 
-  assert(lightPercision == LightPercision::perPixel || lightPercision == LightPercision::perSurface);
+  assert(lightPercision == LightPrecision::perPixel || lightPercision == LightPrecision::perSurface);
 
   const auto& point1 = worldPoints.at(edgeIndices[0]);
   const auto& point2 = worldPoints.at(edgeIndices[1]);
@@ -195,7 +204,7 @@ void Surface::computePixelMapData(
     );
   }
 
-  if (lightPercision == LightPercision::perSurface) {
+  if (lightPercision == LightPrecision::perSurface) {
 
     lightColorStartR = colorIntensity[0].get(0, 0);
     lightColorStartG = colorIntensity[0].get(1, 0);
@@ -242,7 +251,7 @@ void Surface::computePixelMapData(
       );
     }
   }
-  else if (lightPercision == LightPercision::perPixel)
+  else if (lightPercision == LightPrecision::perPixel)
   {
     currentNormal = &normals.at(normalVectorIndices[0]);
    
@@ -353,7 +362,7 @@ void Surface::computePixelMapData(
     textureStartY += textureStartStepValueY;
     textureEndY += textureEndStepValueY;
 
-    if (lightPercision == LightPercision::perSurface) {
+    if (lightPercision == LightPrecision::perSurface) {
       lightColorStartR += lightColorStartStepValueR;
       lightColorEndR += lightColorEndStepValueR;
 
@@ -363,7 +372,7 @@ void Surface::computePixelMapData(
       lightColorStartB += lightColorStartStepValueB;
       lightColorEndB += lightColorEndStepValueB;
     }
-    else if (lightPercision == LightPercision::perPixel)
+    else if (lightPercision == LightPrecision::perPixel)
     {
       normalStartX += normalStartStepValueX;
       normalStartY += normalStartStepValueY;
@@ -638,7 +647,7 @@ void Surface::drawLineBetweenPoints(
   }
 
 
-  if (lightPercision == LightPercision::perSurface) {
+  if (lightPercision == LightPrecision::perSurface) {
     lineLightColorStartR = lightColorStartR;
     lineLightColorStartG = lightColorStartG;
     lineLightColorStartB = lightColorStartB;
@@ -661,7 +670,7 @@ void Surface::drawLineBetweenPoints(
       );
     }
   }
-  else if (lightPercision == LightPercision::perPixel)
+  else if (lightPercision == LightPrecision::perPixel)
   {
     lineNormalStartValue.set(0, 0, normalStartX);
     lineNormalStartValue.set(1, 0, normalStartY);
@@ -687,13 +696,13 @@ void Surface::drawLineBetweenPoints(
   for (unsigned long j = 0; j < lineTriangleTotalStepCount; j++) {
     texture->getPixelForPosition(lineTextureStartX, lineTextureStartY, &red, &green, &blue);
 
-    if (lightPercision == LightPercision::perSurface) {
+    if (lightPercision == LightPrecision::perSurface) {
       // Multiply color by light value
       red *= lineLightColorStartR;
       green *= lineLightColorStartG;
       blue *= lineLightColorStartB;
     }
-    else if(lightPercision == LightPercision::perPixel)
+    else if(lightPercision == LightPrecision::perPixel)
     {
       worldPointPlaceholder.set(0, 0, lineTriangleStartX);
       worldPointPlaceholder.set(1, 0, lineTriangleStartY);
@@ -734,12 +743,12 @@ void Surface::drawLineBetweenPoints(
     lineTextureStartX += lineTextureXStepValue;
     lineTextureStartY += lineTextureYStepValue;
 
-    if (lightPercision == LightPercision::perSurface) {
+    if (lightPercision == LightPrecision::perSurface) {
       lineLightColorStartR += lineLightColorRStepValue;
       lineLightColorStartG += lineLightColorGStepValue;
       lineLightColorStartB += lineLightColorBStepValue;
     }
-    else if (lightPercision == LightPercision::perPixel) {
+    else if (lightPercision == LightPrecision::perPixel) {
       lineNormalStartValue.set(0, 0, lineNormalStartValue.get(0, 0) + lineNormalStepValueX);
       lineNormalStartValue.set(1, 0, lineNormalStartValue.get(1, 0) + lineNormalStepValueY);
       lineNormalStartValue.set(2, 0, lineNormalStartValue.get(2, 0) + lineNormalStepValueZ);

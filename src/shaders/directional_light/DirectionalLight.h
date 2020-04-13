@@ -36,15 +36,13 @@ private:
 
   float colorB;
 
-  MatrixFloat lightDirection = MatrixFloat(3, 1, 0.0f);
+  MatrixFloat lightDirectionHat;
 
-  MatrixFloat lightDirectionHat = MatrixFloat(3, 1, 0.0f);
+  MatrixFloat worldLightDirectionHat;
 
-  MatrixFloat worldLightDirectionHat = MatrixFloat(3, 1, 0.0f);
+  MatrixFloat roationXYZMatrix;
 
-  MatrixFloat roationXYZMatrix = MatrixFloat(3, 3, 0.0f);
-
-  MatrixFloat rotationDegreeMatrix = MatrixFloat(3, 1, 0.0f);
+  MatrixFloat rotationDegreeMatrix;
   
 };
 

@@ -24,13 +24,13 @@ std::vector<MatrixFloat> Shape3d::generateNormals(
   
   std::vector<MatrixFloat> normals;
 
-  MatrixFloat vector1 = MatrixFloat(3, 1, 0.0f);
-  MatrixFloat vector2 = MatrixFloat(3, 1, 0.0f);
+  MatrixFloat vector1(3, 1, 0.0f);
+  MatrixFloat vector2(3, 1, 0.0f);
   MatrixFloat* targetNode = nullptr;
   MatrixFloat* sideNode1 = nullptr;
   MatrixFloat* sideNode2 = nullptr;
-  MatrixFloat normalVector = MatrixFloat(3, 1, 0.0f);
-  MatrixFloat normalVectorHat = MatrixFloat(3, 1, 0.0f);
+  MatrixFloat normalVector(3, 1, 0.0f);
+  MatrixFloat normalVectorHat(3, 1, 0.0f);
 
   const auto computeEdgeIndex = [](short int index) {
     return index % 3;
@@ -66,7 +66,8 @@ std::vector<MatrixFloat> Shape3d::generateNormals(
         
         normalVector.hat<float>(normalVectorHat);
 
-        normals.emplace_back(normalVectorHat);
+        normals.emplace_back(3,1,0.0f);
+        normals.back().assign(normalVectorHat);
 
         surface->setNormalIndex(i, (unsigned long)(normals.size() - 1));
 
@@ -112,7 +113,8 @@ std::vector<MatrixFloat> Shape3d::generateNormals(
             
             normalVector.hat<float>(normalVectorHat);
 
-            currentNodeNormals.emplace_back(normalVectorHat);
+            currentNodeNormals.emplace_back(3, 1, 0.0f);
+            currentNodeNormals.back().assign(normalVectorHat);
 
             surface->setNormalIndex(surfaceEdgeIndex, (unsigned long)normals.size());
 
@@ -125,7 +127,7 @@ std::vector<MatrixFloat> Shape3d::generateNormals(
 
       assert(currentNodeNormals.size() != 0);
 
-      normals.emplace_back(MatrixFloat(3, 1, 0.0f));
+      normals.emplace_back(3, 1, 0.0f);
 
       for (
         currentNodeNormalsIndex = 0;
@@ -144,11 +146,9 @@ std::vector<MatrixFloat> Shape3d::generateNormals(
         }
       }
 
-      assert(
-        isnan(normals.back().get(0, 0)) == false &&
-        isnan(normals.back().get(1, 0)) == false &&
-        isnan(normals.back().get(2, 0)) == false
-      );
+      assert(isnan(normals.back().get(0, 0)) == false);
+      assert(isnan(normals.back().get(1, 0)) == false);
+      assert(isnan(normals.back().get(2, 0)) == false);
 
       for (vectorIndex = 0; vectorIndex < 3; vectorIndex++) {
 
@@ -220,27 +220,29 @@ Shape3d::Shape3d(
   float rotationDegreeZ,
   float paramScaleValue
 ) :
-  nodes(std::move(paramNodes)),
   surfaces(std::move(paramSurfaces)),
-  normals(std::move(paramNormals)),
   transformMatrix(3, 1, 0.0f),
   rotationDegreeMatrix(3, 1, 0.0f),
   rotationXYZMatrix(3, 3, 0.0f),
   scaleValueMatrix(3,3,0.0f),
   threadPool(DataAccessPoint::getInstance()->getThreadPool())
  {
-  assert(numberOfSupportedThreads > 0);
-  assert(checkDataValidation());
-
-  if (!nodes.empty()) {
-    for (auto& node : nodes) {
-      worldPoints.emplace_back(node.clone());
+  
+  if (!paramNodes.empty()) {
+    for (auto& node : paramNodes) {
+      nodes.emplace_back(3, 1, 0.0f);
+      nodes.back().assign(node);
+      worldPoints.emplace_back(3, 1, 0.0f);
+      worldPoints.back().assign(node);
     }
   }
 
-  if (!normals.empty()) {
-    for (auto& normal : normals) {
-      worldNormals.emplace_back(normal.clone());
+  if (!paramNormals.empty()) {
+    for (auto& normal : paramNormals) {
+      normals.emplace_back(3, 1, 0.0f);
+      normals.back().assign(normal);
+      worldNormals.emplace_back(3, 1, 0.0f);
+      worldNormals.back().assign(normal);
     }
   }
 
@@ -258,6 +260,9 @@ Shape3d::Shape3d(
   {
     numberOfSupportedThreads = DataAccessPoint::getInstance()->getThreadPool().getNumberOfAvailableThreads() + 1;
   }
+
+  assert(numberOfSupportedThreads > 0);
+  assert(checkDataValidation());
 
 }
 

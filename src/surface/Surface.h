@@ -19,13 +19,13 @@ protected:
 
 public:
 
-  enum class LightPercision {
+  enum class LightPrecision {
     perPixel,
     perSurface
   };
   
   Surface(
-    LightPercision lightPercision,
+    LightPrecision lightPrecision,
     std::unique_ptr<Texture>& texture,
     const unsigned long& edge1Index,
     const unsigned long& edge2Index,
@@ -69,11 +69,7 @@ private:
 
   unsigned long normalVectorIndices[edgeCount];
 
-  MatrixFloat colorIntensity[edgeCount] = {
-    MatrixFloat(3,1,0.0f),
-    MatrixFloat(3,1,0.0f),
-    MatrixFloat(3,1,0.0f)
-  };
+  MatrixFloat colorIntensity[edgeCount];
 
   Vec2DFloat textureCoordinate[edgeCount];
  
@@ -174,7 +170,7 @@ private:
   * Vector from camera boundary to center of shape
   *
   */
-  MatrixFloat cameraVector = MatrixFloat(3, 1, 0.0f);
+  MatrixFloat cameraVector;
 
   /*
   *
@@ -184,9 +180,9 @@ private:
   */
   double dotProductValue = 0;
 
-  LightPercision lightPercision;
+  LightPrecision lightPercision;
   
-  MatrixFloat colorIntensityOutput = MatrixFloat(3, 1, 0.0f);
+  MatrixFloat colorIntensityOutput;
 
   MatrixFloat* currentWorldPoint = nullptr;
 
@@ -338,7 +334,7 @@ private:
 
   float lineNormalStepValueZ = 0.0f;
 
-  MatrixFloat lineNormalStartValue = MatrixFloat(3, 1, 0.0f);
+  MatrixFloat lineNormalStartValue;
 
   float lightColorStartR = 0.0f;
   
@@ -370,9 +366,9 @@ private:
   
   float lightColorEndStepValueB = 0.0f;
 
-  MatrixFloat worldPointPlaceholder = MatrixFloat(3,1,0.0f);
+  MatrixFloat worldPointPlaceholder;
 
-  MatrixFloat worldNormalPlaceholder = MatrixFloat(3, 1, 0.0f);
+  MatrixFloat worldNormalPlaceholder;
 
 };
 

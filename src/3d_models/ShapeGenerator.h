@@ -31,48 +31,52 @@ public:
     float x = -w / 2;
     float y = -h / 2;
     float z = -d / 2;
-    std::vector<MatrixFloat> nodeList = {
-      MatrixFloat(3, 1, std::vector<std::vector<float>>{
-        std::vector<float>{x},
+    std::vector<MatrixFloat> nodeList;
+    nodeList.emplace_back(3, 1, std::vector<std::vector<float>>{
+      std::vector<float>{x},
         std::vector<float>{y},
         std::vector<float>{z}
-      }),
-      MatrixFloat(3, 1, std::vector<std::vector<float>>{
-        std::vector<float>{x},
+    });
+    nodeList.emplace_back(3, 1, std::vector<std::vector<float>>{
+      std::vector<float>{x},
         std::vector<float>{y},
         std::vector<float>{z + d}
-      }),
-      MatrixFloat(3, 1, std::vector<std::vector<float>>{
-        std::vector<float>{x},
+    });
+    nodeList.emplace_back(3, 1, std::vector<std::vector<float>>{
+      std::vector<float>{x},
         std::vector<float>{y + h},
         std::vector<float>{z}
-      }),
-      MatrixFloat(3, 1, std::vector<std::vector<float>>{
-        std::vector<float>{x},
+    });
+    nodeList.emplace_back(3, 1, std::vector<std::vector<float>>{
+      std::vector<float>{x},
         std::vector<float>{y + h},
         std::vector<float>{z + d}
-      }),
-      MatrixFloat(3, 1, std::vector<std::vector<float>>{
-        std::vector<float>{x + w},
+    });
+    nodeList.emplace_back(3, 1, std::vector<std::vector<float>>{
+      std::vector<float>{x + w},
         std::vector<float>{y},
         std::vector<float>{z}
-      }),
-      MatrixFloat(3, 1, std::vector<std::vector<float>>{
-        std::vector<float>{x + w},
+    });
+    /*nodeList.emplace_back(3, 1, std::vector<std::vector<float>>{
+      std::vector<float>{x + w},
+        std::vector<float>{y},
+        std::vector<float>{z}
+    });*/
+    nodeList.emplace_back(3, 1, std::vector<std::vector<float>>{
+      std::vector<float>{x + w},
         std::vector<float>{y},
         std::vector<float>{z + d}
-      }),
-      MatrixFloat(3, 1, std::vector<std::vector<float>>{
-        std::vector<float>{x + w},
-        std::vector<float>{y + h},
-        std::vector<float>{z}
-      }),
-      MatrixFloat(3, 1, std::vector<std::vector<float>>{
-        std::vector<float>{x + w},
+    });
+    nodeList.emplace_back(3, 1, std::vector<std::vector<float>>{
+      std::vector<float>{x + w},
+      std::vector<float>{y + h},
+      std::vector<float>{z}
+    });
+    nodeList.emplace_back(3, 1, std::vector<std::vector<float>>{
+      std::vector<float>{x + w},
         std::vector<float>{y + h},
         std::vector<float>{z + d}
-      })
-    };
+    });
     //Generating normals
     std::vector<MatrixFloat> normals = Shape3d::generateNormals(
       surfaceList,
@@ -94,7 +98,7 @@ public:
   }
 
   static std::unique_ptr<Shape3d> sphere(
-    Surface::LightPercision lightPercision,
+    Surface::LightPrecision lightPrecision,
     std::unique_ptr<Texture>& texture,
     const float& radius,
     const unsigned int& numberOfLat,
@@ -112,21 +116,21 @@ public:
     std::vector<MatrixFloat> vertices;
 
     {//Filling vertices
-      MatrixFloat initialPoint = MatrixFloat(3, 1, 0.0f);
+      MatrixFloat initialPoint(3, 1, 0.0f);
       
       initialPoint.set(1, 0, radius);
       
       const auto latitudeStepDegree = Math::piFloat / float(numberOfLat);
 
-      MatrixFloat latitudeRotationMatrix = MatrixFloat(3, 3, 0.0f);
+      MatrixFloat latitudeRotationMatrix(3, 3, 0.0f);
      
       const auto longitudeStepDegree = (Math::piFloat * 2.0f) / float(numberOfLong);
 
-      MatrixFloat longitudeRotationMatrix = MatrixFloat(3, 3, 0.0f);
+      MatrixFloat longitudeRotationMatrix(3, 3, 0.0f);
    
-      MatrixFloat latitudePoint = MatrixFloat(3, 1, 0.0f);
+      MatrixFloat latitudePoint(3, 1, 0.0f);
 
-      MatrixFloat longitudePoint = MatrixFloat(3, 1, 0.0f);
+      MatrixFloat longitudePoint(3, 1, 0.0f);
 
       for (unsigned int latitudeIndex = 1; latitudeIndex < numberOfLat - 1; latitudeIndex++) {
 
@@ -143,30 +147,33 @@ public:
 
           longitudePoint.assign(latitudePoint);
           
-          MatrixFloat::assignAsRoationYMatrix(
+          MatrixFloat::assignAsRotationYMatrix(
             longitudeRotationMatrix,
             longitudeStepDegree * longitudeIndex
           );
           
           longitudePoint.multiply(longitudeRotationMatrix);
 
-          vertices.emplace_back(longitudePoint.clone());
+          vertices.emplace_back(3, 1, 0.0f);
+          vertices.back().assign(longitudePoint);
 
         }
 
       }
 
-      vertices.emplace_back(initialPoint.clone());
+      vertices.emplace_back(3, 1, 0.0f);
+      vertices.back().assign(initialPoint);
       
       initialPoint.set(1, 0, -1 * radius);
 
-      vertices.emplace_back(initialPoint.clone());
+      vertices.emplace_back(3, 1, 0.0f);
+      vertices.back().assign(initialPoint);
     
     }
 
     const auto sideLatCount = numberOfLat - 2;
 
-    auto convertLatAndLongToVertices = [numberOfLat,numberOfLong,vertices,sideLatCount](unsigned int latIndex,unsigned int longIndex) {
+    auto convertLatAndLongToVertices = [numberOfLat,numberOfLong,&vertices,sideLatCount](unsigned int latIndex,unsigned int longIndex) {
       assert(
         latIndex >= 0 && latIndex<numberOfLat && 
         "ShapeGenerator::sphere::convertLatAndLongToVertices latIndex must be above 0 and bellow numberOfLat"
@@ -194,7 +201,7 @@ public:
       
       for (unsigned int i = 0; i < numberOfLong; i++) {
         indices.emplace_back(std::make_unique<Surface>(
-          lightPercision,
+          lightPrecision,
           texture,
           convertLatAndLongToVertices(sideLatCount, 0),
           convertLatAndLongToVertices(1, (i + 1) % numberOfLong),
@@ -204,7 +211,7 @@ public:
       
       for (unsigned int i = 0; i < numberOfLong; i++) {
         indices.emplace_back(std::make_unique<Surface>(
-          lightPercision,
+          lightPrecision,
           texture,
           convertLatAndLongToVertices(sideLatCount - 1, i % numberOfLong),
           convertLatAndLongToVertices(sideLatCount - 1, (i + 1) % numberOfLong),
@@ -215,14 +222,14 @@ public:
       for (unsigned int i = 0; i < sideLatCount - 1; i++) {
         for (unsigned int j = 0; j < numberOfLong; j++) {
           indices.emplace_back(std::make_unique<Surface>(
-            lightPercision,
+            lightPrecision,
             texture,
             convertLatAndLongToVertices(i, j% numberOfLong),
             convertLatAndLongToVertices(i, (j + 1) % numberOfLong),
             convertLatAndLongToVertices(i + 1, (j + 1) % numberOfLong)
           ));
           indices.emplace_back(std::make_unique<Surface>(
-            lightPercision,
+            lightPrecision,
             texture,
             convertLatAndLongToVertices(i + 1, j% numberOfLong),
             convertLatAndLongToVertices(i, j% numberOfLong),

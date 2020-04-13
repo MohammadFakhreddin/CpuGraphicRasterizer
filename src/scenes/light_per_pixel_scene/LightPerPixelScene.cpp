@@ -28,7 +28,7 @@ LightPerPixelScene::LightPerPixelScene(OpenGL& gl)
     );
   {//Creating shape
     float width = DataAccessPoint::getInstance()->getAppScreenWidth()/5.0f;
-    shape = colorCube.generateCube(Surface::LightPercision::perPixel, width, width, 1, 0, 0, 0, 0, 0, 0, 1);
+    shape = colorCube.generateCube(Surface::LightPrecision::perPixel, width, width, 1, 0, 0, 0, 0, 0, 0, 1);
     shape->transformX(float(DataAccessPoint::getInstance()->getAppScreenWidth()) / 2.0f);
     shape->transformY(float(DataAccessPoint::getInstance()->getAppScreenHeight()) / 2.0f);
     shape->transformZ(cameraInitialZLocation - 500.0f);

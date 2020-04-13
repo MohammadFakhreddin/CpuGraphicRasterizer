@@ -104,9 +104,9 @@ private:
 
   MatrixFloat rotationDegreeMatrix;
   
-  MatrixFloat rotationValueXYZMatrix = MatrixFloat(3,3,0.0f);
+  MatrixFloat rotationValueXYZMatrix;
 
-  MatrixFloat transformationPlaceholder = MatrixFloat(3, 1, 0.0f);
+  MatrixFloat transformationPlaceholder;
 
 };
 

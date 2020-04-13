@@ -29,7 +29,7 @@ RobotScene::RobotScene(OpenGL& gl)
     auto scaleFactor = float(DataAccessPoint::getInstance()->getAppScreenWidth()) / 50.0f;
     shape = FileSystem::loadObject(
       Path::generateAssetPath("robot", ".obj"),
-      Surface::LightPercision::perSurface,
+      Surface::LightPrecision::perSurface,
       (std::unique_ptr<Texture>&)colorTexture,
       true,
       Shape3d::NormalType::fileDefault,

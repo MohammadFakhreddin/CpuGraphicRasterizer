@@ -30,7 +30,7 @@ BunnyScene::BunnyScene(OpenGL& gl)
     auto scaleFactor = float(DataAccessPoint::getInstance()->getAppScreenWidth()) / 4.0f;
     shape = FileSystem::loadObject(
       Path::generateAssetPath("bunny", ".obj"),
-      Surface::LightPercision::perSurface,
+      Surface::LightPrecision::perSurface,
       (std::unique_ptr<Texture>&)whiteColor,
       true,
       Shape3d::NormalType::smooth,
@@ -43,9 +43,7 @@ BunnyScene::BunnyScene(OpenGL& gl)
   }
   {//Creating light source
     lightSources.emplace_back(std::make_unique<AmbientLight>(0.2f, 0.2f, 0.2f));
-    lightSources.emplace_back(std::make_unique<DirectionalLight>(
-      1.0f, 1.0f, 1.0f, -1.0f, -1.0f, -1.0f
-    ));
+    lightSources.emplace_back(std::make_unique<DirectionalLight>(1.0f, 1.0f, 1.0f, -1.0f, -1.0f, -1.0f));
     light = (DirectionalLight*)lightSources.back().get();
   }
 }

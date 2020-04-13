@@ -17,79 +17,107 @@ private:
   unsigned int i = 0;
   unsigned int j = 0;
   unsigned int k = 0;
+  unsigned int matrixSize;
+  unsigned int rowValue = 0;
   //TODO Vectors are a bit slow try to replace them in future
   //Atlease replace them with 1D equavalant that is much faster
-  std::vector<std::vector<T>> cells;
-  std::vector<std::vector<T>> placeholderCells;
+  T* cells;
+  T* placeholderCells;
+
 public:
 
-  _Matrix() = delete;
+  _Matrix()
+    :
+    width(0),
+    height(0),
+    matrixSize(0),
+    cells(nullptr),
+    placeholderCells(nullptr)
+  {};
 
   //For safty and clarity of code delete all operators and use methods instead
   template <typename A>
   _Matrix(const unsigned int paramWidth,const unsigned int paramHeight,const A& cellDefaultValue)
     :
     width(paramWidth),
-    height(paramHeight)
-  {
-    for (i = 0; i < width; i++) {
-      cells.emplace_back(std::vector<T>());
-      placeholderCells.emplace_back(std::vector<T>());
-      for (j = 0; j < height; j++) {
-        cells.at(i).emplace_back(T(cellDefaultValue));
-        placeholderCells.at(i).emplace_back(T(0));
-      }
-      assert(cells.at(i).size() == placeholderCells.at(i).size());
-      assert(cells.at(i).size() == height);
-    }
-    assert(cells.size() == placeholderCells.size());
-    assert(cells.size() == width);
-  }
-  
+    height(paramHeight),
+    matrixSize(paramWidth * paramHeight),
+    cells(new T[matrixSize]{ cellDefaultValue }),
+    placeholderCells(new T[matrixSize])
+  {}
+
+  //TODO Change vector to 1D array
   template <typename A>
   _Matrix(const unsigned int paramWidth, const unsigned int paramHeight, const std::vector<std::vector<A>>& initialCellValue)
     :
     width(paramWidth),
-    height(paramHeight)
+    height(paramHeight),
+    matrixSize(paramWidth * paramHeight),
+    cells(new T[matrixSize]),
+    placeholderCells(new T[matrixSize])
   {
     assert(initialCellValue.size() == width);
     for (i = 0; i < width; i++) {
-      assert(initialCellValue.at(i).size() == height);
-      cells.emplace_back(std::vector<T>());
-      placeholderCells.emplace_back(std::vector<T>());
+      assert(initialCellValue[i].size() == height);
+      rowValue = i * height;
       for (j = 0; j < height; j++) {
-        placeholderCells.at(i).emplace_back(T(0));
-        cells.at(i).emplace_back(initialCellValue.at(i).at(j));
-      }
-      assert(cells.at(i).size() == placeholderCells.at(i).size());
-      assert(cells.at(i).size() == height);
-    }
-    assert(cells.size() == placeholderCells.size());
-    assert(cells.size() == width);
-  }
-
-  template <typename A>
-  void assign(const _Matrix<A>& rhs) {
-    assert(width == rhs.getWidth());
-    assert(height == rhs.getHeight());
-    for (i = 0; i < width; i++) {
-      for (j = 0; j < height; j++) {
-        cells.at(i).at(j) = T(rhs.get(i, j));
+        cells[rowValue + j] = initialCellValue[i][j];
       }
     }
   }
 
+  ~_Matrix() {
+    delete[] cells;
+    delete[] placeholderCells;
+  }
+
   template <typename A>
-  void operator=(_Matrix<A> rhs) = delete;
+  _Matrix<A>& operator=(const _Matrix<A>& rhs) = delete;
+
+  template <typename A>
+  _Matrix(const _Matrix<A>& other) = delete;
+
+  _Matrix(_Matrix&& other){
+    cells = new T[other.matrixSize];
+    placeholderCells = new T[other.matrixSize];
+    width = other.width;
+    height = other.height;
+    matrixSize = other.matrixSize;
+    std::memcpy(cells, other.cells, matrixSize * sizeof(T));
+  }; // move constructor
+
+  _Matrix& operator=(const _Matrix& other) = delete;// copy assignment
+  
+  _Matrix& operator=(_Matrix&& other) = delete; // move assignment
+ 
+  void assign(const _Matrix<T>& rhs) {
+    assert(width == rhs.width);
+    assert(height == rhs.height);
+    std::memcpy(cells, rhs.cells, matrixSize * sizeof(T));
+  }
+
+  template <typename A>
+  void reset(const unsigned int paramWidth, const unsigned int paramHeight, const A& cellDefaultValue)
+  {
+    if (cells) {
+      delete[] cells;
+    }
+    if (placeholderCells) {
+      delete[] placeholderCells;
+    }
+    width = paramWidth;
+    height = paramHeight;
+    matrixSize = paramWidth * paramHeight;
+    cells = new T[matrixSize]{ cellDefaultValue };
+    placeholderCells = new T[matrixSize];
+  }
 
   template <typename A>
   void sum(const _Matrix<A>& rhs) {
     assert(rhs.getWidth() == width);
     assert(rhs.getHeight() == height);
-    for (i = 0; i < width; i++) {
-      for (j = 0; j < height; j++) {
-        cells.at(i).at(j) += T(rhs.get(i, j));
-      }
+    for (i = 0; i < matrixSize; i++) {
+      cells[i] += T(rhs.getDirect(i));
     }
   }
 
@@ -104,10 +132,8 @@ public:
   void minus(const _Matrix<A>& rhs) {
     assert(rhs.getWidth() == width);
     assert(rhs.getHeight() == height);
-    for (i = 0; i < width; i++) {
-      for (j = 0; j < height; j++) {
-        cells.at(i).at(j) -= T(rhs.get(i, j));
-      }
+    for (i = 0; i < matrixSize; i++) {
+      cells[i] -= T(rhs.getDirect(i));
     }
   }
 
@@ -123,25 +149,20 @@ public:
     assert(rhs.getWidth() == width);
     for (i = 0; i < rhs.getWidth(); i++) {
       for (j = 0; j < height; j++) {
-        placeholderCells.at(i).at(j) = 0;
+        rowValue = i * height + j;
+        placeholderCells[rowValue] = 0;
         for (k = 0; k < width; k++) {
-          placeholderCells.at(i).at(j) += cells.at(k).at(j) * T(rhs.get(i, k));
+          placeholderCells[rowValue] += cells[k * height + j] * T(rhs.get(i, k));
         }
       }
     }
-    for (i = 0; i < width; i++) {
-      for (j = 0; j < height; j++) {
-        cells.at(i).at(j) = placeholderCells.at(i).at(j);
-      }
-    }
+    std::memcpy(cells, placeholderCells, matrixSize * sizeof(T));
   }
 
   template<typename A>
   void multiply(const A rhs) {
-    for (i = 0; i < width; i++) {
-      for (j = 0; j < height; j++) {
-        cells[i][j] *= rhs;
-      }
+    for (i = 0; i < matrixSize; i++) {
+      cells[i] *= T(rhs);
     }
   }
 
@@ -191,7 +212,7 @@ public:
     for (i = 0; i < height; i++) {
       line = "";
       for (j = 0; j < width; j++) {
-        line += " " + std::to_string(cells.at(j).at(i)) + " ";
+        line += " " + std::to_string(cells[i * height + j]) + " ";
       }
       Logger::log(line);
     }
@@ -201,16 +222,26 @@ public:
   const T& get(const unsigned int& x, const unsigned int& y) const {
     assert(x < width);
     assert(y < height);
-    return this->cells.at(x).at(y);
+    return cells[x * height + y];
+  }
+
+  const T& getDirect(const unsigned int& index) const {
+    assert(index < matrixSize);
+    return cells[index];
   }
   
   void set(const unsigned int& x, const unsigned int& y, const T& value) {
     assert(x < width);
     assert(y < height);
-    this->cells.at(x).at(y) = value;
+    cells[x * height + y] = value;
   }
 
-  _Matrix<T> clone() {
+  void setDirect(const unsigned int& index, const T& value) {
+    assert(index < matrixSize);
+    cells[index] = value;
+  }
+
+  /*_Matrix<T> clone() {
     std::vector<std::vector<T>> cellsCopy;
     for (i = 0; i < width; i++) {
       cellsCopy.emplace_back(std::vector<T>());
@@ -219,9 +250,11 @@ public:
       }
     }
     return _Matrix<T>(width, height, cellsCopy);
-  }
+  }*/
 
   static void assignAsRotationXMatrix(_Matrix<T>& matrix, const float& degree) {
+    assert(matrix.getWidth() == 3);
+    assert(matrix.getHeight() == 3);
     matrix.set(0, 0, 1);
     assert(matrix.get(0, 1) == 0);
     assert(matrix.get(0, 2) == 0);
@@ -233,7 +266,9 @@ public:
     matrix.set(2, 2, cosf(degree));
   }
 
-  static void assignAsRoationYMatrix(_Matrix<T>& matrix, const float& degree) {
+  static void assignAsRotationYMatrix(_Matrix<T>& matrix, const float& degree) {
+    assert(matrix.getWidth() == 3);
+    assert(matrix.getHeight() == 3);
     matrix.set(0, 0, cosf(degree));
     assert(matrix.get(0, 1) == 0);
     matrix.set(0, 2, sinf(degree));
@@ -263,6 +298,8 @@ public:
     const float& yDegree, 
     const float& zDegree
   ) {
+    assert(matrix.getWidth() == 3);
+    assert(matrix.getHeight() == 3);
     matrix.set(0, 0, cosf(yDegree) * cosf(zDegree));
     matrix.set(0, 1, cosf(yDegree) * (-sinf(zDegree)));
     matrix.set(0, 2, -sinf(yDegree));

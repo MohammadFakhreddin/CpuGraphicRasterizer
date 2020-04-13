@@ -61,7 +61,7 @@ public:
   //TODO Sperate this function into multiple parts
   static std::unique_ptr<Shape3d> loadObject(
     std::string filename,
-    Surface::LightPercision lightPercision,
+    Surface::LightPrecision lightPercision,
     std::unique_ptr<Texture>& texture,
     bool requireCentralizing,
     Shape3d::NormalType normalType,
@@ -154,12 +154,11 @@ public:
         //Reserving space before allocating
         vertices.reserve(attributes.vertices.size() / 3u);
         for (unsigned int i = 0; i < attributes.vertices.size(); i += 3) {
-          vertices.emplace_back(
-            MatrixFloat(3, 1, std::vector<std::vector<float>>{
+          vertices.emplace_back(3, 1, std::vector<std::vector<float>>{
             std::vector<float>{attributes.vertices[i + 0u]},
-              std::vector<float>{attributes.vertices[i + 1u]},
-              std::vector<float>{attributes.vertices[i + 2u]}
-          }));
+            std::vector<float>{attributes.vertices[i + 1u]},
+            std::vector<float>{attributes.vertices[i + 2u]}
+          });
         }
 
       }
@@ -169,12 +168,11 @@ public:
           assert(attributes.normals.size() % 3 == 0);
           normals.reserve(attributes.normals.size() / 3u);
           for (unsigned int i = 0; i < attributes.normals.size(); i += 3) {
-            normals.emplace_back(
-              MatrixFloat(3, 1, std::vector<std::vector<float>>{
+            normals.emplace_back(3, 1, std::vector<std::vector<float>>{
               std::vector<float>{attributes.normals[i + 0u]},
-                std::vector<float>{attributes.normals[i + 1u]},
-                std::vector<float>{attributes.normals[i + 2u]}
-            }));
+              std::vector<float>{attributes.normals[i + 1u]},
+              std::vector<float>{attributes.normals[i + 2u]}
+            });
           }
         }
       }
@@ -185,11 +183,10 @@ public:
           textureCoordinates.reserve(attributes.texcoords.size() / 2u);
           for (unsigned int i = 0; i < attributes.texcoords.size(); i += 2) {
             textureCoordinates.emplace_back(
-              MatrixFloat(2, 1, std::vector<std::vector<float>>{
+              2, 1, std::vector<std::vector<float>>{
               std::vector<float>{attributes.texcoords[i + 0u]},
-                std::vector<float>{attributes.texcoords[i + 1u]}
-            })
-            );
+              std::vector<float>{attributes.texcoords[i + 1u]}
+            });
           }
         }
       }
@@ -266,7 +263,7 @@ public:
         // get center of min sphere
         // result is a pointer to float[3]
         const auto pc = mb.center();
-        MatrixFloat center = MatrixFloat(3,1,std::vector<std::vector<float>>{
+        MatrixFloat center(3,1,std::vector<std::vector<float>>{
           std::vector<float>{*pc},
           std::vector<float>{*std::next( pc )},
           std::vector<float>{*std::next( pc,2 )}

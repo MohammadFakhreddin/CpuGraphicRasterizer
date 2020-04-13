@@ -34,7 +34,7 @@ ColoredCubeScene::ColoredCubeScene(
     Logger::log("Creating shape object");
     
     cube = colorCube.generateCube(
-      Surface::LightPercision::perSurface,
+      Surface::LightPrecision::perSurface,
       width,
       width,
       width,

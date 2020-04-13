@@ -33,7 +33,7 @@ MonkeyScene::MonkeyScene(OpenGL& gl)
     auto scaleFactor = float(DataAccessPoint::getInstance()->getAppScreenWidth()) / 10.0f;
     shape = FileSystem::loadObject(
       Path::generateAssetPath("monkey", ".obj"),
-      Surface::LightPercision::perSurface,
+      Surface::LightPrecision::perSurface,
       (std::unique_ptr<Texture>&)whiteColor,
       true,
       Shape3d::NormalType::fileDefault,
@@ -56,10 +56,10 @@ MonkeyScene::MonkeyScene(OpenGL& gl)
       cameraInitialZLocation - 300.0f,
       cameraInstance.getCamerFieldOfView(),
       100.0f,
-      1.0f,
-      0.1F,
+      0.01f,
+      0.01F,
       4.0f,
-      5
+      31
     ));
     light = (PointLight*)lightSources.back().get();
   }

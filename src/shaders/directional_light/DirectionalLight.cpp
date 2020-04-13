@@ -13,23 +13,28 @@ DirectionalLight::DirectionalLight(
   :
   colorR(colorR),
   colorG(colorG),
-  colorB(colorB)
+  colorB(colorB),
+  lightDirectionHat(3, 1, 0.0f),
+  worldLightDirectionHat(3, 1, 0.0f),
+  roationXYZMatrix(3, 3, 0.0f),
+  rotationDegreeMatrix(3, 1, 0.0f)
 {
 
   assert(colorR >= 0 && colorR <= 1.0f);
   assert(colorG >= 0 && colorG <= 1.0f);
   assert(colorB >= 0 && colorB <= 1.0f);
 
+  MatrixFloat lightDirection(3, 1, 0.0f);
   lightDirection.set(0, 0, directionX);
   lightDirection.set(1, 0, directionY);
   lightDirection.set(2, 0, directionZ);
 
   lightDirection.hat<float>(lightDirectionHat);
-  
+
   worldLightDirectionHat.assign(lightDirectionHat);
 
-  rotateXYZ(0.0f,0.0f,0.0f);
- 
+  rotateXYZ(0.0f, 0.0f, 0.0f);
+
 }
 
 //Source: https://en.wikipedia.org/wiki/Computer_graphics_lighting
