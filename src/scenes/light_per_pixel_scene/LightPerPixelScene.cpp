@@ -41,7 +41,6 @@ LightPerPixelScene::LightPerPixelScene(OpenGL& gl)
       float(DataAccessPoint::getInstance()->getAppScreenWidth()) / 30.0f,
       float(DataAccessPoint::getInstance()->getAppScreenHeight()) - float(DataAccessPoint::getInstance()->getAppScreenWidth()) / 30.0f,
       cameraInitialZLocation - 80.0f,
-      cameraInstance.getCamerFieldOfView(),
       1.1f,
       1,
       1,

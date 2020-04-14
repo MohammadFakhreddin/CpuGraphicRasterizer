@@ -14,7 +14,6 @@ PointLight::PointLight(
   const float& initialTransformX,
   const float& initialTransformY,
   const float& initialTransformZ,
-  const float& cameraFieldOfView,
   const float& constantAttenuation,
   const float& linearAttenuation,
   const float& quadricAttenuation,
@@ -25,7 +24,6 @@ PointLight::PointLight(
   colorR(colorR),
   colorG(colorG),
   colorB(colorB),
-  cameraFieldOfView(cameraFieldOfView),
   constantAttenuation(constantAttenuation),
   linearAttenuation(linearAttenuation),
   quadricAttenuation(quadricAttenuation),
@@ -113,7 +111,7 @@ void PointLight::computeLightIntensity(
 
   double angleFactor = output.dotProduct(surfaceNormalVector) * -1.0;
 
-  double distanceFactor = cameraFieldOfView / ((long long)
+  double distanceFactor = 1.0f / ((long long)
     (
       squareDistance * quadricAttenuation +
       distance * linearAttenuation +

@@ -55,13 +55,12 @@ MonkeyScene::MonkeyScene(OpenGL& gl)
         - float(DataAccessPoint::getInstance()->getAppScreenWidth()) / 5.0f,
       float(DataAccessPoint::getInstance()->getAppScreenHeight()) / 2.0f
         - float(DataAccessPoint::getInstance()->getAppScreenHeight()) / 5.0f,
-      cameraInitialZLocation - 100.0f,
-      cameraInstance.getCamerFieldOfView(),
-      100.0f,
-      0.001f,
-      0.001F,
+      cameraInitialZLocation - 400.0f,
+      1.0f/cameraInstance.getCamerFieldOfView() * 1000,
+      1.0f/cameraInstance.getCamerFieldOfView() * 1000,
+      1.0f/cameraInstance.getCamerFieldOfView() * 1000,
       4.0f,
-      31
+      2
     ));
     light = (PointLight*)lightSources.back().get();
   }

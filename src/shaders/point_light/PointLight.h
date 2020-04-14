@@ -17,7 +17,6 @@ public:
     const float& initialTransformX,
     const float& initialTransformY,
     const float& initialTransformZ,
-    const float& cameraFieldOfView,
     const float& constantAttenuation,
     const float& linearAttenuation,
     const float& quadricAttenuation,
@@ -58,10 +57,6 @@ private:
   MatrixFloat worldPoint;
   //TODO Remove this
   std::vector<std::unique_ptr<Light>> lightSources;
-
-  double computationPercision = 1000.0;
-
-  float cameraFieldOfView;
 
   float constantAttenuation;
 
