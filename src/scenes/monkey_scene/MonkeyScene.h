@@ -42,7 +42,9 @@ private:
 
   PointLight* light;
 
-  std::unique_ptr<ColorTexture> whiteColor;
+  std::unique_ptr<ColorTexture> metalColor = std::make_unique<ColorTexture>(
+    171.0f / 255.0f, 171.0f / 255.0f, 171.0f / 255.0f
+  );
 
   float shapeRotationX = 0.0f;
 

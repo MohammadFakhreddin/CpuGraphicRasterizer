@@ -41,6 +41,7 @@ DirectionalLight::DirectionalLight(
 void DirectionalLight::computeLightIntensity(
     const MatrixFloat& surfaceNormal,
     const MatrixFloat& surfaceLocation,
+    const Camera& cameraInstance,
     MatrixFloat& output
 ) const {
   

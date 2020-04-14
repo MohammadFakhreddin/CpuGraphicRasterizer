@@ -75,7 +75,7 @@ void Surface::update(
     return;
   }
   if (lightPercision == LightPrecision::perSurface) {
-    computeColorIntensity(worldPoints, normals, lightSources);
+    computeColorIntensity(worldPoints, normals, lightSources, cameraInstance);
   }
   computePixelMapData(
     cameraInstance,
@@ -389,6 +389,7 @@ void Surface::computeColorIntensityForPoint(
   const MatrixFloat& worldPoint,
   const MatrixFloat& worldNormal,
   std::vector<std::unique_ptr<Light>>& lightSources,
+  const Camera& cameraInstance,
   MatrixFloat& output
 ) {
   for (auto& light : lightSources) {
@@ -396,26 +397,30 @@ void Surface::computeColorIntensityForPoint(
     light->computeLightIntensity(
       worldNormal,
       worldPoint,
+      cameraInstance,
       colorIntensityOutput
     );
 
-    for (short i = 0; i < 3; i++) {
-      output.set(
-        i,
-        0,
-        Math::max(
-          colorIntensityOutput.get(i, 0),
-          output.get(i, 0)
-        )
-      );
-    }
+    assert(colorIntensityOutput.get(0, 0) >= 0);
+    assert(colorIntensityOutput.get(0, 0) <= 1);
+    assert(colorIntensityOutput.get(1, 0) >= 0);
+    assert(colorIntensityOutput.get(1, 0) <= 1);
+    assert(colorIntensityOutput.get(2, 0) >= 0);
+    assert(colorIntensityOutput.get(2, 0) <= 1);
+
+    output.sum(colorIntensityOutput);
+
+  }
+  for (unsigned short int i = 0; i < 3; i++) {
+    output.set(i, 0, Math::clamp(output.get(i, 0), 0, 1));
   }
 }
 
 void Surface::computeColorIntensity(
   std::vector<MatrixFloat>& worldPoints,
   std::vector<MatrixFloat>& normals,
-  std::vector<std::unique_ptr<Light>>& lightSources
+  std::vector<std::unique_ptr<Light>>& lightSources,
+  const Camera& cameraInstance
 ) {
   if (lightSources.empty() == false) {
 
@@ -432,6 +437,7 @@ void Surface::computeColorIntensity(
         worldPoints.at(edgeIndices[edgeIndex]),
         normals.at(normalVectorIndices[edgeIndex]),
         lightSources,
+        cameraInstance,
         colorIntensity[edgeIndex]
       );
     }
@@ -456,7 +462,7 @@ bool Surface::areEdgeAndNormalsValid(
 }
 
 void Surface::calculateStepCount(
-  Camera& cameraInstance,
+  const Camera& cameraInstance,
   float difference,
   unsigned int* totalStepCount
 ){
@@ -478,7 +484,7 @@ void Surface::calculateStepValueBasedOnStepCount(
 }
 
 bool Surface::isVisibleToCamera(
-  Camera& cameraInstance,
+  const Camera& cameraInstance,
   std::vector<MatrixFloat>& worldPoints,
   std::vector<MatrixFloat>& normals
 ) {
@@ -718,6 +724,7 @@ void Surface::drawLineBetweenPoints(
         worldPointPlaceholder, 
         worldNormalPlaceholder, 
         lightSources, 
+        cameraInstance,
         colorIntensity[0]
       );
 

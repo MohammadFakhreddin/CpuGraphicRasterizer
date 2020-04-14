@@ -17,10 +17,10 @@ public:
     const float& initialTransformX,
     const float& initialTransformY,
     const float& initialTransformZ,
-    const float& constantAttenuation,
-    const float& linearAttenuation,
-    const float& quadricAttenuation,
-    const float& specularIntensity,
+    const double& constantAttenuation,
+    const double& linearAttenuation,
+    const double& quadricAttenuation,
+    const double& specularIntensity,
     const unsigned int& specularPower
   );
 
@@ -33,6 +33,7 @@ public:
   void computeLightIntensity(
     const MatrixFloat& surfaceNormalVector,
     const MatrixFloat& surfaceLocation,
+    const Camera& cameraInstance,
     MatrixFloat& output
   ) const override;
 
@@ -58,13 +59,13 @@ private:
   //TODO Remove this
   std::vector<std::unique_ptr<Light>> lightSources;
 
-  float constantAttenuation;
+  double constantAttenuation;
 
-  float linearAttenuation;
+  double linearAttenuation;
 
-  float quadricAttenuation;
+  double quadricAttenuation;
 
-  float specularIntensity;
+  double specularIntensity;
 
   unsigned int specularPower;
 

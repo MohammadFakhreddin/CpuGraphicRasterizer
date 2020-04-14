@@ -27,26 +27,28 @@ Camera::Camera(
   zDefaultValue(cameraFieldOfView * -1),
   appScreenWidth(appScreenWidth),
   appScreenHeight(appScreenHeight),
-  pixelMapSize(appScreenWidth * appScreenHeight),
+  pixelMapSize(appScreenWidth* appScreenHeight),
   gl(gl),
   transformMatrix(3, 1, 0.0f),
   rotationDegreeMatrix(3, 1, 0.0f),
   rotationValueXYZMatrix(3, 3, 0.0f),
-  transformationPlaceholder(3, 1, 0.0f)
+  transformationPlaceholder(3, 1, 0.0f),
+  cameraCenterX(appScreenWidth / 2),
+  cameraCenterY(appScreenHeight / 2)
 {
 
-  assert(cameraFieldOfView>0);
-  assert(appScreenWidth>0);
-  assert(appScreenHeight>0);
+  assert(cameraFieldOfView > 0);
+  assert(appScreenWidth > 0);
+  assert(appScreenHeight > 0);
 
-  this->transform(transformX,transformY,transformZ);
+  this->transform(transformX, transformY, transformZ);
   this->rotateXYZ(rotationDegreeX, rotationDegreeY, rotationDegreeZ);
 
   DataAccessPoint::getInstance()->getEventHandler().subscribeToEvent<bool>(
     EventHandler::EventName::screenSurfaceChanged,
     cameraName,
-    std::bind(&Camera::notifyScreenSurfaceIsChanged,this,std::placeholders::_1)
-  );
+    std::bind(&Camera::notifyScreenSurfaceIsChanged, this, std::placeholders::_1)
+    );
 
   initPixelMap();
 
@@ -73,6 +75,9 @@ void Camera::notifyScreenSurfaceIsChanged(
 
   this->appScreenWidth = DataAccessPoint::getInstance()->getAppScreenWidth();
   this->appScreenHeight = DataAccessPoint::getInstance()->getAppScreenHeight();
+
+  this->cameraCenterX = this->appScreenWidth / 2;
+  this->cameraCenterY = this->appScreenHeight / 2;
 
   assert(appScreenWidth>0);
   assert(appScreenHeight>0);
@@ -174,11 +179,11 @@ float Camera::scaleBasedOnZDistance(float zLocation){
   return cameraFieldOfView/(transformMatrix.get(2, 0) - zLocation);
 }
 
-unsigned int Camera::getAppScreenWidth(){
+const unsigned int& Camera::getAppScreenWidth() const {
   return appScreenWidth;
 }
 
-unsigned int Camera::getAppScreenHeight(){
+const unsigned int& Camera::getAppScreenHeight() const {
   return appScreenHeight;
 }
 
@@ -220,4 +225,12 @@ const MatrixFloat& Camera::getRotationXYZ() {
 
 float Camera::getCamerFieldOfView() {
   return cameraFieldOfView;
+}
+
+const unsigned int& Camera::getCameraCenterX() const {
+  return cameraCenterX;
+}
+
+const unsigned int& Camera::getCameraCenterY() const {
+  return cameraCenterY;
 }

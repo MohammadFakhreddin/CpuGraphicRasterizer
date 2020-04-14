@@ -14,10 +14,10 @@ PointLight::PointLight(
   const float& initialTransformX,
   const float& initialTransformY,
   const float& initialTransformZ,
-  const float& constantAttenuation,
-  const float& linearAttenuation,
-  const float& quadricAttenuation,
-  const float& specularIntensity,
+  const double& constantAttenuation,
+  const double& linearAttenuation,
+  const double& quadricAttenuation,
+  const double& specularIntensity,
   const unsigned int& specularPower
 ) :
   radius(radius),
@@ -37,7 +37,7 @@ PointLight::PointLight(
   assert(colorR >= 0 && colorR <= 1.0f);
   assert(colorG >= 0 && colorG <= 1.0f);
   assert(colorB >= 0 && colorB <= 1.0f);
-  assert(constantAttenuation >= 1);
+  assert(constantAttenuation > 0);
   assert(linearAttenuation > 0);
   assert(quadricAttenuation > 0);
   assert(specularIntensity > 0);
@@ -89,6 +89,7 @@ void PointLight::update(double deltaTime, Camera& cameraInstance) {
 void PointLight::computeLightIntensity(
   const MatrixFloat& surfaceNormalVector,
   const MatrixFloat& surfaceLocation,
+  const Camera& cameraInstance,
   MatrixFloat& output
 ) const {
 
@@ -96,10 +97,12 @@ void PointLight::computeLightIntensity(
   assert(surfaceNormalVector.getHeight() == 1);
   assert(surfaceLocation.getWidth() == 3);
   assert(surfaceLocation.getHeight() == 1);
+  assert(output.getWidth() == 3);
+  assert(output.getHeight() == 1);
   //Light vector
-  output.set(0, 0, surfaceLocation.get(0, 0) - worldPoint.get(0, 0));
-  output.set(1, 0, surfaceLocation.get(1, 0) - worldPoint.get(1, 0));
-  output.set(2, 0, surfaceLocation.get(2, 0) - worldPoint.get(2, 0));
+  output.set(0, 0, worldPoint.get(0, 0) - surfaceLocation.get(0, 0));
+  output.set(1, 0, worldPoint.get(1, 0) - surfaceLocation.get(1, 0));
+  output.set(2, 0, worldPoint.get(2, 0) - surfaceLocation.get(2, 0));
 
   double squareDistance = output.squareSize<double>();
 
@@ -109,19 +112,25 @@ void PointLight::computeLightIntensity(
   output.set(1, 0, float(double(output.get(1, 0)) / distance));
   output.set(2, 0, float(double(output.get(2, 0)) / distance));
 
-  double angleFactor = output.dotProduct(surfaceNormalVector) * -1.0;
+  double angleFactor = output.dotProduct(surfaceNormalVector);
 
-  double distanceFactor = 1.0f / ((long long)
-    (
-      squareDistance * quadricAttenuation +
-      distance * linearAttenuation +
-      constantAttenuation
-    )
-  );
+  if (angleFactor <= 0) {
+    output.set(0, 0, 0.0f);
+    output.set(1, 0, 0.0f);
+    output.set(2, 0, 0.0f);
+    return;
+  }
+
+  double distanceFactor = 1.0f / (
+    squareDistance * quadricAttenuation +
+    distance * linearAttenuation +
+    constantAttenuation
+    );
   //TODO We need memory pool
   //TODO I need a memory manger that I request objects from it
   //Like matrix& a = Memory.RequestMatrix; and then I free it
-  double lightIntensity = Math::min(distanceFactor * angleFactor, 1.0f);
+  double lightIntensity = distanceFactor * angleFactor;
+  assert(lightIntensity >= 0 && lightIntensity <= 1);
 
   //LightReflection
   MatrixFloat lightReflection(3, 1, 0.0f);
@@ -131,33 +140,39 @@ void PointLight::computeLightIntensity(
 
   //Camera vector
   MatrixFloat cameraVector(3, 1, 0.0f);
-  cameraVector.set(2, 0, worldPoint.get(2,0));
+  cameraVector.set(0, 0,
+    Math::clamp(cameraInstance.getCameraCenterX(), 0, cameraInstance.getAppScreenWidth()) - worldPoint.get(0, 0)
+  );
+  cameraVector.set(1, 0,
+    Math::clamp(cameraInstance.getCameraCenterY(), 0, cameraInstance.getAppScreenHeight()) - worldPoint.get(1, 0)
+  );
+  cameraVector.set(2, 0, worldPoint.get(2, 0));
+
   MatrixDouble cameraVectorHat(3, 1, 0.0f);
   cameraVector.hat(cameraVectorHat);
 
   MatrixDouble lightReflectionHat(3, 1, 0.0f);
 
   lightReflection.hat(lightReflectionHat);
-  
+
+  //lightIntensity = 0;
+
   double specularDotProduct = double(-1.0 * lightReflectionHat.dotProduct(cameraVectorHat));
+  assert(specularDotProduct >= -1);
+  assert(specularDotProduct <= 1);
   if (specularDotProduct > 0) {
     //TODO Write a pow function to constantly cast value to float to prevent overflow
-    double specularHighlight = Math::max(specularIntensity * pow(
+    double specularHighlight = specularIntensity * pow(
       specularDotProduct,
       specularPower
-    ), 0.0f);
-    lightIntensity *= float(specularHighlight);
+    );
+    lightIntensity += float(specularHighlight);
   }
 
-  if (lightIntensity > 0) {
-    output.set(0, 0, Math::clamp(float(lightIntensity * colorR), 0.0f, 1.0f));
-    output.set(1, 0, Math::clamp(float(lightIntensity * colorG), 0.0f, 1.0f));
-    output.set(2, 0, Math::clamp(float(lightIntensity * colorB), 0.0f, 1.0f));
-  }
-  else {
-    output.set(0, 0, 0.0f);
-    output.set(1, 0, 0.0f);
-    output.set(2, 0, 0.0f);
-  }
-  
+  lightIntensity = Math::clamp(lightIntensity, 0, 1);
+
+  output.set(0, 0, float(lightIntensity * colorR));
+  output.set(1, 0, float(lightIntensity * colorG));
+  output.set(2, 0, float(lightIntensity * colorB));
+
 }

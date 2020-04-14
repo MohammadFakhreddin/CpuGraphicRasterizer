@@ -81,7 +81,7 @@ private:
   );
 
   void calculateStepCount(
-    Camera& cameraInstance,
+    const Camera& cameraInstance,
     float difference,
     unsigned int* totalStepCount
   );
@@ -143,7 +143,7 @@ private:
    * 
    */
   bool isVisibleToCamera(
-    Camera& cameraInstance,
+    const Camera& cameraInstance,
     std::vector<MatrixFloat>& worldPoints,
     std::vector<MatrixFloat>& normals
   );
@@ -155,13 +155,15 @@ private:
   void computeColorIntensity(
     std::vector<MatrixFloat> & worldPoints,
     std::vector<MatrixFloat>& normals,
-    std::vector<std::unique_ptr<Light>>& lightSources  
+    std::vector<std::unique_ptr<Light>>& lightSources,
+    const Camera & cameraInstance
   );
 
   void computeColorIntensityForPoint(
     const MatrixFloat& worldPoint,
     const MatrixFloat& worldNormal,
     std::vector<std::unique_ptr<Light>>& lightSources,
+    const Camera& cameraInstance,
     MatrixFloat& output
   );
 

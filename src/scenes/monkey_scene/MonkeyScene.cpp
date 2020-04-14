@@ -24,17 +24,13 @@ MonkeyScene::MonkeyScene(OpenGL& gl)
     "Monkey main camera"
   )
 {
-  
-  whiteColor = std::make_unique<ColorTexture>(
-    1.0f, 1.0f, 1.0f
-  );
-  
+
   {//Creating shape
     auto scaleFactor = float(DataAccessPoint::getInstance()->getAppScreenWidth()) / 10.0f;
     shape = FileSystem::loadObject(
       Path::generateAssetPath("monkey", ".obj"),
       Surface::LightPrecision::perSurface,
-      (std::unique_ptr<Texture>&)whiteColor,
+      (std::unique_ptr<Texture>&)metalColor,
       true,
       Shape3d::NormalType::fileDefault,
       false
@@ -48,19 +44,21 @@ MonkeyScene::MonkeyScene(OpenGL& gl)
   {//Creating light source
     //lightSources.emplace_back(std::make_unique<DirectionalLight>(1.0f, 1.0f, 1.0f, -1.0f, -1.0f, -1.0f));
     lightSources.emplace_back(std::make_unique<AmbientLight>(0.05f, 0.05f, 0.05f));
+    double constantAttenuation = 1.3;
+    double quadricAndLinearAttenuation = 1.0 / double(cameraInstance.getCamerFieldOfView() * 100);
     lightSources.emplace_back(std::make_unique<PointLight>(
-      2.0f, 
+      1.1f, 
       255.0f/256.0f, 214.0f/256.0f, 170.0f/256.0f,
       float(DataAccessPoint::getInstance()->getAppScreenWidth()) / 2.0f 
         - float(DataAccessPoint::getInstance()->getAppScreenWidth()) / 5.0f,
       float(DataAccessPoint::getInstance()->getAppScreenHeight()) / 2.0f
         - float(DataAccessPoint::getInstance()->getAppScreenHeight()) / 5.0f,
       cameraInitialZLocation - 400.0f,
-      1.0f/cameraInstance.getCamerFieldOfView() * 1000,
-      1.0f/cameraInstance.getCamerFieldOfView() * 1000,
-      1.0f/cameraInstance.getCamerFieldOfView() * 1000,
-      4.0f,
-      2
+      constantAttenuation,
+      quadricAndLinearAttenuation,
+      quadricAndLinearAttenuation,
+      0.6f,
+      30
     ));
     light = (PointLight*)lightSources.back().get();
   }
@@ -116,11 +114,11 @@ void MonkeyScene::update(double deltaTime) {
     }
   }
 #endif
-  shape->rotateXYZ(
+  /*shape->rotateXYZ(
     float(-1.0f * shapeRotationSpeed * deltaTime * 0.1f),
     float(-1.0f * shapeRotationSpeed * deltaTime * 0.1f),
     float(-1.0f * shapeRotationSpeed * deltaTime * 0.1f)
-  );
+  )*/;
   {//Updating light
     for (auto& light:lightSources) {
       light->update(deltaTime, cameraInstance);

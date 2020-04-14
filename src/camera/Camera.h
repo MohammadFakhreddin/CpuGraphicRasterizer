@@ -54,9 +54,9 @@ public:
   
   float scaleBasedOnZDistance(float zLocation);
   
-  unsigned int getAppScreenWidth();
+  const unsigned int& getAppScreenWidth() const ;
   
-  unsigned int getAppScreenHeight();
+  const unsigned int& getAppScreenHeight() const ;
 
   void transform(float transformX, float transformY, float transformZ);
 
@@ -75,6 +75,10 @@ public:
     const float& green,
     const float& blue
   );
+
+  const unsigned int& getCameraCenterX() const ;
+
+  const unsigned int& getCameraCenterY() const ;
 
 private:
 
@@ -107,6 +111,10 @@ private:
   MatrixFloat rotationValueXYZMatrix;
 
   MatrixFloat transformationPlaceholder;
+
+  unsigned int cameraCenterX;
+
+  unsigned int cameraCenterY;
 
 };
 

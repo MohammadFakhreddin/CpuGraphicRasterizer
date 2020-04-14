@@ -21,6 +21,7 @@ public:
   void computeLightIntensity(
     const MatrixFloat& surfaceNormalVector,
     const MatrixFloat& surfaceLocation,
+    const Camera& cameraInstance,
     MatrixFloat& output
   ) const override;
 

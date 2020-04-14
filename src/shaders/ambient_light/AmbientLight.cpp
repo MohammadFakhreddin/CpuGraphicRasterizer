@@ -22,6 +22,7 @@ AmbientLight::AmbientLight(
 void AmbientLight::computeLightIntensity(
   const MatrixFloat& surfaceNormalVector,
   const MatrixFloat& surfaceLocation,
+  const Camera& cameraInstance,
   MatrixFloat& output
 ) const {
   output.set(0, 0, colorR);
