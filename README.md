@@ -3,6 +3,10 @@
 ### Currently entire game engine processes runs only on cpu (But multi threaded)
 
 <div>
+    <h2>Specular highlight</h2>
+    <img src="specular_highlight.gif">
+</div>
+<div>
     <h2>Point light (Runs multi-thread on cpu)</h2>
     <img src="point_light.gif">
 </div>
