@@ -2,17 +2,9 @@
 #define Shape3d_class
 
 #include <vector>
-#include <iostream>
 #include <memory>
-#include <functional>
-#include <thread>
 
-#include "../data_types/MatrixTemplate.h"
-#include "../texture/Texture.h"
-#include "../data_types/VectorTemplate.h"
-#include "./../camera/Camera.h"
 #include "../surface/Surface.h"
-#include "../utils/thread_pool/ThreadPool.h"
 
 class Shape3d
 {
@@ -39,7 +31,7 @@ public:
 
   Shape3d(
     std::vector<MatrixFloat>& nodes,
-    std::vector<std::unique_ptr<Surface>>&  surfaces,
+    std::vector<std::unique_ptr<Surface>>& surfaces,
     std::vector<MatrixFloat>& normals,
     float initialTransformX,
     float initialTransformY,
@@ -59,12 +51,6 @@ public:
     float scaleValue
   );
 
-  void update(
-    double deltaTime,
-    Camera& cameraInstance,
-    std::vector<std::unique_ptr<Light>>& lightSources
-  );
-
   void transformX(float x);
 
   void transformY(float y);
@@ -75,21 +61,7 @@ public:
 
   void rotateXYZ(const float& x, const float& y, const float& z);
 
-private:
-
   bool checkDataValidation();
-
-  void updateSurfaces(
-    const unsigned int& threadNumber
-  );
-
-  void updateNodes(
-    const unsigned int& threadNumber
-  );
-
-  void updateNormals(
-    const unsigned int& threadNumber
-  );
 
   std::vector<MatrixFloat> nodes;
   
@@ -109,24 +81,6 @@ private:
 
   MatrixFloat scaleValueMatrix;
   
-  std::vector<MatrixFloat> zScaleMatrix;
-
-  unsigned int numberOfSupportedThreads;
-
-  unsigned int threadNumberIndex;
-
-  Camera* cameraInstance;
-  
-  std::vector<std::unique_ptr<Light>>* lightSources;
-
-  std::function<void(const unsigned int&)> updateNodesReference = std::bind(&Shape3d::updateNodes, this, std::placeholders::_1);
-
-  std::function<void(const unsigned int&)> updateNormalsReference = std::bind(&Shape3d::updateNormals, this, std::placeholders::_1);
-
-  std::function<void(const unsigned int&)> updateSurfacesReference = std::bind(&Shape3d::updateSurfaces, this, std::placeholders::_1);
-
-  ThreadPool& threadPool;
-
 };
 
 #endif

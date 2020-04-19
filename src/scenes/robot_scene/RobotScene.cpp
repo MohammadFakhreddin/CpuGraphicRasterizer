@@ -12,24 +12,23 @@ RobotScene::RobotScene(OpenGL& gl)
   BaseScene(gl, "RobotScene"),
   cameraInstance(
     gl,
-    cameraInitialMaximumFov,
-    0,
-    0,
-    cameraInitialZLocation,
-    0,
-    0,
-    0,
+    MatrixFloat(3, 1, 0.0f),
+    MatrixFloat(3, 1, 0.0f),
     DataAccessPoint::getInstance()->getAppScreenWidth(),
     DataAccessPoint::getInstance()->getAppScreenHeight(),
     "Robot main camera"
-  )
+  ),
+  ambientLight(std::make_unique<AmbientLight>(0.2f, 0.2f, 0.2f)),
+  directionalLight(std::make_unique<DirectionalLight>(1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f)),
+  colorTexture(std::make_unique<ColorTexture>(1.0f, 1.0f, 1.0f)),
+  pip(cameraInstance)
 {
   colorTexture = std::make_unique<ColorTexture>(1.0f,1.0f,1.0f);
   {//Creating shape
     auto scaleFactor = float(DataAccessPoint::getInstance()->getAppScreenWidth()) / 50.0f;
     shape = FileSystem::loadObject(
       Path::generateAssetPath("robot", ".obj"),
-      Surface::LightPrecision::perSurface,
+      Constants::LightPrecision::perSurface,
       (std::unique_ptr<Texture>&)colorTexture,
       true,
       Shape3d::NormalType::fileDefault,
@@ -40,11 +39,9 @@ RobotScene::RobotScene(OpenGL& gl)
     shape->transformZ(cameraInitialZLocation - 100.0f);
     shape->scale(scaleFactor);
   }
-  {//Creating light source
-    lightSources.emplace_back(std::make_unique<AmbientLight>(0.2f, 0.2f, 0.2f));
-    lightSources.emplace_back(std::make_unique<DirectionalLight>(1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f));
-    light = (DirectionalLight*)lightSources.at(lightSources.size() - 1).get();
-  }
+  pip.assignAmbientLight(ambientLight.get());
+  pip.assignDirectionalLight(directionalLight.get());
+  pip.assignShapes(shape.get());
 }
 
 void RobotScene::update(double deltaTime) {
@@ -72,7 +69,7 @@ void RobotScene::update(double deltaTime) {
       lightRotationZ += float(deltaTime * lightRotationSpeed * 1.0 * 0.5);
     }
     if (lightRotationX != 0 || lightRotationY != 0 || lightRotationZ != 0) {
-      light->rotateXYZ(lightRotationX, lightRotationY, lightRotationZ);
+      directionalLight->rotateXYZ(lightRotationX, lightRotationY, lightRotationZ);
     }
   }
   {//Rotating shape by keyboard
@@ -103,12 +100,7 @@ void RobotScene::update(double deltaTime) {
     }
   }
 #endif
-  {//Updating light
-    for (unsigned int i = 0; i < lightSources.size(); i++) {
-      lightSources.at(i)->update(deltaTime, cameraInstance);
-    }
-  }
-  shape->update(deltaTime, cameraInstance, lightSources);
+  pip.update(deltaTime);
 }
 
 void RobotScene::render(double deltaTime) {

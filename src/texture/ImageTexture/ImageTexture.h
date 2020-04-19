@@ -23,13 +23,6 @@ private:
   float scaleX;
 
   float scaleY;
-  /**
-    Temporary variables
-  */
-  unsigned int currentPosition;
-
-  unsigned int realPositionX;
-  unsigned int realPositionY;
 
 public:
 
@@ -41,13 +34,25 @@ public:
 
   ~ImageTexture() override;
 
+  template <typename A>
+  ImageTexture& operator=(const ImageTexture& rhs) = delete;
+
+  template <typename A>
+  ImageTexture(const ImageTexture& other) = delete;
+
+  ImageTexture(ImageTexture&& other) = delete; // move constructor
+
+  ImageTexture& operator=(const ImageTexture& other) = delete;// copy assignment
+
+  ImageTexture& operator=(ImageTexture&& other) = delete; // move assignment
+
   void getPixelForPosition(
     const float& x,
     const float& y,
     float* red,
     float* green,
     float* blue
-    ) override;
+  ) const;
   /**
     For debugging texture
   */
@@ -68,11 +73,10 @@ public:
 private:
 
   void getDirectPixelColor(
-    const unsigned int& positionX,
-    const unsigned int& positionY,
+    const unsigned int& position,
     float* red,
     float* green,
     float* blue
-    );
+  ) const;
 
 };

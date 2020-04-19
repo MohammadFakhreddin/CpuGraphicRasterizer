@@ -8,16 +8,6 @@
 #include <vector>
 #include <memory>
 
-#include "./../Constants.h"
-#include "../utils/log/Logger.h"
-#include "../libs/tiny_obj_loader/tiny_obj_loader.h"
-#include "../utils/operators/Operators.h"
-#include "../utils/log/Logger.h"
-#include "../data_types/MatrixTemplate.h"
-#include "../surface/Surface.h"
-#include "../3d_shape/Shape3d.h"
-#include "../libs/mini_ball/Miniball.h"
-#include "../surface/Surface.h"
 #ifdef __DESKTOP__
 #include "./../libs/stb_image/open_gl_stb_image.h"
 #endif
@@ -27,6 +17,10 @@
 #ifdef __IOS__
 #include "./../../ios/ThreeDimentionalCube/ThreeDimentionalCube/IPhoneHelperAbstraction.h"
 #endif
+#include "../3d/shape/Shape3d.cpp"
+#include "../utils/operators/Operators.h"
+#include "../libs/tiny_obj_loader/tiny_obj_loader.h"
+#include "../libs/mini_ball/Miniball.h"
 
 class FileSystem{
 public:
@@ -58,10 +52,10 @@ public:
     #endif
     return nullptr;
   }
-  //TODO Sperate this function into multiple parts
+  //TODO Retrun array of points , normals and textures instead
   static std::unique_ptr<Shape3d> loadObject(
     std::string filename,
-    Surface::LightPrecision lightPercision,
+    Constants::LightPrecision lightPercision,
     std::unique_ptr<Texture>& texture,
     bool requireCentralizing,
     Shape3d::NormalType normalType,

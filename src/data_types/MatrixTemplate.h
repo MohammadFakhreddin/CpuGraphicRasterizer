@@ -225,6 +225,78 @@ public:
     return cells[x * height + y];
   }
 
+  const T& getX() const {
+    assert(width > 0);
+    assert(height == 1);
+    return cells[0];
+  }
+
+  const T& getY() const {
+    assert(width > 1);
+    assert(height == 1);
+    return cells[1];
+  }
+
+  const T& getZ() const {
+    assert(width > 2);
+    assert(height == 1);
+    return cells[2];
+  }
+
+  const T& getR() const {
+    assert(width == 3);
+    assert(height == 1);
+    return cells[0];
+  }
+
+  const T& getG() const {
+    assert(width == 3);
+    assert(height == 1);
+    return cells[1];
+  }
+
+  const T& getB() const {
+    assert(width == 3);
+    assert(height == 1);
+    return cells[2];
+  }
+
+  void setX(const T& value) {
+    assert(width > 0);
+    assert(height == 1);
+    cells[0] = value;
+  }
+
+  void setY(const T& value) {
+    assert(width > 1);
+    assert(height == 1);
+    cells[1] = value;
+  }
+
+  void setZ(const T& value) {
+    assert(width > 2);
+    assert(height == 1);
+    cells[2] = value;
+  }
+
+  void setR(const T& value) {
+    assert(width == 3);
+    assert(height == 1);
+    cells[0] = value;
+  }
+
+  void setG(const T& value) {
+    assert(width == 3);
+    assert(height == 1);
+    cells[1] = value;
+  }
+
+  void setB(const T& value) {
+    assert(width == 3);
+    assert(height == 1);
+    cells[2] = value;
+  }
+
   const T& getDirect(const unsigned int& index) const {
     assert(index < matrixSize);
     return cells[index];
@@ -241,16 +313,22 @@ public:
     cells[index] = value;
   }
 
-  /*_Matrix<T> clone() {
-    std::vector<std::vector<T>> cellsCopy;
-    for (i = 0; i < width; i++) {
-      cellsCopy.emplace_back(std::vector<T>());
-      for (j = 0; j < height; j++) {
-        cellsCopy.at(i).emplace_back(cells.at(i).at(j));
-      }
-    }
-    return _Matrix<T>(width, height, cellsCopy);
-  }*/
+  template<typename A, typename B>
+  void setXY(const A& x, const B& y) {
+    assert(width >= 2);
+    assert(height == 1);
+    cells[0] = T(x);
+    cells[1] = T(y);
+  }
+
+  template<typename A, typename B,typename C>
+  void setXYZ(const A& x, const B& y,const C& z) {
+    assert(width >= 2);
+    assert(height == 1);
+    cells[0] = T(x);
+    cells[1] = T(y);
+    cells[2] = T(z);
+  }
 
   static void assignAsRotationXMatrix(_Matrix<T>& matrix, const float& degree) {
     assert(matrix.getWidth() == 3);
@@ -309,6 +387,63 @@ public:
     matrix.set(2, 0, (cosf(xDegree) * sinf(yDegree) * cosf(zDegree)) + (sinf(xDegree) * sinf(zDegree)));
     matrix.set(2, 1, (cosf(xDegree) * sinf(yDegree) * (-1 * sinf(zDegree))) + (sinf(xDegree) * cosf(zDegree)));
     matrix.set(2, 2, cosf(xDegree) * cosf(yDegree));
+  }
+
+  static void addToTransfromXMatrix(
+    _Matrix<T>& matrix,
+    const float& x
+  ) {
+    assert(matrix.getWidth() == 3);
+    assert(matrix.getHeight() == 1);
+    matrix.setX(matrix.getX() + x);
+  }
+
+  static void addToTransfromYMatrix(
+    _Matrix<T>& matrix,
+    const float& y
+  ) {
+    assert(matrix.getWidth() == 3);
+    assert(matrix.getHeight() == 1);
+    matrix.setY(matrix.getY() + y);
+  }
+
+  static void addToTransfromZMatrix(
+    _Matrix<T>& matrix,
+    const float& z
+  ) {
+    assert(matrix.getWidth() == 3);
+    assert(matrix.getHeight() == 1);
+    matrix.setZ(matrix.getZ() + z);
+  }
+
+  static void addToTransfromXYZMatrix(
+    _Matrix<T>& matrix,
+    const float& x,
+    const float& y,
+    const float& z
+  ) {
+    assert(matrix.getWidth() == 3);
+    assert(matrix.getHeight() == 1);
+    matrix.setX(matrix.getX() + x);
+    matrix.setY(matrix.getY() + y);
+    matrix.setZ(matrix.getZ() + z);
+  }
+
+  static void addToScaleMatrix(
+    _Matrix<T>& matrix, 
+    const float& value
+  ) {
+    assert(matrix.getWidth() == 3);
+    assert(matrix.getHeight() == 1);
+    matrix.set(0, 0, matrix.get(0, 0) + value);
+    assert(matrix.get(0, 1) == 0);
+    assert(matrix.get(0, 2) == 0);
+    assert(matrix.get(1, 0) == 0);
+    matrix.set(1, 1, matrix.get(1, 1) + value);
+    assert(matrix.get(1, 2) + value);
+    assert(matrix.get(2, 0) + value);
+    assert(matrix.get(2, 1) + value);
+    matrix.set(2, 2, matrix.get(2, 2) + value);
   }
 
   template<typename A>
@@ -372,6 +507,10 @@ public:
     assert(width == 3);
     assert(height == 1);
     return sqrt(squareSize<A>());
+  }
+
+  const unsigned int& getMatrixArraySize() const {
+    return matrixSize;
   }
 
 };

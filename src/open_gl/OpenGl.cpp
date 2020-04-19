@@ -101,8 +101,9 @@ void OpenGL::init(){
 #endif
   glClearColor(0.0f, 0.0f, 0.0f, 1.0f); // Set background color to black and opaque
 #if defined(__OPENGL__)
-  glPointSize(1.4f);
+  glPointSize(1.0f);
   glViewport(0,0,appScreenWidth,appScreenHeight);
+  //TODO Remove camera and use projection matrix
   glOrtho(-0.5f, float(appScreenWidth) - 0.5f, -0.5f, float(appScreenHeight) - 0.5f, -1.0, 1.0);
 #endif
 #if defined(__GLES__)
@@ -209,7 +210,13 @@ void OpenGL::flush(){
   glFlush();
 }
 
-void OpenGL::drawPixel(unsigned int x,unsigned int y,float red,float green,float blue){
+void OpenGL::drawPixel(
+  const unsigned int& x, 
+  const unsigned int& y, 
+  const float& red, 
+  const float& green, 
+  const float& blue
+){
   assert(x>=0 && x<appScreenWidth);
   assert(y>=0 && y<appScreenHeight);
   assert(red>=0 && red<=1.0f);
@@ -267,7 +274,14 @@ void OpenGL::resetProgram(){
 #endif
 }
 
-void OpenGL::drawText(unsigned int x,unsigned int y,const std::string& text,float red,float green,float blue){
+void OpenGL::drawText(
+  const unsigned int& x, 
+  const unsigned int& y, 
+  const std::string& text, 
+  const float& red, 
+  const float& green, 
+  const float& blue
+){
   assert(x>=0 && x<appScreenWidth);
   assert(y>=0 && y<appScreenHeight);
 #if defined(__OPENGL__)

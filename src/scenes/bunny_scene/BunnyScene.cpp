@@ -11,41 +11,39 @@ BunnyScene::BunnyScene(OpenGL& gl)
   BaseScene(gl, "BunnyScene"),
   cameraInstance(
     gl,
-    cameraInitialMaximumFov,
-    0,
-    0,
-    cameraInitialZLocation,
-    0,
-    0,
-    0,
+    MatrixFloat(3, 1, 0.0f),
+    MatrixFloat(3, 1, 0.0f),
     DataAccessPoint::getInstance()->getAppScreenWidth(),
     DataAccessPoint::getInstance()->getAppScreenHeight(),
     "Bunny main camera"
-  )
+  ),
+  ambientLight(std::make_unique<AmbientLight>(0.2f, 0.2f, 0.2f)),
+  directionalLight(std::make_unique<DirectionalLight>(1.0f, 1.0f, 1.0f, -1.0f, -1.0f, -1.0f)),
+  pip(cameraInstance)
 {
   whiteColor = std::make_unique<ColorTexture>(
     1.0f,1.0f,1.0f  
   );
   {//Creating shape
     auto scaleFactor = float(DataAccessPoint::getInstance()->getAppScreenWidth()) / 4.0f;
-    shape = FileSystem::loadObject(
+    bunnyShape = FileSystem::loadObject(
       Path::generateAssetPath("bunny", ".obj"),
-      Surface::LightPrecision::perSurface,
+      Constants::LightPrecision::perSurface,
       (std::unique_ptr<Texture>&)whiteColor,
       true,
       Shape3d::NormalType::smooth,
       false
     );
-    shape->transformX(float(DataAccessPoint::getInstance()->getAppScreenWidth()) / 2.0f);
-    shape->transformY(float(DataAccessPoint::getInstance()->getAppScreenHeight()) / 2.0f);
-    shape->transformZ(cameraInitialZLocation - 100.0f);
-    shape->scale(scaleFactor);
+    bunnyShape->transformX(float(DataAccessPoint::getInstance()->getAppScreenWidth()) / 2.0f);
+    bunnyShape->transformY(float(DataAccessPoint::getInstance()->getAppScreenHeight()) / 2.0f);
+    bunnyShape->transformZ(100.0f);
+    bunnyShape->scale(scaleFactor);
   }
-  {//Creating light source
-    lightSources.emplace_back(std::make_unique<AmbientLight>(0.2f, 0.2f, 0.2f));
-    lightSources.emplace_back(std::make_unique<DirectionalLight>(1.0f, 1.0f, 1.0f, -1.0f, -1.0f, -1.0f));
-    light = (DirectionalLight*)lightSources.back().get();
-  }
+ 
+  pip.assignAmbientLight(ambientLight.get());
+  pip.assignDirectionalLight(directionalLight.get());
+  pip.assignShapes(bunnyShape.get());
+
 }
 
 void BunnyScene::update(double deltaTime) {
@@ -73,7 +71,7 @@ void BunnyScene::update(double deltaTime) {
       lightRotationZ += float(deltaTime * lightTransformSpeed * 1.0 * 0.5);
     }
     if (lightRotationX != 0 || lightRotationY != 0 || lightRotationZ != 0) {
-      light->rotateXYZ(lightRotationX, lightRotationY, lightRotationZ);
+      directionalLight->rotateXYZ(lightRotationX, lightRotationY, lightRotationZ);
     }
   }
   {//Rotating shape by keyboard
@@ -100,21 +98,16 @@ void BunnyScene::update(double deltaTime) {
     }
     if (shapeRotationX != 0 || shapeRotationY != 0 || shapeRotationZ != 0) {
       //We need seperate rotation methods as well
-      shape->rotateXYZ(shapeRotationX, shapeRotationY, shapeRotationZ);
+      bunnyShape->rotateXYZ(shapeRotationX, shapeRotationY, shapeRotationZ);
     }
   }
 #endif
-  shape->rotateXYZ(
+  bunnyShape->rotateXYZ(
     float(-1.0f * shapeRotationSpeed * deltaTime * 0.1f), 
     float(-1.0f * shapeRotationSpeed * deltaTime * 0.1f),
     float(-1.0f * shapeRotationSpeed * deltaTime * 0.1f)
   );
-  {//Updating light
-    for (unsigned int i = 0; i < lightSources.size(); i++) {
-      lightSources.at(i)->update(deltaTime, cameraInstance);
-    }
-  }
-  shape->update(deltaTime, cameraInstance, lightSources);
+  pip.update(deltaTime);
 }
 
 void BunnyScene::render(double deltaTime) {

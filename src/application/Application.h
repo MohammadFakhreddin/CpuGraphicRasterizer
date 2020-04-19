@@ -4,7 +4,6 @@
 #include <memory>
 
 #include "../Constants.h"
-#include "../3d_shape/Shape3d.h"
 #include "../open_gl/OpenGl.h"
 #include "../camera/Camera.h"
 #include "../scenes/base_scene/BaseScene.h"

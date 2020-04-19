@@ -11,7 +11,7 @@ public:
 
     static constexpr float piFloat = _piTemplate<float>;
     static constexpr double piDouble = _piTemplate<double>;
-
+    //TODO Due to perfomance demand remove this code and use standard library version
     template<typename A,typename B>
     static A max(const A& value,B max){
         if(value>max){

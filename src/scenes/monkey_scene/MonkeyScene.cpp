@@ -7,83 +7,77 @@
 #include "../../shaders/directional_light/DirectionalLight.h"
 #include "../../shaders/ambient_light/AmbientLight.h"
 
-MonkeyScene::MonkeyScene(OpenGL& gl) 
+MonkeyScene::MonkeyScene(OpenGL& gl)
   :
-  BaseScene(gl,"MonkeyScene"),
+  BaseScene(gl, "MonkeyScene"),
   cameraInstance(
     gl,
-    cameraInitialMaximumFov,
-    0,
-    0,
-    cameraInitialZLocation,
-    0,
-    0,
-    0,
+    MatrixFloat(3,1,0.0f),
+    MatrixFloat(3,1,0.0f),
     DataAccessPoint::getInstance()->getAppScreenWidth(),
     DataAccessPoint::getInstance()->getAppScreenHeight(),
     "Monkey main camera"
-  )
+  ),
+  ambientLight(std::make_unique<AmbientLight>(0.05f, 0.05f, 0.05f)),
+  metalColor(std::make_unique<ColorTexture>(171.0f / 255.0f, 171.0f / 255.0f, 171.0f / 255.0f)),
+  pointLight(std::make_unique<PointLight>(
+    1.1f,
+    255.0f / 256.0f, 214.0f / 256.0f, 170.0f / 256.0f,
+    float(DataAccessPoint::getInstance()->getAppScreenWidth()) / 2.0f
+    - float(DataAccessPoint::getInstance()->getAppScreenWidth()) / 5.0f,
+    float(DataAccessPoint::getInstance()->getAppScreenHeight()) / 2.0f
+    - float(DataAccessPoint::getInstance()->getAppScreenHeight()) / 5.0f,
+    400.0f,
+    1.3,
+    1.0 / double(100),
+    1.0 / double(100),
+    0.6f,
+    30
+  )),
+  pip(cameraInstance)
 {
 
   {//Creating shape
     auto scaleFactor = float(DataAccessPoint::getInstance()->getAppScreenWidth()) / 10.0f;
-    shape = FileSystem::loadObject(
+    monkey = FileSystem::loadObject(
       Path::generateAssetPath("monkey", ".obj"),
-      Surface::LightPrecision::perSurface,
+      Constants::LightPrecision::perSurface,
       (std::unique_ptr<Texture>&)metalColor,
       true,
       Shape3d::NormalType::fileDefault,
       false
     );
-    shape->transformX(float(DataAccessPoint::getInstance()->getAppScreenWidth()) / 2.0f);
-    shape->transformY(float(DataAccessPoint::getInstance()->getAppScreenHeight()) / 2.0f);
-    shape->transformZ(cameraInitialZLocation - 500.0f);
-    shape->scale(scaleFactor);
+    monkey->transformX(float(DataAccessPoint::getInstance()->getAppScreenWidth()) / 2.0f);
+    monkey->transformY(float(DataAccessPoint::getInstance()->getAppScreenHeight()) / 2.0f);
+    monkey->transformZ(500.0f);
+    monkey->scale(scaleFactor);
   }
 
-  {//Creating light source
-    //lightSources.emplace_back(std::make_unique<DirectionalLight>(1.0f, 1.0f, 1.0f, -1.0f, -1.0f, -1.0f));
-    lightSources.emplace_back(std::make_unique<AmbientLight>(0.05f, 0.05f, 0.05f));
-    double constantAttenuation = 1.3;
-    double quadricAndLinearAttenuation = 1.0 / double(cameraInstance.getCamerFieldOfView() * 100);
-    lightSources.emplace_back(std::make_unique<PointLight>(
-      1.1f, 
-      255.0f/256.0f, 214.0f/256.0f, 170.0f/256.0f,
-      float(DataAccessPoint::getInstance()->getAppScreenWidth()) / 2.0f 
-        - float(DataAccessPoint::getInstance()->getAppScreenWidth()) / 5.0f,
-      float(DataAccessPoint::getInstance()->getAppScreenHeight()) / 2.0f
-        - float(DataAccessPoint::getInstance()->getAppScreenHeight()) / 5.0f,
-      cameraInitialZLocation - 400.0f,
-      constantAttenuation,
-      quadricAndLinearAttenuation,
-      quadricAndLinearAttenuation,
-      0.6f,
-      30
-    ));
-    light = (PointLight*)lightSources.back().get();
-  }
+  pip.assignAmbientLight(ambientLight.get());
+  pip.assignPointLight(pointLight.get());
+  pip.assignShapes(monkey.get());
 }
 
 void MonkeyScene::update(double deltaTime) {
 #ifdef __DESKTOP__
   {//We rotate light by keyboard
     if (useKeyEvent(Constants::Buttons::keyA)) {
-      light->transformX(float(deltaTime * lightTransformSpeed * -1.0f));
+      pointLight->transformX(float(deltaTime * lightTransformSpeed * -1.0f));
     }
     if (useKeyEvent(Constants::Buttons::keyD)) {
-      light->transformX(float(deltaTime * lightTransformSpeed));
+      pointLight->transformX(float(deltaTime * lightTransformSpeed));
     }
     if (useKeyEvent(Constants::Buttons::keyW)) {
-      light->transformY(float(deltaTime * lightTransformSpeed));
+      pointLight->transformY(float(deltaTime * lightTransformSpeed));
     }
     if (useKeyEvent(Constants::Buttons::keyS)) {
-      light->transformY(float(deltaTime * lightTransformSpeed * -1.0));
+      pointLight->transformY(float(deltaTime * lightTransformSpeed * -1.0));
     }
     if (useKeyEvent(Constants::Buttons::keyC)) {
-      light->transformZ(float(deltaTime * lightTransformSpeed * -1.0 * 0.5));
+      pointLight->transformZ(float(deltaTime * lightTransformSpeed * -1.0 * 0.5));
     }
     if (useKeyEvent(Constants::Buttons::keyV)) {
-      light->transformZ(float(deltaTime * lightTransformSpeed * 1.0 * 0.5));
+      pointLight->transformZ(float(deltaTime * lightTransformSpeed * 1.0 * 0.5));
     }
   }
   {//Rotating shape by keyboard
@@ -110,21 +104,11 @@ void MonkeyScene::update(double deltaTime) {
     }
     if (shapeRotationX != 0 || shapeRotationY != 0 || shapeRotationZ != 0) {
       //We need seperate rotation methods as well
-      shape->rotateXYZ(shapeRotationX, shapeRotationY, shapeRotationZ);
+      monkey->rotateXYZ(shapeRotationX, shapeRotationY, shapeRotationZ);
     }
   }
 #endif
-  /*shape->rotateXYZ(
-    float(-1.0f * shapeRotationSpeed * deltaTime * 0.1f),
-    float(-1.0f * shapeRotationSpeed * deltaTime * 0.1f),
-    float(-1.0f * shapeRotationSpeed * deltaTime * 0.1f)
-  )*/;
-  {//Updating light
-    for (auto& light:lightSources) {
-      light->update(deltaTime, cameraInstance);
-    }
-  }
-  shape->update(deltaTime, cameraInstance, lightSources);
+  pip.update(deltaTime);
 }
 
 void MonkeyScene::render(double deltaTime) {

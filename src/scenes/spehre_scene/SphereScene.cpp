@@ -3,9 +3,9 @@
 #include <memory>
 
 #include "../../data_access_point/DataAccessPoint.h"
-#include "../../3d_models/ShapeGenerator.h"
 #include "../../shaders/directional_light/DirectionalLight.h"
 #include "../../shaders/ambient_light/AmbientLight.h"
+#include "../../3d/models/ShapeGenerator.h"
 
 SphereScene::SphereScene(OpenGL& gl)
   :
@@ -28,7 +28,7 @@ SphereScene::SphereScene(OpenGL& gl)
   
   auto radius = float((25.0f / 800.f) * DataAccessPoint::getInstance()->getAppScreenWidth());
   sphere = ShapeGenerator::sphere(
-    Surface::LightPrecision::perSurface,
+    Constants::LightPrecision::perSurface,
     (std::unique_ptr<Texture>&)whiteColor,
     radius,
     12 * 2,

@@ -2,23 +2,8 @@
 
 #include <memory>
 #include <vector>
-
-#include "../Constants.h"
-#include "../open_gl/OpenGl.h"
-#include "../3d_shape/Shape3d.h"
-#include "../utils/log/Logger.h"
-#include "../utils/math/Math.h"
-#include "../file_system/FileSystem.h"
-#include "../event_handler/EventHandler.h"
-#include "../scenes/bunny_scene/BunnyScene.h"
-#include "../scenes/colored_cube_scene/ColoredCubeScene.h"
 #include "../data_access_point/DataAccessPoint.h"
-#include "../scenes/textured_cube_scene/TexturedCubeScene.h"
-#include "../scenes/spehre_scene/SphereScene.h"
 #include "../scenes/monkey_scene/MonkeyScene.h"
-#include "../scenes/plant_scene/PlantScene.h"
-#include "../scenes/robot_scene/RobotScene.h"
-#include "../scenes/light_per_pixel_scene/LightPerPixelScene.h"
 
 //  UI Libraries
 /*
@@ -75,12 +60,13 @@ Application::Application(
   {
     //sceneList.emplace_back(std::make_unique<LightPerPixelScene>(openGLInstance));
     sceneList.emplace_back(std::make_unique<MonkeyScene>(openGLInstance));
-    //sceneList.emplace_back(std::make_unique<BunnyScene>(openGLInstance));
-    //sceneList.emplace_back(std::make_unique<SphereScene>(openGLInstance));
-    //sceneList.emplace_back(std::make_unique<ColoredCubeScene>(openGLInstance));
-    //sceneList.emplace_back(std::make_unique<TexturedCubeScene>(openGLInstance));
-    //sceneList.emplace_back(std::make_unique<RobotScene>(openGLInstance));
-    //sceneList.emplace_back(std::make_unique<PlantScene>(openGLInstance));
+    /*sceneList.emplace_back(std::make_unique<BunnyScene>(openGLInstance));
+    sceneList.emplace_back(std::make_unique<SphereScene>(openGLInstance));
+    sceneList.emplace_back(std::make_unique<ColoredCubeScene>(openGLInstance));
+    sceneList.emplace_back(std::make_unique<TexturedCubeScene>(openGLInstance));
+    sceneList.emplace_back(std::make_unique<RobotScene>(openGLInstance));
+    sceneList.emplace_back(std::make_unique<PlantScene>(openGLInstance));
+    */
     navigateToScene(0);
   }
 

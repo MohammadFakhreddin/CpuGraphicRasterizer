@@ -1,9 +1,9 @@
 #ifndef AmbientLight_Class
 #define AmbientLight_Class
 
-#include "../light/Light.h"
+#include "../../data_types/MatrixTemplate.h"
 
-class AmbientLight : public Light {
+class AmbientLight{
 
 public:
 
@@ -13,22 +13,17 @@ public:
     const float& colorB
   );
 
-  void computeLightIntensity(
-    const MatrixFloat& surfaceNormalVector,
-    const MatrixFloat& surfaceLocation,
-    const Camera& cameraInstance,
-    MatrixFloat& output
-  ) const override;
+  AmbientLight(
+    const MatrixFloat& color
+  );
 
-  void update(double deltaTime, Camera& cameraInstance) override;
+  void computeLightIntensity(
+    MatrixFloat& output
+  ) const;
 
 private:
 
-  float colorR;
-
-  float colorG;
-
-  float colorB;
+  MatrixFloat color;
 
 };
 

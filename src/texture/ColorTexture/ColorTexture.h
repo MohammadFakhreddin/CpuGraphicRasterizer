@@ -11,7 +11,11 @@ public:
     const float& red,
     const float& green,
     const float& blue
-    );
+  );
+
+  ColorTexture(
+    const MatrixFloat& color
+  );
 
   void getPixelForPosition(
     const float& x,
@@ -19,7 +23,7 @@ public:
     float* red,
     float* green,
     float* blue
-    ) override;
+  ) const;
 
 private:
 

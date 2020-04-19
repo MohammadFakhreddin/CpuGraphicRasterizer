@@ -1,6 +1,13 @@
 #include "./ColorTexture.h"
 
 ColorTexture::ColorTexture(
+  const MatrixFloat& color
+)
+  :
+  ColorTexture(color.getR(), color.getG(), color.getB())
+{}
+
+ColorTexture::ColorTexture(
   const float& red,
   const float& green,
   const float& blue
@@ -21,7 +28,7 @@ void ColorTexture::getPixelForPosition(
   float* red,
   float* green,
   float* blue
-)
+) const
 {
   *red = this->red;
   *green = this->green;

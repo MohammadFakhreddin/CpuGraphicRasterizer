@@ -10,6 +10,9 @@ ThreadPool::ThreadPool()
   mainThreadMutex(),
   mainThreadLock(std::unique_lock<std::mutex>(mainThreadMutex))
 {
+
+  mainThreadId = std::this_thread::get_id();
+
 #ifdef __DESKTOP__
   numberOfThreads = (unsigned int)(float(std::thread::hardware_concurrency()) / 2);
 #endif // __DESKTOP__
@@ -47,18 +50,36 @@ ThreadPool::~ThreadPool() {
   isThreadPoolActive = false;
 }
 
+void ThreadPool::autoAssignTask(
+  std::function<void(const unsigned int&, void*)>* task,
+  void* param
+) {
+
+  assert(std::this_thread::get_id() == mainThreadId);
+  
+  assignTask(currentThreadIndex, task, param);
+  currentThreadIndex++;
+  if (currentThreadIndex > numberOfThreads) {
+    currentThreadIndex = 0;
+  }
+
+}
+
 void ThreadPool::assignTask(
   const unsigned int& threadNumber,
-  std::function<void(const unsigned int&)>* task
+  std::function<void(const unsigned int&,void*)>* task,
+  void* param
 ) {
+  assert(std::this_thread::get_id() == mainThreadId);
   assert(threadNumber >= 0 && threadNumber < numberOfThreads);
+
   if (numberOfThreads > 1) {
-    threadObjects[threadNumber]->assign(task);
+    threadObjects[threadNumber]->assign(task, param);
   }
   else
   {
     if (task != nullptr) {
-      (*task)(threadNumber);
+      (*task)(threadNumber, param);
     }
   }
 }
@@ -77,12 +98,14 @@ ThreadPool::ThreadObject::~ThreadObject() {
   thread->detach();
 }
 
-void ThreadPool::ThreadObject::assign(std::function<void(const unsigned int&)>* task) {
+void ThreadPool::ThreadObject::assign(std::function<void(const unsigned int&,void*)>* task,void* param) {
   tasks.push(task);
+  parameters.push(param);
+
   condition.notify_one();
 }
 
-const unsigned int& ThreadPool::getNumberOfAvailableThreads() {
+const unsigned int& ThreadPool::getNumberOfAvailableThreads() const {
   return numberOfThreads;
 }
 
@@ -100,12 +123,13 @@ void ThreadPool::ThreadObject::mainLoop() {
     while (tasks.empty() == false) {
       try {
         if (tasks.front() != nullptr) {
-          (*tasks.front())(threadNumber);
+          (*tasks.front())(threadNumber, parameters.front());
         }
       }
       catch (std::exception exception) {
         parent.exceptions.push(exception.what());
       }
+      parameters.pop();
       tasks.pop();
     }
     conditionVariablesMutex.lock();

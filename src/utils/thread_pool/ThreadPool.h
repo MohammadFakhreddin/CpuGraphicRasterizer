@@ -18,12 +18,18 @@ public:
 
   ~ThreadPool();
 
-  void assignTask(
-    const unsigned int& threadNumber,
-    std::function<void(const unsigned int&)>* task
+  void autoAssignTask(
+    std::function<void(const unsigned int&, void*)>* task,
+    void* param
   );
 
-  const unsigned int& getNumberOfAvailableThreads();
+  void assignTask(
+    const unsigned int& threadNumber,
+    std::function<void(const unsigned int&,void*)>* task,
+    void* param
+  );
+
+  const unsigned int& getNumberOfAvailableThreads() const;
 
   void waitForThreadsToFinish();
 
@@ -38,7 +44,8 @@ public:
     void mainLoop();
 
     void assign(
-      std::function<void(const unsigned int&)>* task
+      std::function<void(const unsigned int&, void* param)>* task,
+      void* params
     );
 
     bool sleepCondition();
@@ -51,7 +58,9 @@ public:
 
     std::unique_lock<std::mutex> lock;
 
-    std::queue<std::function<void(const unsigned int&)>*> tasks;
+    std::queue<std::function<void(const unsigned int&, void* )>*> tasks;
+
+    std::queue<void*> parameters;
 
     std::condition_variable condition;
 
@@ -97,6 +106,10 @@ private:
   std::condition_variable mainThreadCondition;
 
   std::queue<std::string> exceptions;
+
+  unsigned int currentThreadIndex = 0;
+
+  std::thread::id mainThreadId;
 
 };
 

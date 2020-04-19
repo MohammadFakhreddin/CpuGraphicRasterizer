@@ -6,10 +6,10 @@
 #include "../base_scene/BaseScene.h"
 #include "../../open_gl/OpenGl.h"
 #include "../../camera/Camera.h"
-#include "../../3d_shape/Shape3d.h"
 #include "../../shaders/point_light/PointLight.h"
 #include "../../texture/ColorTexture/ColorTexture.h"
-#include "../../3d_models/ColoredCube.h"
+#include "../../pipeline/Pipeline.h"
+#include "../../3d/models/ColoredCube.h"
 
 class LightPerPixelScene : public BaseScene {
 
@@ -37,15 +37,19 @@ public:
 
 private:
 
-  PointLight* light;
+  std::unique_ptr<PointLight> pointLight;
+
+  std::unique_ptr<AmbientLight> ambientLight;
 
   Camera cameraInstance;
 
   std::unique_ptr<Shape3d> shape;
 
-  std::vector<std::unique_ptr<Light>> lightSources;
-
   std::unique_ptr<ColorTexture> whiteColor;
+
+  PipeLine pip;
+
+  ColorCube colorCube;
 
   float lightRotationX = 0.0f;
 
@@ -58,8 +62,6 @@ private:
   float shapeRotationY = 0.0f;
 
   float shapeRotationZ = 0.0f;
-
-  ColorCube colorCube;
 
 };
 

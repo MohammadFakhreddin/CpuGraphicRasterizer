@@ -1,11 +1,9 @@
 #ifndef DiffuseLight_class
 #define DiffuseLight_class
 
-#include "./../../utils/math/Math.h"
-#include "./../../data_types/MatrixTemplate.h"
-#include "./../light/Light.h"
+#include "../../data_types/MatrixTemplate.h"
 
-class DirectionalLight :public Light {
+class DirectionalLight {
 
 public:
   //TODO We need to have light color
@@ -19,23 +17,17 @@ public:
   );
 
   void computeLightIntensity(
-    const MatrixFloat& surfaceNormalVector,
-    const MatrixFloat& surfaceLocation,
-    const Camera& cameraInstance,
+    const MatrixFloat& normal,
     MatrixFloat& output
-  ) const override;
+  ) const;
 
-  void update(double deltaTime, Camera& cameraInstance) override;
+  void update(Camera& camera);
 
-  void rotateXYZ(const float& x,const float& y,const float& z);
+  void rotateXYZ(const float& x, const float& y, const float& z);
 
 private:
 
-  float colorR;
-
-  float colorG;
-
-  float colorB;
+  MatrixFloat color;
 
   MatrixFloat lightDirectionHat;
 
@@ -44,7 +36,7 @@ private:
   MatrixFloat roationXYZMatrix;
 
   MatrixFloat rotationDegreeMatrix;
-  
+
 };
 
 #endif

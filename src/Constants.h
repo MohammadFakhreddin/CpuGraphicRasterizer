@@ -102,5 +102,11 @@ namespace Constants {
   };
 
 #endif // __DESKTOP__
+
+  enum class LightPrecision {
+    perPixel,
+    perSurface
+  };
+
 };
 #endif //!Constants_class

@@ -18,7 +18,7 @@ public:
     float *red,
     float *green,
     float *blue
-  );
+  ) const ;
 
   /**
     For debugging texture

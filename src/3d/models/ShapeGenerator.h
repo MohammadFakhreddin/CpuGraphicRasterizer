@@ -3,11 +3,6 @@
 
 #include <memory>
 
-#include "../3d_shape/Shape3d.h"
-#include "../utils/math/Math.h"
-#include "../data_types/MatrixTemplate.h"
-#include "../utils/math/Math.h"
-
 class ShapeGenerator {
 
 public:
@@ -93,7 +88,7 @@ public:
   }
 
   static std::unique_ptr<Shape3d> sphere(
-    Surface::LightPrecision lightPrecision,
+    Constants::LightPrecision lightPrecision,
     std::unique_ptr<Texture>& texture,
     const float& radius,
     const unsigned int& numberOfLat,

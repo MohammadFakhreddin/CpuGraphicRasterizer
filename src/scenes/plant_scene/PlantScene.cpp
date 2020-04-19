@@ -12,25 +12,22 @@ PlantScene::PlantScene(OpenGL& gl)
   BaseScene(gl, "PlantScene"),
   cameraInstance(
     gl,
-    cameraInitialMaximumFov,
-    0,
-    0,
-    cameraInitialZLocation,
-    0,
-    0,
-    0,
+    MatrixFloat(3, 1, 0.0f),
+    MatrixFloat(3, 1, 0.0f),
     DataAccessPoint::getInstance()->getAppScreenWidth(),
     DataAccessPoint::getInstance()->getAppScreenHeight(),
     "Plant main camera"
-  )
+  ),
+  ambientLight(std::make_unique<AmbientLight>(0.2f, 0.2f, 0.2f)),
+  directionalLight(std::make_unique<DirectionalLight>(1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f)),
+  colorTexture(std::make_unique<ColorTexture>(1.0f, 1.0f, 1.0f)),
+  pip(cameraInstance)
 {
-
-  colorTexture = std::make_unique<ColorTexture>(1.0f, 1.0f, 1.0f);
 
   {//Creating shape
     shape = FileSystem::loadObject(
       Path::generateAssetPath("plant",".obj"),
-      Surface::LightPrecision::perSurface,
+      Constants::LightPrecision::perSurface,
       (std::unique_ptr<Texture>&)colorTexture,
       false,
       Shape3d::NormalType::fileDefault,
@@ -41,11 +38,11 @@ PlantScene::PlantScene(OpenGL& gl)
     shape->transformZ(cameraInitialZLocation - 100.0f);
     shape->scale(5.0f);
   }
-  {//Creating light source
-    lightSources.emplace_back(std::make_unique<AmbientLight>(0.2f, 0.2f, 0.2f));
-    lightSources.emplace_back(std::make_unique<DirectionalLight>(1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f));
-    light = (DirectionalLight*)lightSources.at(lightSources.size() - 1).get();
-  }
+
+  pip.assignAmbientLight(ambientLight.get());
+  pip.assignDirectionalLight(directionalLight.get());
+  pip.assignShapes(shape.get());
+
 }
 
 void PlantScene::update(double deltaTime) {
@@ -73,7 +70,7 @@ void PlantScene::update(double deltaTime) {
       lightRotationZ += float(deltaTime * lightRotationSpeed * 1.0 * 0.5);
     }
     if (lightRotationX != 0 || lightRotationY != 0 || lightRotationZ != 0) {
-      light->rotateXYZ(lightRotationX, lightRotationY, lightRotationZ);
+      directionalLight->rotateXYZ(lightRotationX, lightRotationY, lightRotationZ);
     }
   }
   {//Rotating shape by keyboard
@@ -104,12 +101,7 @@ void PlantScene::update(double deltaTime) {
     }
   }
 #endif
-  {//Updating light
-    for (unsigned int i = 0; i < lightSources.size(); i++) {
-      lightSources.at(i)->update(deltaTime, cameraInstance);
-    }
-  }
-  shape->update(deltaTime, cameraInstance, lightSources);
+  pip.update(deltaTime);
 }
 
 void PlantScene::render(double deltaTime) {

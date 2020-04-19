@@ -14,7 +14,7 @@ void Texture::getPixelForPosition(
   float* red,
   float* green,
   float* blue
-){
+) const {
   Logger::exception("Texture::getPixelForPosition is not correctly implemented in child class");
 }
 

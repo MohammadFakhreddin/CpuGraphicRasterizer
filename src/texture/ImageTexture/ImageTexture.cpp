@@ -73,7 +73,7 @@ void ImageTexture::getPixelForPosition(
   float* red,
   float* green,
   float* blue
-) {
+) const {
   assert(data);
   if (
     x < 0 ||
@@ -87,34 +87,28 @@ void ImageTexture::getPixelForPosition(
   assert(x >= 0);
   assert(y < virtualImageHeight);
   assert(y >= 0);
-  
-  realPositionX = (unsigned int)(scaleX * x);
-  realPositionY = (unsigned int)(scaleY * y);
-  
+   
   getDirectPixelColor(
-    realPositionX,
-    realPositionY,
+    ((unsigned int)(scaleY * y) * width + (unsigned int)(scaleX * x)) * numberOfChannels,
     red,
     green,
     blue
-    );
+  );
 }
 
 void ImageTexture::getDirectPixelColor(
-  const unsigned int& positionX,
-  const unsigned int& positionY,
+  const unsigned int& position,
   float* red,
   float* green,
   float* blue
-  ) {
-  assert(positionX >= 0u && positionX < (unsigned int)width && "FaImageTexture::getPixelForPosition positionX must be between 0 and width");
-  assert(positionY >= 0u && positionY < (unsigned int)height && "FaImageTexture::getPixelForPosition positionY must be between 0 and height");
+) const {
 
-  currentPosition = (positionY * width + positionX) * numberOfChannels;
+  assert(position < width* height* numberOfChannels);
 
-  *red = data[currentPosition];
-  *green = data[currentPosition + 1];
-  *blue = data[currentPosition + 2];
+  *red = data[position];
+  *green = data[position + 1];
+  *blue = data[position + 2];
+
 }
 
 /**

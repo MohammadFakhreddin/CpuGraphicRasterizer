@@ -4,10 +4,9 @@
 #include <string>
 #include <memory>
 
-#include "./../data_types/VectorTemplate.h"
-#include "../utils/path/Path.h"
 #include "./ShapeGenerator.h"
-#include "../texture/ColorTexture/ColorTexture.h"
+#include "../../texture/ColorTexture/ColorTexture.h"
+#include "../shape/Shape3d.cpp"
 
 class ColorCube {
 
@@ -23,7 +22,7 @@ private:
 public:
 
   std::unique_ptr<Shape3d> generateCube(
-    Surface::LightPrecision lightPrecision,
+    Constants::LightPrecision lightPrecision,
     float w,
     float h,
     float d,

@@ -6,9 +6,9 @@
 #include "../base_scene/BaseScene.h"
 #include "../../open_gl/OpenGl.h"
 #include "../../camera/Camera.h"
-#include "../../3d_shape/Shape3d.h"
 #include "../../texture/ColorTexture/ColorTexture.h"
 #include "../../shaders/directional_light/DirectionalLight.h"
+#include "../../pipeline/Pipeline.h"
 
 class RobotScene : public BaseScene {
 
@@ -36,15 +36,17 @@ public:
 
 private:
 
-  DirectionalLight* light;
+  std::unique_ptr<AmbientLight> ambientLight;
+
+  std::unique_ptr<DirectionalLight> directionalLight;
 
   Camera cameraInstance;
 
   std::unique_ptr<Shape3d> shape;
 
-  std::vector<std::unique_ptr<Light>> lightSources;
-
   std::unique_ptr<ColorTexture> colorTexture;
+
+  PipeLine pip;
 
   float shapeRotationX = 0.0f;
 

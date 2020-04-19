@@ -21,15 +21,19 @@ public:
     float blue;
   };
 
+  struct Params {
+    OpenGL& gl;
+    MatrixFloat transform;
+    MatrixFloat rotation;
+    unsigned int appScreenWidth;
+    unsigned int appScreenHeight;
+    std::string cameraName;
+  };
+
   Camera(
     OpenGL& gl,
-    float cameraFieldOfView,
-    float transformX,
-    float transformY,
-    float transformZ,
-    float rotationDegreeX,
-    float rotationDegreeY,
-    float rotationDegreeZ,
+    MatrixFloat transform,
+    MatrixFloat rotation,
     unsigned int appScreenWidth,
     unsigned int appScreenHeight,
     std::string cameraName
@@ -52,7 +56,7 @@ public:
 
   void render(double deltaTime);
   
-  float scaleBasedOnZDistance(float zLocation);
+  float scaleBasedOnZDistance(const float& zLocation);
   
   const unsigned int& getAppScreenWidth() const ;
   
@@ -64,9 +68,7 @@ public:
 
   const MatrixFloat& getTransformMatrix();
 
-  const MatrixFloat& getRotationXYZ();
-
-  float getCamerFieldOfView();
+  const MatrixFloat& getRotationInverseXYZ();
 
   void assignToPixel(
     const unsigned int& index,
@@ -80,17 +82,67 @@ public:
 
   const unsigned int& getCameraCenterY() const ;
 
+  bool isVisibleToCamera(
+    std::vector<MatrixFloat>& worldPoints,
+    std::vector<MatrixFloat>& normals,
+    const unsigned long edgeIndices[3],
+    const unsigned long normalVectorIndices[3],
+    MatrixFloat& cameraVectorPlaceholder
+  );
+
+  void generateCameraToPointVector(
+    const MatrixFloat& worldPoint,
+    MatrixFloat& output
+  ) const;
+
+  void calculateStepCount(
+    const float& difference,
+    unsigned int* totalStepCount
+  ) const;
+
+  void calculateStepValueBasedOnStepCount(
+    const float& difference,
+    const unsigned int& stepCount,
+    float* stepValue
+  ) const;
+
+  void calculateStepValueBasedOnStepCount(
+    const float& differenceX,
+    const float& differenceY,
+    const unsigned int& stepCount,
+    MatrixFloat& stepValueMatrix
+  ) const;
+
+  void calculateStepValueBasedOnStepCount(
+    const float& differenceX,
+    const float& differenceY,
+    const float& differenceZ,
+    const unsigned int& stepCount,
+    MatrixFloat& stepValueMatrix
+  ) const;
+
+  void calculateStepValueBasedOnStepCount(
+    const MatrixFloat& differenceMatrix,
+    const unsigned int& stepCount,
+    MatrixFloat& stepValueMatrix
+  ) const;
+
 private:
 
-  static constexpr bool DEBUG_MODE = false;
-  
+  /**
+   *
+   * Jump value in draw steps
+   *
+  */
+  //TODO It must be 1, Current value is cpu expensive
+  static constexpr float drawStepValue = 0.5;
+
+
+  static constexpr float zDefaultValue = 0;
+
   std::string cameraName;
 
   void initPixelMap();
-
-  float cameraFieldOfView;
-
-  float zDefaultValue;
 
   unsigned int appScreenWidth;
 
@@ -100,21 +152,27 @@ private:
 
   DrawPixel* pixelMap;
 
-  DrawPixel* currentPixel = nullptr;
-
   OpenGL& gl;
 
   MatrixFloat transformMatrix;
 
-  MatrixFloat rotationDegreeMatrix;
+  MatrixFloat rotationInverseDegreeMatrix;
   
-  MatrixFloat rotationValueXYZMatrix;
+  MatrixFloat rotationInverseValueXYZMatrix;
 
   MatrixFloat transformationPlaceholder;
 
   unsigned int cameraCenterX;
 
   unsigned int cameraCenterY;
+
+  unsigned int cameraStartX;
+
+  unsigned int cameraEndX;
+
+  unsigned int cameraStartY;
+
+  unsigned int cameraEndY;
 
 };
 

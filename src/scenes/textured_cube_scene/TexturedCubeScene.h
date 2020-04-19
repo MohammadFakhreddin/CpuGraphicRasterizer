@@ -5,10 +5,9 @@
 
 #include "../base_scene/BaseScene.h"
 #include "../../camera/Camera.h"
-#include "../../3d_shape/Shape3d.h"
 #include "../../open_gl/OpenGl.h"
-#include "../../3d_models/DiceCube.h"
 #include "../../shaders/directional_light/DirectionalLight.h"
+#include "../../3d/models/DiceCube.h"
 
 class TexturedCubeScene : public BaseScene {
 
@@ -37,8 +36,6 @@ private:
   std::unique_ptr<Shape3d> cube;
 
   DiceCube dice;
-
-  std::vector<std::unique_ptr<Light>> lightSources;
 
   DirectionalLight* light;
 
