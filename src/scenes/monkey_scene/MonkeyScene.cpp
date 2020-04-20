@@ -28,10 +28,9 @@ MonkeyScene::MonkeyScene(OpenGL& gl)
     float(DataAccessPoint::getInstance()->getAppScreenHeight()) / 2.0f
     - float(DataAccessPoint::getInstance()->getAppScreenHeight()) / 5.0f,
     400.0f,
-    1.3,
-    1.0 / double(100),
-    1.0 / double(100),
-    0.6f,
+    1.3f,
+    float(1.0 / double(100)),
+    float(1.0 / double(100)),
     30
   )),
   pip(cameraInstance)
@@ -42,7 +41,7 @@ MonkeyScene::MonkeyScene(OpenGL& gl)
     monkey = FileSystem::loadObject(
       Path::generateAssetPath("monkey", ".obj"),
       Constants::LightPrecision::perSurface,
-      (std::unique_ptr<Texture>&)metalColor,
+      metalColor.get(),
       true,
       Shape3d::NormalType::fileDefault,
       false
@@ -51,6 +50,7 @@ MonkeyScene::MonkeyScene(OpenGL& gl)
     monkey->transformY(float(DataAccessPoint::getInstance()->getAppScreenHeight()) / 2.0f);
     monkey->transformZ(500.0f);
     monkey->scale(scaleFactor);
+    monkey->setSpecularIntensity(0.6f);
   }
 
   pip.assignAmbientLight(ambientLight.get());

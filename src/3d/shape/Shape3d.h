@@ -33,6 +33,14 @@ public:
     std::vector<MatrixFloat>& nodes,
     std::vector<std::unique_ptr<Surface>>& surfaces,
     std::vector<MatrixFloat>& normals,
+    const float specularIntensity
+  );
+
+  Shape3d(
+    std::vector<MatrixFloat>& nodes,
+    std::vector<std::unique_ptr<Surface>>& surfaces,
+    std::vector<MatrixFloat>& normals,
+    const float specularIntensity,
     float initialTransformX,
     float initialTransformY,
     float initialTransformZ
@@ -42,6 +50,7 @@ public:
     std::vector<MatrixFloat>& nodes,
     std::vector<std::unique_ptr<Surface>>& surfaces,
     std::vector<MatrixFloat>& normals,
+    const float specularIntensity,
     float transformX,
     float transformY,
     float transformZ,
@@ -50,6 +59,8 @@ public:
     float rotationDegreeZ,
     float scaleValue
   );
+
+  void setSpecularIntensity(const float& value);
 
   void transformX(float x);
 
@@ -80,6 +91,8 @@ public:
   MatrixFloat rotationXYZMatrix;
 
   MatrixFloat scaleValueMatrix;
+
+  float specularIntensity;
   
 };
 

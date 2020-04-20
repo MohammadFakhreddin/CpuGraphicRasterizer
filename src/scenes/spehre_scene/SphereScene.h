@@ -8,6 +8,7 @@
 #include "../../shaders/directional_light/DirectionalLight.h"
 #include "../../texture/ColorTexture/ColorTexture.h"
 #include "../../3d/shape/Shape3d.h"
+#include "../../pipeline/Pipeline.h"
 
 class SphereScene : public BaseScene {
 
@@ -29,19 +30,23 @@ private:
 
   static constexpr float lightTransformSpeed = 0.01f;
 
-  Camera cameraInstance;
+  Camera camera;
 
   std::unique_ptr<Shape3d> sphere;
 
-  std::unique_ptr<ColorTexture> whiteColor;
+  std::unique_ptr<ColorTexture> sphereColor;
 
-  DirectionalLight* light;
+  std::unique_ptr<DirectionalLight> directionalLight;
+
+  std::unique_ptr<AmbientLight> ambientLight;
 
   float lightRotationX = 0.0f;
 
   float lightRotationY = 0.0f;
 
   float lightRotationZ = 0.0f;
+
+  PipeLine pipeLine;
 
 };
 

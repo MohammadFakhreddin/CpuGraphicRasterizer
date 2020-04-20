@@ -103,7 +103,7 @@ void ImageTexture::getDirectPixelColor(
   float* blue
 ) const {
 
-  assert(position < width* height* numberOfChannels);
+  assert(position < (unsigned int)(width* height* numberOfChannels));
 
   *red = data[position];
   *green = data[position + 1];

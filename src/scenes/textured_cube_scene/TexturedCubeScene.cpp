@@ -1,7 +1,6 @@
 #include "./TexturedCubeScene.h"
 
 #include "../../data_access_point/DataAccessPoint.h"
-#include "../../3d_models/ShapeGenerator.h"
 #include "../../shaders/ambient_light/AmbientLight.h"
 
 TexturedCubeScene::TexturedCubeScene(
@@ -11,30 +10,23 @@ TexturedCubeScene::TexturedCubeScene(
   BaseScene(gl, "TexturedCubeScene"),
   cameraInstance(
     gl,
-    cameraInitialMaximumFov,
-    0,
-    0,
-    cameraInitialZLocation,
-    0,
-    0,
-    0,
+    MatrixFloat(3, 1, 0.0f),
+    MatrixFloat(3, 1, 0.0f),
     DataAccessPoint::getInstance()->getAppScreenWidth(),
     DataAccessPoint::getInstance()->getAppScreenHeight(),
     "Texture main camera"
-  )
+  ),
+  ambientLight(std::make_unique<AmbientLight>(0.2f, 0.2f, 0.2f)),
+  directionalLight(std::make_unique<DirectionalLight>(1.0f, 1.0f, 1.0f, -1.0f, -1.0f, -1.0f)),
+  pip(cameraInstance)
 {
   {//Creating shape
-
     auto appScreenWidth = DataAccessPoint::getInstance()->getAppScreenWidth();
-
     auto appScreenHeight = DataAccessPoint::getInstance()->getAppScreenHeight();
-
     auto width = DataAccessPoint::getInstance()->getAppScreenWidth() / 6;
-
     Logger::log("Creating shape object");
-
     cube = dice.generateCube(
-      Surface::LightPrecision::perSurface,
+      Constants::LightPrecision::perSurface,
       float(width), 
       float(width), 
       float(width), 
@@ -46,12 +38,10 @@ TexturedCubeScene::TexturedCubeScene(
       0.0f,
       1.0f
     );
-
   }
 
-  lightSources.emplace_back(std::make_unique<AmbientLight>(0.2f, 0.2f, 0.2f));
-  lightSources.emplace_back(std::make_unique<DirectionalLight>(1.0f, 1.0f, 1.0f, -1.0f, -1.0f, -1.0f));
-  light = (DirectionalLight*)lightSources.back().get();
+  pip.assignAmbientLight(ambientLight.get());
+  pip.assignDirectionalLight(directionalLight.get());
 
 }
 
@@ -80,23 +70,16 @@ void TexturedCubeScene::update(double deltaTime) {
       lightRotationZ += float(deltaTime * lightTransformSpeed * 1.0 * 0.5);
     }
     if (lightRotationX != 0 || lightRotationY != 0 || lightRotationZ != 0) {
-      light->rotateXYZ(lightRotationX, lightRotationY, lightRotationZ);
+      directionalLight->rotateXYZ(lightRotationX, lightRotationY, lightRotationZ);
     }
   }
 #endif // __DESKTOP__
-  {//Light sources
-    if (!lightSources.empty()) {
-      for (auto& lightSource : lightSources) {
-        lightSource->update(deltaTime, cameraInstance);
-      }
-    }
-  }
   cube->rotateXYZ(
     float(-1.0f * shapeRotationSpeed * deltaTime * 0.1f), 
     float(-1.0f * shapeRotationSpeed * deltaTime * 0.1f), 
     float(-1.0f * shapeRotationSpeed * deltaTime * 0.1f)
   );
-  cube->update(deltaTime, cameraInstance, lightSources);
+  pip.update(deltaTime);
 }
 
 void TexturedCubeScene::render(double deltaTime) {

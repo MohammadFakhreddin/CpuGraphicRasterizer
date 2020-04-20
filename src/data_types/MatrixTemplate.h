@@ -77,7 +77,7 @@ public:
   template <typename A>
   _Matrix(const _Matrix<A>& other) = delete;
 
-  _Matrix(_Matrix&& other){
+  _Matrix(_Matrix&& other) noexcept {
     cells = new T[other.matrixSize];
     placeholderCells = new T[other.matrixSize];
     width = other.width;
@@ -434,7 +434,7 @@ public:
     const float& value
   ) {
     assert(matrix.getWidth() == 3);
-    assert(matrix.getHeight() == 1);
+    assert(matrix.getHeight() == 3);
     matrix.set(0, 0, matrix.get(0, 0) + value);
     assert(matrix.get(0, 1) == 0);
     assert(matrix.get(0, 2) == 0);

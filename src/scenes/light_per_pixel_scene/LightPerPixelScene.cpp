@@ -17,6 +17,9 @@ LightPerPixelScene::LightPerPixelScene(OpenGL& gl)
     DataAccessPoint::getInstance()->getAppScreenHeight(),
     "Light per pixel scene main camera"
   ),
+  whiteColor(std::make_unique<ColorTexture>(
+    1.0f, 1.0f, 1.0f
+  )),
   ambientLight(std::make_unique<AmbientLight>(0.05f, 0.05f, 0.05f)),
   pointLight(std::make_unique<PointLight>(
     2.0f,
@@ -24,13 +27,11 @@ LightPerPixelScene::LightPerPixelScene(OpenGL& gl)
     float(DataAccessPoint::getInstance()->getAppScreenWidth()) / 30.0f,
     float(DataAccessPoint::getInstance()->getAppScreenHeight()) - float(DataAccessPoint::getInstance()->getAppScreenWidth()) / 30.0f,
     cameraInitialZLocation - 80.0f,
-    1.1f,1,1,1,2)
-  ),
+    1.0f,1.0f,1.0f,2
+  )),
   pip(cameraInstance)
 {
-  whiteColor = std::make_unique<ColorTexture>(
-    1.0f, 1.0f, 1.0f
-    );
+  
   {//Creating shape
     float width = DataAccessPoint::getInstance()->getAppScreenWidth()/5.0f;
     shape = colorCube.generateCube(Constants::LightPrecision::perPixel, width, width, 1, 0, 0, 0, 0, 0, 0, 1);

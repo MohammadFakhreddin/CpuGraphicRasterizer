@@ -10,26 +10,25 @@
 SphereScene::SphereScene(OpenGL& gl)
   :
   BaseScene(gl, "SphereScene"),
-  cameraInstance(
+  camera(
     gl,
-    cameraInitialMaximumFov,
-    0,
-    0,
-    cameraInitialZLocation,
-    0,
-    0,
-    0,
+    MatrixFloat(3, 1, 0.0f),
+    MatrixFloat(3, 1, 0.0f),
     DataAccessPoint::getInstance()->getAppScreenWidth(),
     DataAccessPoint::getInstance()->getAppScreenHeight(),
     "Plant main camera"
-  )
+  ),
+  sphereColor(std::make_unique<ColorTexture>(1.0f, 1.0f, 1.0f)),
+  ambientLight(std::make_unique<AmbientLight>(0.2f, 0.2f, 0.2f)),
+  directionalLight(std::make_unique<DirectionalLight>(1.0f, 1.0f, 1.0f, -1.0f, -1.0f, -1.0f)),
+  pipeLine(camera)
 {
-  whiteColor = std::make_unique<ColorTexture>(1.0f, 1.0f, 1.0f);
   
   auto radius = float((25.0f / 800.f) * DataAccessPoint::getInstance()->getAppScreenWidth());
+  //TODO Use simple pointer instead of refrence to unique_ptr
   sphere = ShapeGenerator::sphere(
     Constants::LightPrecision::perSurface,
-    (std::unique_ptr<Texture>&)whiteColor,
+    sphereColor.get(),
     radius,
     12 * 2,
     24 * 2,
@@ -42,9 +41,10 @@ SphereScene::SphereScene(OpenGL& gl)
     1.0f
   );
 
-  lightSources.emplace_back(std::make_unique<AmbientLight>(0.2f, 0.2f, 0.2f));
-  lightSources.emplace_back(std::make_unique<DirectionalLight>(1.0f, 1.0f, 1.0f, -1.0f, -1.0f, -1.0f));
-  light = (DirectionalLight*)lightSources.back().get();
+  pipeLine.assignAmbientLight(ambientLight.get());
+  pipeLine.assignDirectionalLight(directionalLight.get());
+  pipeLine.assignShapes(sphere.get());
+
 }
 
 void SphereScene::update(double deltaTime) {
@@ -72,27 +72,13 @@ void SphereScene::update(double deltaTime) {
       lightRotationZ += float(deltaTime * lightTransformSpeed * 1.0 * 0.5);
     }
     if (lightRotationX != 0 || lightRotationY != 0 || lightRotationZ != 0) {
-      light->rotateXYZ(lightRotationX, lightRotationY, lightRotationZ);
+      directionalLight->rotateXYZ(lightRotationX, lightRotationY, lightRotationZ);
     }
   }
 #endif // __DESKTOP__
-  {//Light sources
-    if (!lightSources.empty()) {
-      for (auto& lightSource : lightSources) {
-        lightSource->update(deltaTime, cameraInstance);
-      }
-    }
-  }
-  {//Temporary code for auto rotation
-    sphere->rotateXYZ(
-      float(-1.0f * shapeRotationSpeed * deltaTime * 0.1f), 
-      float(-1.0f * shapeRotationSpeed * deltaTime * 0.1f), 
-      float(-1.0f * shapeRotationSpeed * deltaTime * 0.1f)
-    );
-  }
-  sphere->update(deltaTime, cameraInstance, lightSources);
+  pipeLine.update(deltaTime);
 }
 
 void SphereScene::render(double deltaTime) {
-  cameraInstance.render(deltaTime);
+  camera.render(deltaTime);
 }

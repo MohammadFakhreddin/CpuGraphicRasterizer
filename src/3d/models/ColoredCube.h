@@ -6,7 +6,7 @@
 
 #include "./ShapeGenerator.h"
 #include "../../texture/ColorTexture/ColorTexture.h"
-#include "../shape/Shape3d.cpp"
+#include "../shape/Shape3d.h"
 
 class ColorCube {
 
@@ -36,18 +36,18 @@ public:
   ) {
 
     std::vector<std::unique_ptr<Surface>> surfaceList;
-    surfaceList.emplace_back(std::make_unique<Surface>(lightPrecision, (std::unique_ptr<Texture>&)face1Color, 2, 1, 0));
-    surfaceList.emplace_back(std::make_unique<Surface>(lightPrecision, (std::unique_ptr<Texture>&)face1Color, 3, 1, 2));
-    surfaceList.emplace_back(std::make_unique<Surface>(lightPrecision, (std::unique_ptr<Texture>&)face2Color, 1, 3, 5));
-    surfaceList.emplace_back(std::make_unique<Surface>(lightPrecision, (std::unique_ptr<Texture>&)face2Color, 5, 3, 7));
-    surfaceList.emplace_back(std::make_unique<Surface>(lightPrecision, (std::unique_ptr<Texture>&)face3Color, 4, 0, 5));
-    surfaceList.emplace_back(std::make_unique<Surface>(lightPrecision, (std::unique_ptr<Texture>&)face3Color, 5, 0, 1));
-    surfaceList.emplace_back(std::make_unique<Surface>(lightPrecision, (std::unique_ptr<Texture>&)face4Color, 6, 0, 4));
-    surfaceList.emplace_back(std::make_unique<Surface>(lightPrecision, (std::unique_ptr<Texture>&)face4Color, 2, 0, 6));
-    surfaceList.emplace_back(std::make_unique<Surface>(lightPrecision, (std::unique_ptr<Texture>&)face5Color, 7, 2, 6));
-    surfaceList.emplace_back(std::make_unique<Surface>(lightPrecision, (std::unique_ptr<Texture>&)face5Color, 3, 2, 7));
-    surfaceList.emplace_back(std::make_unique<Surface>(lightPrecision, (std::unique_ptr<Texture>&)face6Color, 7, 4, 5));
-    surfaceList.emplace_back(std::make_unique<Surface>(lightPrecision, (std::unique_ptr<Texture>&)face6Color, 6, 4, 7));
+    surfaceList.emplace_back(std::make_unique<Surface>(lightPrecision, face1Color.get(), 2, 1, 0));
+    surfaceList.emplace_back(std::make_unique<Surface>(lightPrecision, face1Color.get(), 3, 1, 2));
+    surfaceList.emplace_back(std::make_unique<Surface>(lightPrecision, face2Color.get(), 1, 3, 5));
+    surfaceList.emplace_back(std::make_unique<Surface>(lightPrecision, face2Color.get(), 5, 3, 7));
+    surfaceList.emplace_back(std::make_unique<Surface>(lightPrecision, face3Color.get(), 4, 0, 5));
+    surfaceList.emplace_back(std::make_unique<Surface>(lightPrecision, face3Color.get(), 5, 0, 1));
+    surfaceList.emplace_back(std::make_unique<Surface>(lightPrecision, face4Color.get(), 6, 0, 4));
+    surfaceList.emplace_back(std::make_unique<Surface>(lightPrecision, face4Color.get(), 2, 0, 6));
+    surfaceList.emplace_back(std::make_unique<Surface>(lightPrecision, face5Color.get(), 7, 2, 6));
+    surfaceList.emplace_back(std::make_unique<Surface>(lightPrecision, face5Color.get(), 3, 2, 7));
+    surfaceList.emplace_back(std::make_unique<Surface>(lightPrecision, face6Color.get(), 7, 4, 5));
+    surfaceList.emplace_back(std::make_unique<Surface>(lightPrecision, face6Color.get(), 6, 4, 7));
 
     return ShapeGenerator::cube(
       surfaceList,

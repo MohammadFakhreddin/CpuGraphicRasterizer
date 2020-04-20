@@ -13,12 +13,19 @@ class Surface
 {
 
 public:
+
+  Surface(
+    const Constants::LightPrecision lightPrecision,
+    Texture* texture,
+    const unsigned long edgeIndex1,
+    const unsigned long edgeIndex2,
+    const unsigned long edgeIndex3
+  );
   
   Surface(
     const Constants::LightPrecision lightPrecision,
     Texture* texture,
-    const unsigned long edgeIndex[3],
-    const float specularIntensity
+    const unsigned long edgeIndex[3]
   );
 
   void setNormalIndex(
@@ -52,9 +59,7 @@ public:
   MatrixFloat colorIntensity[3];
 
   MatrixFloat textureCoordinate[3];
-
-  float specularIntensity;
-
+  
   Constants::LightPrecision lightPrecision;
 
   MatrixFloat cameraVectorPlaceholder;

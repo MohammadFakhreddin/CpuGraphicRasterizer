@@ -8,14 +8,49 @@
 #include "../../3d/shape/Shape3d.h"
 #include "../../3d/models/ShapeGenerator.h"
 
+
 PointLight::PointLight(
-  float paramRadius,
-  MatrixFloat paramColor,
-  MatrixFloat paramTransform,
-  float paramConstantAttenuation,
-  float paramLinearAttenuation,
-  float paramQuadricAttenuation,
-  unsigned int paramSpecularPower
+  const float& radius, 
+  const float& colorR, 
+  const float& colorG, 
+  const float& colorB, 
+  const float& transformX, 
+  const float& transformY, 
+  const float& transformZ, 
+  const float& constantAttenuation, 
+  const float& linearAttenuation, 
+  const float& quadricAttenuation, 
+  const unsigned int& specularPower
+)
+  :
+  PointLight(
+    radius,
+    MatrixFloat(3, 1, std::vector<std::vector<float>>{
+      std::vector<float>{colorR},
+      std::vector<float>{colorG},
+      std::vector<float>{colorB}
+    }),
+    MatrixFloat(3,1,std::vector<std::vector<float>>{
+      std::vector<float>{ transformX },
+      std::vector<float>{ transformY },
+      std::vector<float>{ transformZ }
+    }),
+    constantAttenuation,
+    linearAttenuation,
+    quadricAttenuation,
+    specularPower
+  )
+{
+}
+
+PointLight::PointLight(
+  const float& paramRadius,
+  const MatrixFloat& paramColor,
+  const MatrixFloat& paramTransform,
+  const float& paramConstantAttenuation,
+  const float& paramLinearAttenuation,
+  const float& paramQuadricAttenuation,
+  const unsigned int& paramSpecularPower
 )
   :
   constantAttenuation(paramConstantAttenuation),
@@ -27,7 +62,7 @@ PointLight::PointLight(
   color(3, 1, 0.0f)
 {
 
-  assert(radius >= 0);
+  assert(paramRadius >= 0);
   
   color.assign(paramColor);
   
@@ -39,14 +74,13 @@ PointLight::PointLight(
   assert(constantAttenuation > 0);
   assert(linearAttenuation > 0);
   assert(quadricAttenuation > 0);
-  assert(specularIntensity > 0);
   assert(specularPower >= 2);
 
   lightColor = std::make_unique<ColorTexture>(paramColor);
 
   sphere = ShapeGenerator::sphere(
     Constants::LightPrecision::perSurface,
-    (std::unique_ptr<Texture>&)lightColor,
+    lightColor.get(),
     paramRadius,
     12 * 2, 24 * 2,
     Vec3DFloat(0.0f, 0.0f, 0.0f),

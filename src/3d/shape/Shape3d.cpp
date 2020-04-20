@@ -178,12 +178,25 @@ Shape3d::Shape3d(
   std::vector<MatrixFloat>& normals
   )
   :
-  Shape3d(nodes, surfaces, normals, 0, 0, 0, 0, 0, 0, 1) {}
+  Shape3d(nodes, surfaces, normals,0, 0, 0, 0, 0, 0, 0, 1) 
+{}
+
+Shape3d::Shape3d(
+  std::vector<MatrixFloat> & nodes, 
+  std::vector<std::unique_ptr<Surface>> & surfaces, 
+  std::vector<MatrixFloat> & normals, 
+  const float specularIntensity
+)
+  :
+  Shape3d(nodes, surfaces, normals, specularIntensity, 0, 0, 0, 0, 0, 0, 1)
+{}
+
 
 Shape3d::Shape3d(
   std::vector<MatrixFloat>& nodes,
   std::vector<std::unique_ptr<Surface>>& surfaces,
   std::vector<MatrixFloat>& normals,
+  const float specularIntensity,
   float initialTransformX,
   float initialTransformY,
   float initialTransformZ
@@ -193,6 +206,7 @@ Shape3d(
   nodes,
   surfaces,
   normals,
+  specularIntensity,
   initialTransformX,
   initialTransformY,
   initialTransformZ,
@@ -206,6 +220,7 @@ Shape3d::Shape3d(
   std::vector<MatrixFloat>& paramNodes,
   std::vector<std::unique_ptr<Surface>>& paramSurfaces,
   std::vector<MatrixFloat>& paramNormals,
+  const float specularIntensity,
   float transformX,
   float transformY,
   float transformZ,
@@ -218,9 +233,12 @@ Shape3d::Shape3d(
   transformMatrix(3, 1, 0.0f),
   rotationDegreeMatrix(3, 1, 0.0f),
   rotationXYZMatrix(3, 3, 0.0f),
-  scaleValueMatrix(3,3,0.0f)
+  scaleValueMatrix(3,3,0.0f),
+  specularIntensity(specularIntensity)
  {
   
+  assert(specularIntensity >= 0);
+
   if (!paramNodes.empty()) {
     for (auto& node : paramNodes) {
       nodes.emplace_back(3, 1, 0.0f);
@@ -247,6 +265,12 @@ Shape3d::Shape3d(
 
   assert(checkDataValidation());
 
+}
+
+void Shape3d::setSpecularIntensity(const float& value)
+{
+  assert(value >= 0);
+  specularIntensity = value;
 }
 
 bool Shape3d::checkDataValidation() {

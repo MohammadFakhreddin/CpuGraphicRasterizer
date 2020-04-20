@@ -29,7 +29,7 @@ RobotScene::RobotScene(OpenGL& gl)
     shape = FileSystem::loadObject(
       Path::generateAssetPath("robot", ".obj"),
       Constants::LightPrecision::perSurface,
-      (std::unique_ptr<Texture>&)colorTexture,
+      colorTexture.get(),
       true,
       Shape3d::NormalType::fileDefault,
       false

@@ -3,6 +3,8 @@
 
 #include <memory>
 
+#include "../shape/Shape3d.h"
+
 class ShapeGenerator {
 
 public:
@@ -77,6 +79,7 @@ public:
       nodeList,
       surfaceList,
       normals,
+      0.0f,
       transformX,
       transformY,
       transformZ,
@@ -88,8 +91,8 @@ public:
   }
 
   static std::unique_ptr<Shape3d> sphere(
-    Constants::LightPrecision lightPrecision,
-    std::unique_ptr<Texture>& texture,
+    const Constants::LightPrecision lightPrecision,
+    Texture* texture,
     const float& radius,
     const unsigned int& numberOfLat,
     const unsigned int& numberOfLong,
@@ -190,41 +193,57 @@ public:
     {//Filling indices
       
       for (unsigned int i = 0; i < numberOfLong; i++) {
+        unsigned long edgeIndices[3] = {
+          (unsigned long)convertLatAndLongToVertices(sideLatCount, 0),
+          (unsigned long)convertLatAndLongToVertices(1, (i + 1) % numberOfLong),
+          (unsigned long)convertLatAndLongToVertices(1, i % numberOfLong)
+        };
         indices.emplace_back(std::make_unique<Surface>(
           lightPrecision,
           texture,
-          convertLatAndLongToVertices(sideLatCount, 0),
-          convertLatAndLongToVertices(1, (i + 1) % numberOfLong),
-          convertLatAndLongToVertices(1, i % numberOfLong)
+          edgeIndices
         ));
       }
       
       for (unsigned int i = 0; i < numberOfLong; i++) {
+        unsigned long edgeIndices[3] = {
+          (unsigned long)convertLatAndLongToVertices(sideLatCount - 1, i % numberOfLong),
+          (unsigned long)convertLatAndLongToVertices(sideLatCount - 1, (i + 1) % numberOfLong),
+          (unsigned long)convertLatAndLongToVertices(sideLatCount + 1, 0)
+        };
         indices.emplace_back(std::make_unique<Surface>(
           lightPrecision,
           texture,
-          convertLatAndLongToVertices(sideLatCount - 1, i % numberOfLong),
-          convertLatAndLongToVertices(sideLatCount - 1, (i + 1) % numberOfLong),
-          convertLatAndLongToVertices(sideLatCount + 1, 0)
+          edgeIndices
         ));
       }
       
       for (unsigned int i = 0; i < sideLatCount - 1; i++) {
         for (unsigned int j = 0; j < numberOfLong; j++) {
-          indices.emplace_back(std::make_unique<Surface>(
-            lightPrecision,
-            texture,
-            convertLatAndLongToVertices(i, j% numberOfLong),
-            convertLatAndLongToVertices(i, (j + 1) % numberOfLong),
-            convertLatAndLongToVertices(i + 1, (j + 1) % numberOfLong)
-          ));
-          indices.emplace_back(std::make_unique<Surface>(
-            lightPrecision,
-            texture,
-            convertLatAndLongToVertices(i + 1, j% numberOfLong),
-            convertLatAndLongToVertices(i, j% numberOfLong),
-            convertLatAndLongToVertices(i + 1, (j + 1) % numberOfLong)
-          ));
+          {
+            unsigned long edgeIndices[3] = {
+              (unsigned long)convertLatAndLongToVertices(i, j % numberOfLong),
+              (unsigned long)convertLatAndLongToVertices(i, (j + 1) % numberOfLong),
+              (unsigned long)convertLatAndLongToVertices(i + 1, (j + 1) % numberOfLong)
+            };
+            indices.emplace_back(std::make_unique<Surface>(
+              lightPrecision,
+              texture,
+              edgeIndices
+            ));
+          }
+          {
+            unsigned long edgeIndices[3] = {
+              (unsigned long)convertLatAndLongToVertices(i + 1, j % numberOfLong),
+              (unsigned long)convertLatAndLongToVertices(i, j % numberOfLong),
+              (unsigned long)convertLatAndLongToVertices(i + 1, (j + 1) % numberOfLong)
+            };
+            indices.emplace_back(std::make_unique<Surface>(
+              lightPrecision,
+              texture,
+              edgeIndices
+            ));
+          }
         }
       }
 
@@ -236,6 +255,7 @@ public:
       vertices,
       indices,
       normals,
+      0.0f,
       transform.getX(),
       transform.getY(),
       transform.getZ(),

@@ -35,13 +35,12 @@ Camera::Camera(
   cameraEndY(paramsAppScreenHeight)
 {
 
-  assert(params.cameraFieldOfView > 0);
-  assert(params.appScreenWidth > 0);
-  assert(params.appScreenHeight > 0);
-  assert(params.transform.getWidth() == 3);
-  assert(params.transform.getHeight() == 1);
-  assert(params.rotation.getWidth() == 3);
-  assert(params.transform.getHeight() == 1);
+  assert(paramsAppScreenWidth > 0);
+  assert(paramsAppScreenHeight > 0);
+  assert(paramsTransform.getWidth() == 3);
+  assert(paramsTransform.getHeight() == 1);
+  assert(paramsRotation.getWidth() == 3);
+  assert(paramsRotation.getHeight() == 1);
 
   this->transform(
     paramsTransform.get(0, 0),

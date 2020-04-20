@@ -26,6 +26,24 @@ public:
     std::vector<Shape3d*>& shapes
   );
 
+  void assignAmbientLight(AmbientLight* ambientLight);
+
+  void assignDirectionalLight(std::vector<DirectionalLight*>& directionalLights);
+
+  void assignPointLight(std::vector<PointLight*>& pointLights);
+
+  void assignShapes(std::vector<Shape3d*>& shapes);
+
+  void assignDirectionalLight(DirectionalLight* directionalLights);
+
+  void assignPointLight(PointLight* pointLights);
+
+  void assignShapes(Shape3d* shapes);
+
+  void update(double deltaTime);
+
+private:
+
   void updateShapeNodes(
     const unsigned int& threadNumber,
     Shape3d* shape
@@ -35,6 +53,7 @@ public:
     const unsigned int& threadNumber,
     Shape3d* shape
   );
+
 
   void updateShapeSurfaces(
     const unsigned int& threadNumber,
@@ -52,6 +71,7 @@ public:
   );
 
   void assembleLines(
+    Shape3d* shape,
     Surface* surface,
     const MatrixFloat& paramTriangleStart,
     const MatrixFloat& paramTriangleEnd,
@@ -103,24 +123,6 @@ public:
     std::placeholders::_1,
     std::placeholders::_2
   );
-
-  void assignAmbientLight(AmbientLight* ambientLight);
-
-  void assignDirectionalLight(std::vector<DirectionalLight*>& directionalLights);
-
-  void assignPointLight(std::vector<PointLight*>& pointLights);
-
-  void assignShapes(std::vector<Shape3d*>& shapes);
-
-  void assignDirectionalLight(const DirectionalLight* directionalLights);
-
-  void assignPointLight(const PointLight* pointLights);
-
-  void assignShapes(const Shape3d* shapes);
-
-  void update(double deltaTime);
-
-private:
 
   ThreadPool& threadPool;
 

@@ -29,7 +29,7 @@ BunnyScene::BunnyScene(OpenGL& gl)
     bunnyShape = FileSystem::loadObject(
       Path::generateAssetPath("bunny", ".obj"),
       Constants::LightPrecision::perSurface,
-      (std::unique_ptr<Texture>&)whiteColor,
+      whiteColor.get(),
       true,
       Shape3d::NormalType::smooth,
       false

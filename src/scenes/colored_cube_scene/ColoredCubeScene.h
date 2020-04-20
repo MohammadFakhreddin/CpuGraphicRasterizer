@@ -9,6 +9,7 @@
 #include "../../open_gl/OpenGl.h"
 #include "../../shaders/directional_light/DirectionalLight.h"
 #include "../../3d/models/ColoredCube.h"
+#include "../../pipeline/Pipeline.h"
 
 class ColoredCubeScene : public BaseScene {
 
@@ -38,13 +39,17 @@ private:
 
   ColorCube colorCube;
 
-  DirectionalLight* light;
+  std::unique_ptr<DirectionalLight> directionalLight;
+
+  std::unique_ptr<AmbientLight> ambientLight;
 
   float lightRotationX = 0.0f;
 
   float lightRotationY = 0.0f;
 
   float lightRotationZ = 0.0f;
+
+  PipeLine pip;
 
 };
 

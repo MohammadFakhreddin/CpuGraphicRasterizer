@@ -4,7 +4,7 @@
 #include "../shaders/ambient_light/AmbientLight.h"
 #include "../shaders/directional_light/DirectionalLight.h"
 #include "../shaders/point_light/PointLight.h"
-#include "../data_access_point/DataAccessPoint.cpp"
+#include "../data_access_point/DataAccessPoint.h"
 
 PipeLine::PipeLine(
   Camera& camera
@@ -40,32 +40,38 @@ void PipeLine::assignAmbientLight(AmbientLight* ambientLight) {
 void PipeLine::assignDirectionalLight(std::vector<DirectionalLight*>& directionalLights) {
   assert(directionalLights.empty() == false);
   isDirectionalLightsArrayEmpty = false;
-  this->directionalLights.emplace_back(directionalLights.begin(), directionalLights.end());
+  for (auto& light : directionalLights) {
+    this->directionalLights.emplace_back(light);
+  }
 }
 
 void PipeLine::assignPointLight(std::vector<PointLight*>& pointLights) {
   assert(pointLights.empty() == false);
   isPointLightsArrayEmpty = false;
-  this->pointLights.emplace_back(pointLights.begin(), pointLights.end());
+  for (auto& light : pointLights) {
+    this->pointLights.emplace_back(light);
+  }
 }
 
 void PipeLine::assignShapes(std::vector<Shape3d*>& shapes) {
   assert(shapes.empty() == false);
   isShapesArrayEmpty = false;
-  this->shapes.emplace_back(shapes.begin(), shapes.end());
+  for (auto& shape : shapes) {
+    this->shapes.emplace_back(shape);
+  }
 }
 
-void PipeLine::assignDirectionalLight(const DirectionalLight* directionalLight) {
+void PipeLine::assignDirectionalLight(DirectionalLight* directionalLight) {
   assert(directionalLight!=nullptr);
   this->directionalLights.emplace_back(directionalLight);
 }
 
-void PipeLine::assignPointLight(const PointLight* pointLight) {
+void PipeLine::assignPointLight(PointLight* pointLight) {
   assert(pointLight != nullptr);
   pointLights.emplace_back(pointLight);
 }
 
-void PipeLine::assignShapes(const Shape3d* shape) {
+void PipeLine::assignShapes(Shape3d* shape) {
   assert(shape != nullptr);
   this->shapes.clear();
   this->shapes.emplace_back(shape);
@@ -275,14 +281,14 @@ void PipeLine::updateSurface(Shape3d* shape3d, Surface* surface)
 
 void PipeLine::assembleTriangles(Shape3d* shape3d, Surface* surface)
 {
-  assert(surface.textureCoordinate[0].getWidth() == 2);
-  assert(surface.textureCoordinate[0].getHeight() == 1);
+  assert(surface->textureCoordinate[0].getWidth() == 2);
+  assert(surface->textureCoordinate[0].getHeight() == 1);
 
-  assert(surface.textureCoordinate[1].getWidth() == 2);
-  assert(surface.textureCoordinate[1].getHeight() == 1);
+  assert(surface->textureCoordinate[1].getWidth() == 2);
+  assert(surface->textureCoordinate[1].getHeight() == 1);
 
-  assert(surface.textureCoordinate[2].getWidth() == 2);
-  assert(surface.textureCoordinate[2].getHeight() == 1);
+  assert(surface->textureCoordinate[2].getWidth() == 2);
+  assert(surface->textureCoordinate[2].getHeight() == 1);
 
   surface->triangleMemoryPool.triangleStart.assign(shape3d->worldPoints.at(surface->edgeIndices[0]));
 
@@ -301,14 +307,14 @@ void PipeLine::assembleTriangles(Shape3d* shape3d, Surface* surface)
   }
   {//Computing total step count
     if (abs(surface->triangleMemoryPool.xDifference) > abs(surface->triangleMemoryPool.yDifference)) {
-      assert(xDifference != 0);
+      assert(surface->triangleMemoryPool.xDifference != 0);
       camera.calculateStepCount(
         surface->triangleMemoryPool.xDifference,
         &surface->triangleMemoryPool.totalStepCount
       );
     }
     else {
-      assert(yDifference != 0);
+      assert(surface->triangleMemoryPool.yDifference != 0);
       camera.calculateStepCount(
         surface->triangleMemoryPool.yDifference,
         &surface->triangleMemoryPool.totalStepCount
@@ -363,7 +369,7 @@ void PipeLine::assembleTriangles(Shape3d* shape3d, Surface* surface)
     computeLightIntensityForPoint(
       surface->triangleMemoryPool.triangleStart,
       surface->triangleMemoryPool.normalStart,
-      surface->specularIntensity,
+      shape3d->specularIntensity,
       surface->triangleMemoryPool.colorOutputPlaceholder,
       surface->triangleMemoryPool.cameraVectorPlaceholder,
       surface->triangleMemoryPool.cameraVectorHatPlaceholder,
@@ -377,7 +383,7 @@ void PipeLine::assembleTriangles(Shape3d* shape3d, Surface* surface)
     computeLightIntensityForPoint(
       surface->triangleMemoryPool.triangleEnd,
       surface->triangleMemoryPool.normalEnd,
-      surface->specularIntensity,
+      shape3d->specularIntensity,
       surface->triangleMemoryPool.colorOutputPlaceholder,
       surface->triangleMemoryPool.cameraVectorPlaceholder,
       surface->triangleMemoryPool.cameraVectorHatPlaceholder,
@@ -391,7 +397,7 @@ void PipeLine::assembleTriangles(Shape3d* shape3d, Surface* surface)
     computeLightIntensityForPoint(
       surface->triangleMemoryPool.triangleFinal,
       surface->triangleMemoryPool.normalFinal,
-      surface->specularIntensity,
+      shape3d->specularIntensity,
       surface->triangleMemoryPool.colorOutputPlaceholder,
       surface->triangleMemoryPool.cameraVectorPlaceholder,
       surface->triangleMemoryPool.cameraVectorHatPlaceholder,
@@ -452,6 +458,7 @@ void PipeLine::assembleTriangles(Shape3d* shape3d, Surface* surface)
   for (unsigned long i = 0; i < surface->triangleMemoryPool.totalStepCount; i++) {
 
     assembleLines(
+      shape3d,
       surface,
       surface->triangleMemoryPool.triangleStart,
       surface->triangleMemoryPool.triangleEnd,
@@ -484,7 +491,18 @@ void PipeLine::assembleTriangles(Shape3d* shape3d, Surface* surface)
   }
 }
 
-void PipeLine::assembleLines(Surface* surface, const MatrixFloat& paramTriangleStart, const MatrixFloat& paramTriangleEnd, const MatrixFloat& paramTextureStart, const MatrixFloat& paramTextureEnd, const MatrixFloat& paramLightColorStart, const MatrixFloat& paramLightColorEnd, const MatrixFloat& paramNormalStart, const MatrixFloat& paramNormalEnd)
+void PipeLine::assembleLines(
+  Shape3d* shape,
+  Surface* surface, 
+  const MatrixFloat& paramTriangleStart, 
+  const MatrixFloat& paramTriangleEnd, 
+  const MatrixFloat& paramTextureStart, 
+  const MatrixFloat& paramTextureEnd, 
+  const MatrixFloat& paramLightColorStart, 
+  const MatrixFloat& paramLightColorEnd, 
+  const MatrixFloat& paramNormalStart, 
+  const MatrixFloat& paramNormalEnd
+)
 {
   {//TriangleStepValue
     surface->lineMemoryPool.lineStart.assign(paramTriangleStart);
@@ -497,14 +515,14 @@ void PipeLine::assembleLines(Surface* surface, const MatrixFloat& paramTriangleS
     }
 
     if (abs(surface->lineMemoryPool.xDifference) > abs(surface->lineMemoryPool.yDifference)) {
-      assert(lineXDifference != 0);
+      assert(surface->lineMemoryPool.xDifference != 0);
       camera.calculateStepCount(
         surface->lineMemoryPool.xDifference,
         &surface->lineMemoryPool.totalStepCount
       );
     }
     else {
-      assert(lineYDifference != 0);
+      assert(surface->lineMemoryPool.yDifference != 0);
       camera.calculateStepCount(
         surface->lineMemoryPool.yDifference,
         &surface->lineMemoryPool.totalStepCount
@@ -578,7 +596,7 @@ void PipeLine::assembleLines(Surface* surface, const MatrixFloat& paramTriangleS
       computeLightIntensityForPoint(
         surface->lineMemoryPool.lineStart,
         surface->lineMemoryPool.normalStart,
-        surface->specularIntensity,
+        shape->specularIntensity,
         surface->lineMemoryPool.colorOutputPlaceholder,
         surface->lineMemoryPool.cameraVectorPlaceholder,
         surface->lineMemoryPool.cameraVectorHatPlaceholder,

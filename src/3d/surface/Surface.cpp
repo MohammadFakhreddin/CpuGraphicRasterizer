@@ -3,15 +3,43 @@
 #include <cassert>
 
 Surface::Surface(
-  const Constants::LightPrecision lightPrecision,
-  Texture* texture,
-  const unsigned long edgeIndex[3],
-  const float specularIntensity
+  const Constants::LightPrecision lightPrecision, 
+  Texture* texture, 
+  const unsigned long edgeIndex1, 
+  const unsigned long edgeIndex2, 
+  const unsigned long edgeIndex3
 )
   :
   texture(texture),
   lightPrecision(lightPrecision),
-  cameraVectorPlaceholder(3,1,0.0f)
+  cameraVectorPlaceholder(3, 1, 0.0f)
+{
+
+  assert(texture);
+  
+  colorIntensity[0].reset(3, 1, 0.0f);
+  edgeIndices[0] = edgeIndex1;
+  setTextureCoordinates(0, 0, 0);
+  
+  colorIntensity[1].reset(3, 1, 0.0f);
+  edgeIndices[1] = edgeIndex2;
+  setTextureCoordinates(1, 0, 0);
+
+  colorIntensity[2].reset(3, 1, 0.0f);
+  edgeIndices[2] = edgeIndex3;
+  setTextureCoordinates(2, 0, 0);
+
+}
+
+Surface::Surface(
+  const Constants::LightPrecision lightPrecision,
+  Texture* texture,
+  const unsigned long edgeIndex[3]
+)
+  :
+  texture(texture),
+  lightPrecision(lightPrecision),
+  cameraVectorPlaceholder(3, 1, 0.0f)
 {
 
   assert(texture);
@@ -25,13 +53,14 @@ Surface::Surface(
 }
 
 void Surface::setNormalIndex(const short& edgeNumber, const unsigned long& index) {
-  assert(edgeNumber >= 0 && edgeNumber < edgeCount);
+  assert(edgeNumber >= 0 && edgeNumber < 3);
   assert(index >= 0);
   normalIndices[edgeNumber] = index;
 }
 
 void Surface::setTextureCoordinates(const short& edgeNumber, const float& x, const float& y) {
-  assert(edgeNumber >= 0 && edgeNumber < edgeCount);
+  assert(edgeNumber >= 0 && edgeNumber < 3);
+  textureCoordinate[edgeNumber].reset(2, 1, 0.0f);
   textureCoordinate[edgeNumber].setXY(x,y);
 }
 

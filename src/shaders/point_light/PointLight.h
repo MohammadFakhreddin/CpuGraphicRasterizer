@@ -9,13 +9,27 @@ class PointLight{
 public:
 
   PointLight(
-    float radius,
-    MatrixFloat color,
-    MatrixFloat transform,
-    float constantAttenuation,
-    float linearAttenuation,
-    float quadricAttenuation,
-    unsigned int specularPower
+    const float& radius,
+    const float& colorR,
+    const float& colorG,
+    const float& colorB,
+    const float& transformX,
+    const float& transformY,
+    const float& transformZ,
+    const float& constantAttenuation,
+    const float& linearAttenuation,
+    const float& quadricAttenuation,
+    const unsigned int& specularPower
+  );
+
+  PointLight(
+    const float& paramRadius,
+    const MatrixFloat& paramColor,
+    const MatrixFloat& paramTransform,
+    const float& paramConstantAttenuation,
+    const float& paramLinearAttenuation,
+    const float& paramQuadricAttenuation,
+    const unsigned int& paramSpecularPower
   );
 
   void transformX(const float& value);

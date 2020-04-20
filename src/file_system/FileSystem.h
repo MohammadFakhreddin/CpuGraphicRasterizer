@@ -17,7 +17,7 @@
 #ifdef __IOS__
 #include "./../../ios/ThreeDimentionalCube/ThreeDimentionalCube/IPhoneHelperAbstraction.h"
 #endif
-#include "../3d/shape/Shape3d.cpp"
+#include "../3d/shape/Shape3d.h"
 #include "../utils/operators/Operators.h"
 #include "../libs/tiny_obj_loader/tiny_obj_loader.h"
 #include "../libs/mini_ball/Miniball.h"
@@ -56,7 +56,7 @@ public:
   static std::unique_ptr<Shape3d> loadObject(
     std::string filename,
     Constants::LightPrecision lightPercision,
-    std::unique_ptr<Texture>& texture,
+    Texture* texture,
     bool requireCentralizing,
     Shape3d::NormalType normalType,
     bool useFileTextureCoordinates
@@ -214,13 +214,16 @@ public:
           if (mesh.num_face_vertices[faceIndex] != 3) {
             Logger::exception("Number of face vertices cannot be other than " + std::to_string(mesh.num_face_vertices[faceIndex]));
           }
+          unsigned long edgeIndicies[3] = {
+            (unsigned long)mesh.indices[faceIndex * 3u + edge1Index].vertex_index,
+            (unsigned long)mesh.indices[faceIndex * 3u + edge2Index].vertex_index,
+            (unsigned long)mesh.indices[faceIndex * 3u + edge3Index].vertex_index
+          };
           //Loading mesh indices into indices vector
           indices.emplace_back(std::make_unique<Surface>(
             lightPercision,
             texture,
-            mesh.indices[faceIndex * 3u + edge1Index].vertex_index,
-            mesh.indices[faceIndex * 3u + edge2Index].vertex_index,
-            mesh.indices[faceIndex * 3u + edge3Index].vertex_index
+            edgeIndicies
           ));
           if (normalType == Shape3d::NormalType::fileDefault) {
             indices.back()->setNormalIndex(0, mesh.indices[faceIndex * 3u + edge1Index].normal_index);

@@ -2,6 +2,7 @@
 #define DiffuseLight_class
 
 #include "../../data_types/MatrixTemplate.h"
+#include "../../camera/Camera.h"
 
 class DirectionalLight {
 
