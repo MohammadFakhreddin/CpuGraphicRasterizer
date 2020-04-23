@@ -53,14 +53,14 @@ DirectionalLight::DirectionalLight(
 
 //Source: https://en.wikipedia.org/wiki/Computer_graphics_lighting
 void DirectionalLight::computeLightIntensity(
-    const Matrix4X1Float& normal,
-    Matrix4X1Float& output
+  const Matrix4X1Float& normal,
+  Matrix4X1Float& output
 ) const {
-  
+
   float lightIntensityFactor = worldLightDirectionHat.dotProduct(normal) * -1;
-  
+
   assert(lightIntensityFactor <= 1);
-  
+
   output.assign(color);
   output.multiply(lightIntensityFactor);
 }

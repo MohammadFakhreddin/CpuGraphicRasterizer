@@ -9,7 +9,12 @@
 #include "./../data_types/MatrixTemplate.h"
 
 class Camera{
+
 public:
+
+  static constexpr unsigned int endZ = 1000;
+
+  static constexpr unsigned int startZ = 0;
   
   //TODO Store point size as well
   struct DrawPixel{
@@ -64,10 +69,6 @@ public:
     const float& green,
     const float& blue
   );
-
-  const unsigned int& getCameraCenterX() const ;
-
-  const unsigned int& getCameraCenterY() const ;
 
   bool isVisibleToCamera(
     std::vector<Matrix4X1Float>& worldPoints,
@@ -133,6 +134,8 @@ public:
 
   Matrix4X4Float rotationInverseMatrix;
 
+  Matrix4X4Float projection;
+
 private:
 
   /**
@@ -163,18 +166,16 @@ private:
   Matrix3X1Float transformInverseValue;
 
   Matrix3X1Float rotationInverseDegree;
-  
-  unsigned int cameraCenterX;
 
-  unsigned int cameraCenterY;
+  unsigned int startX;
 
-  unsigned int cameraStartX;
+  unsigned int endX;
 
-  unsigned int cameraEndX;
+  unsigned int startY;
 
-  unsigned int cameraStartY;
+  unsigned int endY;
 
-  unsigned int cameraEndY;
+  Matrix4X1Float position;
 
 };
 

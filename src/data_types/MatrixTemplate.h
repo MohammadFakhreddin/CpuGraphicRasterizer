@@ -10,6 +10,7 @@
 #include "../utils/math/Math.h"
 
 //TODO Write unit tests for project
+//TODO For specific situation matrices use static methods
 template <typename T,unsigned int width,unsigned int height>
 class _Matrix {
 
@@ -46,7 +47,7 @@ public:
       std::fill_n(cells, matrixSize, defaultValue);
     }
   };
-
+  //Use static generator methods instead
   _Matrix(const T& x, const T& y)
   {
     assert(width == 2);
@@ -306,28 +307,32 @@ public:
   //Based on http://www.songho.ca/opengl/gl_projectionmatrix.html
   static void assignProjection(
     _Matrix<T, 4, 4>& matrix,
-    const float& xFov,
-    const float& yFov,
-    const float& nearDist,
-    const float& farDist
+    const float& startX,
+    const float& endX,
+    const float& startY,
+    const float& EndY,
+    const float& startZ,
+    const float& endZ
   ) {
-    assert(farDist != nearDist);
-    matrix.set(0, 0, 1);
+    assert(endZ != startZ);
+    assert(endX != startX);
+    assert(EndY != startY);
+    matrix.set(0, 0, (2 * startZ) / (endX - startX));
     assert(matrix.get(0, 1) == 0);
-    assert(matrix.get(0, 2) == 0);
+    matrix.set(0, 2, (endX + startX) / (endX - startX));
     assert(matrix.get(0, 3) == 0);
     assert(matrix.get(1, 0) == 0);
-    matrix.set(1, 1, 1);
-    assert(matrix.get(1, 2) == 0);
+    matrix.set(1, 1, (2 * startZ) / (EndY - startY));
+    matrix.set(1, 2, (EndY + startY) / (EndY - startY));
     assert(matrix.get(1, 3) == 0);
     assert(matrix.get(2, 0) == 0);
     assert(matrix.get(2, 1) == 0);
-    matrix.set(2, 2, -2.0f / (farDist - nearDist));
-    matrix.set(2, 3, -(farDist + nearDist) / (farDist - nearDist));
+    matrix.set(2, 2, -(endZ + startZ) / (endZ - startZ));
+    matrix.set(2, 3, -(2 * endZ * startZ) / (endZ - startZ));
     assert(matrix.get(3, 0) == 0);
     assert(matrix.get(3, 1) == 0);
-    assert(matrix.get(3, 2) == 0);
-    matrix.set(3, 3, 1);
+    matrix.set(3, 2, -1);
+    assert(matrix.get(3, 3) == 0);
   }
 
   static void assignScale(

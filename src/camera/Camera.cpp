@@ -22,12 +22,10 @@ Camera::Camera(
   :
   gl(paramGl),
   pixelMapSize(paramAppScreenWidth * paramAppScreenHeight),
-  cameraCenterX(paramAppScreenWidth / 2),
-  cameraCenterY(paramAppScreenHeight / 2),
-  cameraStartX(0),
-  cameraStartY(0),
-  cameraEndX(paramAppScreenWidth),
-  cameraEndY(paramAppScreenHeight),
+  startX(0),
+  startY(0),
+  endX(paramAppScreenWidth),
+  endY(paramAppScreenHeight),
   appScreenWidth(paramAppScreenWidth),
   appScreenHeight(paramAppScreenHeight)
 {
@@ -46,6 +44,22 @@ Camera::Camera(
     paramRotation.getY(),
     paramRotation.getZ()
   );
+
+  Matrix4X4Float::assignProjection(
+    projection,
+    startX,
+    endX,
+    startY,
+    endY,
+    startZ,
+    endZ
+  );
+
+
+  position.setX((endX - startX) / 2.0f);
+  position.setY((endY - startY) / 2.0f);
+  //Usually camera distance to zero is equal to far
+  position.setZ(-1 * (endZ - startZ));
 
   DataAccessPoint::getInstance()->getEventHandler().subscribeToEvent<bool>(
     EventHandler::EventName::screenSurfaceChanged,
@@ -78,9 +92,6 @@ void Camera::notifyScreenSurfaceIsChanged(
 
   this->appScreenWidth = DataAccessPoint::getInstance()->getAppScreenWidth();
   this->appScreenHeight = DataAccessPoint::getInstance()->getAppScreenHeight();
-
-  this->cameraCenterX = this->appScreenWidth / 2;
-  this->cameraCenterY = this->appScreenHeight / 2;
 
   assert(appScreenWidth>0);
   assert(appScreenHeight>0);
@@ -123,12 +134,12 @@ void Camera::putPixelInMap(
   assert(blue>=0 && blue<=1.0f);
   
   if(
-    zValue >= 0 ||
-    zValue <= zDefaultValue ||
-    x < 0 ||
-    long(x) >= long(appScreenWidth) ||
-    y < 0 ||
-    long(y) >= long(appScreenHeight)
+    zValue <= startZ ||
+    zValue >= endZ ||
+    x < startX ||
+    x >= endX ||
+    y < startY ||
+    y >= endY
   ){
     return;
   }  
@@ -191,9 +202,9 @@ const unsigned int& Camera::getAppScreenHeight() const {
 //It must transform based on theta
 void Camera::transform(float transformX, float transformY, float transformZ) {
   
-  transformInverseValue.setX(transformX + transformInverseValue.getX());
-  transformInverseValue.setY(transformY + transformInverseValue.getY());
-  transformInverseValue.setZ(transformZ + transformInverseValue.getZ());
+  transformInverseValue.setX(transformInverseValue.getX() - transformX);
+  transformInverseValue.setY(transformInverseValue.getY() - transformY); 
+  transformInverseValue.setZ(transformInverseValue.getZ() - transformZ);
   
   Matrix4X4Float::assignTransformation(
     transformInverseMatrix, 
@@ -219,39 +230,15 @@ void Camera::rotateXYZ(const float& x,const float& y,const float& z) {
   );
 
 }
-const unsigned int& Camera::getCameraCenterX() const {
-  return cameraCenterX;
-}
-
-const unsigned int& Camera::getCameraCenterY() const {
-  return cameraCenterY;
-}
-
 
 void Camera::generateCameraToPointVector(
   const Matrix4X1Float& worldPoint,
   Matrix4X1Float& output
 ) const {
-  //TODO It must be camera position instead
-  output.set(
-    0,
-    0,
-    Math::clamp(
-      worldPoint.get(0, 0),
-      cameraStartX,
-      cameraEndY
-    ) - worldPoint.get(0, 0)
-  );
-  output.set(
-    1,
-    0,
-    Math::clamp(
-      worldPoint.get(1, 0),
-      cameraStartY,
-      cameraEndY
-    ) - worldPoint.get(1, 0)
-  );
-  output.set(2, 0, worldPoint.get(2, 0));
+  //TODO check for vector correctness
+  output.assign(position);
+  output.minus(worldPoint);
+  output.setW(1.0f);
 }
 
 bool Camera::isVisibleToCamera(
@@ -269,10 +256,10 @@ bool Camera::isVisibleToCamera(
     const auto& currentWorldPoint = worldPoints.at(edgeIndices[i]);
 
     if (
-      currentWorldPoint.get(0, 0) >= cameraStartX &&
-      currentWorldPoint.get(0, 0) < cameraEndX &&
-      currentWorldPoint.get(1, 0) >= cameraStartY &&
-      currentWorldPoint.get(1, 0) < cameraEndY
+      currentWorldPoint.get(0, 0) >= startX &&
+      currentWorldPoint.get(0, 0) < endX &&
+      currentWorldPoint.get(1, 0) >= startY &&
+      currentWorldPoint.get(1, 0) < endY
       ) {
 
       isShapeCompletlyOutOfCamera = false;

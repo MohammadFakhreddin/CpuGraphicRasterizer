@@ -40,7 +40,6 @@ void PipeLine::assignAmbientLight(AmbientLight* ambientLight) {
 
 void PipeLine::assignDirectionalLight(std::vector<DirectionalLight*>& directionalLights) {
   assert(directionalLights.empty() == false);
-  isDirectionalLightsArrayEmpty = false;
   for (auto& light : directionalLights) {
     this->directionalLights.emplace_back(light);
   }
@@ -48,7 +47,6 @@ void PipeLine::assignDirectionalLight(std::vector<DirectionalLight*>& directiona
 
 void PipeLine::assignPointLight(std::vector<PointLight*>& pointLights) {
   assert(pointLights.empty() == false);
-  isPointLightsArrayEmpty = false;
   for (auto& light : pointLights) {
     this->pointLights.emplace_back(light);
   }
@@ -56,7 +54,6 @@ void PipeLine::assignPointLight(std::vector<PointLight*>& pointLights) {
 
 void PipeLine::assignShapes(std::vector<Shape3d*>& shapes) {
   assert(shapes.empty() == false);
-  isShapesArrayEmpty = false;
   for (auto& shape : shapes) {
     this->shapes.emplace_back(shape);
   }
@@ -80,30 +77,30 @@ void PipeLine::assignShapes(Shape3d* shape) {
 
 void PipeLine::update(double deltaTime)
 {
-  if (isDirectionalLightsArrayEmpty == false) {
+  if (directionalLights.empty() == false) {
     for (auto& light : directionalLights) {
       light->update(camera);
     }
   }
-  if (isPointLightsArrayEmpty == false) {
+  if (pointLights.empty() == false) {
     for (auto& light : pointLights) {
       threadPool.autoAssignTask(&updateShapeNodesReference, light->getShape());
       threadPool.autoAssignTask(&updateShapeNormalsReference, light->getShape());
     }
   }
-  if (isShapesArrayEmpty == false) {
+  if (shapes.empty() == false) {
     for (auto& shape : shapes) {
       threadPool.autoAssignTask(&updateShapeNodesReference, shape);
       threadPool.autoAssignTask(&updateShapeNormalsReference, shape);
     }
   }
   threadPool.waitForThreadsToFinish();
-  if (isPointLightsArrayEmpty == false) {
+  if (pointLights.empty() == false) {
     for (auto& light : pointLights) {
       threadPool.autoAssignTask(&updateShapeSurfacesReference, light->getShape());
     }
   }
-  if (isShapesArrayEmpty == false) {
+  if (shapes.empty() == false) {
     for (auto& shape : shapes) {
       threadPool.autoAssignTask(&updateShapeSurfacesReference, shape);
     }
@@ -140,6 +137,8 @@ void PipeLine::updateShapeNodes(
     shape->worldPoints[nodeIndex].multiply(shape->transformMatrix);
 
     shape->worldPoints[nodeIndex].multiply(camera.transformInverseMatrix);
+    //TO project shape into openGL map we use camera.projection
+    shape->worldPoints[nodeIndex].multiply(camera.projection);
   }
 }
 
@@ -166,7 +165,7 @@ void PipeLine::computeLightIntensityForPoint(
     ambientLight->computeLightIntensity(colorOutputPlaceholder);
     output.sum(colorOutputPlaceholder);
   }
-  if (isDirectionalLightsArrayEmpty == false) {
+  if (directionalLights.empty() == false) {
     for (const auto& light : directionalLights) {
       light->computeLightIntensity(worldNormal, colorOutputPlaceholder);
 
@@ -180,7 +179,7 @@ void PipeLine::computeLightIntensityForPoint(
       output.sum(colorOutputPlaceholder);
     }
   }
-  if (specularIntensity > 0 && isPointLightsArrayEmpty == false) {
+  if (specularIntensity > 0 && pointLights.empty() == false) {
     for (const auto& light : pointLights) {
       light->computeLightIntensity(
         camera,

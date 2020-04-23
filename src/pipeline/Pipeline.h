@@ -128,12 +128,6 @@ private:
 
   std::vector<Shape3d*> shapes;
 
-  bool isPointLightsArrayEmpty = true;
-
-  bool isShapesArrayEmpty = true; 
-
-  bool isDirectionalLightsArrayEmpty = false;
-
   Camera& camera;
     
   AmbientLight* ambientLight = nullptr;

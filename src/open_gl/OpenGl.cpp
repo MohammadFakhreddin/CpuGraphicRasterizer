@@ -103,8 +103,6 @@ void OpenGL::init(){
 #if defined(__OPENGL__)
   glPointSize(1.0f);
   glViewport(0,0,appScreenWidth,appScreenHeight);
-  //TODO Remove camera and use projection matrix
-  glOrtho(-0.5f, float(appScreenWidth) - 0.5f, -0.5f, float(appScreenHeight) - 0.5f, -1.0, 1.0);
 #endif
 #if defined(__GLES__)
   
@@ -113,11 +111,11 @@ void OpenGL::init(){
 
   viewPortStartX = int(-1 * (float(viewPortWidth)/2.0f));
   viewPortStartY = int(-1 * (float(viewPortHeight)/2.0f));
-  
+  /*
   xDifValue = float(appScreenWidth)/4.0f;
   yDifValue = float(appScreenHeight)/4.0f;
   projectionX = 2.0f / float(appScreenWidth);
-  projectionY = 2.0f / float(appScreenHeight);
+  projectionY = 2.0f / float(appScreenHeight);*/
 #endif
 #if defined(__ANDROID__)
   glViewport(viewPortStartX,viewPortStartY,viewPortWidth,viewPortHeight);
@@ -229,10 +227,14 @@ void OpenGL::drawPixel(
   glVertex2i(x,y);
 
 #else
-
+    
   {
+    /*
       position[0] = (x - xDifValue) * projectionX;
       position[1] = (y - yDifValue) * projectionY;
+    */
+      position[0] = x;
+      position[1] = y;
       glVertexAttribPointer((GLuint)pointParamLocation,4,GL_FLOAT,GL_FALSE,0,position);
       assert(checkForOpenGlError());
       glEnableVertexAttribArray((GLuint)pointParamLocation);

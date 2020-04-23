@@ -51,7 +51,6 @@ public:
   GLuint createProgram(const char* vertexSource, const char * fragmentSource);
   GLfloat color[4] = {0,0,0,1.0f};
   GLfloat position[4] = {0,0,0.0f,1.0f};
-  GLfloat projMat[16];
 #endif // GLES
 private:
   unsigned int appScreenWidth = 0;
@@ -63,10 +62,6 @@ private:
   int viewPortHeight = 0;
   int viewPortStartX = 0;
   int viewPortStartY = 0;
-  float xDifValue = 0;
-  float yDifValue = 0;
-  float projectionX = 0;
-  float projectionY = 0;
   GLuint programObject = 0;
   GLint pointParamLocation = -1;
   GLint colorParamLocation = -1;
