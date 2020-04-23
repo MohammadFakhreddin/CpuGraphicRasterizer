@@ -109,14 +109,42 @@ bool Shape3d::checkDataValidation() {
     Logger::log("Shape3d nodes cannot be empty");
     return false;
   }
-
-  if (surfaces.empty()) {
-    Logger::log("Shap3d surfaces cannot be empty");
-    return false;
+  for (auto& node : nodes) {
+    if (isnan(node.getX())) {
+      Logger::log("Shape3d node.getX() is isNan == true");
+      return false;
+    }
+    if (isnan(node.getY())) {
+      Logger::log("Shape3d node.getY() is isNan == true");
+      return false;
+    }
+    if (isnan(node.getZ())) {
+      Logger::log("Shape3d node.getZ() is isNan == true");
+      return false;
+    }
   }
 
   if (normals.empty()) {
     Logger::log("Normals cannot be empty");
+    return false;
+  }
+  for (auto& normal : normals) {
+    if (isnan(normal.getX())) {
+      Logger::log("Shape3d normal.getX() is isNan == true");
+      return false;
+    }
+    if (isnan(normal.getY())) {
+      Logger::log("Shape3d normal.getY() is isNan == true");
+      return false;
+    }
+    if (isnan(normal.getZ())) {
+      Logger::log("Shape3d normal.getZ() is isNan == true");
+      return false;
+    }
+  }
+
+  if (surfaces.empty()) {
+    Logger::log("Shap3d surfaces cannot be empty");
     return false;
   }
   
@@ -245,6 +273,27 @@ std::vector<Matrix3X1Float> Shape3d::generateNormals(
   assert(normalType != NormalType::fileDefault);
   assert(!surfaceList.empty());
   assert(!nodes.empty());
+
+
+  auto areNodesValid = [&nodes]() {
+    for (auto& node : nodes) {
+      if (isnan(node.getX()) == true) {
+        Logger::log("IsNan nodeList[index].getX is true");
+        return false;
+      }
+      if (isnan(node.getY()) == true) {
+        Logger::log("IsNan nodeList[index].getY() is true");
+        return false;
+      }
+      if (isnan(node.getZ()) == true) {
+        Logger::log("IsNan nodeList[index].getZ() is true");
+        return false;
+      }
+    }
+    return true;
+  };
+  assert(areNodesValid());
+  
 
   std::vector<Matrix3X1Float> normals;
 

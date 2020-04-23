@@ -27,7 +27,9 @@ Camera::Camera(
   cameraStartX(0),
   cameraStartY(0),
   cameraEndX(paramAppScreenWidth),
-  cameraEndY(paramAppScreenHeight)
+  cameraEndY(paramAppScreenHeight),
+  appScreenWidth(paramAppScreenWidth),
+  appScreenHeight(paramAppScreenHeight)
 {
 
   assert(paramAppScreenWidth > 0);
@@ -189,15 +191,15 @@ const unsigned int& Camera::getAppScreenHeight() const {
 //It must transform based on theta
 void Camera::transform(float transformX, float transformY, float transformZ) {
   
-  transformValue.setX(transformX + transformValue.getX());
-  transformValue.setY(transformY + transformValue.getY());
-  transformValue.setZ(transformZ + transformValue.getZ());
+  transformInverseValue.setX(transformX + transformInverseValue.getX());
+  transformInverseValue.setY(transformY + transformInverseValue.getY());
+  transformInverseValue.setZ(transformZ + transformInverseValue.getZ());
   
   Matrix4X4Float::assignTransformation(
-    transformMatrix, 
-    transformValue.getX(), 
-    transformValue.getY(), 
-    transformValue.getZ()
+    transformInverseMatrix, 
+    transformInverseValue.getX(), 
+    transformInverseValue.getY(), 
+    transformInverseValue.getZ()
   );
 
 }

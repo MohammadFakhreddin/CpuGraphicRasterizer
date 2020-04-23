@@ -139,7 +139,7 @@ void PipeLine::updateShapeNodes(
 
     shape->worldPoints[nodeIndex].multiply(shape->transformMatrix);
 
-    shape->worldPoints[nodeIndex].multiply(camera.transformMatrix);
+    shape->worldPoints[nodeIndex].multiply(camera.transformInverseMatrix);
   }
 }
 

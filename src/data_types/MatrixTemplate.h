@@ -17,7 +17,7 @@ public:
 
   static constexpr unsigned int matrixSize = width * height;
 
-  T cells[matrixSize];
+  T cells[matrixSize] = { 0 };
 
 private:
 
@@ -33,18 +33,18 @@ private:
 
   unsigned int index = 0;
   
-  T placeholderCells[matrixSize];
+  T placeholderCells[matrixSize] = { 0 };
 
 public:
 
   _Matrix()
-  {
-    std::fill_n(cells, matrixSize, 0);
-  };
+  {};
 
   _Matrix(T defaultValue)
   {
-    std::fill_n(cells, matrixSize, defaultValue);
+    if (defaultValue != 0) {
+      std::fill_n(cells, matrixSize, defaultValue);
+    }
   };
 
   _Matrix(const T& x, const T& y)
@@ -292,9 +292,9 @@ public:
   template<typename A>
   A squareSize() const {
     return A(
-      this->get(0, 0) * this->get(0, 0) +
-      this->get(1, 0) * this->get(1, 0) +
-      this->get(2, 0) * this->get(2, 0)
+      cells[0] * cells[0] +
+      cells[1] * cells[1] +
+      cells[2] * cells[2]
     );
   }
 
@@ -583,10 +583,10 @@ public:
 
 private:
   //Hint rhsHeight == width && rhsWidth == width
+  //TODO write tests
   void _multiply(
     const T* rhsCells
   ) {
-    assert(sizeof(rhsCells) == sizeof(T) * width * width);
     for (i = 0; i < width; i++) {
       rhsRowValue = i * width;
       rowValue = i * height;
@@ -594,7 +594,7 @@ private:
         index = rowValue + j;
         placeholderCells[rowValue] = 0;
         for (k = 0; k < width; k++) {
-          placeholderCells[rowValue] += cells[k * height + j] * T(cells[rhsRowValue + k]);
+          placeholderCells[rowValue] += cells[k * height + j] * T(rhsCells[rhsRowValue + k]);
         }
       }
     }

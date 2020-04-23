@@ -129,7 +129,7 @@ public:
   ) const;
 
 
-  Matrix4X4Float transformMatrix;
+  Matrix4X4Float transformInverseMatrix;
 
   Matrix4X4Float rotationInverseMatrix;
 
@@ -160,7 +160,7 @@ private:
 
   OpenGL& gl;
 
-  Matrix3X1Float transformValue;
+  Matrix3X1Float transformInverseValue;
 
   Matrix3X1Float rotationInverseDegree;
   
