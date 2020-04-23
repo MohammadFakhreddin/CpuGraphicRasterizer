@@ -11,8 +11,8 @@ LightPerPixelScene::LightPerPixelScene(OpenGL& gl)
   BaseScene(gl, "CarScene"),
   cameraInstance(
     gl,
-    MatrixFloat(3, 1, 0.0f),
-    MatrixFloat(3, 1, 0.0f),
+    Matrix3X1Float(3, 1, 0.0f),
+    Matrix3X1Float(3, 1, 0.0f),
     DataAccessPoint::getInstance()->getAppScreenWidth(),
     DataAccessPoint::getInstance()->getAppScreenHeight(),
     "Light per pixel scene main camera"

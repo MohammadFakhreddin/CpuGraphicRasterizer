@@ -56,17 +56,15 @@ public:
 
   unsigned long normalIndices[3];
 
-  MatrixFloat colorIntensity[3];
-
-  MatrixFloat textureCoordinate[3];
+  Matrix2X1Float textureCoordinate[3];
   
   Constants::LightPrecision lightPrecision;
-
-  MatrixFloat cameraVectorPlaceholder;
 
   TriangleMemoryPool triangleMemoryPool;
 
   LineMomoryPool lineMemoryPool;
+
+  Matrix4X1Float cameraVectorPlaceholder;
 
 };
 

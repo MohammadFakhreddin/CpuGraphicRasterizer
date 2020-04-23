@@ -14,7 +14,7 @@ public:
   );
 
   ColorTexture(
-    const MatrixFloat& color
+    const Matrix3X1Float& color
   );
 
   void getPixelForPosition(

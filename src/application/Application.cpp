@@ -144,7 +144,7 @@ void Application::update(double deltaTime) {
 }
 
 void Application::mainLoop(double deltaTime){
-  deltaTime = Math::min(deltaTime,100.0);
+  deltaTime = fmin(deltaTime,100.0);
   update(deltaTime);
   render(deltaTime);
   if(deltaTime>0){

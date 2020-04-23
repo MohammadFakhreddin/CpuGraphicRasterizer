@@ -24,8 +24,8 @@ public:
 
   PointLight(
     const float& paramRadius,
-    const MatrixFloat& paramColor,
-    const MatrixFloat& paramTransform,
+    const Matrix3X1Float& paramColor,
+    const Matrix3X1Float& paramTransform,
     const float& paramConstantAttenuation,
     const float& paramLinearAttenuation,
     const float& paramQuadricAttenuation,
@@ -40,27 +40,27 @@ public:
 
   void computeLightIntensity(
     const Camera& cameraInstance,
-    const MatrixFloat& surfaceNormalVector,
-    const MatrixFloat& surfaceLocation,
+    const Matrix4X1Float& surfaceNormalVector,
+    const Matrix4X1Float& surfaceLocation,
     const float& specularIntensity,
-    MatrixFloat& lightVectorPlaceholder,
-    MatrixFloat& lightVectorHatPlaceholder,
-    MatrixFloat& lightReflectionPlaceholder,
-    MatrixFloat& lightReflectionHatPlaceholder,
-    MatrixFloat& cameraVectorPlaceholder,
-    MatrixFloat& cameraVectorHatPlaceholder,
-    MatrixFloat& output
+    Matrix4X1Float& lightVectorPlaceholder,
+    Matrix4X1Float& lightVectorHatPlaceholder,
+    Matrix4X1Float& lightReflectionPlaceholder,
+    Matrix4X1Float& lightReflectionHatPlaceholder,
+    Matrix4X1Float& cameraVectorPlaceholder,
+    Matrix4X1Float& cameraVectorHatPlaceholder,
+    Matrix4X1Float& output
   ) const ;
 
   Shape3d* getShape();
 
 private:
 
-  MatrixFloat transform;
+  Matrix3X1Float transform;
 
   std::unique_ptr<ColorTexture> lightColor;
 
-  MatrixFloat worldPoint;
+  Matrix4X1Float worldPoint;
   
   double constantAttenuation;
 
@@ -70,7 +70,7 @@ private:
 
   unsigned int specularPower;
 
-  MatrixFloat color;
+  Matrix3X1Float color;
 
   std::unique_ptr<Shape3d> sphere;
 

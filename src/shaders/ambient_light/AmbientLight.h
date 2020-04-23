@@ -7,23 +7,19 @@ class AmbientLight{
 
 public:
 
-  AmbientLight(
-    const float& colorR,
-    const float& colorG,
-    const float& colorB
-  );
+  AmbientLight(const float& colorR, const float& colorG, const float& colorB);
 
-  AmbientLight(
-    const MatrixFloat& color
-  );
+  AmbientLight(const Matrix3X1Float& paramColor);
 
   void computeLightIntensity(
-    MatrixFloat& output
+    Matrix4X1Float& output
   ) const;
 
 private:
 
-  MatrixFloat color;
+  bool checkForColorValidation();
+
+  Matrix3X1Float color;
 
 };
 

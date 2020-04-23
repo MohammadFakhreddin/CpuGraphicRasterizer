@@ -73,28 +73,28 @@ private:
   void assembleLines(
     Shape3d* shape,
     Surface* surface,
-    const MatrixFloat& paramTriangleStart,
-    const MatrixFloat& paramTriangleEnd,
-    const MatrixFloat& paramTextureStart,
-    const MatrixFloat& paramTextureEnd,
-    const MatrixFloat& paramLightColorStart,
-    const MatrixFloat& paramLightColorEnd,
-    const MatrixFloat& paramNormalStart,
-    const MatrixFloat& paramNormalEnd
+    const Matrix4X1Float& paramTriangleStart,
+    const Matrix4X1Float& paramTriangleEnd,
+    const Matrix2X1Float& paramTextureStart,
+    const Matrix2X1Float& paramTextureEnd,
+    const Matrix4X1Float& paramLightColorStart,
+    const Matrix4X1Float& paramLightColorEnd,
+    const Matrix4X1Float& paramNormalStart,
+    const Matrix4X1Float& paramNormalEnd
   );
 
   void computeLightIntensityForPoint(
-    const MatrixFloat& worldPoint,
-    const MatrixFloat& worldNormal,
+    const Matrix4X1Float& worldPoint,
+    const Matrix4X1Float& worldNormal,
     const float& specularIntensity,
-    MatrixFloat& colorOutputPlaceholder,
-    MatrixFloat& cameraVectorPlaceholder,
-    MatrixFloat& cameraVectorHatPlaceholder,
-    MatrixFloat& lightVectorPlaceholder,
-    MatrixFloat& lightVectorHatPlaceholder,
-    MatrixFloat& lightReflectionVectorPlaceholder,
-    MatrixFloat& lightReflectionVectorHatPlaceholder,
-    MatrixFloat& output
+    Matrix4X1Float& colorOutputPlaceholder,
+    Matrix4X1Float& cameraVectorPlaceholder,
+    Matrix4X1Float& cameraVectorHatPlaceholder,
+    Matrix4X1Float& lightVectorPlaceholder,
+    Matrix4X1Float& lightVectorHatPlaceholder,
+    Matrix4X1Float& lightReflectionVectorPlaceholder,
+    Matrix4X1Float& lightReflectionVectorHatPlaceholder,
+    Matrix4X1Float& output
   );
 
   void updateShapeNodesConversionMethod(const unsigned int& threadNumber, void* shape);
@@ -136,7 +136,7 @@ private:
 
   Camera& camera;
     
-  AmbientLight* ambientLight;
+  AmbientLight* ambientLight = nullptr;
     
   std::vector<DirectionalLight*> directionalLights;
     

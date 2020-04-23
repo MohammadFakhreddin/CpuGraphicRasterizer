@@ -6,6 +6,21 @@
 #include "../../camera/Camera.h"
 
 DirectionalLight::DirectionalLight(
+  const Matrix3X1Float& color,
+  const Matrix3X1Float& direction
+)
+  :
+  DirectionalLight(
+    color.getR(),
+    color.getG(),
+    color.getB(),
+    direction.getX(),
+    direction.getY(),
+    direction.getZ()
+  )
+{}
+
+DirectionalLight::DirectionalLight(
   const float& colorR,
   const float& colorG,
   const float& colorB,
@@ -13,12 +28,6 @@ DirectionalLight::DirectionalLight(
   const float& directionY,
   const float& directionZ
 )
-  :
-  color(3, 1, 0.0f),
-  lightDirectionHat(3, 1, 0.0f),
-  worldLightDirectionHat(3, 1, 0.0f),
-  roationXYZMatrix(3, 3, 0.0f),
-  rotationDegreeMatrix(3, 1, 0.0f)
 {
 
   assert(colorR >= 0 && colorR <= 1.0f);
@@ -29,12 +38,12 @@ DirectionalLight::DirectionalLight(
   color.set(1, 0, colorG);
   color.set(2, 0, colorB);
 
-  MatrixFloat lightDirection(3, 1, 0.0f);
-  lightDirection.set(0, 0, directionX);
-  lightDirection.set(1, 0, directionY);
-  lightDirection.set(2, 0, directionZ);
+  Matrix3X1Float lightDirection;
+  lightDirection.setX(directionX);
+  lightDirection.setY(directionY);
+  lightDirection.setZ(directionZ);
 
-  lightDirection.hat<float>(lightDirectionHat);
+  lightDirection.hat(lightDirectionHat);
 
   worldLightDirectionHat.assign(lightDirectionHat);
 
@@ -44,8 +53,8 @@ DirectionalLight::DirectionalLight(
 
 //Source: https://en.wikipedia.org/wiki/Computer_graphics_lighting
 void DirectionalLight::computeLightIntensity(
-    const MatrixFloat& normal,
-    MatrixFloat& output
+    const Matrix4X1Float& normal,
+    Matrix4X1Float& output
 ) const {
   
   float lightIntensityFactor = worldLightDirectionHat.dotProduct(normal) * -1;
@@ -54,24 +63,28 @@ void DirectionalLight::computeLightIntensity(
   
   output.assign(color);
   output.multiply(lightIntensityFactor);
-
 }
 
 //This method must be called before other objects update
-void DirectionalLight::update(Camera& camera) {
+void DirectionalLight::update(const Camera& camera) {
+
   worldLightDirectionHat.assign(lightDirectionHat);
-  worldLightDirectionHat.multiply(roationXYZMatrix);
-  worldLightDirectionHat.multiply(camera.getRotationInverseXYZ());
+  worldLightDirectionHat.multiply(rotationXYZMatrix);
+  worldLightDirectionHat.multiply(camera.rotationInverseMatrix);
+
 }
 
 void DirectionalLight::rotateXYZ(const float& x, const float& y, const float& z) {
-  rotationDegreeMatrix.set(0, 0, rotationDegreeMatrix.get(0, 0) + x);
-  rotationDegreeMatrix.set(1, 0, rotationDegreeMatrix.get(1, 0) + y);
-  rotationDegreeMatrix.set(2, 0, rotationDegreeMatrix.get(2, 0) + z);
-  MatrixFloat::assignAsRotationXYZMatrix(
-    roationXYZMatrix, 
-    rotationDegreeMatrix.get(0, 0),
-    rotationDegreeMatrix.get(1, 0),
-    rotationDegreeMatrix.get(2, 0)
+
+  rotationDegree.setX(rotationDegree.getX() + x);
+  rotationDegree.setY(rotationDegree.getY() + y);
+  rotationDegree.setZ(rotationDegree.getZ() + z);
+  
+  Matrix4X4Float::assignRotationXYZ(
+    rotationXYZMatrix, 
+    rotationDegree.getX(),
+    rotationDegree.getY(),
+    rotationDegree.getZ()
   );
+
 }

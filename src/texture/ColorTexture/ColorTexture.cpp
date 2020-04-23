@@ -1,7 +1,7 @@
 #include "./ColorTexture.h"
 
 ColorTexture::ColorTexture(
-  const MatrixFloat& color
+  const Matrix3X1Float& color
 )
   :
   ColorTexture(color.getR(), color.getG(), color.getB())

@@ -28,49 +28,17 @@ public:
     float x = -w / 2;
     float y = -h / 2;
     float z = -d / 2;
-    std::vector<MatrixFloat> nodeList;
-    nodeList.emplace_back(3, 1, std::vector<std::vector<float>>{
-      std::vector<float>{x},
-        std::vector<float>{y},
-        std::vector<float>{z}
-    });
-    nodeList.emplace_back(3, 1, std::vector<std::vector<float>>{
-      std::vector<float>{x},
-        std::vector<float>{y},
-        std::vector<float>{z + d}
-    });
-    nodeList.emplace_back(3, 1, std::vector<std::vector<float>>{
-      std::vector<float>{x},
-        std::vector<float>{y + h},
-        std::vector<float>{z}
-    });
-    nodeList.emplace_back(3, 1, std::vector<std::vector<float>>{
-      std::vector<float>{x},
-        std::vector<float>{y + h},
-        std::vector<float>{z + d}
-    });
-    nodeList.emplace_back(3, 1, std::vector<std::vector<float>>{
-      std::vector<float>{x + w},
-        std::vector<float>{y},
-        std::vector<float>{z}
-    });
-    nodeList.emplace_back(3, 1, std::vector<std::vector<float>>{
-      std::vector<float>{x + w},
-        std::vector<float>{y},
-        std::vector<float>{z + d}
-    });
-    nodeList.emplace_back(3, 1, std::vector<std::vector<float>>{
-      std::vector<float>{x + w},
-      std::vector<float>{y + h},
-      std::vector<float>{z}
-    });
-    nodeList.emplace_back(3, 1, std::vector<std::vector<float>>{
-      std::vector<float>{x + w},
-        std::vector<float>{y + h},
-        std::vector<float>{z + d}
-    });
+    std::vector<Matrix3X1Float> nodeList;
+    nodeList.emplace_back(x,y,z);
+    nodeList.emplace_back(x, y, z + d);
+    nodeList.emplace_back(x, y + h, z);
+    nodeList.emplace_back(x, y + h, z + d);
+    nodeList.emplace_back(x + w, y, z);
+    nodeList.emplace_back(x + w, y, z + d);
+    nodeList.emplace_back(x + w, y + h, z);
+    nodeList.emplace_back(x + w, y + h, z + d);
     //Generating normals
-    std::vector<MatrixFloat> normals = Shape3d::generateNormals(
+    std::vector<Matrix3X1Float> normals = Shape3d::generateNormals(
       surfaceList,
       nodeList,
       Shape3d::NormalType::sharp
@@ -106,30 +74,29 @@ public:
     assert(numberOfLat > 0 && "ShapeGenerator::sphere number of lat must be above 0");
     assert(numberOfLong > 0 && "ShapeGenerator::sphere number of long must be above 0");
 
-    std::vector<MatrixFloat> vertices;
+    std::vector<Matrix3X1Float> vertices;
 
     {//Filling vertices
-      MatrixFloat initialPoint(3, 1, 0.0f);
-      
+      Matrix3X1Float initialPoint;
       initialPoint.set(1, 0, radius);
       
       const auto latitudeStepDegree = Math::piFloat / float(numberOfLat);
 
-      MatrixFloat latitudeRotationMatrix(3, 3, 0.0f);
+      Matrix4X4Float latitudeRotationMatrix;
      
       const auto longitudeStepDegree = (Math::piFloat * 2.0f) / float(numberOfLong);
 
-      MatrixFloat longitudeRotationMatrix(3, 3, 0.0f);
+      Matrix4X4Float longitudeRotationMatrix;
    
-      MatrixFloat latitudePoint(3, 1, 0.0f);
+      Matrix4X1Float latitudePoint;
 
-      MatrixFloat longitudePoint(3, 1, 0.0f);
+      Matrix4X1Float longitudePoint;
 
       for (unsigned int latitudeIndex = 1; latitudeIndex < numberOfLat - 1; latitudeIndex++) {
 
         latitudePoint.assign(initialPoint);
 
-        MatrixFloat::assignAsRotationZMatrix(
+        Matrix4X4Float::assignRotationZ(
           latitudeRotationMatrix, 
           latitudeStepDegree * latitudeIndex
         );
@@ -140,26 +107,26 @@ public:
 
           longitudePoint.assign(latitudePoint);
           
-          MatrixFloat::assignAsRotationYMatrix(
+          Matrix4X4Float::assignRotationY(
             longitudeRotationMatrix,
             longitudeStepDegree * longitudeIndex
           );
           
           longitudePoint.multiply(longitudeRotationMatrix);
 
-          vertices.emplace_back(3, 1, 0.0f);
+          vertices.emplace_back();
           vertices.back().assign(longitudePoint);
 
         }
 
       }
 
-      vertices.emplace_back(3, 1, 0.0f);
+      vertices.emplace_back();
       vertices.back().assign(initialPoint);
       
       initialPoint.set(1, 0, -1 * radius);
 
-      vertices.emplace_back(3, 1, 0.0f);
+      vertices.emplace_back();
       vertices.back().assign(initialPoint);
     
     }
@@ -249,7 +216,7 @@ public:
 
     }
 
-    std::vector<MatrixFloat> normals = Shape3d::generateNormals(indices, vertices, Shape3d::NormalType::smooth);
+    std::vector<Matrix3X1Float> normals = Shape3d::generateNormals(indices, vertices, Shape3d::NormalType::smooth);
 
     return std::make_unique<Shape3d>(
       vertices,

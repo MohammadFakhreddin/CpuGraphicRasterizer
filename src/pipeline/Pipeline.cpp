@@ -10,6 +10,7 @@ PipeLine::PipeLine(
   Camera& camera
 ) 
   :
+  ambientLight(nullptr),
   threadPool(DataAccessPoint::getInstance()->getThreadPool()),
   camera(camera),
   numberOfSupportedThreads(threadPool.getNumberOfAvailableThreads()),
@@ -119,13 +120,14 @@ void PipeLine::updateShapeNodes(
     nodeIndex < shape->nodes.size();
     nodeIndex += numberOfSupportedThreads
     ) {
+    //TODO Start from here for checking camera transformations
     shape->worldPoints[nodeIndex].assign(shape->nodes[nodeIndex]);
 
     shape->worldPoints[nodeIndex].multiply(shape->rotationXYZMatrix);
 
-    shape->worldPoints[nodeIndex].multiply(shape->scaleValueMatrix);
+    shape->worldPoints[nodeIndex].multiply(shape->scaleMatrix);
 
-    shape->worldPoints[nodeIndex].multiply(camera.getRotationInverseXYZ());
+    shape->worldPoints[nodeIndex].multiply(camera.rotationInverseMatrix);
 
     float scaleValue = camera.scaleBasedOnZDistance(
       shape->worldPoints[nodeIndex].get(2, 0) + shape->transformMatrix.get(2, 0)
@@ -135,29 +137,26 @@ void PipeLine::updateShapeNodes(
 
     shape->worldPoints[nodeIndex].set(1, 0, shape->worldPoints[nodeIndex].get(1, 0) * scaleValue);
 
-    shape->worldPoints[nodeIndex].sum(shape->transformMatrix);
+    shape->worldPoints[nodeIndex].multiply(shape->transformMatrix);
 
-    shape->worldPoints[nodeIndex].minus(camera.getTransformMatrix());
+    shape->worldPoints[nodeIndex].multiply(camera.transformMatrix);
   }
 }
 
 void PipeLine::computeLightIntensityForPoint(
-  const MatrixFloat& worldPoint, 
-  const MatrixFloat& worldNormal, 
-  const float& specularIntensity, 
-  MatrixFloat& colorOutputPlaceholder, 
-  MatrixFloat& cameraVectorPlaceholder, 
-  MatrixFloat& cameraVectorHatPlaceholder, 
-  MatrixFloat& lightVectorPlaceholder, 
-  MatrixFloat& lightVectorHatPlaceholder, 
-  MatrixFloat& lightReflectionVectorPlaceholder, 
-  MatrixFloat& lightReflectionVectorHatPlaceholder, 
-  MatrixFloat& output
+  const Matrix4X1Float& worldPoint,
+  const Matrix4X1Float& worldNormal,
+  const float& specularIntensity,
+  Matrix4X1Float& colorOutputPlaceholder,
+  Matrix4X1Float& cameraVectorPlaceholder,
+  Matrix4X1Float& cameraVectorHatPlaceholder,
+  Matrix4X1Float& lightVectorPlaceholder,
+  Matrix4X1Float& lightVectorHatPlaceholder,
+  Matrix4X1Float& lightReflectionVectorPlaceholder,
+  Matrix4X1Float& lightReflectionVectorHatPlaceholder,
+  Matrix4X1Float& output
 )
 {
-
-  assert(output.getWidth() == 3);
-  assert(output.getHeight() == 1);
 
   output.set(0, 0, 0.0f);
   output.set(1, 0, 0.0f);
@@ -212,6 +211,7 @@ void PipeLine::computeLightIntensityForPoint(
   output.set(0, 0, Math::clamp(output.get(0, 0), 0.0f, 1.0f));
   output.set(1, 0, Math::clamp(output.get(1, 0), 0.0f, 1.0f));
   output.set(2, 0, Math::clamp(output.get(2, 0), 0.0f, 1.0f));
+  output.set(3, 0, 0);
 
 }
 
@@ -235,7 +235,7 @@ void PipeLine::updateShapeNormals(
     shape->worldNormals[normalIndex].multiply(shape->rotationXYZMatrix);
 
     //TODO We need pipline
-    shape->worldNormals[normalIndex].multiply(camera.getRotationInverseXYZ());
+    shape->worldNormals[normalIndex].multiply(camera.rotationInverseMatrix);
 
   }
 
@@ -266,7 +266,7 @@ void PipeLine::updateSurface(Shape3d* shape3d, Surface* surface)
   if (
     camera.isVisibleToCamera(
       shape3d->worldPoints,
-      shape3d->normals,
+      shape3d->worldNormals,
       surface->edgeIndices,
       surface->normalIndices,
       surface->cameraVectorPlaceholder
@@ -281,14 +281,6 @@ void PipeLine::updateSurface(Shape3d* shape3d, Surface* surface)
 
 void PipeLine::assembleTriangles(Shape3d* shape3d, Surface* surface)
 {
-  assert(surface->textureCoordinate[0].getWidth() == 2);
-  assert(surface->textureCoordinate[0].getHeight() == 1);
-
-  assert(surface->textureCoordinate[1].getWidth() == 2);
-  assert(surface->textureCoordinate[1].getHeight() == 1);
-
-  assert(surface->textureCoordinate[2].getWidth() == 2);
-  assert(surface->textureCoordinate[2].getHeight() == 1);
 
   surface->triangleMemoryPool.triangleStart.assign(shape3d->worldPoints.at(surface->edgeIndices[0]));
 
@@ -493,15 +485,15 @@ void PipeLine::assembleTriangles(Shape3d* shape3d, Surface* surface)
 
 void PipeLine::assembleLines(
   Shape3d* shape,
-  Surface* surface, 
-  const MatrixFloat& paramTriangleStart, 
-  const MatrixFloat& paramTriangleEnd, 
-  const MatrixFloat& paramTextureStart, 
-  const MatrixFloat& paramTextureEnd, 
-  const MatrixFloat& paramLightColorStart, 
-  const MatrixFloat& paramLightColorEnd, 
-  const MatrixFloat& paramNormalStart, 
-  const MatrixFloat& paramNormalEnd
+  Surface* surface,
+  const Matrix4X1Float& paramTriangleStart,
+  const Matrix4X1Float& paramTriangleEnd,
+  const Matrix2X1Float& paramTextureStart,
+  const Matrix2X1Float& paramTextureEnd,
+  const Matrix4X1Float& paramLightColorStart,
+  const Matrix4X1Float& paramLightColorEnd,
+  const Matrix4X1Float& paramNormalStart,
+  const Matrix4X1Float& paramNormalEnd
 )
 {
   {//TriangleStepValue
@@ -587,7 +579,7 @@ void PipeLine::assembleLines(
     else if (surface->lightPrecision == Constants::LightPrecision::perPixel)
     {
 
-      surface->lineMemoryPool.normalStart.hat<float>(surface->lineMemoryPool.perPixelNormalHat);
+      surface->lineMemoryPool.normalStart.hat(surface->lineMemoryPool.perPixelNormalHat);
 
       surface->lineMemoryPool.perPixelColorIntensity.set(0, 0, 0.0f);
       surface->lineMemoryPool.perPixelColorIntensity.set(1, 0, 0.0f);
@@ -619,9 +611,9 @@ void PipeLine::assembleLines(
       int(surface->lineMemoryPool.lineStart.getX()),
       int(surface->lineMemoryPool.lineStart.getY()),
       surface->lineMemoryPool.lineStart.getZ(),
-      Math::max(surface->lineMemoryPool.red, 0.0f),
-      Math::max(surface->lineMemoryPool.green, 0.0f),
-      Math::max(surface->lineMemoryPool.blue, 0.0f)
+      fmaxf(surface->lineMemoryPool.red, 0.0f),
+      fmaxf(surface->lineMemoryPool.green, 0.0f),
+      fmaxf(surface->lineMemoryPool.blue, 0.0f)
     );
 
     surface->lineMemoryPool.lineStart.sum(surface->lineMemoryPool.lineStepValue);

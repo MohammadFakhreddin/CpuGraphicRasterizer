@@ -10,94 +10,66 @@ class TriangleMemoryPool{
 
 public:
 
-  TriangleMemoryPool() 
-    :
-    textureStart(2, 1, 0.0f),
-    textureEnd(2, 1, 0.0f),
-    textureFinal(2, 1, 0.0f),
-    textureStartStepValue(2, 1, 0.0f),
-    textureEndStepValue(2, 1, 0.0f),
-    triangleStart(3, 1, 0.0f),
-    triangleEnd(3, 1, 0.0f),
-    triangleFinal(3, 1, 0.0f),
-    triangleStartStepValue(3, 1, 0.0f),
-    triangleEndStepValue(3, 1, 0.0f),
-    normalStart(3, 1, 0.0f),
-    normalEnd(3, 1, 0.0f),
-    normalFinal(3, 1, 0.0f),
-    normalStartStepValue(3, 1, 0.0f),
-    normalEndStepValue(3, 1, 0.0f),
-    colorStart(3, 1, 0.0f),
-    colorEnd(3, 1, 0.0f),
-    colorFinal(3, 1, 0.0f),
-    lightReflectionPlaceholder(3, 1, 0.0f),
-    lightReflectionHatPlaceholder(3, 1, 0.0f),
-    lightVectorPlaceholder(3, 1, 0.0f),
-    lightVectorHatPlaceholder(3, 1, 0.0f),
-    cameraVectorPlaceholder(3, 1, 0.0f),
-    cameraVectorHatPlaceholder(3, 1, 0.0f)
-  {};
+  Matrix4X1Float triangleStart;
 
-  MatrixFloat triangleStart;
+  Matrix4X1Float triangleEnd;
 
-  MatrixFloat triangleEnd;
-
-  MatrixFloat triangleFinal;
+  Matrix4X1Float triangleFinal;
 
   unsigned int totalStepCount = 0;
 
-  MatrixFloat triangleStartStepValue;
+  Matrix4X1Float triangleStartStepValue;
 
-  MatrixFloat triangleEndStepValue;
+  Matrix4X1Float triangleEndStepValue;
 
-  MatrixFloat normalStart;
+  Matrix4X1Float normalStart;
 
-  MatrixFloat normalEnd;
+  Matrix4X1Float normalEnd;
 
-  MatrixFloat normalFinal;
+  Matrix4X1Float normalFinal;
 
-  MatrixFloat normalStartStepValue;
+  Matrix4X1Float normalStartStepValue;
 
-  MatrixFloat normalEndStepValue;
+  Matrix4X1Float normalEndStepValue;
 
-  MatrixFloat textureStart;
+  Matrix2X1Float textureStart;
 
-  MatrixFloat textureEnd;
+  Matrix2X1Float textureEnd;
 
-  MatrixFloat textureFinal;
+  Matrix2X1Float textureFinal;
 
-  MatrixFloat textureStartStepValue;
+  Matrix2X1Float textureStartStepValue;
 
-  MatrixFloat textureEndStepValue;
+  Matrix2X1Float textureEndStepValue;
 
-  MatrixFloat colorStart;
+  Matrix4X1Float colorStart;
 
-  MatrixFloat colorEnd;
+  Matrix4X1Float colorEnd;
 
-  MatrixFloat colorFinal;
+  Matrix4X1Float colorFinal;
 
-  MatrixFloat colorStartStepValue;
+  Matrix4X1Float colorStartStepValue;
 
-  MatrixFloat colorEndStepValue;
+  Matrix4X1Float colorEndStepValue;
 
   float xDifference = 0.0f;
 
   float yDifference = 0.0f;
 
   //TODO Create memory pool and use that instead of this trash
-  MatrixFloat lightVectorPlaceholder;
+  Matrix4X1Float lightVectorPlaceholder;
 
-  MatrixFloat lightVectorHatPlaceholder;
+  Matrix4X1Float lightVectorHatPlaceholder;
 
-  MatrixFloat lightReflectionPlaceholder;
+  Matrix4X1Float lightReflectionPlaceholder;
 
-  MatrixFloat lightReflectionHatPlaceholder;
+  Matrix4X1Float lightReflectionHatPlaceholder;
 
-  MatrixFloat cameraVectorPlaceholder;
+  Matrix4X1Float cameraVectorPlaceholder;
 
-  MatrixFloat cameraVectorHatPlaceholder;
+  Matrix4X1Float cameraVectorHatPlaceholder;
 
-  MatrixFloat colorOutputPlaceholder;
+  Matrix4X1Float colorOutputPlaceholder;
 
 };
 

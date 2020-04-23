@@ -12,8 +12,8 @@ MonkeyScene::MonkeyScene(OpenGL& gl)
   BaseScene(gl, "MonkeyScene"),
   cameraInstance(
     gl,
-    MatrixFloat(3,1,0.0f),
-    MatrixFloat(3,1,0.0f),
+    Matrix3X1Float(),
+    Matrix3X1Float(),
     DataAccessPoint::getInstance()->getAppScreenWidth(),
     DataAccessPoint::getInstance()->getAppScreenHeight(),
     "Monkey main camera"

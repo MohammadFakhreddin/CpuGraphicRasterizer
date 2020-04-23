@@ -8,32 +8,14 @@
 class LineMomoryPool {
 
 public:
-  
-  LineMomoryPool()
-    :
-    lineStart(3, 1, 0.0f),
-    lineStepValue(3, 1, 0.0f),
-    textureStart(2, 1, 0.0f),
-    textureStepValue(2, 1, 0.0f),
-    colorStart(3, 1, 0.0f),
-    colorStepValue(3, 1, 0.0f),
-    normalStart(3, 1, 0.0f),
-    normalStepValue(3, 1, 0.0f),
-    lightReflectionPlaceholder(3, 1, 0.0f),
-    lightReflectionHatPlaceholder(3, 1, 0.0f),
-    lightVectorPlaceholder(3, 1, 0.0f),
-    lightVectorHatPlaceholder(3, 1, 0.0f),
-    cameraVectorPlaceholder(3, 1, 0.0f),
-    cameraVectorHatPlaceholder(3, 1, 0.0f)
-  {};
 
-  MatrixFloat lineStart;
+  Matrix4X1Float lineStart;
 
-  MatrixFloat lineStepValue;
+  Matrix4X1Float lineStepValue;
 
-  MatrixFloat textureStart;
+  Matrix2X1Float textureStart;
 
-  MatrixFloat textureStepValue;
+  Matrix2X1Float textureStepValue;
 
   float xDifference = 0.0f;
 
@@ -41,13 +23,13 @@ public:
 
   unsigned int totalStepCount = 0;
 
-  MatrixFloat colorStart;
+  Matrix4X1Float colorStart;
 
-  MatrixFloat colorStepValue;
+  Matrix4X1Float colorStepValue;
 
-  MatrixFloat normalStart;
+  Matrix4X1Float normalStart;
 
-  MatrixFloat normalStepValue;
+  Matrix4X1Float normalStepValue;
 
   float red = 0;
   
@@ -55,24 +37,24 @@ public:
 
   float blue = 0;
 
-  MatrixFloat perPixelNormalHat;
+  Matrix4X1Float perPixelNormalHat;
 
-  MatrixFloat perPixelColorIntensity;
+  Matrix4X1Float perPixelColorIntensity;
 
   //TODO Create memory pool and use that instead of this trash
-  MatrixFloat lightVectorPlaceholder;
+  Matrix4X1Float lightVectorPlaceholder;
 
-  MatrixFloat lightVectorHatPlaceholder;
+  Matrix4X1Float lightVectorHatPlaceholder;
 
-  MatrixFloat lightReflectionPlaceholder;
+  Matrix4X1Float lightReflectionPlaceholder;
 
-  MatrixFloat lightReflectionHatPlaceholder;
+  Matrix4X1Float lightReflectionHatPlaceholder;
 
-  MatrixFloat cameraVectorPlaceholder;
+  Matrix4X1Float cameraVectorPlaceholder;
 
-  MatrixFloat cameraVectorHatPlaceholder;
+  Matrix4X1Float cameraVectorHatPlaceholder;
 
-  MatrixFloat colorOutputPlaceholder;
+  Matrix4X1Float colorOutputPlaceholder;
 
 };
 

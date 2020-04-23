@@ -10,31 +10,23 @@
 
 
 PointLight::PointLight(
-  const float& radius, 
-  const float& colorR, 
-  const float& colorG, 
-  const float& colorB, 
-  const float& transformX, 
-  const float& transformY, 
-  const float& transformZ, 
-  const float& constantAttenuation, 
-  const float& linearAttenuation, 
-  const float& quadricAttenuation, 
+  const float& radius,
+  const float& colorR,
+  const float& colorG,
+  const float& colorB,
+  const float& transformX,
+  const float& transformY,
+  const float& transformZ,
+  const float& constantAttenuation,
+  const float& linearAttenuation,
+  const float& quadricAttenuation,
   const unsigned int& specularPower
 )
   :
   PointLight(
     radius,
-    MatrixFloat(3, 1, std::vector<std::vector<float>>{
-      std::vector<float>{colorR},
-      std::vector<float>{colorG},
-      std::vector<float>{colorB}
-    }),
-    MatrixFloat(3,1,std::vector<std::vector<float>>{
-      std::vector<float>{ transformX },
-      std::vector<float>{ transformY },
-      std::vector<float>{ transformZ }
-    }),
+    Matrix3X1Float({ colorR,colorG,colorB }),
+    Matrix3X1Float({ transformX ,transformY ,transformZ }),
     constantAttenuation,
     linearAttenuation,
     quadricAttenuation,
@@ -45,8 +37,8 @@ PointLight::PointLight(
 
 PointLight::PointLight(
   const float& paramRadius,
-  const MatrixFloat& paramColor,
-  const MatrixFloat& paramTransform,
+  const Matrix3X1Float& paramColor,
+  const Matrix3X1Float& paramTransform,
   const float& paramConstantAttenuation,
   const float& paramLinearAttenuation,
   const float& paramQuadricAttenuation,
@@ -56,18 +48,13 @@ PointLight::PointLight(
   constantAttenuation(paramConstantAttenuation),
   linearAttenuation(paramLinearAttenuation),
   quadricAttenuation(paramQuadricAttenuation),
-  specularPower(paramSpecularPower),
-  transform(3, 1, 0.0f),
-  worldPoint(3, 1, 0.0f),
-  color(3, 1, 0.0f)
+  specularPower(paramSpecularPower)
 {
 
   assert(paramRadius >= 0);
   
   color.assign(paramColor);
   
-  assert(color.getWidth() == 3);
-  assert(color.getHeight() == 1);
   assert(color.getR() >= 0 && color.getR() <= 1.0f);
   assert(color.getG() >= 0 && color.getG() <= 1.0f);
   assert(color.getB() >= 0 && color.getB() <= 1.0f);
@@ -95,7 +82,6 @@ PointLight::PointLight(
 }
 
 void PointLight::transformX(const float& value) {
-  transform.set(0, 0, transform.get(0, 0) + value);
   sphere->transformX(value);
 }
 
@@ -110,25 +96,17 @@ void PointLight::transformZ(const float& value) {
 //I use y = 1/(x*x + x + 1)
 void PointLight::computeLightIntensity(
   const Camera& cameraInstance,
-  const MatrixFloat& surfaceNormalVector,
-  const MatrixFloat& surfaceLocation,
+  const Matrix4X1Float& surfaceNormalVector,
+  const Matrix4X1Float& surfaceLocation,
   const float& specularIntensity,
-  MatrixFloat& lightVectorPlaceholder,
-  MatrixFloat& lightVectorHatPlaceholder,
-  MatrixFloat& lightReflectionPlaceholder,
-  MatrixFloat& lightReflectionHatPlaceholder,
-  MatrixFloat& cameraVectorPlaceholder,
-  MatrixFloat& cameraVectorHatPlaceholder,
-  MatrixFloat& output
+  Matrix4X1Float& lightVectorPlaceholder,
+  Matrix4X1Float& lightVectorHatPlaceholder,
+  Matrix4X1Float& lightReflectionPlaceholder,
+  Matrix4X1Float& lightReflectionHatPlaceholder,
+  Matrix4X1Float& cameraVectorPlaceholder,
+  Matrix4X1Float& cameraVectorHatPlaceholder,
+  Matrix4X1Float& output
 ) const {
-
-  //TODO Important remove all initiation of variables
-  assert(surfaceNormalVector.getWidth() == 3);
-  assert(surfaceNormalVector.getHeight() == 1);
-  assert(surfaceLocation.getWidth() == 3);
-  assert(surfaceLocation.getHeight() == 1);
-  assert(output.getWidth() == 3);
-  assert(output.getHeight() == 1);
 
   //Light vector
   lightVectorPlaceholder.set(0, 0, worldPoint.get(0, 0) - surfaceLocation.get(0, 0));

@@ -114,10 +114,10 @@ public:
       Logger::log("3d object file is clock wise");
     }
 
-    std::vector<MatrixFloat> vertices;
+    std::vector<Matrix3X1Float> vertices;
     std::vector<std::unique_ptr<Surface>> indices;
-    std::vector<MatrixFloat> normals;
-    std::vector<MatrixFloat> textureCoordinates;
+    std::vector<Matrix3X1Float> normals;
+    std::vector<Matrix2X1Float> textureCoordinates;
     {//Parsing .obj file using tinyObj library
       tinyobj::attrib_t attributes;
       std::vector<tinyobj::shape_t> shapes;
@@ -148,11 +148,11 @@ public:
         //Reserving space before allocating
         vertices.reserve(attributes.vertices.size() / 3u);
         for (unsigned int i = 0; i < attributes.vertices.size(); i += 3) {
-          vertices.emplace_back(3, 1, std::vector<std::vector<float>>{
-            std::vector<float>{attributes.vertices[i + 0u]},
-            std::vector<float>{attributes.vertices[i + 1u]},
-            std::vector<float>{attributes.vertices[i + 2u]}
-          });
+          vertices.emplace_back(
+            attributes.vertices[i + 0u],
+            attributes.vertices[i + 1u],
+            attributes.vertices[i + 2u]
+          );
         }
 
       }
@@ -162,11 +162,11 @@ public:
           assert(attributes.normals.size() % 3 == 0);
           normals.reserve(attributes.normals.size() / 3u);
           for (unsigned int i = 0; i < attributes.normals.size(); i += 3) {
-            normals.emplace_back(3, 1, std::vector<std::vector<float>>{
-              std::vector<float>{attributes.normals[i + 0u]},
-              std::vector<float>{attributes.normals[i + 1u]},
-              std::vector<float>{attributes.normals[i + 2u]}
-            });
+            normals.emplace_back(
+              attributes.normals[i + 0u],
+              attributes.normals[i + 1u],
+              attributes.normals[i + 2u]
+            );
           }
         }
       }
@@ -177,10 +177,9 @@ public:
           textureCoordinates.reserve(attributes.texcoords.size() / 2u);
           for (unsigned int i = 0; i < attributes.texcoords.size(); i += 2) {
             textureCoordinates.emplace_back(
-              2, 1, std::vector<std::vector<float>>{
-              std::vector<float>{attributes.texcoords[i + 0u]},
-              std::vector<float>{attributes.texcoords[i + 1u]}
-            });
+              attributes.texcoords[i + 0u],
+              attributes.texcoords[i + 1u]
+            );
           }
         }
       }
@@ -260,11 +259,11 @@ public:
         // get center of min sphere
         // result is a pointer to float[3]
         const auto pc = mb.center();
-        MatrixFloat center(3,1,std::vector<std::vector<float>>{
-          std::vector<float>{*pc},
-          std::vector<float>{*std::next( pc )},
-          std::vector<float>{*std::next( pc,2 )}
-        });
+        Matrix3X1Float center;
+        center.setX(*pc);
+        center.setY(*std::next(pc));
+        center.setZ(*std::next(pc, 2));
+        
         // adjust all vertices so that center of minimal sphere is at 0,0
         for( auto& vertex : vertices )
         {
@@ -288,17 +287,17 @@ private:
   struct VertexAccessor
   {
     // iterator type for iterating over vertices
-    typedef std::vector<MatrixFloat>::const_iterator Pit;
+    typedef std::vector<Matrix3X1Float>::const_iterator Pit;
     // it type for iterating over components of vertex
     // (pointer is used to iterate over members of class here)
     typedef const float* Cit;
     // functor that miniball uses to get element iter based on vertex iter
-    Cit operator()( Pit it ) const
+    Cit operator()(Pit it) const
     {
       float* elements = new float[3];
-      elements[0] = it->get(0,0);
-      elements[1] = it->get(1,0);
-      elements[2] = it->get(2,0);
+      elements[0] = it->getX();
+      elements[1] = it->getY();
+      elements[2] = it->getZ();
       return elements;
     }
   };

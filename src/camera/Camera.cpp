@@ -9,56 +9,47 @@
 #include "../event_handler/EventHandler.h"
 #include "../data_access_point/DataAccessPoint.h"
 
+//TODO Add constructor without transformation and rotation
+
 Camera::Camera(
-  OpenGL& paramsGl,
-  MatrixFloat paramsTransform,
-  MatrixFloat paramsRotation,
-  unsigned int paramsAppScreenWidth,
-  unsigned int paramsAppScreenHeight,
-  std::string paramsCameraName
+  OpenGL& paramGl,
+  Matrix3X1Float paramTransform,
+  Matrix3X1Float paramRotation,
+  unsigned int paramAppScreenWidth,
+  unsigned int paramAppScreenHeight,
+  std::string paramCameraName
 )
   :
-  cameraName(paramsCameraName),
-  appScreenWidth(paramsAppScreenWidth),
-  appScreenHeight(paramsAppScreenHeight),
-  pixelMapSize(paramsAppScreenWidth * paramsAppScreenHeight),
-  gl(paramsGl),
-  transformMatrix(3, 1, 0.0f),
-  rotationInverseDegreeMatrix(3, 1, 0.0f),
-  rotationInverseValueXYZMatrix(3, 3, 0.0f),
-  transformationPlaceholder(3, 1, 0.0f),
-  cameraCenterX(paramsAppScreenWidth / 2),
-  cameraCenterY(paramsAppScreenHeight / 2),
+  gl(paramGl),
+  pixelMapSize(paramAppScreenWidth * paramAppScreenHeight),
+  cameraCenterX(paramAppScreenWidth / 2),
+  cameraCenterY(paramAppScreenHeight / 2),
   cameraStartX(0),
   cameraStartY(0),
-  cameraEndX(paramsAppScreenWidth),
-  cameraEndY(paramsAppScreenHeight)
+  cameraEndX(paramAppScreenWidth),
+  cameraEndY(paramAppScreenHeight)
 {
 
-  assert(paramsAppScreenWidth > 0);
-  assert(paramsAppScreenHeight > 0);
-  assert(paramsTransform.getWidth() == 3);
-  assert(paramsTransform.getHeight() == 1);
-  assert(paramsRotation.getWidth() == 3);
-  assert(paramsRotation.getHeight() == 1);
-
+  assert(paramAppScreenWidth > 0);
+  assert(paramAppScreenHeight > 0);
+  
   this->transform(
-    paramsTransform.get(0, 0),
-    paramsTransform.get(1, 0),
-    paramsTransform.get(2, 0)
+    paramTransform.getX(),
+    paramTransform.getY(),
+    paramTransform.getZ()
   );
 
   this->rotateXYZ(
-    paramsRotation.get(0, 0),
-    paramsRotation.get(1, 0),
-    paramsRotation.get(2, 0)
+    paramRotation.getX(),
+    paramRotation.getY(),
+    paramRotation.getZ()
   );
 
   DataAccessPoint::getInstance()->getEventHandler().subscribeToEvent<bool>(
     EventHandler::EventName::screenSurfaceChanged,
     cameraName,
     std::bind(&Camera::notifyScreenSurfaceIsChanged, this, std::placeholders::_1)
-    );
+  );
 
   initPixelMap();
 
@@ -159,7 +150,7 @@ void Camera::assignToPixel(
   }
 }
 
-void Camera::render(double deltaTime){
+void Camera::render(const double& deltaTime){
   {//Drawing screen
     gl.beginDrawingPoints();
     for (unsigned int i = 0; i < pixelMapSize; i++) {
@@ -198,38 +189,34 @@ const unsigned int& Camera::getAppScreenHeight() const {
 //It must transform based on theta
 void Camera::transform(float transformX, float transformY, float transformZ) {
   
-  transformationPlaceholder.set(0, 0, transformX);
-  transformationPlaceholder.set(1, 0, transformY);
-  transformationPlaceholder.set(2, 0, transformZ);
+  transformValue.setX(transformX + transformValue.getX());
+  transformValue.setY(transformY + transformValue.getY());
+  transformValue.setZ(transformZ + transformValue.getZ());
   
-  transformMatrix.sum(transformationPlaceholder);
+  Matrix4X4Float::assignTransformation(
+    transformMatrix, 
+    transformValue.getX(), 
+    transformValue.getY(), 
+    transformValue.getZ()
+  );
 
 }
 
 //TODO We can use other ways instead of sin and cos for new matrix calculation
 void Camera::rotateXYZ(const float& x,const float& y,const float& z) {
   //For camera we reverse the rotation to apply to pipeline shapes
-  rotationInverseDegreeMatrix.set(0, 0, rotationInverseDegreeMatrix.get(0, 0) - x);
-  rotationInverseDegreeMatrix.set(1, 0, rotationInverseDegreeMatrix.get(1, 0) - y);
-  rotationInverseDegreeMatrix.set(2, 0, rotationInverseDegreeMatrix.get(2, 0) - z);
+  rotationInverseDegree.set(0, 0, rotationInverseDegree.get(0, 0) - x);
+  rotationInverseDegree.set(1, 0, rotationInverseDegree.get(1, 0) - y);
+  rotationInverseDegree.set(2, 0, rotationInverseDegree.get(2, 0) - z);
 
-  MatrixFloat::assignAsRotationXYZMatrix(
-    rotationInverseValueXYZMatrix,
-    rotationInverseDegreeMatrix.get(0, 0),
-    rotationInverseDegreeMatrix.get(1, 0),
-    rotationInverseDegreeMatrix.get(2, 0)
+  Matrix4X4Float::assignRotationXYZ(
+    rotationInverseMatrix,
+    rotationInverseDegree.getX(),
+    rotationInverseDegree.getY(),
+    rotationInverseDegree.getZ()
   );
 
 }
-
-const MatrixFloat& Camera::getTransformMatrix() {
-  return transformMatrix;
-}
-
-const MatrixFloat& Camera::getRotationInverseXYZ() {
-  return rotationInverseValueXYZMatrix;
-}
-
 const unsigned int& Camera::getCameraCenterX() const {
   return cameraCenterX;
 }
@@ -240,8 +227,8 @@ const unsigned int& Camera::getCameraCenterY() const {
 
 
 void Camera::generateCameraToPointVector(
-  const MatrixFloat& worldPoint,
-  MatrixFloat& output
+  const Matrix4X1Float& worldPoint,
+  Matrix4X1Float& output
 ) const {
   //TODO It must be camera position instead
   output.set(
@@ -266,11 +253,11 @@ void Camera::generateCameraToPointVector(
 }
 
 bool Camera::isVisibleToCamera(
-  std::vector<MatrixFloat>& worldPoints,
-  std::vector<MatrixFloat>& normals,
+  std::vector<Matrix4X1Float>& worldPoints,
+  std::vector<Matrix4X1Float>& normals,
   const unsigned long edgeIndices[3],
   const unsigned long normalVectorIndices[3],
-  MatrixFloat& cameraVectorPlaceholder
+  Matrix4X1Float& cameraVectorPlaceholder
 ) {
   
   bool isShapeCompletlyOutOfCamera = true;
@@ -324,10 +311,10 @@ void Camera::calculateStepCount(
 ) const {
   assert(difference != 0 && "Difference must be above 0 in BaseSurface::calculateStepCountAndStepValue");
   assert(drawStepValue != 0 && "Draw step value must be above 0 in BaseSurface::calculateStepCountAndStepValue");
-  *totalStepCount = Math::min(
-    (unsigned int)abs(difference / drawStepValue) + 1,
-    appScreenWidth
-  );
+  *totalStepCount = (unsigned int)abs(difference / drawStepValue) + 1;
+  if (*totalStepCount > appScreenWidth) {
+    *totalStepCount = appScreenWidth;
+  }
 }
 
 void Camera::calculateStepValueBasedOnStepCount(
@@ -343,11 +330,9 @@ void Camera::calculateStepValueBasedOnStepCount(
   const float& differenceX,
   const float& differenceY,
   const unsigned int& stepCount,
-  MatrixFloat& stepValueMatrix
+  Matrix2X1Float& stepValueMatrix
 ) const {
   assert(stepCount > 0);
-  assert(stepValueMatrix.getWidth() == 2);
-  assert(stepValueMatrix.getHeight() == 1);
   stepValueMatrix.setX(differenceX / float(stepCount));
   stepValueMatrix.setY(differenceY / float(stepCount));
 }
@@ -357,25 +342,50 @@ void Camera::calculateStepValueBasedOnStepCount(
   const float& differenceY,
   const float& differenceZ,
   const unsigned int& stepCount,
-  MatrixFloat& stepValueMatrix
+  Matrix3X1Float& stepValueMatrix
 ) const {
   assert(stepCount > 0);
-  assert(stepValueMatrix.getWidth() == 3);
-  assert(stepValueMatrix.getHeight() == 1);
   stepValueMatrix.setX(differenceX / float(stepCount));
   stepValueMatrix.setY(differenceY / float(stepCount));
   stepValueMatrix.setZ(differenceZ / float(stepCount));
 }
 
-
 void Camera::calculateStepValueBasedOnStepCount(
-  const MatrixFloat& differenceMatrix,
+  const float& differenceX,
+  const float& differenceY,
+  const float& differenceZ,
   const unsigned int& stepCount,
-  MatrixFloat& stepValueMatrix
+  Matrix4X1Float& stepValueMatrix
 ) const {
   assert(stepCount > 0);
-  assert(stepValueMatrix.getMatrixArraySize() == differenceMatrix.getMatrixArraySize());
-  for (unsigned short i = 0; i < differenceMatrix.getMatrixArraySize(); i++) {
+  stepValueMatrix.setX(differenceX / float(stepCount));
+  stepValueMatrix.setY(differenceY / float(stepCount));
+  stepValueMatrix.setZ(differenceZ / float(stepCount));
+  stepValueMatrix.setW(0);
+}
+
+void Camera::calculateStepValueBasedOnStepCount(
+  const Matrix3X1Float& differenceMatrix,
+  const unsigned int& stepCount, 
+  Matrix3X1Float& stepValueMatrix
+) const
+{
+  assert(stepCount > 0);
+  for (unsigned short i = 0; i < 3; i++) {
     stepValueMatrix.setDirect(i, differenceMatrix.getDirect(i) / float(stepCount));
   }
+  stepValueMatrix.setDirect(3, 0);
+}
+
+
+void Camera::calculateStepValueBasedOnStepCount(
+  const Matrix4X1Float& differenceMatrix,
+  const unsigned int& stepCount,
+  Matrix4X1Float& stepValueMatrix
+) const {
+  assert(stepCount > 0);
+  for (unsigned short i = 0; i < 3; i++) {
+    stepValueMatrix.setDirect(i, differenceMatrix.getDirect(i) / float(stepCount));
+  }
+  stepValueMatrix.setDirect(3, 0);
 }

@@ -2,13 +2,14 @@
 
 #include <cassert>
 
+/*
 AmbientLight::AmbientLight(
   const float& colorR,
   const float& colorG,
   const float& colorB
 ) 
   :
-  color(3,1,0.0f)
+  color(colorR,colorG,colorB)
 {
 
   assert(colorR >= 0.0f && colorR <= 1.0f);
@@ -21,26 +22,48 @@ AmbientLight::AmbientLight(
 
 }
 
-AmbientLight::AmbientLight(
-  const MatrixFloat& color
-)
-  :
-  color(3,1,0.0f)
+AmbientLight(const Matrix3X1Float& paramColor)
 {
-  assert(color.getWidth() == 3);
-  assert(color.getHeight() == 1);
   assert(color.getR() >= 0.0f && color.getR() <= 1.0f);
   assert(color.getG() >= 0.0f && color.getG() <= 1.0f);
   assert(color.getB() >= 0.0f && color.getB() <= 1.0f);
 
-  this->color.assign(color);
+  color.assign(paramColor);
 
+}*/
+
+AmbientLight::AmbientLight(const float& colorR, const float& colorG, const float& colorB)
+{
+  color.setR(colorR);
+  color.setG(colorG);
+  color.setB(colorB);
+  assert(checkForColorValidation());
+}
+
+AmbientLight::AmbientLight(const Matrix3X1Float& paramColor)
+{
+  color.assign(paramColor);
+  assert(checkForColorValidation());
+}
+
+bool AmbientLight::checkForColorValidation() {
+  if (!(color.getR() >= 0.0f && color.getR() <= 1.0f)) {
+    Logger::log("ColorR is out of range:" + std::to_string(color.getR()));
+    return false;
+  }
+  if (!(color.getG() >= 0.0f && color.getG() <= 1.0f)) {
+    Logger::log("ColorG is out of range:" + std::to_string(color.getG()));
+    return false;
+  }
+  if (!(color.getB() >= 0.0f && color.getB() <= 1.0f)) {
+    Logger::log("ColorB is out of range:" + std::to_string(color.getB()));
+    return false;
+  }
+  return true;
 }
 
 void AmbientLight::computeLightIntensity(
-  MatrixFloat& output
+  Matrix4X1Float& output
 ) const {
-  assert(output.getWidth() == 3);
-  assert(output.getHeight() == 1);
   output.assign(color);
 }

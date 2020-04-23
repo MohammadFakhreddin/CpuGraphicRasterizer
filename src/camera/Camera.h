@@ -21,22 +21,13 @@ public:
     float blue;
   };
 
-  struct Params {
-    OpenGL& gl;
-    MatrixFloat transform;
-    MatrixFloat rotation;
-    unsigned int appScreenWidth;
-    unsigned int appScreenHeight;
-    std::string cameraName;
-  };
-
   Camera(
-    OpenGL& gl,
-    MatrixFloat transform,
-    MatrixFloat rotation,
-    unsigned int appScreenWidth,
-    unsigned int appScreenHeight,
-    std::string cameraName
+    OpenGL& paramGl,
+    Matrix3X1Float paramTransform,
+    Matrix3X1Float paramRotation,
+    unsigned int paramAppScreenWidth,
+    unsigned int paramAppScreenHeight,
+    std::string paramCameraName
   );
 
   ~Camera();
@@ -54,7 +45,7 @@ public:
     const float& blue
   );
 
-  void render(double deltaTime);
+  void render(const double& deltaTime);
   
   float scaleBasedOnZDistance(const float& zLocation);
   
@@ -65,10 +56,6 @@ public:
   void transform(float transformX, float transformY, float transformZ);
 
   void rotateXYZ(const float& x, const float& y, const float& z);
-
-  const MatrixFloat& getTransformMatrix();
-
-  const MatrixFloat& getRotationInverseXYZ();
 
   void assignToPixel(
     const unsigned int& index,
@@ -83,16 +70,16 @@ public:
   const unsigned int& getCameraCenterY() const ;
 
   bool isVisibleToCamera(
-    std::vector<MatrixFloat>& worldPoints,
-    std::vector<MatrixFloat>& normals,
+    std::vector<Matrix4X1Float>& worldPoints,
+    std::vector<Matrix4X1Float>& normals,
     const unsigned long edgeIndices[3],
     const unsigned long normalVectorIndices[3],
-    MatrixFloat& cameraVectorPlaceholder
+    Matrix4X1Float& cameraVectorPlaceholder
   );
 
   void generateCameraToPointVector(
-    const MatrixFloat& worldPoint,
-    MatrixFloat& output
+    const Matrix4X1Float& worldPoint,
+    Matrix4X1Float& output
   ) const;
 
   void calculateStepCount(
@@ -110,7 +97,7 @@ public:
     const float& differenceX,
     const float& differenceY,
     const unsigned int& stepCount,
-    MatrixFloat& stepValueMatrix
+    Matrix2X1Float& stepValueMatrix
   ) const;
 
   void calculateStepValueBasedOnStepCount(
@@ -118,14 +105,33 @@ public:
     const float& differenceY,
     const float& differenceZ,
     const unsigned int& stepCount,
-    MatrixFloat& stepValueMatrix
+    Matrix3X1Float& stepValueMatrix
   ) const;
 
   void calculateStepValueBasedOnStepCount(
-    const MatrixFloat& differenceMatrix,
+    const Matrix3X1Float& difference,
     const unsigned int& stepCount,
-    MatrixFloat& stepValueMatrix
+    Matrix3X1Float& stepValueMatrix
   ) const;
+
+  void calculateStepValueBasedOnStepCount(
+    const Matrix4X1Float& differenceMatrix,
+    const unsigned int& stepCount,
+    Matrix4X1Float& stepValueMatrix
+  ) const;
+
+  void Camera::calculateStepValueBasedOnStepCount(
+    const float& differenceX,
+    const float& differenceY,
+    const float& differenceZ,
+    const unsigned int& stepCount,
+    Matrix4X1Float& stepValueMatrix
+  ) const;
+
+
+  Matrix4X4Float transformMatrix;
+
+  Matrix4X4Float rotationInverseMatrix;
 
 private:
 
@@ -154,14 +160,10 @@ private:
 
   OpenGL& gl;
 
-  MatrixFloat transformMatrix;
+  Matrix3X1Float transformValue;
 
-  MatrixFloat rotationInverseDegreeMatrix;
+  Matrix3X1Float rotationInverseDegree;
   
-  MatrixFloat rotationInverseValueXYZMatrix;
-
-  MatrixFloat transformationPlaceholder;
-
   unsigned int cameraCenterX;
 
   unsigned int cameraCenterY;

@@ -7,7 +7,12 @@
 class DirectionalLight {
 
 public:
-  //TODO We need to have light color
+  
+  DirectionalLight(
+    const Matrix3X1Float& color,
+    const Matrix3X1Float& direction
+  );
+
   DirectionalLight(
     const float& colorR,
     const float& colorG,
@@ -18,25 +23,26 @@ public:
   );
 
   void computeLightIntensity(
-    const MatrixFloat& normal,
-    MatrixFloat& output
+    const Matrix4X1Float& normal,
+    Matrix4X1Float& output
   ) const;
 
-  void update(Camera& camera);
+  void update(const Camera& camera);
 
   void rotateXYZ(const float& x, const float& y, const float& z);
 
 private:
 
-  MatrixFloat color;
+  Matrix3X1Float color;
 
-  MatrixFloat lightDirectionHat;
+  Matrix3X1Float lightDirectionHat;
 
-  MatrixFloat worldLightDirectionHat;
+  Matrix4X1Float worldLightDirectionHat;
 
-  MatrixFloat roationXYZMatrix;
+  Matrix3X1Float rotationDegree;
 
-  MatrixFloat rotationDegreeMatrix;
+  Matrix4X4Float rotationXYZMatrix;
+
 
 };
 
