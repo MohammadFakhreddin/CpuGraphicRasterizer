@@ -59,7 +59,7 @@ void ThreadPool::autoAssignTask(
   
   assignTask(currentThreadIndex, task, param);
   currentThreadIndex++;
-  if (currentThreadIndex > numberOfThreads) {
+  if (currentThreadIndex >= numberOfThreads) {
     currentThreadIndex = 0;
   }
 
@@ -110,7 +110,8 @@ const unsigned int& ThreadPool::getNumberOfAvailableThreads() const {
 }
 
 bool ThreadPool::ThreadObject::sleepCondition() {
-  return !isBusy;
+  //It must be tasks.empty isBusy cannot be used here
+  return !tasks.empty();
 }
 
 void ThreadPool::ThreadObject::mainLoop() {

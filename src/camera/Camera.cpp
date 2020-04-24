@@ -59,7 +59,7 @@ Camera::Camera(
   position.setX((endX - startX) / 2.0f);
   position.setY((endY - startY) / 2.0f);
   //Usually camera distance to zero is equal to far
-  position.setZ(-1 * (endZ - startZ));
+  position.setZ(-1.0f * (endZ - startZ));
 
   DataAccessPoint::getInstance()->getEventHandler().subscribeToEvent<bool>(
     EventHandler::EventName::screenSurfaceChanged,

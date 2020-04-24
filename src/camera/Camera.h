@@ -167,13 +167,13 @@ private:
 
   Matrix3X1Float rotationInverseDegree;
 
-  unsigned int startX;
+  float startX;
 
-  unsigned int endX;
+  float endX;
 
-  unsigned int startY;
+  float startY;
 
-  unsigned int endY;
+  float endY;
 
   Matrix4X1Float position;
 

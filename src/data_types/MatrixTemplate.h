@@ -170,79 +170,80 @@ public:
   }
 
   const T& getX() const {
-    assert(width > 0);
+    assert(width == 2 || width == 3 || width == 4);
     assert(height == 1);
     return cells[0];
   }
 
   const T& getY() const {
-    assert(width > 1);
+    assert(width == 2 || width == 3 || width == 4);
     assert(height == 1);
     return cells[1];
   }
 
   const T& getZ() const {
-    assert(width > 2);
+    assert(width == 2 || width == 3 || width == 4);
     assert(height == 1);
     return cells[2];
   }
 
+  //TODO Define seperate classes for each matrix
   const T& getR() const {
-    assert(width == 3);
+    assert(width == 3 || width == 4);
     assert(height == 1);
     return cells[0];
   }
 
   const T& getG() const {
-    assert(width == 3);
+    assert(width == 3 || width == 4);
     assert(height == 1);
     return cells[1];
   }
 
   const T& getB() const {
-    assert(width == 3);
+    assert(width == 3 || width == 4);
     assert(height == 1);
     return cells[2];
   }
 
   void setX(const T& value) {
-    assert(width > 0);
+    assert(width == 2 || width == 3 || width == 4);
     assert(height == 1);
     cells[0] = value;
   }
 
   void setY(const T& value) {
-    assert(width > 1);
+    assert(width == 2 || width == 3 || width == 4);
     assert(height == 1);
     cells[1] = value;
   }
 
   void setZ(const T& value) {
-    assert(width > 2);
+    assert(width == 3 || width == 4);
     assert(height == 1);
     cells[2] = value;
   }
 
   void setW(const T& value) {
-    assert(width > 3);
+    assert(width == 4);
     assert(height == 1);
     cells[3] = value;
   }
 
   void setR(const T& value) {
-    assert(width == 3);
+    assert(width == 3 || width == 4);
     assert(height == 1);
     cells[0] = value;
   }
 
   void setG(const T& value) {
-    assert(width == 3);
+    assert(width == 3 || width == 4);
     assert(height == 1);
     cells[1] = value;
   }
 
   void setB(const T& value) {
-    assert(width == 3);
+    assert(width == 3 || width == 4);
     assert(height == 1);
     cells[2] = value;
   }
@@ -282,7 +283,7 @@ public:
 
   template<typename A, typename B, typename C,typename D>
   void setXYZW(const A& x, const B& y, const C& z,const D& w) {
-    assert(width >= 4);
+    assert(width == 4);
     assert(height == 1);
     cells[0] = T(x);
     cells[1] = T(y);
