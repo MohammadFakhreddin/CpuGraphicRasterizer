@@ -18,8 +18,8 @@ public:
   
   //TODO Store point size as well
   struct DrawPixel{
-    unsigned int x;
-    unsigned int y;
+    float x;
+    float y;
     float zValue;
     float red;
     float green;
@@ -145,9 +145,6 @@ private:
   */
   //TODO It must be 1, Current value is cpu expensive
   static constexpr float drawStepValue = 0.5;
-
-
-  static constexpr float zDefaultValue = 0;
 
   std::string cameraName;
 

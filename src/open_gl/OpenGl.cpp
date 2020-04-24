@@ -209,14 +209,15 @@ void OpenGL::flush(){
 }
 
 void OpenGL::drawPixel(
-  const unsigned int& x, 
-  const unsigned int& y, 
+  const float& x, 
+  const float& y, 
   const float& red, 
   const float& green, 
   const float& blue
 ){
-  assert(x>=0 && x<appScreenWidth);
-  assert(y>=0 && y<appScreenHeight);
+  //OpenGL default world projection
+  assert(x>=-1 && x<=1);
+  assert(y>=-1 && y<=1);
   assert(red>=0 && red<=1.0f);
   assert(green>=0 && green<=1.0f);
   assert(blue>=0 && blue<=1.0f);
@@ -224,7 +225,7 @@ void OpenGL::drawPixel(
 #ifdef __OPENGL__
 
   glColor3f(red,green,blue);
-  glVertex2i(x,y);
+  glVertex2f(x,y);
 
 #else
     
@@ -277,18 +278,18 @@ void OpenGL::resetProgram(){
 }
 
 void OpenGL::drawText(
-  const unsigned int& x, 
-  const unsigned int& y, 
+  const float& x, 
+  const float& y, 
   const std::string& text, 
   const float& red, 
   const float& green, 
   const float& blue
 ){
-  assert(x>=0 && x<appScreenWidth);
-  assert(y>=0 && y<appScreenHeight);
+  assert(x>=-1 && x<=1);
+  assert(y>=-1 && y<=1);
 #if defined(__OPENGL__)
   glColor3f(red,green,blue);
-  glRasterPos2i(x ,y);
+  glRasterPos2f(x ,y);
   for (auto& i : text)
   {
     glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24,i);

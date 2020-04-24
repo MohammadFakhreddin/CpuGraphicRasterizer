@@ -40,8 +40,8 @@ Application::Application(
     physicalDeviceScreenWidth,
     physicalDeviceScreenHeight
     ),
-  fpsDrawLocation(0, 0),
-  sceneNameDrawLocation(0, appScreenHeight - 32)
+  fpsDrawLocation(-1.0, -1.0),
+  sceneNameDrawLocation(-1.0, 0.9)
 {
   {
     DataAccessPoint::createInstance();
@@ -93,7 +93,7 @@ void Application::notifyScreenSurfaceChanged(
     DataAccessPoint::getInstance()->setPhysicalScreenWidth(paramAppScreenWidth);
     DataAccessPoint::getInstance()->setAppScreenHeight(paramAppScreenHeight);
 
-    sceneNameDrawLocation.setY(paramAppScreenHeight - 32);
+    sceneNameDrawLocation.setY(0.9);
   }
 
   DataAccessPoint::getInstance()->setPhysicalScreenWidth(paramPhysicalScreenWidth);

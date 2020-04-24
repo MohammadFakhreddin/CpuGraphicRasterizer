@@ -137,8 +137,10 @@ void PipeLine::updateShapeNodes(
     shape->worldPoints[nodeIndex].multiply(shape->transformMatrix);
 
     shape->worldPoints[nodeIndex].multiply(camera.transformInverseMatrix);
+    /* We project camera using zBufffer instead which is more cpu efficient and it makes it easier to track values 
     //TO project shape into openGL map we use camera.projection
     shape->worldPoints[nodeIndex].multiply(camera.projection);
+    */
   }
 }
 

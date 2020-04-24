@@ -22,10 +22,10 @@ Camera::Camera(
   :
   gl(paramGl),
   pixelMapSize(paramAppScreenWidth * paramAppScreenHeight),
-  startX(0),
-  startY(0),
-  endX(paramAppScreenWidth),
-  endY(paramAppScreenHeight),
+  startX(0.0f),
+  startY(0.0f),
+  endX(float(paramAppScreenWidth)),
+  endY(float(paramAppScreenHeight)),
   appScreenWidth(paramAppScreenWidth),
   appScreenHeight(paramAppScreenHeight)
 {
@@ -55,11 +55,20 @@ Camera::Camera(
     endZ
   );
 
-
+  // In current camera projection 
+  // 1- X is between -1 and 1
+  // 2- Y is between -1 and 1
+  // 3- Z is between 0 and 1
+  // So camera position must be in oposite direction
+  /*
+  Projection applied x and y and z in openGL defined world is following values
+  position.setX(0);
+  position.setY(0);
+  position.setZ(-1.0f);
+  */
   position.setX((endX - startX) / 2.0f);
   position.setY((endY - startY) / 2.0f);
-  //Usually camera distance to zero is equal to far
-  position.setZ(-1.0f * (endZ - startZ));
+  position.setZ(-1.0f * endZ);
 
   DataAccessPoint::getInstance()->getEventHandler().subscribeToEvent<bool>(
     EventHandler::EventName::screenSurfaceChanged,
@@ -103,23 +112,26 @@ void Camera::notifyScreenSurfaceIsChanged(
 
 void Camera::initPixelMap(){
 
+  double xPixelStep = 2.0 / double(endX - startX);
+  double yPixelStep = 2.0 / double(endY - startY);
+
   pixelMap = new DrawPixel[pixelMapSize];
   unsigned int rowValue = 0;
   for(unsigned int i=0;i<appScreenWidth;i++){
     rowValue = i * appScreenHeight;
     for(unsigned int j=0;j<appScreenHeight;j++){
       auto currentPixel = &pixelMap[rowValue + j];
-      currentPixel->zValue = zDefaultValue;
+      currentPixel->zValue = endZ;
       currentPixel->blue = 0;
       currentPixel->green = 0;
       currentPixel->red = 0;
-      currentPixel->x = i;
-      currentPixel->y = j;
+      currentPixel->x = float(-1.0 + xPixelStep * i);
+      currentPixel->y = float(-1.0 + yPixelStep * j);
     }
   }
 
 }
-
+//TODO Start from here//Put pixel in map must be between -1 and 1 for both x and y
 void Camera::putPixelInMap(
   const int& x,
   const int& y,
@@ -168,7 +180,7 @@ void Camera::render(const double& deltaTime){
     gl.beginDrawingPoints();
     for (unsigned int i = 0; i < pixelMapSize; i++) {
       auto currentPixel = &pixelMap[i];
-      if (currentPixel->zValue != zDefaultValue) {
+      if (currentPixel->zValue != endZ) {
         gl.drawPixel(
           currentPixel->x,
           currentPixel->y,
@@ -176,7 +188,7 @@ void Camera::render(const double& deltaTime){
           currentPixel->green,
           currentPixel->blue
         );
-        currentPixel->zValue = zDefaultValue;
+        currentPixel->zValue = endZ;
         currentPixel->red = 0.0f;
         currentPixel->green = 0.0f;
         currentPixel->blue = 0.0f;
