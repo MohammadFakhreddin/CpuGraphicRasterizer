@@ -34,10 +34,10 @@ DirectionalLight::DirectionalLight(
   assert(colorG >= 0 && colorG <= 1.0f);
   assert(colorB >= 0 && colorB <= 1.0f);
 
-  color.set(0, 0, colorR);
-  color.set(1, 0, colorG);
-  color.set(2, 0, colorB);
-
+  color.setR(colorR);
+  color.setG(colorG);
+  color.setB(colorB);
+  
   Matrix3X1Float lightDirection;
   lightDirection.setX(directionX);
   lightDirection.setY(directionY);
@@ -61,8 +61,14 @@ void DirectionalLight::computeLightIntensity(
 
   assert(lightIntensityFactor <= 1);
 
-  output.assign(color);
-  output.multiply(lightIntensityFactor);
+  if (lightIntensityFactor > 0) {
+    output.assign(color);
+    output.multiply(lightIntensityFactor);
+  }
+  else {
+    output.assign(0.0f);
+  }
+
 }
 
 //This method must be called before other objects update

@@ -35,7 +35,7 @@ PipeLine::PipeLine(
 {}
 
 void PipeLine::assignAmbientLight(AmbientLight* ambientLight) {
-  ambientLight = ambientLight;
+  this->ambientLight = ambientLight;
 }
 
 void PipeLine::assignDirectionalLight(std::vector<DirectionalLight*>& directionalLights) {
@@ -84,25 +84,25 @@ void PipeLine::update(double deltaTime)
   }
   if (pointLights.empty() == false) {
     for (auto& light : pointLights) {
-      threadPool.autoAssignTask(&updateShapeNodesReference, light->getShape());
-      threadPool.autoAssignTask(&updateShapeNormalsReference, light->getShape());
+      threadPool.assignTaskToAllThreads(&updateShapeNodesReference, light->getShape());
+      threadPool.assignTaskToAllThreads(&updateShapeNormalsReference, light->getShape());
     }
   }
   if (shapes.empty() == false) {
     for (auto& shape : shapes) {
-      threadPool.autoAssignTask(&updateShapeNodesReference, shape);
-      threadPool.autoAssignTask(&updateShapeNormalsReference, shape);
+      threadPool.assignTaskToAllThreads(&updateShapeNodesReference, shape);
+      threadPool.assignTaskToAllThreads(&updateShapeNormalsReference, shape);
     }
   }
   threadPool.waitForThreadsToFinish();
   if (pointLights.empty() == false) {
     for (auto& light : pointLights) {
-      threadPool.autoAssignTask(&updateShapeSurfacesReference, light->getShape());
+      threadPool.assignTaskToAllThreads(&updateShapeSurfacesReference, light->getShape());
     }
   }
   if (shapes.empty() == false) {
     for (auto& shape : shapes) {
-      threadPool.autoAssignTask(&updateShapeSurfacesReference, shape);
+      threadPool.assignTaskToAllThreads(&updateShapeSurfacesReference, shape);
     }
   }
   threadPool.waitForThreadsToFinish();
@@ -122,21 +122,18 @@ void PipeLine::updateShapeNodes(
 
     shape->worldPoints[nodeIndex].multiply(shape->rotationXYZMatrix);
 
-    shape->worldPoints[nodeIndex].multiply(shape->scaleMatrix);
-
     shape->worldPoints[nodeIndex].multiply(camera.rotationInverseMatrix);
 
-    float scaleValue = camera.scaleBasedOnZDistance(
-      shape->worldPoints[nodeIndex].get(2, 0) + shape->transformMatrix.get(2, 0)
-    );
+    shape->worldPoints[nodeIndex].multiply(shape->scaleMatrix);
 
-    shape->worldPoints[nodeIndex].set(0, 0, shape->worldPoints[nodeIndex].get(0, 0) * scaleValue);
-
-    shape->worldPoints[nodeIndex].set(1, 0, shape->worldPoints[nodeIndex].get(1, 0) * scaleValue);
-
+    float scaleValue = camera.scaleBasedOnZDistance(shape->worldPoints[nodeIndex].getZ() + camera.transformInverseValue.getZ() + shape->transformValue.getZ());
+    shape->worldPoints[nodeIndex].setX(shape->worldPoints[nodeIndex].getX() * scaleValue);
+    shape->worldPoints[nodeIndex].setY(shape->worldPoints[nodeIndex].getY() * scaleValue);
+    
     shape->worldPoints[nodeIndex].multiply(shape->transformMatrix);
 
     shape->worldPoints[nodeIndex].multiply(camera.transformInverseMatrix);
+
     /* We project camera using zBufffer instead which is more cpu efficient and it makes it easier to track values 
     //TO project shape into openGL map we use camera.projection
     shape->worldPoints[nodeIndex].multiply(camera.projection);
@@ -159,9 +156,10 @@ void PipeLine::computeLightIntensityForPoint(
 )
 {
 
-  output.set(0, 0, 0.0f);
-  output.set(1, 0, 0.0f);
-  output.set(2, 0, 0.0f);
+  output.setX(0);
+  output.setY(0);
+  output.setZ(0);
+  output.setW(0);
 
   if (ambientLight) {
     ambientLight->computeLightIntensity(colorOutputPlaceholder);
@@ -171,12 +169,12 @@ void PipeLine::computeLightIntensityForPoint(
     for (const auto& light : directionalLights) {
       light->computeLightIntensity(worldNormal, colorOutputPlaceholder);
 
-      assert(colorOutputPlaceholder.get(0, 0) >= 0);
-      assert(colorOutputPlaceholder.get(0, 0) <= 1);
-      assert(colorOutputPlaceholder.get(1, 0) >= 0);
-      assert(colorOutputPlaceholder.get(1, 0) <= 1);
-      assert(colorOutputPlaceholder.get(2, 0) >= 0);
-      assert(colorOutputPlaceholder.get(2, 0) <= 1);
+      assert(colorOutputPlaceholder.getX() >= 0);
+      assert(colorOutputPlaceholder.getX() <= 1);
+      assert(colorOutputPlaceholder.getY() >= 0);
+      assert(colorOutputPlaceholder.getY() <= 1);
+      assert(colorOutputPlaceholder.getZ() >= 0);
+      assert(colorOutputPlaceholder.getZ() <= 1);
 
       output.sum(colorOutputPlaceholder);
     }
@@ -197,22 +195,23 @@ void PipeLine::computeLightIntensityForPoint(
         colorOutputPlaceholder
       );
 
-      assert(colorOutputPlaceholder.get(0, 0) >= 0);
-      assert(colorOutputPlaceholder.get(0, 0) <= 1);
-      assert(colorOutputPlaceholder.get(1, 0) >= 0);
-      assert(colorOutputPlaceholder.get(1, 0) <= 1);
-      assert(colorOutputPlaceholder.get(2, 0) >= 0);
-      assert(colorOutputPlaceholder.get(2, 0) <= 1);
+      assert(colorOutputPlaceholder.getX() >= 0);
+      assert(colorOutputPlaceholder.getX() <= 1);
+      assert(colorOutputPlaceholder.getY() >= 0);
+      assert(colorOutputPlaceholder.getY() <= 1);
+      assert(colorOutputPlaceholder.getZ() >= 0);
+      assert(colorOutputPlaceholder.getZ() <= 1);
+      assert(colorOutputPlaceholder.getW() == 0);
 
       output.sum(colorOutputPlaceholder);
 
     }
   }
 
-  output.set(0, 0, Math::clamp(output.get(0, 0), 0.0f, 1.0f));
-  output.set(1, 0, Math::clamp(output.get(1, 0), 0.0f, 1.0f));
-  output.set(2, 0, Math::clamp(output.get(2, 0), 0.0f, 1.0f));
-  output.set(3, 0, 0);
+  output.setX(Math::clamp(output.getX(), 0.0f, 1.0f));
+  output.setY(Math::clamp(output.getY(), 0.0f, 1.0f));
+  output.setZ(Math::clamp(output.getZ(), 0.0f, 1.0f));
+  output.setW(0);
 
 }
 
@@ -361,7 +360,7 @@ void PipeLine::assembleTriangles(Shape3d* shape3d, Surface* surface)
 
     computeLightIntensityForPoint(
       surface->triangleMemoryPool.triangleStart,
-      surface->triangleMemoryPool.normalStart,
+      shape3d->worldNormals[surface->normalIndices[0]],
       shape3d->specularIntensity,
       surface->triangleMemoryPool.colorOutputPlaceholder,
       surface->triangleMemoryPool.cameraVectorPlaceholder,
@@ -375,7 +374,7 @@ void PipeLine::assembleTriangles(Shape3d* shape3d, Surface* surface)
 
     computeLightIntensityForPoint(
       surface->triangleMemoryPool.triangleEnd,
-      surface->triangleMemoryPool.normalEnd,
+      shape3d->worldNormals[surface->normalIndices[1]],
       shape3d->specularIntensity,
       surface->triangleMemoryPool.colorOutputPlaceholder,
       surface->triangleMemoryPool.cameraVectorPlaceholder,
@@ -389,7 +388,7 @@ void PipeLine::assembleTriangles(Shape3d* shape3d, Surface* surface)
 
     computeLightIntensityForPoint(
       surface->triangleMemoryPool.triangleFinal,
-      surface->triangleMemoryPool.normalFinal,
+      shape3d->worldNormals[surface->normalIndices[2]],
       shape3d->specularIntensity,
       surface->triangleMemoryPool.colorOutputPlaceholder,
       surface->triangleMemoryPool.cameraVectorPlaceholder,
@@ -483,7 +482,8 @@ void PipeLine::assembleTriangles(Shape3d* shape3d, Surface* surface)
     }
   }
 }
-
+//TODO Assemble lines for perPixel and perSurface must be seperated
+//TODO It must be Matrix3X1 there is no use for Matrix4X1 here
 void PipeLine::assembleLines(
   Shape3d* shape,
   Surface* surface,

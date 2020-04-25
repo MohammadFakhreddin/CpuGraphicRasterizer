@@ -26,7 +26,7 @@ LightPerPixelScene::LightPerPixelScene(OpenGL& gl)
     255.0f / 256.0f, 214.0f / 256.0f, 170.0f / 256.0f,
     float(DataAccessPoint::getInstance()->getAppScreenWidth()) / 30.0f,
     float(DataAccessPoint::getInstance()->getAppScreenHeight()) - float(DataAccessPoint::getInstance()->getAppScreenWidth()) / 30.0f,
-    cameraInitialZLocation - 80.0f,
+    80.0f,
     1.0f,1.0f,1.0f,2
   )),
   pip(cameraInstance)
@@ -37,7 +37,7 @@ LightPerPixelScene::LightPerPixelScene(OpenGL& gl)
     shape = colorCube.generateCube(Constants::LightPrecision::perPixel, width, width, 1, 0, 0, 0, 0, 0, 0, 1);
     shape->transformX(float(DataAccessPoint::getInstance()->getAppScreenWidth()) / 2.0f);
     shape->transformY(float(DataAccessPoint::getInstance()->getAppScreenHeight()) / 2.0f);
-    shape->transformZ(cameraInitialZLocation - 500.0f);
+    shape->transformZ(500.0f);
   }
 
   pip.assignShapes(shape.get());

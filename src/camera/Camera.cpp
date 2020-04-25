@@ -167,11 +167,12 @@ void Camera::assignToPixel(
   const float& green,
   const float& blue
 ) {
-  if (pixelMap[index].zValue < zValue) {
-    pixelMap[index].blue = blue;
-    pixelMap[index].green = green;
-    pixelMap[index].red = red;
-    pixelMap[index].zValue = zValue;
+  auto& currentPixel = pixelMap[index];
+  if (currentPixel.zValue > zValue) {
+    currentPixel.blue = blue;
+    currentPixel.green = green;
+    currentPixel.red = red;
+    currentPixel.zValue = zValue;
   }
 }
 
@@ -199,7 +200,9 @@ void Camera::render(const double& deltaTime){
 }
 
 float Camera::scaleBasedOnZDistance(const float& zLocation) {
-  return 1 / zLocation;
+  return zDistance / zLocation;
+  //return abs(zDistance / (zLocation - startZ));
+  //return 1;
 }
 
 const unsigned int& Camera::getAppScreenWidth() const {
@@ -248,8 +251,8 @@ void Camera::generateCameraToPointVector(
   Matrix4X1Float& output
 ) const {
   //TODO check for vector correctness
-  output.assign(position);
-  output.minus(worldPoint);
+  output.assign(worldPoint);
+  output.minus(position);
   output.setW(1.0f);
 }
 

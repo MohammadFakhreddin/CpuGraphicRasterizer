@@ -16,10 +16,6 @@ private:
 
   static constexpr float shapeRotationSpeed = 0.01f;
 
-  static constexpr float cameraInitialZLocation = 1000.0f;
-
-  static constexpr float cameraInitialMaximumFov = 1000.0f;
-
   static constexpr float lightTransformSpeed = 0.01f;
 
 public:

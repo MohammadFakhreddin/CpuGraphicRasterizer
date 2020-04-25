@@ -12,9 +12,11 @@ class Camera{
 
 public:
 
-  static constexpr unsigned int endZ = 1000;
+  static constexpr float endZ = 1000;
 
-  static constexpr unsigned int startZ = 0;
+  static constexpr float startZ = 0;
+
+  static constexpr float zDistance = endZ - startZ;
   
   //TODO Store point size as well
   struct DrawPixel{
@@ -136,6 +138,10 @@ public:
 
   Matrix4X4Float projection;
 
+  Matrix3X1Float transformInverseValue;
+
+  Matrix3X1Float rotationInverseDegree;
+
 private:
 
   /**
@@ -159,10 +165,6 @@ private:
   DrawPixel* pixelMap;
 
   OpenGL& gl;
-
-  Matrix3X1Float transformInverseValue;
-
-  Matrix3X1Float rotationInverseDegree;
 
   float startX;
 

@@ -182,9 +182,15 @@ public:
   }
 
   const T& getZ() const {
-    assert(width == 2 || width == 3 || width == 4);
+    assert(width == 3 || width == 4);
     assert(height == 1);
     return cells[2];
+  }
+
+  const T& getW() const {
+    assert(width == 4);
+    assert(height == 1);
+    return cells[3];
   }
 
   //TODO Define seperate classes for each matrix
@@ -571,6 +577,10 @@ public:
     else {
       Logger::exception("Unhandled assign in matrixTemplate");
     }
+  }
+
+  void assign(const T& value) {
+    std::fill_n(cells, matrixSize, value);
   }
 
   T dotProduct(const _Matrix<T, 3, 1>& rhs) const {

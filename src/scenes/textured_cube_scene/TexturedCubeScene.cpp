@@ -23,7 +23,7 @@ TexturedCubeScene::TexturedCubeScene(
   {//Creating shape
     auto appScreenWidth = DataAccessPoint::getInstance()->getAppScreenWidth();
     auto appScreenHeight = DataAccessPoint::getInstance()->getAppScreenHeight();
-    auto width = DataAccessPoint::getInstance()->getAppScreenWidth() / 6;
+    auto width = DataAccessPoint::getInstance()->getAppScreenWidth() / 30.0f;
     Logger::log("Creating shape object");
     cube = dice.generateCube(
       Constants::LightPrecision::perSurface,
@@ -32,7 +32,7 @@ TexturedCubeScene::TexturedCubeScene(
       float(width), 
       float(appScreenWidth) / 2.0f,
       float(appScreenHeight) / 2.0f,
-      float(cameraInitialZLocation - 500.0f),
+      float(100.0f),
       0.0f,
       0.0f,
       0.0f,
@@ -42,6 +42,7 @@ TexturedCubeScene::TexturedCubeScene(
 
   pip.assignAmbientLight(ambientLight.get());
   pip.assignDirectionalLight(directionalLight.get());
+  pip.assignShapes(cube.get());
 
 }
 

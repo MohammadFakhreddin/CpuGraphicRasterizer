@@ -20,6 +20,7 @@ ThreadPool::ThreadPool()
   //Cpu threads does not seem to work efficiently on mobiles
   numberOfThreads = 0;
 #endif
+  numberOfThreads = 1;
   if (numberOfThreads == 0) {
     numberOfThreads = 1;
   }
@@ -50,6 +51,17 @@ ThreadPool::~ThreadPool() {
   isThreadPoolActive = false;
 }
 
+void ThreadPool::assignTaskToAllThreads(
+  std::function<void(const unsigned int&, void*)>* task,
+  void* param
+) {
+  assert(std::this_thread::get_id() == mainThreadId);
+  for (threadIndex = 0; threadIndex < numberOfThreads; threadIndex++) {
+    assignTask(threadIndex, task, param);
+  }
+}
+
+/*
 void ThreadPool::autoAssignTask(
   std::function<void(const unsigned int&, void*)>* task,
   void* param
@@ -63,7 +75,7 @@ void ThreadPool::autoAssignTask(
     currentThreadIndex = 0;
   }
 
-}
+}*/
 
 void ThreadPool::assignTask(
   const unsigned int& threadNumber,
@@ -99,9 +111,10 @@ ThreadPool::ThreadObject::~ThreadObject() {
 }
 
 void ThreadPool::ThreadObject::assign(std::function<void(const unsigned int&,void*)>* task,void* param) {
+  conditionVariablesMutex.lock();
   tasks.push(task);
   parameters.push(param);
-
+  conditionVariablesMutex.unlock();
   condition.notify_one();
 }
 
@@ -122,6 +135,7 @@ void ThreadPool::ThreadObject::mainLoop() {
     isBusy = true;
     conditionVariablesMutex.unlock();
     while (tasks.empty() == false) {
+      assert(tasks.size() == parameters.size());
       try {
         if (tasks.front() != nullptr) {
           (*tasks.front())(threadNumber, parameters.front());
@@ -142,9 +156,12 @@ void ThreadPool::ThreadObject::mainLoop() {
 
 bool ThreadPool::mainThreadSleepCondition() {
   for (auto& threadObject : threadObjects) {
+    threadObject->conditionVariablesMutex.lock();
     if (threadObject->isBusy) {
+      threadObject->conditionVariablesMutex.unlock();
       return false;
     }
+    threadObject->conditionVariablesMutex.unlock();
   }
   return true;
 }
@@ -152,10 +169,6 @@ bool ThreadPool::mainThreadSleepCondition() {
 void ThreadPool::waitForThreadsToFinish() {
   //When number of threads is 2 it means that platform only uses main thread
   if (isThreadPoolActive) {
-    for (auto& threadObject : threadObjects) {
-      threadObject->conditionVariablesMutex.lock();
-      threadObject->conditionVariablesMutex.unlock();
-    }
     mainThreadCondition.wait(mainThreadLock, mainThreadSleepConditionReference);
     while (exceptions.size() != 0)
     {

@@ -23,16 +23,17 @@ ColoredCubeScene::ColoredCubeScene(
   {//Creating shape
     auto appScreenWidth = DataAccessPoint::getInstance()->getAppScreenWidth();
     auto appScreenHeight = DataAccessPoint::getInstance()->getAppScreenHeight();
-    float width = DataAccessPoint::getInstance()->getAppScreenWidth()/6.0f;
+    float width = DataAccessPoint::getInstance()->getAppScreenWidth() / 30.0f;
     Logger::log("Creating shape object");
+    //TODO Remove transfrom and scale
     cube = colorCube.generateCube(
       Constants::LightPrecision::perSurface,
       width,
       width,
       width,
-      float(appScreenWidth)/2.0f,
-      float(appScreenHeight)/2.0f,
-      float(cameraInitialZLocation - 500.0f),
+      float(appScreenWidth) / 2.0f,
+      float(appScreenHeight) / 2.0f,
+      100.0f,
       0,
       0,
       0,
@@ -74,6 +75,8 @@ void ColoredCubeScene::update(double deltaTime) {
       directionalLight->rotateXYZ(lightRotationX, lightRotationY, lightRotationZ);
     }
   }
+  float rotation = float(shapeRotationSpeed * deltaTime);
+  cube->rotateXYZ(rotation, rotation, rotation);
 #endif // __DESKTOP__
   pip.update(deltaTime);
 }

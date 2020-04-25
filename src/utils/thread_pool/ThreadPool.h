@@ -17,8 +17,13 @@ public:
   ThreadPool();
 
   ~ThreadPool();
-
+  /*
   void autoAssignTask(
+    std::function<void(const unsigned int&, void*)>* task,
+    void* param
+  );*/ 
+
+  void ThreadPool::assignTaskToAllThreads(
     std::function<void(const unsigned int&, void*)>* task,
     void* param
   );
@@ -106,8 +111,6 @@ private:
   std::condition_variable mainThreadCondition;
 
   std::queue<std::string> exceptions;
-
-  unsigned int currentThreadIndex = 0;
 
   std::thread::id mainThreadId;
 

@@ -31,16 +31,16 @@ public:
 
     std::vector<Matrix3X1Float> nodeList;
 
-    auto isNodeValid = [&nodeList](const size_t& index) {
-      if (isnan(nodeList[index].getX()) == false) {
+    auto isNodeValid = [](const Matrix3X1Float& matrix) {
+      if (isnan(matrix.getX()) == true) {
         Logger::log("IsNan nodeList[index].getX is true");
         return false;
       }
-      if (isnan(nodeList[index].getY()) == false) {
+      if (isnan(matrix.getY()) == true) {
         Logger::log("IsNan nodeList[index].getY() is true");
         return false;
       }
-      if (isnan(nodeList[index].getZ()) == false) {
+      if (isnan(matrix.getZ()) == true) {
         Logger::log("IsNan nodeList[index].getZ() is true");
         return false;
       }
@@ -48,28 +48,28 @@ public:
     };
 
     nodeList.emplace_back(x,y,z);
-    assert(isNodeValid(nodeList.size() - 1));
+    assert(isNodeValid(nodeList.back()));
     
     nodeList.emplace_back(x, y, z + d);
-    assert(isNodeValid(nodeList.size() - 1));
+    assert(isNodeValid(nodeList.back()));
 
     nodeList.emplace_back(x, y + h, z);
-    assert(isNodeValid(nodeList.size() - 1));
+    assert(isNodeValid(nodeList.back()));
 
     nodeList.emplace_back(x, y + h, z + d);
-    assert(isNodeValid(nodeList.size() - 1));
+    assert(isNodeValid(nodeList.back()));
 
     nodeList.emplace_back(x + w, y, z);
-    assert(isNodeValid(nodeList.size() - 1));
+    assert(isNodeValid(nodeList.back()));
 
     nodeList.emplace_back(x + w, y, z + d);
-    assert(isNodeValid(nodeList.size() - 1));
+    assert(isNodeValid(nodeList.back()));
 
     nodeList.emplace_back(x + w, y + h, z);
-    assert(isNodeValid(nodeList.size() - 1));
+    assert(isNodeValid(nodeList.back()));
 
     nodeList.emplace_back(x + w, y + h, z + d);
-    assert(isNodeValid(nodeList.size() - 1));
+    assert(isNodeValid(nodeList.back()));
 
     //Generating normals
     std::vector<Matrix3X1Float> normals = Shape3d::generateNormals(

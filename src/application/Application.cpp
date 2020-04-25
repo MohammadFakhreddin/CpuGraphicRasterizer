@@ -4,6 +4,8 @@
 #include <vector>
 #include "../data_access_point/DataAccessPoint.h"
 #include "../scenes/monkey_scene/MonkeyScene.h"
+#include "../scenes/colored_cube_scene/ColoredCubeScene.h"
+#include "../scenes/textured_cube_scene/TexturedCubeScene.h"
 
 //  UI Libraries
 /*
@@ -40,8 +42,8 @@ Application::Application(
     physicalDeviceScreenWidth,
     physicalDeviceScreenHeight
     ),
-  fpsDrawLocation(-1.0, -1.0),
-  sceneNameDrawLocation(-1.0, 0.9)
+  fpsDrawLocation(-1.0f, -1.0f),
+  sceneNameDrawLocation(-1.0f, 0.9f)
 {
   {
     DataAccessPoint::createInstance();
@@ -59,14 +61,13 @@ Application::Application(
 
   {
     //sceneList.emplace_back(std::make_unique<LightPerPixelScene>(openGLInstance));
-    sceneList.emplace_back(std::make_unique<MonkeyScene>(openGLInstance));
-    /*sceneList.emplace_back(std::make_unique<BunnyScene>(openGLInstance));
-    sceneList.emplace_back(std::make_unique<SphereScene>(openGLInstance));
-    sceneList.emplace_back(std::make_unique<ColoredCubeScene>(openGLInstance));
+    //sceneList.emplace_back(std::make_unique<MonkeyScene>(openGLInstance));
+    //sceneList.emplace_back(std::make_unique<BunnyScene>(openGLInstance));
+    //sceneList.emplace_back(std::make_unique<SphereScene>(openGLInstance));
+    //sceneList.emplace_back(std::make_unique<ColoredCubeScene>(openGLInstance));
     sceneList.emplace_back(std::make_unique<TexturedCubeScene>(openGLInstance));
-    sceneList.emplace_back(std::make_unique<RobotScene>(openGLInstance));
-    sceneList.emplace_back(std::make_unique<PlantScene>(openGLInstance));
-    */
+    //sceneList.emplace_back(std::make_unique<RobotScene>(openGLInstance));
+    //sceneList.emplace_back(std::make_unique<PlantScene>(openGLInstance));
     navigateToScene(0);
   }
 
@@ -93,7 +94,7 @@ void Application::notifyScreenSurfaceChanged(
     DataAccessPoint::getInstance()->setPhysicalScreenWidth(paramAppScreenWidth);
     DataAccessPoint::getInstance()->setAppScreenHeight(paramAppScreenHeight);
 
-    sceneNameDrawLocation.setY(0.9);
+    sceneNameDrawLocation.setY(0.9f);
   }
 
   DataAccessPoint::getInstance()->setPhysicalScreenWidth(paramPhysicalScreenWidth);
