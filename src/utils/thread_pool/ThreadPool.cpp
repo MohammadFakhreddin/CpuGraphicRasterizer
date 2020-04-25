@@ -6,9 +6,6 @@
 //TODO Add preference for using threads for applications//For example using threads is not efficient in android
 //TODO CPU multi threading currently does not seem efficient on mobile devices
 ThreadPool::ThreadPool()
-  :
-  mainThreadMutex(),
-  mainThreadLock(std::unique_lock<std::mutex>(mainThreadMutex))
 {
 
   mainThreadId = std::this_thread::get_id();
@@ -20,7 +17,7 @@ ThreadPool::ThreadPool()
   //Cpu threads does not seem to work efficiently on mobiles
   numberOfThreads = 0;
 #endif
-  numberOfThreads = 1;
+  //numberOfThreads = 1;
   if (numberOfThreads == 0) {
     numberOfThreads = 1;
   }
@@ -100,7 +97,7 @@ ThreadPool::ThreadObject::ThreadObject(const unsigned int& threadNumber, ThreadP
   :
   threadNumber(threadNumber),
   mutex(),
-  lock(std::unique_lock<std::mutex>(mutex)),
+  lock(mutex),
   parent(parent)
 {
   thread = std::make_unique<std::thread>(mainLoopReference);
@@ -110,11 +107,13 @@ ThreadPool::ThreadObject::~ThreadObject() {
   thread->detach();
 }
 
-void ThreadPool::ThreadObject::assign(std::function<void(const unsigned int&,void*)>* task,void* param) {
-  conditionVariablesMutex.lock();
+void ThreadPool::ThreadObject::assign(std::function<void(const unsigned int&,void*)>* function,void* param) {
+  
+  ThreadPool::ThreadObject::Task task;
+  task.function = function;
+  task.parameter = param;
   tasks.push(task);
-  parameters.push(param);
-  conditionVariablesMutex.unlock();
+
   condition.notify_one();
 }
 
@@ -122,58 +121,67 @@ const unsigned int& ThreadPool::getNumberOfAvailableThreads() const {
   return numberOfThreads;
 }
 
-bool ThreadPool::ThreadObject::sleepCondition() {
-  //It must be tasks.empty isBusy cannot be used here
+bool ThreadPool::ThreadObject::awakeCondition() {
   return !tasks.empty();
 }
 
 void ThreadPool::ThreadObject::mainLoop() {
   while (parent.isThreadPoolActive)
   {
-    condition.wait(lock, sleepConditionReference);
-    conditionVariablesMutex.lock();
-    isBusy = true;
-    conditionVariablesMutex.unlock();
-    while (tasks.empty() == false) {
-      assert(tasks.size() == parameters.size());
+
+    condition.wait(lock, threadAwakeConditionReference);
+    
+    while (tasks.empty()==false) {
       try {
-        if (tasks.front() != nullptr) {
-          (*tasks.front())(threadNumber, parameters.front());
+        auto& currentTask = tasks.front();
+        if (currentTask.function != nullptr) {
+          (*currentTask.function)(threadNumber, currentTask.parameter);
         }
       }
       catch (std::exception exception) {
         parent.exceptions.push(exception.what());
       }
-      parameters.pop();
       tasks.pop();
-    }
-    conditionVariablesMutex.lock();
-    isBusy = false;
-    conditionVariablesMutex.unlock();
-    parent.mainThreadCondition.notify_one();
+    };
+
   }
 }
 
-bool ThreadPool::mainThreadSleepCondition() {
+bool ThreadPool::mainThreadAwakeCondition() {
   for (auto& threadObject : threadObjects) {
-    threadObject->conditionVariablesMutex.lock();
-    if (threadObject->isBusy) {
-      threadObject->conditionVariablesMutex.unlock();
+    if (threadObject->tasks.empty() == false) {
       return false;
     }
-    threadObject->conditionVariablesMutex.unlock();
   }
   return true;
 }
 
 void ThreadPool::waitForThreadsToFinish() {
+  assert(std::this_thread::get_id() == mainThreadId);
   //When number of threads is 2 it means that platform only uses main thread
   if (isThreadPoolActive) {
-    mainThreadCondition.wait(mainThreadLock, mainThreadSleepConditionReference);
+    while (mainThreadAwakeCondition() == false) {
+      for (auto& threadObject : threadObjects) {
+        threadObject->condition.notify_one();
+      }
+      std::this_thread::sleep_for(std::chrono::nanoseconds(50));
+    }
+    assert(allThreadsTasksQueueIsEmpty()==true);
     while (exceptions.size() != 0)
     {
       Logger::log(exceptions.front());
       exceptions.pop();
     }
   }
+}
+
+bool ThreadPool::allThreadsTasksQueueIsEmpty() {
+  for (auto& threadObject : threadObjects) {
+    if (threadObject->tasks.empty() == false) {
+      Logger::log("ThreadObject work is not finished");
+      Logger::log("Tasks:" + std::to_string(threadObject->tasks.size()));
+      return false;
+    }
+  }
+  return true;
 }

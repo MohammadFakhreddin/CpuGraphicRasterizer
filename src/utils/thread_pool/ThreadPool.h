@@ -8,6 +8,7 @@
 #include <vector>
 #include <queue>
 #include <exception>
+#include <atomic>
 
 class ThreadPool
 {
@@ -24,13 +25,13 @@ public:
   );*/ 
 
   void ThreadPool::assignTaskToAllThreads(
-    std::function<void(const unsigned int&, void*)>* task,
+    std::function<void(const unsigned int&, void*)>* function,
     void* param
   );
 
   void assignTask(
     const unsigned int& threadNumber,
-    std::function<void(const unsigned int&,void*)>* task,
+    std::function<void(const unsigned int&,void*)>* function,
     void* param
   );
 
@@ -49,11 +50,11 @@ public:
     void mainLoop();
 
     void assign(
-      std::function<void(const unsigned int&, void* param)>* task,
+      std::function<void(const unsigned int&, void* param)>* function,
       void* params
     );
 
-    bool sleepCondition();
+    bool awakeCondition();
 
     ThreadPool& parent;
 
@@ -63,16 +64,19 @@ public:
 
     std::unique_lock<std::mutex> lock;
 
-    std::queue<std::function<void(const unsigned int&, void* )>*> tasks;
+    struct Task {
+      std::function<void(const unsigned int&, void*)>* function;
+      void* parameter;
+    };
 
-    std::queue<void*> parameters;
+    std::queue<Task> tasks;
 
     std::condition_variable condition;
 
     std::unique_ptr<std::thread> thread;
 
-    std::function<bool(void)> sleepConditionReference = std::bind(
-      &ThreadPool::ThreadObject::sleepCondition, 
+    std::function<bool(void)> threadAwakeConditionReference = std::bind(
+      &ThreadPool::ThreadObject::awakeCondition, 
       this
     );
 
@@ -81,18 +85,16 @@ public:
       this
     );
 
-    std::mutex conditionVariablesMutex;
-
-    bool isBusy = false;
-
   };
+
+  bool allThreadsTasksQueueIsEmpty();
 
 private:
   
-  bool mainThreadSleepCondition();
+  bool mainThreadAwakeCondition();
 
-  std::function<bool(void)> mainThreadSleepConditionReference = std::bind(
-    &ThreadPool::mainThreadSleepCondition,
+  std::function<bool(void)> mainThreadAwakeConditionReference = std::bind(
+    &ThreadPool::mainThreadAwakeCondition,
     this
   );
 
@@ -103,12 +105,6 @@ private:
   unsigned int numberOfThreads = 0;
 
   unsigned int threadIndex = 0;
-
-  std::mutex mainThreadMutex;
-
-  std::unique_lock<std::mutex> mainThreadLock;
-
-  std::condition_variable mainThreadCondition;
 
   std::queue<std::string> exceptions;
 
