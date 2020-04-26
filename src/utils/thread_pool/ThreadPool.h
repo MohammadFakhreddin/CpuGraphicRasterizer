@@ -24,7 +24,7 @@ public:
     void* param
   );*/ 
 
-  void ThreadPool::assignTaskToAllThreads(
+  void assignTaskToAllThreads(
     std::function<void(const unsigned int&, void*)>* function,
     void* param
   );

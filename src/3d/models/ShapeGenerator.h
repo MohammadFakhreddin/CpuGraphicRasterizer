@@ -32,15 +32,15 @@ public:
     std::vector<Matrix3X1Float> nodeList;
 
     auto isNodeValid = [](const Matrix3X1Float& matrix) {
-      if (isnan(matrix.getX()) == true) {
+      if (std::isnan(matrix.getX()) == true) {
         Logger::log("IsNan nodeList[index].getX is true");
         return false;
       }
-      if (isnan(matrix.getY()) == true) {
+      if (std::isnan(matrix.getY()) == true) {
         Logger::log("IsNan nodeList[index].getY() is true");
         return false;
       }
-      if (isnan(matrix.getZ()) == true) {
+      if (std::isnan(matrix.getZ()) == true) {
         Logger::log("IsNan nodeList[index].getZ() is true");
         return false;
       }
@@ -111,15 +111,15 @@ public:
     std::vector<Matrix3X1Float> vertices;
 
     auto isVertexValid = [](const Matrix3X1Float& vertex) {
-      if (isnan(vertex.getX()) == true) {
+      if (std::isnan(vertex.getX()) == true) {
         Logger::log("IsNan vertex.getX is true");
         return false;
       }
-      if (isnan(vertex.getY()) == true) {
+      if (std::isnan(vertex.getY()) == true) {
         Logger::log("IsNan vertex.getY() is true");
         return false;
       }
-      if (isnan(vertex.getZ()) == true) {
+      if (std::isnan(vertex.getZ()) == true) {
         Logger::log("IsNan vertex.getZ() is true");
         return false;
       }

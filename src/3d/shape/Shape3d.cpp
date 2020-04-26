@@ -110,15 +110,15 @@ bool Shape3d::checkDataValidation() {
     return false;
   }
   for (auto& node : nodes) {
-    if (isnan(node.getX())) {
+    if (std::isnan(node.getX())) {
       Logger::log("Shape3d node.getX() is isNan == true");
       return false;
     }
-    if (isnan(node.getY())) {
+    if (std::isnan(node.getY())) {
       Logger::log("Shape3d node.getY() is isNan == true");
       return false;
     }
-    if (isnan(node.getZ())) {
+    if (std::isnan(node.getZ())) {
       Logger::log("Shape3d node.getZ() is isNan == true");
       return false;
     }
@@ -129,15 +129,15 @@ bool Shape3d::checkDataValidation() {
     return false;
   }
   for (auto& normal : normals) {
-    if (isnan(normal.getX())) {
+    if (std::isnan(normal.getX())) {
       Logger::log("Shape3d normal.getX() is isNan == true");
       return false;
     }
-    if (isnan(normal.getY())) {
+    if (std::isnan(normal.getY())) {
       Logger::log("Shape3d normal.getY() is isNan == true");
       return false;
     }
-    if (isnan(normal.getZ())) {
+    if (std::isnan(normal.getZ())) {
       Logger::log("Shape3d normal.getZ() is isNan == true");
       return false;
     }
@@ -277,15 +277,15 @@ std::vector<Matrix3X1Float> Shape3d::generateNormals(
 
   auto areNodesValid = [&nodes]() {
     for (auto& node : nodes) {
-      if (isnan(node.getX()) == true) {
+      if (std::isnan(node.getX()) == true) {
         Logger::log("IsNan nodeList[index].getX is true");
         return false;
       }
-      if (isnan(node.getY()) == true) {
+      if (std::isnan(node.getY()) == true) {
         Logger::log("IsNan nodeList[index].getY() is true");
         return false;
       }
-      if (isnan(node.getZ()) == true) {
+      if (std::isnan(node.getZ()) == true) {
         Logger::log("IsNan nodeList[index].getZ() is true");
         return false;
       }
@@ -419,9 +419,9 @@ std::vector<Matrix3X1Float> Shape3d::generateNormals(
         }
       }
 
-      assert(isnan(normals.back().get(0, 0)) == false);
-      assert(isnan(normals.back().get(1, 0)) == false);
-      assert(isnan(normals.back().get(2, 0)) == false);
+      assert(std::isnan(normals.back().get(0, 0)) == false);
+      assert(std::isnan(normals.back().get(1, 0)) == false);
+      assert(std::isnan(normals.back().get(2, 0)) == false);
 
       for (vectorIndex = 0; vectorIndex < 3; vectorIndex++) {
 
@@ -433,11 +433,9 @@ std::vector<Matrix3X1Float> Shape3d::generateNormals(
 
       normals.back().assign(normalVectorHat);
 
-      assert(
-        isnan(normals.back().get(0, 0)) == false &&
-        isnan(normals.back().get(1, 0)) == false &&
-        isnan(normals.back().get(2, 0)) == false
-      );
+      assert(std::isnan(normals.back().getX()) == false);  
+      assert(std::isnan(normals.back().getY()) == false);
+      assert(std::isnan(normals.back().getZ()) == false);
 
     }
 

@@ -5,6 +5,7 @@
 #include <vector>
 #include <memory>
 #include <cmath>
+#include <cstring>
 
 #include "../utils/log/Logger.h"
 #include "../utils/math/Math.h"
@@ -18,7 +19,7 @@ public:
 
   static constexpr unsigned int matrixSize = width * height;
 
-  T cells[matrixSize] = { 0 };
+  T cells[width * height] = { 0 };
 
 private:
 
@@ -34,7 +35,7 @@ private:
 
   unsigned int index = 0;
   
-  T placeholderCells[matrixSize] = { 0 };
+  T placeholderCells[width * height] = { 0 };
 
 public:
 
@@ -43,6 +44,7 @@ public:
 
   _Matrix(T defaultValue)
   {
+    assert(std::isnan(defaultValue)==false);
     if (defaultValue != 0) {
       std::fill_n(cells, matrixSize, defaultValue);
     }
@@ -52,6 +54,8 @@ public:
   {
     assert(width == 2);
     assert(height == 1);
+    assert(std::isnan(x)==false);
+    assert(std::isnan(y)==false);
     cells[0] = x;
     cells[1] = y;
   }
@@ -60,6 +64,9 @@ public:
   {
     assert(width == 3);
     assert(height == 1);
+    assert(std::isnan(x)==false);
+    assert(std::isnan(y)==false);
+    assert(std::isnan(z)==false);
     cells[0] = x;
     cells[1] = y;
     cells[2] = z;
@@ -69,6 +76,10 @@ public:
   {
     assert(width == 4);
     assert(height == 1);
+    assert(std::isnan(x)==false);
+    assert(std::isnan(y)==false);
+    assert(std::isnan(z)==false);
+    assert(std::isnan(w)==false);
     cells[0] = x;
     cells[1] = y;
     cells[2] = z;
@@ -92,6 +103,7 @@ public:
   void sum(const _Matrix<T, width, height>& rhs) {
     for (i = 0; i < matrixSize; i++) {
       cells[i] += rhs.cells[i];
+      assert(std::isnan(cells[i])==false);
     }
   }
 
@@ -105,6 +117,7 @@ public:
   void minus(const _Matrix<T, width, height>& rhs) {
     for (i = 0; i < matrixSize; i++) {
       cells[i] -= rhs.cells[i];
+      assert(std::isnan(cells[i])==false);
     }
   }
 
@@ -118,6 +131,7 @@ public:
   void multiply(const A& rhs) {
     for (i = 0; i < matrixSize; i++) {
       cells[i] *= T(rhs);
+      assert(std::isnan(cells[i])==false);
     }
   }
 
@@ -193,7 +207,7 @@ public:
     return cells[3];
   }
 
-  //TODO Define seperate classes for each matrix
+  //TODO Define separate classes for each matrix
   const T& getR() const {
     assert(width == 3 || width == 4);
     assert(height == 1);
@@ -216,42 +230,49 @@ public:
     assert(width == 2 || width == 3 || width == 4);
     assert(height == 1);
     cells[0] = value;
+    assert(std::isnan(cells[0])==false);
   }
 
   void setY(const T& value) {
     assert(width == 2 || width == 3 || width == 4);
     assert(height == 1);
     cells[1] = value;
+    assert(std::isnan(cells[1])==false);
   }
 
   void setZ(const T& value) {
     assert(width == 3 || width == 4);
     assert(height == 1);
     cells[2] = value;
+    assert(std::isnan(cells[2])==false);
   }
 
   void setW(const T& value) {
     assert(width == 4);
     assert(height == 1);
     cells[3] = value;
+    assert(std::isnan(cells[3])==false);
   }
 
   void setR(const T& value) {
     assert(width == 3 || width == 4);
     assert(height == 1);
     cells[0] = value;
+    assert(std::isnan(cells[0])==false);
   }
 
   void setG(const T& value) {
     assert(width == 3 || width == 4);
     assert(height == 1);
     cells[1] = value;
+    assert(std::isnan(cells[1])==false);
   }
 
   void setB(const T& value) {
     assert(width == 3 || width == 4);
     assert(height == 1);
     cells[2] = value;
+    assert(std::isnan(cells[2])==false);
   }
 
   const T& getDirect(const unsigned int& index) const {
@@ -263,11 +284,13 @@ public:
     assert(x < width);
     assert(y < height);
     cells[x * height + y] = value;
+    assert(std::isnan(cells[x * height + y])==false);
   }
 
   void setDirect(const unsigned int& index, const T& value) {
     assert(index < matrixSize);
     cells[index] = value;
+    assert(std::isnan(cells[index])==false);
   }
 
   template<typename A, typename B>
@@ -276,6 +299,8 @@ public:
     assert(height == 1);
     cells[0] = T(x);
     cells[1] = T(y);
+    assert(std::isnan(cells[0])==false);
+    assert(std::isnan(cells[1])==false);
   }
 
   template<typename A, typename B,typename C>
@@ -285,6 +310,9 @@ public:
     cells[0] = T(x);
     cells[1] = T(y);
     cells[2] = T(z);
+    assert(std::isnan(cells[0])==false);
+    assert(std::isnan(cells[1])==false);
+    assert(std::isnan(cells[2])==false);
   }
 
   template<typename A, typename B, typename C,typename D>
@@ -295,6 +323,10 @@ public:
     cells[1] = T(y);
     cells[2] = T(z);
     cells[3] = T(w);
+    assert(std::isnan(cells[0])==false);
+    assert(std::isnan(cells[1])==false);
+    assert(std::isnan(cells[2])==false);
+    assert(std::isnan(cells[3])==false);
   }
 
   template<typename A>
@@ -671,12 +703,11 @@ private:
     }
   }
 
-  void _assign(const T* rhsCells, const unsigned int& elementsCount) {
+  void _assign(const T* rhsCells, const unsigned int elementsCount) {
     std::memcpy(cells, rhsCells, elementsCount * sizeof(T));
   }
 
 };
-
 
 using Matrix4X4Int = _Matrix<int, 4, 4>;
 using Matrix4X4Float = _Matrix<float, 4, 4>;
