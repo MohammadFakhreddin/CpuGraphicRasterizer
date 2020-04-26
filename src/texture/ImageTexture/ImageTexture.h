@@ -52,7 +52,7 @@ public:
     float* red,
     float* green,
     float* blue
-  ) const;
+  ) const override;
   /**
     For debugging texture
   */

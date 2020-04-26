@@ -89,4 +89,6 @@ Release
 
 CTestTestfile.cmake
 
+*.cmake
+
 npm-debug.log
