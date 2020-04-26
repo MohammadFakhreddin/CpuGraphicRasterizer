@@ -592,7 +592,7 @@ public:
   void hat(_Matrix<T, 3, 1>& matrix) const {
     return _hat(matrix.cells, 3, 1);
   }
-
+  
   template <unsigned int rhsWidth,unsigned int rhsHeight>
   void assign(const _Matrix<T, rhsWidth, rhsHeight>& rhs) {
     if (rhsWidth == width && rhsHeight == height) {
@@ -703,7 +703,13 @@ private:
     }
   }
 
-  void _assign(const T* rhsCells, const unsigned int elementsCount) {
+  /*
+  *
+  * Because elementsCount is related to matrixSize and it is a constexpr
+  * It cannot be referenced
+  * 
+  */
+  void _assign(const T* rhsCells, const unsigned int& elementsCount) {
     std::memcpy(cells, rhsCells, elementsCount * sizeof(T));
   }
 
