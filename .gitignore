@@ -78,3 +78,11 @@ CMakeSettings.json
 
 
 package.json
+
+3d-cube.dir
+Debug
+Debug/*
+out/*
+out
+Release/*
+Release

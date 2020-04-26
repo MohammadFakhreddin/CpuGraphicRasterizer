@@ -11,6 +11,8 @@ appScreenHeight(appScreenHeight),
 physicalScreenWidth(physicalScreenWidth),
 physicalScreenHeight(physicalScreenHeight)
 {
+  Logger::log("AppScreenWidth: " + std::to_string(appScreenWidth));
+  Logger::log("AppScreenHeight: " + std::to_string(appScreenHeight));
   init();
 }
 
@@ -99,27 +101,21 @@ void OpenGL::init(){
 #endif
   glClearColor(0.0f, 0.0f, 0.0f, 1.0f); // Set background color to black and opaque
 #if defined(__OPENGL__)
-  glPointSize(2.0f);
+  glPointSize(1.0f);
   glViewport(0,0,appScreenWidth,appScreenHeight);
-  glOrtho(-0.5f, float(appScreenWidth) - 0.5f, -0.5f, float(appScreenHeight) - 0.5f, -1.0, 1.0);
 #endif
 #if defined(__GLES__)
-  #ifdef __ANDROID__
+  
   viewPortWidth = physicalScreenWidth * 2;
   viewPortHeight = physicalScreenHeight * 2;
-  #endif
-  #ifdef __IOS__
-  viewPortWidth = physicalScreenWidth * 2;
-  viewPortHeight = physicalScreenHeight * 2;
-  #endif
 
   viewPortStartX = int(-1 * (float(viewPortWidth)/2.0f));
   viewPortStartY = int(-1 * (float(viewPortHeight)/2.0f));
-  
+  /*
   xDifValue = float(appScreenWidth)/4.0f;
   yDifValue = float(appScreenHeight)/4.0f;
   projectionX = 2.0f / float(appScreenWidth);
-  projectionY = 2.0f / float(appScreenHeight);
+  projectionY = 2.0f / float(appScreenHeight);*/
 #endif
 #if defined(__ANDROID__)
   glViewport(viewPortStartX,viewPortStartY,viewPortWidth,viewPortHeight);
@@ -127,27 +123,6 @@ void OpenGL::init(){
 }
 
 #ifdef __GLES__
-
-//Not using right now
-void OpenGL::glesOrtho(float left, float right, float top, float bottom, float near, float far){
-
-    projMat[0] = GLfloat(2.0 / (right - left));
-    projMat[1] = 0.0;
-    projMat[2] = 0.0;
-    projMat[3] = 0.0;
-    projMat[4] = 0.0;
-    projMat[5] = GLfloat(2.0 / (top - bottom));
-    projMat[6] = 0.0;
-    projMat[7] = 0.0;
-    projMat[8] = 0.0;
-    projMat[9] = 0.0;
-    projMat[10] = (1.0f / (near - far));
-    projMat[11] = 0.0;
-    projMat[12] = ((left + right) / (left - right));
-    projMat[13] = ((top + bottom) / (bottom - top));
-    projMat[14] = (near / (near - far));
-    projMat[15] = 1;
-}
 
 GLuint OpenGL::loadShader(GLenum shaderType, const char* shaderSource){
   GLuint shader = glCreateShader(shaderType);
@@ -233,21 +208,34 @@ void OpenGL::flush(){
   glFlush();
 }
 
-void OpenGL::drawPixel(unsigned int x,unsigned int y,float red,float green,float blue){
-
-  assert(x>=0 && x<appScreenWidth);
-  assert(y>=0 && y<appScreenHeight);
+void OpenGL::drawPixel(
+  const float& x, 
+  const float& y, 
+  const float& red, 
+  const float& green, 
+  const float& blue
+){
+  //OpenGL default world projection
+  assert(x>=-1 && x<=1);
+  assert(y>=-1 && y<=1);
   assert(red>=0 && red<=1.0f);
   assert(green>=0 && green<=1.0f);
   assert(blue>=0 && blue<=1.0f);
 
 #ifdef __OPENGL__
+
   glColor3f(red,green,blue);
-  glVertex2i(x,y);
+  glVertex2f(x,y);
+
 #else
+    
   {
+    /*
       position[0] = (x - xDifValue) * projectionX;
       position[1] = (y - yDifValue) * projectionY;
+    */
+      position[0] = x;
+      position[1] = y;
       glVertexAttribPointer((GLuint)pointParamLocation,4,GL_FLOAT,GL_FALSE,0,position);
       assert(checkForOpenGlError());
       glEnableVertexAttribArray((GLuint)pointParamLocation);
@@ -289,12 +277,19 @@ void OpenGL::resetProgram(){
 #endif
 }
 
-void OpenGL::drawText(unsigned int x,unsigned int y,const std::string& text,float red,float green,float blue){
-  assert(x>=0 && x<appScreenWidth);
-  assert(y>=0 && y<appScreenHeight);
+void OpenGL::drawText(
+  const float& x, 
+  const float& y, 
+  const std::string& text, 
+  const float& red, 
+  const float& green, 
+  const float& blue
+){
+  assert(x>=-1 && x<=1);
+  assert(y>=-1 && y<=1);
 #if defined(__OPENGL__)
   glColor3f(red,green,blue);
-  glRasterPos2i(x ,y);
+  glRasterPos2f(x ,y);
   for (auto& i : text)
   {
     glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24,i);

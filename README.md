@@ -1,10 +1,23 @@
 # 3D-Cube 
 ### Using c++,cmake, pure math and putPixel equivalent in openGL
+### Currently entire game engine processes runs only on cpu (But multi threaded)
 
-### Defuse light on bunny model (New support for .Obj is added)
-![Alt Text](bunny.gif)
+<div>
+    <h2>Specular highlight</h2>
+    <img src="specular_highlight.gif">
+</div>
+<div>
+    <h2>Point light (Runs multi-thread on cpu)</h2>
+    <img src="point_light.gif">
+</div>
+<div>
+    <h2>Smooth shadows using auto generated normal vectors</h2>
+    <img src="smooth_shadows.gif">
+</div>
+
 ### Drawing 3d-cube with texture
 ![Alt Text](dice.gif)
+
 ### Android port
 <div
     style="flex-direction:row"
@@ -14,7 +27,12 @@
 </div>
 
 ### IOS port
+<div
+    style="flex-direction:row"
+>
 <img src="iphone.gif" height="500">
+<img src="iphone_point_light.gif" height="500">
+</div>
 
 ## How to run project ?
 

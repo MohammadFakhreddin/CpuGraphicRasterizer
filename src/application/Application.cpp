@@ -2,143 +2,83 @@
 
 #include <memory>
 #include <vector>
+#include "../data_access_point/DataAccessPoint.h"
+#include "../scenes/monkey_scene/MonkeyScene.h"
+#include "../scenes/colored_cube_scene/ColoredCubeScene.h"
+#include "../scenes/textured_cube_scene/TexturedCubeScene.h"
 
-#include "../Constants.h"
-#include "../open_gl/OpenGl.h"
-#include "../3d_shape/Shape3d.h"
-#include "../utils/log/Logger.h"
-#include "../utils/math/Math.h"
-#include "../file_system/FileSystem.h"
+//  UI Libraries
+/*
+    Source : https://philippegroarke.com/posts/2018/c++_ui_solutions/
+    GUILite
+    Juce
+*/
+//Use this source to assign process to all cpu cores
+/*
+https://stackoverflow.com/questions/150355/programmatically-find-the-number-of-cores-on-a-machine
+*/
 
+#ifdef __DESKTOP__
 void handleKeyboardEvent(unsigned char key, int x, int y)
 {
-  if (std::tolower(key) == 'a') {
-    Application::getInstance()->notifyKeyIsPressed(Application::Buttons::keyA);
-  }
-  if (std::tolower(key) == 'd') {
-    Application::getInstance()->notifyKeyIsPressed(Application::Buttons::keyD);
-  }
-  if (std::tolower(key) == 'w') {
-    Application::getInstance()->notifyKeyIsPressed(Application::Buttons::keyW);
-  }
-  if (std::tolower(key) == 's') {
-    Application::getInstance()->notifyKeyIsPressed(Application::Buttons::keyS);
-  }
-  if (std::tolower(key) == 'c') {
-    Application::getInstance()->notifyKeyIsPressed(Application::Buttons::keyC);
-  }
-  if(std::tolower(key) == 'v'){
-    Application::getInstance()->notifyKeyIsPressed(Application::Buttons::keyV);
-  }
-  if(std::tolower(key) == 'u'){
-    Application::getInstance()->notifyKeyIsPressed(Application::Buttons::keyU);
-  }
-  if(std::tolower(key) == 'h'){
-    Application::getInstance()->notifyKeyIsPressed(Application::Buttons::keyH);
-  }
-  if(std::tolower(key) == 'j'){
-    Application::getInstance()->notifyKeyIsPressed(Application::Buttons::keyJ);
-  }
-  if(std::tolower(key) == 'k'){
-    Application::getInstance()->notifyKeyIsPressed(Application::Buttons::keyK);
-  }
-  if(std::tolower(key) == 'y'){
-    Application::getInstance()->notifyKeyIsPressed(Application::Buttons::keyY);
-  }
-  if(std::tolower(key) == 'i'){
-    Application::getInstance()->notifyKeyIsPressed(Application::Buttons::keyI);
-  }
+  DataAccessPoint::getInstance()->getEventHandler().emitEvent<Constants::Buttons>(
+    EventHandler::EventName::keyboardKeyIsPressed,
+    DataAccessPoint::getInstance()->getKeyCode(key)
+  );
 }
+#endif
 
 Application::Application(
-  Application::Platform platform,
-  unsigned int paramAppScreenWidth,
-  unsigned int paramAppScreenHeight,
+  Constants::Platform platform,
+  unsigned int appScreenWidth,
+  unsigned int appScreenHeight,
   unsigned int physicalDeviceScreenWidth,
   unsigned int physicalDeviceScreenHeight
-)
+  )
   :
-  platform(platform),
-  physicalScreenWidth(physicalDeviceScreenWidth),
-  physicalScreenHeight(physicalDeviceScreenHeight),
-  appScreenWidth(paramAppScreenWidth),
-  appScreenHeight(paramAppScreenHeight),
-  light(
-    float(paramAppScreenWidth)/2.0f,
-    float(paramAppScreenHeight),
-    cameraInitialZLocation - 50
-  ),
   openGLInstance(
-    paramAppScreenWidth,
-    paramAppScreenHeight,
+    appScreenWidth,
+    appScreenHeight,
     physicalDeviceScreenWidth,
     physicalDeviceScreenHeight
-  ),
-  cameraInstance(
-    openGLInstance,
-    light,
-    cameraInitialZLocation,
-    cameraInitialMaximumFov,
-    0,
-    (int)paramAppScreenWidth,
-    0,
-    (int)paramAppScreenHeight
-  )
+    ),
+  fpsDrawLocation(-1.0f, -1.0f),
+  sceneNameDrawLocation(-1.0f, 0.9f)
 {
-  instance = this;
-  {//Shape
-    auto scaleFactor = appScreenWidth/4;
-    Logger::log("Creating shape object");
-    // shape = Shape3d::generateTextured3DCube(
-    // 	dice.diceCubeTexture,
-    // 	dice.diceCubeEdgeList,
-    // 	width,
-    // 	width,
-    // 	width,
-    // 	float(appScreenWidth)/2.0f,
-    // 	float(appScreenHeight)/2.0f,
-    // 	float(cameraInitialZLocation - 500),
-    // 	0,
-    // 	0,
-    // 	0,
-    // 	1
-    // );
-    //============================================
-    shape = FileSystem::loadObjectWithColor(
-      Path::generateAssetPath("bunny",".obj"),
-      Vec3DFloat(1.0f,1.0f,1.0f),
-      true
-    );
-    shape->transformX(float(appScreenWidth)/2.0f);
-    shape->transformY(float(appScreenHeight)/2.0f);
-    shape->transformZ(cameraInitialZLocation - 100.0f);
-    shape->scale(scaleFactor);
-    //===========================================
-    // shape = FileSystem::loadObjectWithColor(
-    //    Path::generateAssetPath("robot",".obj"),
-    //    Vec3DFloat(1.0f,1.0f,1.0f),
-    //    true
-    // );
-    // shape->transformX(float(appScreenWidth)/2.0f);
-    // shape->transformY(float(appScreenHeight)/2.0f);
-    // shape->transformZ(cameraInitialZLocation - 100.0f);
-    // shape->scale(10.0f);
-    //==========================================
-    // shape = FileSystem::loadObjectWithColor(
-    //   Path::generateAssetPath("plant",".obj"),
-    //   Vec3DFloat(1.0f,1.0f,1.0f),
-    //   false
-    // );
-    // shape->transformX(float(appScreenWidth) * 0.5f);
-    // shape->transformY(float(appScreenHeight) * 0.25f);
-    // shape->transformZ(cameraInitialZLocation - 100.0f);
-    // shape->scale(5.0f);
-    //==========================================
-    Logger::log("Creating shape was successful");
+  {
+    DataAccessPoint::createInstance();
+
+    DataAccessPoint::getInstance()->setAppScreenWidth(appScreenWidth);
+    DataAccessPoint::getInstance()->setAppScreenHeight(appScreenHeight);
+    DataAccessPoint::getInstance()->setPhysicalScreenWidth(physicalDeviceScreenWidth);
+    DataAccessPoint::getInstance()->setPhysicalScreenHeight(physicalDeviceScreenHeight);
+    DataAccessPoint::getInstance()->setPlatform(platform);
   }
+
 #ifdef __DESKTOP__
   glutKeyboardFunc(handleKeyboardEvent);
 #endif
+
+  {
+    //sceneList.emplace_back(std::make_unique<LightPerPixelScene>(openGLInstance));
+    //sceneList.emplace_back(std::make_unique<MonkeyScene>(openGLInstance));
+    //sceneList.emplace_back(std::make_unique<BunnyScene>(openGLInstance));
+    //sceneList.emplace_back(std::make_unique<SphereScene>(openGLInstance));
+    //sceneList.emplace_back(std::make_unique<ColoredCubeScene>(openGLInstance));
+    sceneList.emplace_back(std::make_unique<TexturedCubeScene>(openGLInstance));
+    //sceneList.emplace_back(std::make_unique<RobotScene>(openGLInstance));
+    //sceneList.emplace_back(std::make_unique<PlantScene>(openGLInstance));
+    navigateToScene(0);
+  }
+
+#ifdef __DESKTOP__
+  DataAccessPoint::getInstance()->getEventHandler().subscribeToEvent<Constants::Buttons>(
+    EventHandler::EventName::keyboardKeyIsPressed,
+    "Application",
+    std::bind(&Application::notifyKeyIsPressed, this, std::placeholders::_1)
+  );
+#endif // __DESKTOP__
+
 }
 
 void Application::notifyScreenSurfaceChanged(
@@ -150,122 +90,62 @@ void Application::notifyScreenSurfaceChanged(
 ){
   Logger::log("Surface has changed");
 
-  if(forceNewAppScreenWidthAndHeight==true){
-    this->appScreenWidth = paramAppScreenWidth;
-    this->appScreenHeight = paramAppScreenHeight;
-    cameraInstance.notifyScreenSurfaceIsChanged(
-        0, (int)paramAppScreenWidth,
-        0, (int)paramAppScreenHeight);
+  if(forceNewAppScreenWidthAndHeight){
+    DataAccessPoint::getInstance()->setPhysicalScreenWidth(paramAppScreenWidth);
+    DataAccessPoint::getInstance()->setAppScreenHeight(paramAppScreenHeight);
+
+    sceneNameDrawLocation.setY(0.9f);
   }
 
-  this->physicalScreenWidth = paramPhysicalScreenWidth;
-  this->physicalScreenHeight = paramPhysicalScreenHeight;
-
+  DataAccessPoint::getInstance()->setPhysicalScreenWidth(paramPhysicalScreenWidth);
+  DataAccessPoint::getInstance()->setPhysicalScreenHeight(paramPhysicalScreenHeight);
+  
   openGLInstance.notifyScreenSurfaceChanged(
     paramAppScreenWidth,
     paramAppScreenHeight,
     paramPhysicalScreenWidth,
     paramPhysicalScreenHeight);
+
+  {//Sending events to all listeners
+    DataAccessPoint::getInstance()->getEventHandler().emitEvent<bool>(
+      EventHandler::EventName::screenSurfaceChanged,
+      forceNewAppScreenWidthAndHeight
+    );
+  }
 }
 
 
 
 void Application::render(double deltaTime) {
   openGLInstance.clear();
-  cameraInstance.render(deltaTime);
-  {//FPSText
-    openGLInstance.drawText(0,0,std::to_string(currentFps),1.0f,1.0f,1.0f);
+  {//Drawing current active scene
+    currentScene->render(deltaTime);
   }
-  // dice.diceCubeTexture->render();
+  {//FPSText
+    openGLInstance.drawText(
+      fpsDrawLocation.getX(),
+      fpsDrawLocation.getY(),
+      std::to_string(currentFps),
+      1.0f,1.0f,1.0f
+    );
+  }
+  {//SceneNameText
+    openGLInstance.drawText(
+      sceneNameDrawLocation.getX(),
+      sceneNameDrawLocation.getY(),
+      currentScene->getSceneName(), 
+      1.0f, 1.0f, 1.0f
+    );
+  }
   openGLInstance.flush();
 }
 
 void Application::update(double deltaTime) {
-  {//We rotate light by keyboard
-    if(keyEvents[Buttons::keyA]){
-      cameraInstance.getLight().transformX(
-          float(deltaTime * Application::lightTransformSpeed * -1.0f)
-      );
-      keyEvents[Buttons::keyA] = false;
-    }
-    if(keyEvents[Buttons::keyD]){
-      cameraInstance.getLight().transformX(
-          float(deltaTime * Application::lightTransformSpeed)
-      );
-      keyEvents[Buttons::keyD] = false;
-    }
-    if(keyEvents[Buttons::keyW]){
-      cameraInstance.getLight().transformY(
-          float(deltaTime *  Application::lightTransformSpeed)
-      );
-      keyEvents[Buttons::keyW] = false;
-    }
-    if(keyEvents[Buttons::keyS]){
-      cameraInstance.getLight().transformY(
-          float(deltaTime *  Application::lightTransformSpeed * -1.0)
-      );
-      keyEvents[Buttons::keyS] = false;
-    }
-    if(keyEvents[Buttons::keyC]){
-      cameraInstance.getLight().transformZ(
-          float(deltaTime *  Application::lightTransformSpeed * -1.0 * 0.5)
-      );
-      keyEvents[Buttons::keyC] = false;
-    }
-    if(keyEvents[Buttons::keyV]){
-      cameraInstance.getLight().transformZ(
-          float(deltaTime *  Application::lightTransformSpeed * 1.0 * 0.5)
-      );
-      keyEvents[Buttons::keyV] = false;
-    }
-  }
-  {//Rotating shape by keyboard
-    if(keyEvents[Buttons::keyU]){
-      shape->rotateZ(float(1.0 * Application::shapeRotationSpeed * deltaTime));
-      keyEvents[Buttons::keyU] = false;
-    }
-    if(keyEvents[Buttons::keyJ]){
-      shape->rotateZ(float(-1.0 * Application::shapeRotationSpeed * deltaTime));
-      keyEvents[Buttons::keyJ] = false;
-    }
-    if(keyEvents[Buttons::keyK]){
-      shape->rotateY(float(1.0 * Application::shapeRotationSpeed * deltaTime));
-      keyEvents[Buttons::keyK] = false;
-    }
-    if(keyEvents[Buttons::keyH]){
-      shape->rotateY(float(-1.0 * Application::shapeRotationSpeed * deltaTime));
-      keyEvents[Buttons::keyH] = false;
-    }
-    if(keyEvents[Buttons::keyI]){
-      shape->rotateX(float(1.0 * Application::shapeRotationSpeed * deltaTime));
-      keyEvents[Buttons::keyI] = false;
-    }
-    if(keyEvents[Buttons::keyY]){
-      shape->rotateX(float(-1.0 * Application::shapeRotationSpeed * deltaTime));
-      keyEvents[Buttons::keyY] = false;
-    }
-  }
-  {//Temporary code for auto rotation
-    shape->rotateY(float(-1.0f * Application::shapeRotationSpeed * deltaTime * 0.1f));
-    shape->rotateX(float(-1.0f * Application::shapeRotationSpeed * deltaTime * 0.1f));
-    shape->rotateZ(float(-1.0f * Application::shapeRotationSpeed * deltaTime * 0.1f));
-  }
-  shape->update(deltaTime,cameraInstance);
-  cameraInstance.update(deltaTime);
-}
-
-void Application::notifyKeyIsPressed(Application::Buttons keyEvent)
-{
-  keyEvents[keyEvent] = true;
-}
-
-Application* Application::getInstance()
-{
-  return Application::instance;
+  currentScene->update(deltaTime);
 }
 
 void Application::mainLoop(double deltaTime){
-  deltaTime = Math::max(deltaTime,100.0);
+  deltaTime = fmin(deltaTime,100.0);
   update(deltaTime);
   render(deltaTime);
   if(deltaTime>0){
@@ -274,20 +154,23 @@ void Application::mainLoop(double deltaTime){
   assert(openGLInstance.checkForOpenGlError());
 }
 
-Application* Application::instance;
-
-unsigned int Application::getAppScreenHeight(){
-  return appScreenHeight;
+void Application::navigateToScene(unsigned int sceneIndex) {
+  assert(sceneIndex >= 0 && sceneIndex <= sceneList.size());
+  currentScene = sceneList.at(sceneIndex).get();
+  DataAccessPoint::getInstance()->getEventHandler().emitEvent<std::string>(
+    EventHandler::EventName::activeSceneChanged,
+    currentScene->getSceneName()
+  );
 }
 
-unsigned int Application::getAppScreenWidth(){
-  return appScreenWidth;
+#ifdef __DESKTOP__
+void Application::notifyKeyIsPressed(Constants::Buttons key) {
+  if (key == Constants::Buttons::tab) {
+    sceneIndex++;
+    if (sceneIndex >= sceneList.size()) {
+      sceneIndex = 0;
+    }
+    navigateToScene(sceneIndex);
+  }
 }
-
-unsigned int Application::getPhysicalScreenWidth(){
-  return physicalScreenWidth;
-}
-
-unsigned int Application::getPhysicalScreenHeight(){
-  return physicalScreenHeight;
-}
+#endif

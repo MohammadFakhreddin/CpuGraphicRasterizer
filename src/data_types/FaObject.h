@@ -6,12 +6,6 @@ class FaObject {
 public:
     FaObject() = default;
     FaObject(A value):value(value){}
-    void setValue(A value){
-        this->value = value;
-    }
-    A getValue(){
-        return this->value;
-    }
     FaObject& operator=(FaObject& object){
         this->value = object.getValue();
         return *this;
@@ -25,7 +19,6 @@ public:
         this->value = A(value);
         return *this;
     }
-private:
     A value;
 };
 

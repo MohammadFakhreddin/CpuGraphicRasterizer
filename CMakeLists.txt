@@ -108,42 +108,74 @@ if(ANDROID)
    find_library(EGL REQUIRED)
    find_library(GLESv2 REQUIRED)
    target_link_libraries( ${PROJECT_NAME} EGL GLESv2)
-elseif(MACOSX)
-   # # add extra include directories
-   include_directories(/usr/local/include)
-   # # add extra lib directories
-   link_directories(/usr/local/lib)
-   include_directories( ${OPENGL_INCLUDE_DIRS} )
-   include_directories( ${GLUT_INCLUDE_DIRS} )
-   find_package(OpenGL REQUIRED)
-   find_package(GLUT REQUIRED)
-   target_link_libraries( ${PROJECT_NAME} ${GLUT_LIBRARY} ${OPENGL_LIBRARIES})
+else()
+   if(MACOSX)
+      include_directories( ${OPENGL_INCLUDE_DIRS} )
+      include_directories( ${GLUT_INCLUDE_DIRS} )
+      find_package(OpenGL REQUIRED)
+      find_package(GLUT REQUIRED)
+      target_link_libraries( ${PROJECT_NAME} ${GLUT_LIBRARY} ${OPENGL_LIBRARIES})
+      set(CMAKE_THREAD_LIBS_INIT "-lpthread")
+      set(CMAKE_HAVE_THREADS_LIBRARY 1)
+      set(CMAKE_USE_WIN32_THREADS_INIT 0)
+      set(CMAKE_USE_PTHREADS_INIT 1)
+      set(THREADS_PREFER_PTHREAD_FLAG ON)
+      # Lets bundle it:
+      set_target_properties(${PROJECT_NAME} PROPERTIES
+         MACOSX_BUNDLE TRUE
+         MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/Info.plist
+      )
+   elseif(WIN32)
+      find_package(OpenGL REQUIRED)
+      find_package(GLUT REQUIRED)
+      include_directories(${OPENGL_INCLUDE_DIRS})
+      include_directories( ${GLUT_INCLUDE_DIRS} )
+      target_link_libraries(${PROJECT_NAME} GLUT::GLUT)
+      target_link_libraries(${PROJECT_NAME} ${OPENGL_LIBRARIES})
+   elseif(LINUX)
+      find_package(OpenGL REQUIRED)
+      find_package(GLUT REQUIRED)
+      find_package(X11 REQUIRED)
+      include_directories(${OPENGL_INCLUDE_DIRS})
+      include_directories( ${GLUT_INCLUDE_DIRS} )
+      include_directories(${X11_INCLUDE_DIRS})
+      target_link_libraries(${PROJECT_NAME} X11)
+      target_link_libraries(${PROJECT_NAME} GLUT::GLUT)
+      target_link_libraries(${PROJECT_NAME} ${OPENGL_LIBRARIES})
+   endif()
    set(CMAKE_BINARY_DIR ".")
    set(LIBRARY_OUTPUT_PATH ${CMAKE_BINARY_DIR})
    set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR})
-elseif(WIN32)
-   find_package(OpenGL REQUIRED)
-   find_package(GLUT REQUIRED)
-   include_directories(${OPENGL_INCLUDE_DIRS})
-   include_directories( ${GLUT_INCLUDE_DIRS} )
-   target_link_libraries(${PROJECT_NAME} GLUT::GLUT)
-   target_link_libraries(${PROJECT_NAME} ${OPENGL_LIBRARIES})
-   set(CMAKE_BINARY_DIR ".")
-   set(LIBRARY_OUTPUT_PATH ${CMAKE_BINARY_DIR})
-   set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR})
-elseif(LINUX)
-   find_package(OpenGL REQUIRED)
-   find_package(GLUT REQUIRED)
-   find_package(X11 REQUIRED)
-   include_directories(${OPENGL_INCLUDE_DIRS})
-   include_directories( ${GLUT_INCLUDE_DIRS} )
-   include_directories(${X11_INCLUDE_DIRS})
-   target_link_libraries(${PROJECT_NAME} X11)
-   target_link_libraries(${PROJECT_NAME} GLUT::GLUT)
-   target_link_libraries(${PROJECT_NAME} ${OPENGL_LIBRARIES})
-   set(CMAKE_BINARY_DIR ".")
-   set(LIBRARY_OUTPUT_PATH ${CMAKE_BINARY_DIR})
-   set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR})
+#  file(COPY assets DESTINATION ${CMAKE_BINARY_DIR})
+
+   set(UNIT_TEST "unit-test")
+   
+   FILE(GLOB_RECURSE SRC_TEST_H "src/*.test.h")
+   FILE(GLOB_RECURSE SRC_TEST_C "src/*.test.cpp")
+   FILE(GLOB_RECURSE TEST_C "tests/*.cpp")
+   FILE(GLOB_RECURSE TEST_H "tests/*.h")
+
+   list(
+       APPEND TEST_SOURCE
+       ${SRC_TEST_C}
+       ${TEST_C}
+   )
+   list(
+       APPEND TEST_HEADER
+       ${SRC_TEST_H}
+       ${TEST_H}
+   )
+
+   enable_testing()
+
+   find_package(GTest CONFIG REQUIRED)
+
+   add_executable(${UNIT_TEST} ${TEST_SOURCE} ${TEST_HEADER})
+
+   target_link_libraries(${UNIT_TEST} GTest::gtest GTest::gtest_main GTest::gmock GTest::gmock_main)
+
+   add_test("unit-test" ${UNIT_TEST})
+
 endif()
 
 

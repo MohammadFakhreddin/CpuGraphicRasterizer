@@ -3,7 +3,7 @@ apply plugin: 'com.android.application'
 android {
     signingConfigs {
         release {
-            storeFile file('C:\\Projects\\3d-cube\\android\\cube.jks')
+            storeFile file('./../cube.jks')
             keyAlias = 'key0'
             storePassword 'darkknight1375'
             keyPassword 'darkknight1375'
@@ -20,7 +20,7 @@ android {
         externalNativeBuild {
             cmake {
                 targets '3d-cube'
-                cppFlags "-std=c++14"
+                cppFlags "-std=c++17"
                 version "3.16.2"
             }
         }

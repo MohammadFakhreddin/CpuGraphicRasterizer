@@ -1,9 +1,9 @@
 #ifndef OpenGl_class
 #define OpenGl_class
 
-#include "../Constants.h"
 #include <string>
 
+#include "../Constants.h"
 #if defined(__PLATFORM_MAC__) 
   #define GL_SILENCE_DEPRECATION
   /* Defined before OpenGL and GLUT includes to avoid deprecation messages */
@@ -38,8 +38,8 @@ public:
     unsigned int physicalScreenHeight
   );
   void init();
-  void drawPixel(unsigned int x,unsigned int y,float red,float green,float blue);
-  void drawText(unsigned int x,unsigned int y,const std::string& text,float red,float green,float blue);
+  void drawPixel(const float& x,const float& y,const float& red,const float& green,const float& blue);
+  void drawText(const float& x,const float& y,const std::string& text,const float& red,const float& green,const float& blue);
   void clear();
   void flush();
   void beginDrawingPoints();
@@ -51,27 +51,21 @@ public:
   GLuint createProgram(const char* vertexSource, const char * fragmentSource);
   GLfloat color[4] = {0,0,0,1.0f};
   GLfloat position[4] = {0,0,0.0f,1.0f};
-  GLfloat projMat[16];
-  void glesOrtho(float left, float right, float top, float bottom, float near, float far);
 #endif // GLES
 private:
-  GLuint programObject;
-  GLint colorParamLocation = 0;
-  GLint pointParamLocation = 0;
   unsigned int appScreenWidth = 0;
   unsigned int appScreenHeight = 0;
   unsigned int physicalScreenWidth = 0;
   unsigned int physicalScreenHeight = 0;
-  #if defined(__GLES__)
+#if defined(__GLES__)
   int viewPortWidth = 0;
   int viewPortHeight = 0;
   int viewPortStartX = 0;
   int viewPortStartY = 0;
-  float xDifValue = 0;
-  float yDifValue = 0;
-  float projectionX = 0;
-  float projectionY = 0;
-  #endif
+  GLuint programObject = 0;
+  GLint pointParamLocation = -1;
+  GLint colorParamLocation = -1;
+#endif
 };
 
 #endif
