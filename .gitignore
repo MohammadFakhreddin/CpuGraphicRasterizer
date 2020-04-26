@@ -88,3 +88,5 @@ Release/*
 Release
 
 CTestTestfile.cmake
+
+npm-debug.log

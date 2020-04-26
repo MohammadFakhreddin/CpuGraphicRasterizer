@@ -27,7 +27,7 @@ MonkeyScene::MonkeyScene(OpenGL& gl)
     - float(DataAccessPoint::getInstance()->getAppScreenWidth()) / 5.0f,
     float(DataAccessPoint::getInstance()->getAppScreenHeight()) / 2.0f
     - float(DataAccessPoint::getInstance()->getAppScreenHeight()) / 5.0f,
-    400.0f,
+    50.0f,
     1.3f,
     float(1.0 / double(100)),
     float(1.0 / double(100)),
@@ -48,7 +48,7 @@ MonkeyScene::MonkeyScene(OpenGL& gl)
     );
     monkey->transformX(float(DataAccessPoint::getInstance()->getAppScreenWidth()) / 2.0f);
     monkey->transformY(float(DataAccessPoint::getInstance()->getAppScreenHeight()) / 2.0f);
-    monkey->transformZ(500.0f);
+    monkey->transformZ(100.0f);
     monkey->scale(scaleFactor);
     monkey->setSpecularIntensity(0.6f);
   }
@@ -103,7 +103,7 @@ void MonkeyScene::update(double deltaTime) {
       shapeRotationZ += float(-1.0 * shapeRotationSpeed * deltaTime);
     }
     if (shapeRotationX != 0 || shapeRotationY != 0 || shapeRotationZ != 0) {
-      //We need seperate rotation methods as well
+      //We need separate rotation methods as well
       monkey->rotateXYZ(shapeRotationX, shapeRotationY, shapeRotationZ);
     }
   }
