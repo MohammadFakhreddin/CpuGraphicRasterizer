@@ -38,6 +38,8 @@ public:
 
   void transformZ(const float& value);
 
+  void update(Camera& camera);
+
   void computeLightIntensity(
     const Camera& cameraInstance,
     const Matrix4X1Float& surfaceNormalVector,

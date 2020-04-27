@@ -6,6 +6,9 @@
 #include "../scenes/monkey_scene/MonkeyScene.h"
 #include "../scenes/colored_cube_scene/ColoredCubeScene.h"
 #include "../scenes/textured_cube_scene/TexturedCubeScene.h"
+#include "../scenes/bunny_scene/BunnyScene.h"
+#include "../scenes/plant_scene/PlantScene.h"
+#include "../scenes/robot_scene/RobotScene.h"
 
 //  UI Libraries
 /*
@@ -61,13 +64,13 @@ Application::Application(
 
   {
     //sceneList.emplace_back(std::make_unique<LightPerPixelScene>(openGLInstance));
-    // sceneList.emplace_back(std::make_unique<MonkeyScene>(openGLInstance));
-    //sceneList.emplace_back(std::make_unique<BunnyScene>(openGLInstance));
+    sceneList.emplace_back(std::make_unique<MonkeyScene>(openGLInstance));
+    sceneList.emplace_back(std::make_unique<BunnyScene>(openGLInstance));
     //sceneList.emplace_back(std::make_unique<SphereScene>(openGLInstance));
     //sceneList.emplace_back(std::make_unique<ColoredCubeScene>(openGLInstance));
     sceneList.emplace_back(std::make_unique<TexturedCubeScene>(openGLInstance));
-    //sceneList.emplace_back(std::make_unique<RobotScene>(openGLInstance));
-    //sceneList.emplace_back(std::make_unique<PlantScene>(openGLInstance));
+    sceneList.emplace_back(std::make_unique<RobotScene>(openGLInstance));
+    sceneList.emplace_back(std::make_unique<PlantScene>(openGLInstance));
     navigateToScene(0);
   }
 

@@ -28,16 +28,16 @@ MonkeyScene::MonkeyScene(OpenGL& gl)
     float(DataAccessPoint::getInstance()->getAppScreenHeight()) / 2.0f
     - float(DataAccessPoint::getInstance()->getAppScreenHeight()) / 5.0f,
     50.0f,
-    1.3f,
+    1.7f,
     float(1.0 / double(100)),
-    float(1.0 / double(100)),
+    float(1.0 / double(10000)),
     30
   )),
   pip(cameraInstance)
 {
 
   {//Creating shape
-    auto scaleFactor = float(DataAccessPoint::getInstance()->getAppScreenWidth()) / 10.0f;
+    auto scaleFactor = float(DataAccessPoint::getInstance()->getAppScreenWidth()) / 50.0f;
     monkey = FileSystem::loadObject(
       Path::generateAssetPath("monkey", ".obj"),
       Constants::LightPrecision::perSurface,
@@ -56,6 +56,8 @@ MonkeyScene::MonkeyScene(OpenGL& gl)
   pip.assignAmbientLight(ambientLight.get());
   pip.assignPointLight(pointLight.get());
   pip.assignShapes(monkey.get());
+
+  cameraInstance.rotateXYZ(0, Math::piDouble, 0);
 }
 
 void MonkeyScene::update(double deltaTime) {

@@ -105,7 +105,8 @@ namespace Constants {
 
   enum class LightPrecision {
     perPixel,
-    perSurface
+    perSurface,
+    none
   };
 
 };

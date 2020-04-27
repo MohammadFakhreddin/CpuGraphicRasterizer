@@ -86,6 +86,7 @@ void PipeLine::update(double deltaTime)
     for (auto& light : pointLights) {
       threadPool.assignTaskToAllThreads(&updateShapeNodesReference, light->getShape());
       threadPool.assignTaskToAllThreads(&updateShapeNormalsReference, light->getShape());
+      light->update(camera);
     }
   }
   if (shapes.empty() == false) {
@@ -177,7 +178,7 @@ void PipeLine::computeLightIntensityForPoint(
       output.sum(colorOutputPlaceholder);
     }
   }
-  if (specularIntensity > 0 && pointLights.empty() == false) {
+  if (pointLights.empty() == false) {
     for (const auto& light : pointLights) {
       light->computeLightIntensity(
         camera,
@@ -353,7 +354,7 @@ void PipeLine::assembleTriangles(Shape3d* shape3d, Surface* surface)
     );
 
   }
-
+  //TODO We need seperate methods instead
   if (surface->lightPrecision == Constants::LightPrecision::perSurface) {
 
     computeLightIntensityForPoint(
@@ -441,7 +442,7 @@ void PipeLine::assembleTriangles(Shape3d* shape3d, Surface* surface)
     );
 
   }
-  else {
+  else if (surface->lightPrecision != Constants::LightPrecision::none) {
     Logger::exception("Unhandled light precision detected");
   }
 
@@ -474,7 +475,7 @@ void PipeLine::assembleTriangles(Shape3d* shape3d, Surface* surface)
       surface->triangleMemoryPool.normalStart.sum(surface->triangleMemoryPool.normalStartStepValue);
       surface->triangleMemoryPool.normalEnd.sum(surface->triangleMemoryPool.normalEndStepValue);
     }
-    else
+    else if (surface->lightPrecision != Constants::LightPrecision::none)
     {
       Logger::exception("Unhandled light precision mode");
     }
@@ -562,7 +563,7 @@ void PipeLine::assembleLines(
       surface->lineMemoryPool.normalStepValue
     );
   }
-  else
+  else if(surface->lightPrecision != Constants::LightPrecision::none)
   {
     Logger::exception("Unhandled light precision");
   }
@@ -602,7 +603,7 @@ void PipeLine::assembleLines(
       surface->lineMemoryPool.green *= surface->lineMemoryPool.perPixelColorIntensity.get(1, 0);
       surface->lineMemoryPool.blue *= surface->lineMemoryPool.perPixelColorIntensity.get(2, 0);
     }
-    else {
+    else if(surface->lightPrecision != Constants::LightPrecision::none){
       Logger::exception("Unhandled light precision");
     }
 
@@ -625,7 +626,7 @@ void PipeLine::assembleLines(
     else if (surface->lightPrecision == Constants::LightPrecision::perPixel) {
       surface->lineMemoryPool.normalStart.sum(surface->lineMemoryPool.normalStepValue);
     }
-    else {
+    else if (surface->lightPrecision != Constants::LightPrecision::none) {
       Logger::exception("Unhandled light precision");
     }
   }

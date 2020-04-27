@@ -66,7 +66,7 @@ PointLight::PointLight(
   lightColor = std::make_unique<ColorTexture>(paramColor);
 
   sphere = ShapeGenerator::sphere(
-    Constants::LightPrecision::perSurface,
+    Constants::LightPrecision::none,
     lightColor.get(),
     paramRadius,
     12 * 2, 24 * 2,
@@ -95,7 +95,7 @@ void PointLight::transformZ(const float& value) {
 
 //I use y = 1/(x*x + x + 1)
 void PointLight::computeLightIntensity(
-  const Camera& cameraInstance,
+  const Camera& camera,
   const Matrix4X1Float& surfaceNormalVector,
   const Matrix4X1Float& surfaceLocation,
   const float& specularIntensity,
@@ -109,67 +109,83 @@ void PointLight::computeLightIntensity(
 ) const {
 
   //Light vector
-  lightVectorPlaceholder.set(0, 0, worldPoint.get(0, 0) - surfaceLocation.get(0, 0));
+  lightVectorPlaceholder.assign(worldPoint);
+  lightVectorPlaceholder.minus(surfaceLocation);
+  lightVectorPlaceholder.setW(0.0f);
+  /*lightVectorPlaceholder.set(0, 0, worldPoint.get(0, 0) - surfaceLocation.get(0, 0));
   lightVectorPlaceholder.set(1, 0, worldPoint.get(1, 0) - surfaceLocation.get(1, 0));
-  lightVectorPlaceholder.set(2, 0, worldPoint.get(2, 0) - surfaceLocation.get(2, 0));
+  lightVectorPlaceholder.set(2, 0, worldPoint.get(2, 0) - surfaceLocation.get(2, 0));*/
 
-  double squareDistance = output.squareSize<double>();
+  double squareDistance = lightVectorPlaceholder.squareSize<double>();
+  assert(std::isnan(squareDistance) == false);
 
   double distance = sqrt(squareDistance);
+  assert(std::isnan(distance) == false);
   //Light hat
-  lightVectorHatPlaceholder.set(0, 0, float(double(lightVectorPlaceholder.get(0, 0)) / distance));
-  lightVectorHatPlaceholder.set(1, 0, float(double(lightVectorPlaceholder.get(1, 0)) / distance));
-  lightVectorHatPlaceholder.set(2, 0, float(double(lightVectorPlaceholder.get(2, 0)) / distance));
+  lightVectorHatPlaceholder.setX(float(double(lightVectorPlaceholder.getX()) / distance));
+  lightVectorHatPlaceholder.setY(float(double(lightVectorPlaceholder.getY()) / distance));
+  lightVectorHatPlaceholder.setZ(float(double(lightVectorPlaceholder.getZ()) / distance));
 
-  double angleFactor = output.dotProduct(surfaceNormalVector);
+  double angleFactor = lightVectorHatPlaceholder.dotProduct(surfaceNormalVector);
+  assert(std::isnan(angleFactor) == false);
+  assert(angleFactor >= -1.0 && angleFactor <= 1.0);
 
   if (angleFactor <= 0) {
-    output.set(0, 0, 0.0f);
-    output.set(1, 0, 0.0f);
-    output.set(2, 0, 0.0f);
+    output.setX(0.0f);
+    output.setY(0.0f);
+    output.setZ(0.0f);
+    output.setW(0.0f);
     return;
   }
 
-  double distanceFactor = 1.0f / (
+  double distanceFactor = 1.0 / (
     squareDistance * quadricAttenuation +
     distance * linearAttenuation +
     constantAttenuation
   );
+  assert(std::isnan(distanceFactor) == false);
   //TODO We need memory pool
   //TODO I need a memory manger that I request objects from it
   //Like matrix& a = Memory.RequestMatrix; and then I free it
-  double lightIntensity = distanceFactor * angleFactor;
+
+  double lightIntensity = angleFactor * distanceFactor;
+  assert(std::isnan(lightIntensity) == false);
   assert(lightIntensity >= 0 && lightIntensity <= 1);
 
-  //LightReflection
-  lightReflectionPlaceholder.assign(surfaceNormalVector);
-  lightReflectionPlaceholder.multiply(2 * angleFactor);
-  lightReflectionPlaceholder.minus(lightVectorHatPlaceholder);
+  if (specularIntensity > 0) {
+    //LightReflection
+    lightReflectionPlaceholder.assign(surfaceNormalVector);
+    lightReflectionPlaceholder.multiply(2 * angleFactor);
+    lightReflectionPlaceholder.minus(lightVectorHatPlaceholder);
 
-  //Camera vector
-  cameraInstance.generateCameraToPointVector(
-    worldPoint, 
-    cameraVectorPlaceholder
-  );
-
-  cameraVectorPlaceholder.hat(cameraVectorHatPlaceholder);
-
-  lightReflectionPlaceholder.hat(lightReflectionHatPlaceholder);
-
-  double specularDotProduct = double(
-    -1.0 * lightReflectionHatPlaceholder.dotProduct(cameraVectorHatPlaceholder)
-  );
-  
-  assert(specularDotProduct >= -1);
-  assert(specularDotProduct <= 1);
-  
-  if (specularDotProduct > 0) {
-    //TODO Write a pow function to constantly cast value to float to prevent overflow
-    double specularHighlight = specularIntensity * pow(
-      specularDotProduct,
-      specularPower
+    //Camera vector
+    camera.generateCameraToPointVector(
+      worldPoint,
+      cameraVectorPlaceholder
     );
-    lightIntensity += float(specularHighlight);
+
+    cameraVectorPlaceholder.hat(cameraVectorHatPlaceholder);
+
+    lightReflectionPlaceholder.hat(lightReflectionHatPlaceholder);
+
+    double specularDotProduct = double(
+      -1.0 * lightReflectionHatPlaceholder.dotProduct(cameraVectorHatPlaceholder)
+    );
+
+    assert(std::isnan(specularDotProduct) == false);
+    assert(specularDotProduct >= -1);
+    assert(specularDotProduct <= 1);
+
+    if (specularDotProduct > 0) {
+      //TODO Write a pow function to constantly cast value to float to prevent overflow
+      double specularHighlight = specularIntensity * pow(
+        specularDotProduct,
+        specularPower
+      );
+      assert(std::isnan(specularHighlight) == false);
+      lightIntensity += float(specularHighlight);
+      assert(std::isnan(lightIntensity) == false);
+    }
   }
 
   lightIntensity = Math::clamp(lightIntensity, 0, 1);
@@ -178,6 +194,14 @@ void PointLight::computeLightIntensity(
 
   output.multiply(lightIntensity);
 
+  output.setW(0.0f);
+
+}
+
+void PointLight::update(Camera& camera) {
+  worldPoint.assign(sphere->transformValue);
+  worldPoint.multiply(camera.transformInverseMatrix);
+  camera.putPixelInMap(worldPoint.getX(), worldPoint.getY(), 1, 1, 0, 0);
 }
 
 Shape3d* PointLight::getShape() {
