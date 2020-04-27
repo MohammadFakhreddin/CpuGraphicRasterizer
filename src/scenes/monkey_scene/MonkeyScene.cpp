@@ -27,7 +27,7 @@ MonkeyScene::MonkeyScene(OpenGL& gl)
     - 10.0f,
     float(DataAccessPoint::getInstance()->getAppScreenHeight()) / 2.0f
     - 10.0f,
-    50.0f,
+    100.0f,
     1.1f,
     float(1.0 / double(100)),
     float(1.0 / double(10000)),
@@ -48,9 +48,9 @@ MonkeyScene::MonkeyScene(OpenGL& gl)
     );
     monkey->transformX(float(DataAccessPoint::getInstance()->getAppScreenWidth()) / 2.0f);
     monkey->transformY(float(DataAccessPoint::getInstance()->getAppScreenHeight()) / 2.0f);
-    monkey->transformZ(50.0f);
+    monkey->transformZ(100.0f);
     monkey->scale(scaleFactor);
-    monkey->setSpecularIntensity(0.6f);
+    monkey->setSpecularIntensity(0.5f);
   }
 
   pip.assignAmbientLight(ambientLight.get());

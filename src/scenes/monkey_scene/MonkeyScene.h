@@ -18,7 +18,7 @@ private:
 
   static constexpr float shapeScaleSpeed = 0.1f;
 
-  static constexpr float lightTransformSpeed = 0.05f;
+  static constexpr float lightTransformSpeed = 0.1f;
 
 
 public:
