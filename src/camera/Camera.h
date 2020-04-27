@@ -123,7 +123,7 @@ public:
     Matrix4X1Float& stepValueMatrix
   ) const;
 
-  void Camera::calculateStepValueBasedOnStepCount(
+  void calculateStepValueBasedOnStepCount(
     const float& differenceX,
     const float& differenceY,
     const float& differenceZ,

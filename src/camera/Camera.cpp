@@ -201,8 +201,6 @@ void Camera::render(const double& deltaTime){
 
 float Camera::scaleBasedOnZDistance(const float& zLocation) {
   return zDistance / zLocation;
-  //return abs(zDistance / (zLocation - startZ));
-  //return 1;
 }
 
 const unsigned int& Camera::getAppScreenWidth() const {
@@ -264,27 +262,29 @@ bool Camera::isVisibleToCamera(
   Matrix4X1Float& cameraVectorPlaceholder
 ) {
   
-  bool isShapeCompletlyOutOfCamera = true;
+  bool isShapeCompletelyOutOfCamera = true;
   //Need to clip when shape is out of camera
   for (unsigned short i = 0; i < 3; i++) {
 
     const auto& currentWorldPoint = worldPoints.at(edgeIndices[i]);
 
     if (
-      currentWorldPoint.get(0, 0) >= startX &&
-      currentWorldPoint.get(0, 0) < endX &&
-      currentWorldPoint.get(1, 0) >= startY &&
-      currentWorldPoint.get(1, 0) < endY
+      currentWorldPoint.getX() >= startX &&
+      currentWorldPoint.getX() < endX &&
+      currentWorldPoint.getY() >= startY &&
+      currentWorldPoint.getY() < endY &&
+      currentWorldPoint.getZ() > startZ &&
+      currentWorldPoint.getZ() < endZ
       ) {
 
-      isShapeCompletlyOutOfCamera = false;
+      isShapeCompletelyOutOfCamera = false;
       break;
 
     }
 
   }
 
-  if (isShapeCompletlyOutOfCamera == true) {
+  if (isShapeCompletelyOutOfCamera == true) {
     return false;
   }
 

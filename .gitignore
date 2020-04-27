@@ -86,3 +86,9 @@ out/*
 out
 Release/*
 Release
+
+CTestTestfile.cmake
+
+*.cmake
+
+npm-debug.log

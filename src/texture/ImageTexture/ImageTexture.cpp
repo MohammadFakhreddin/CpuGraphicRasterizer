@@ -129,9 +129,9 @@ void ImageTexture::update(double deltaTime, Camera& cameraInstance) {
         &green,
         &blue
       );
-      assert(red >= 0 && red <= 255);
-      assert(blue >= 0 && blue <= 255);
-      assert(green >= 0 && green <= 255);
+      assert(red >= 0 && red <= 1);
+      assert(blue >= 0 && blue <= 1);
+      assert(green >= 0 && green <= 1);
       cameraInstance.putPixelInMap(
         i,
         j,

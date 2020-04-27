@@ -62,21 +62,21 @@ public:
 
   void setSpecularIntensity(const float& value);
 
-  void Shape3d::transformX(const float& x);
+  void transformX(const float& x);
 
-  void Shape3d::transformY(const float& y);
+  void transformY(const float& y);
 
-  void Shape3d::transformZ(const float& z);
+  void transformZ(const float& z);
 
   void transformXYZ(const float& x, const float& y, const float& z);
 
   void scale(float value);
 
-  void Shape3d::rotateX(const float& x);
+  void rotateX(const float& x);
 
-  void Shape3d::rotateY(const float& x);
+  void rotateY(const float& x);
 
-  void Shape3d::rotateZ(const float& x);
+  void rotateZ(const float& x);
 
   void rotateXYZ(const float& x, const float& y, const float& z);
 

@@ -101,7 +101,7 @@ void OpenGL::init(){
 #endif
   glClearColor(0.0f, 0.0f, 0.0f, 1.0f); // Set background color to black and opaque
 #if defined(__OPENGL__)
-  glPointSize(1.0f);
+  glPointSize(1.4f);
   glViewport(0,0,appScreenWidth,appScreenHeight);
 #endif
 #if defined(__GLES__)
