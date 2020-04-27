@@ -201,7 +201,6 @@ void PointLight::computeLightIntensity(
 void PointLight::update(Camera& camera) {
   worldPoint.assign(sphere->transformValue);
   worldPoint.multiply(camera.transformInverseMatrix);
-  camera.putPixelInMap(worldPoint.getX(), worldPoint.getY(), 1, 1, 0, 0);
 }
 
 Shape3d* PointLight::getShape() {

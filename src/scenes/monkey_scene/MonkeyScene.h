@@ -18,7 +18,7 @@ private:
 
   static constexpr float shapeScaleSpeed = 0.1f;
 
-  static constexpr float lightTransformSpeed = 0.2f;
+  static constexpr float lightTransformSpeed = 0.05f;
 
 
 public:
@@ -31,7 +31,7 @@ public:
 
 private:
 
-  Camera cameraInstance;
+  Camera camera;
 
   std::unique_ptr<Shape3d> monkey;
 

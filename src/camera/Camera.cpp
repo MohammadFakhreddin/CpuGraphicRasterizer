@@ -70,6 +70,12 @@ Camera::Camera(
   position.setY((endY - startY) / 2.0f);
   position.setZ(-1.0f * endZ);
 
+  screenCenter.setX(position.getX());
+  screenCenter.setY(position.getY());
+  //screenCenter.setZ(endZ);
+  screenCenter.setZ((endZ - startZ) / 2.0f);
+  screenCenter.setW(0.0);
+
   DataAccessPoint::getInstance()->getEventHandler().subscribeToEvent<bool>(
     EventHandler::EventName::screenSurfaceChanged,
     cameraName,

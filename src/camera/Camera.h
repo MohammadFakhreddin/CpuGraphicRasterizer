@@ -142,6 +142,8 @@ public:
 
   Matrix3X1Float rotationInverseDegree;
 
+  Matrix4X1Float screenCenter;
+
 private:
 
   /**
