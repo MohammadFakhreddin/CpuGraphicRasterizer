@@ -72,8 +72,7 @@ Camera::Camera(
 
   screenCenter.setX(position.getX());
   screenCenter.setY(position.getY());
-  screenCenter.setZ(0);
-  //screenCenter.setZ((endZ - startZ) / 2.0f);
+  screenCenter.setZ(0.0);
   screenCenter.setW(0.0);
 
   DataAccessPoint::getInstance()->getEventHandler().subscribeToEvent<bool>(

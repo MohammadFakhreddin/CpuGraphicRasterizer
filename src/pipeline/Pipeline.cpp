@@ -141,8 +141,6 @@ void PipeLine::updateShapeNodes(
 
     shape->worldPoints[nodeIndex].multiply(shape->rotationXYZMatrix);
 
-    shape->worldPoints[nodeIndex].multiply(camera.rotationInverseMatrix);
-
     shape->worldPoints[nodeIndex].multiply(shape->scaleMatrix);
     
     shape->worldPoints[nodeIndex].multiply(shape->transformMatrix);
@@ -150,6 +148,8 @@ void PipeLine::updateShapeNodes(
     shape->worldPoints[nodeIndex].minus(camera.screenCenter);
 
     float scaleValue = camera.scaleBasedOnZDistance(shape->worldPoints[nodeIndex].getZ() + camera.transformInverseValue.getZ());
+
+    shape->worldPoints[nodeIndex].multiply(camera.rotationInverseMatrix);
 
     shape->worldPoints[nodeIndex].setX(shape->worldPoints[nodeIndex].getX() * scaleValue);
 

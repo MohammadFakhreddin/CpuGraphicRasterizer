@@ -51,13 +51,14 @@ MonkeyScene::MonkeyScene(OpenGL& gl)
     monkey->transformZ(100.0f);
     monkey->scale(scaleFactor);
     monkey->setSpecularIntensity(0.5f);
+    monkey->rotateY(Math::piDouble);
   }
 
   pip.assignAmbientLight(ambientLight.get());
   pip.assignPointLight(pointLight.get());
   pip.assignShapes(monkey.get());
 
-  camera.rotateXYZ(0, Math::piDouble, 0);
+  //camera.rotateXYZ(0, Math::piDouble, 0);
 }
 
 void MonkeyScene::update(double deltaTime) {
