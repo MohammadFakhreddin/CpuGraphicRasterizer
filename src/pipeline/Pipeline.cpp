@@ -128,14 +128,14 @@ void PipeLine::updateShapeNodes(
     shape->worldPoints[nodeIndex].multiply(shape->scaleMatrix);
 
     float scaleValue = camera.scaleBasedOnZDistance(shape->worldPoints[nodeIndex].getZ() + camera.transformInverseValue.getZ() + shape->transformValue.getZ());
+
     shape->worldPoints[nodeIndex].setX(shape->worldPoints[nodeIndex].getX() * scaleValue);
+
     shape->worldPoints[nodeIndex].setY(shape->worldPoints[nodeIndex].getY() * scaleValue);
     
     shape->worldPoints[nodeIndex].multiply(shape->transformMatrix);
 
     shape->worldPoints[nodeIndex].multiply(camera.transformInverseMatrix);
-
-    shape->worldPoints[nodeIndex].setW(shape->worldPoints[nodeIndex].getZ());
 
   }
 }
@@ -333,11 +333,24 @@ void PipeLine::assembleTriangles(Shape3d* shape3d, Surface* surface)
   }
 
   {//Computing texture step value
+    
     surface->triangleMemoryPool.textureStart.assign(surface->textureCoordinate[0]);
+
+    surface->triangleMemoryPool.textureStart.multiply(
+        camera.scaleBasedOnZDistance(surface->triangleMemoryPool.triangleStart.getZ())
+    );
 
     surface->triangleMemoryPool.textureEnd.assign(surface->textureCoordinate[1]);
 
+    surface->triangleMemoryPool.textureEnd.multiply(
+        camera.scaleBasedOnZDistance(surface->triangleMemoryPool.triangleEnd.getZ())
+    );
+
     surface->triangleMemoryPool.textureFinal.assign(surface->textureCoordinate[2]);
+
+    surface->triangleMemoryPool.textureFinal.multiply(
+      camera.scaleBasedOnZDistance(surface->triangleMemoryPool.triangleFinal.getZ())
+    );
 
     camera.calculateStepValueBasedOnStepCount(
       surface->triangleMemoryPool.textureFinal.getX() - surface->triangleMemoryPool.textureStart.getX(),
@@ -568,8 +581,19 @@ void PipeLine::assembleLines(
     Logger::exception("Unhandled light precision");
   }
 
+  float scaleValue = 0.0;
+
   for (unsigned long j = 0; j < surface->lineMemoryPool.totalStepCount; j++) {
-    surface->texture->getPixelForPosition(surface->lineMemoryPool.textureStart.getX(), surface->lineMemoryPool.textureStart.getY(), &surface->lineMemoryPool.red, &surface->lineMemoryPool.green, &surface->lineMemoryPool.blue);
+
+    scaleValue = camera.scaleBasedOnZDistance(surface->lineMemoryPool.lineStart.getZ());
+
+    surface->texture->getPixelForPosition(
+      surface->lineMemoryPool.textureStart.getX() / scaleValue,
+      surface->lineMemoryPool.textureStart.getY() / scaleValue,
+      &surface->lineMemoryPool.red,
+      &surface->lineMemoryPool.green,
+      &surface->lineMemoryPool.blue
+    );
     if (surface->lightPrecision == Constants::LightPrecision::perSurface) {
       // Multiply color by light value
       surface->lineMemoryPool.red *= surface->lineMemoryPool.colorStart.getR();

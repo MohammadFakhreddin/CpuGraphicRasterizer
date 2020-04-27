@@ -35,7 +35,7 @@ SphereScene::SphereScene(OpenGL& gl)
     Vec3DFloat(
       DataAccessPoint::getInstance()->getAppScreenWidth() / 2.0f,
       DataAccessPoint::getInstance()->getAppScreenHeight() / 2.0f,
-      cameraInitialZLocation - 100
+      100.0f
     ),
     Vec3DFloat(0.0f, 0.0f, 0.0f),
     1.0f

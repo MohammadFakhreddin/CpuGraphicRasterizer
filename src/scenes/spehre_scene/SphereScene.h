@@ -22,10 +22,6 @@ public:
 
 private:
 
-  static constexpr unsigned int cameraInitialMaximumFov = 1000;
-
-  static constexpr unsigned int cameraInitialZLocation = 1000;
-
   static constexpr float shapeRotationSpeed = 0.01f;
 
   static constexpr float lightTransformSpeed = 0.01f;
