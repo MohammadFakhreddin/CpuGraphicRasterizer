@@ -155,7 +155,7 @@ void PointLight::computeLightIntensity(
   if (specularIntensity > 0) {
     //LightReflection
     lightReflectionPlaceholder.assign(surfaceNormalVector);
-    lightReflectionPlaceholder.multiply(2 * angleFactor);
+    lightReflectionPlaceholder.multiply(float(2.0 * angleFactor));
     lightReflectionPlaceholder.minus(lightVectorHatPlaceholder);
 
     //Camera vector
@@ -192,15 +192,30 @@ void PointLight::computeLightIntensity(
 
   output.assign(color);
 
-  output.multiply(lightIntensity);
+  output.multiply(float(lightIntensity));
 
   output.setW(0.0f);
 
 }
 
 void PointLight::update(Camera& camera) {
+  //TOOD Merge all update methods with shape pipeLine
   worldPoint.assign(sphere->transformValue);
+  
   worldPoint.multiply(camera.transformInverseMatrix);
+
+  worldPoint.minus(camera.screenCenter);
+
+  worldPoint.multiply(camera.rotationInverseMatrix);
+
+  float scaleValue = camera.scaleBasedOnZDistance(worldPoint.getZ());
+
+  worldPoint.setX(worldPoint.getX() * scaleValue);
+
+  worldPoint.setY(worldPoint.getY() * scaleValue);
+
+  worldPoint.sum(camera.screenCenter);
+
 }
 
 Shape3d* PointLight::getShape() {

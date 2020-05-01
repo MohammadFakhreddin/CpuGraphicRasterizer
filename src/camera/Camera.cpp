@@ -32,17 +32,17 @@ Camera::Camera(
 
   assert(paramAppScreenWidth > 0);
   assert(paramAppScreenHeight > 0);
-  
-  this->transform(
-    paramTransform.getX(),
-    paramTransform.getY(),
-    paramTransform.getZ()
-  );
 
   this->rotateXYZ(
     paramRotation.getX(),
     paramRotation.getY(),
     paramRotation.getZ()
+  );
+
+  this->transformXYZ(
+    paramTransform.getX(),
+    paramTransform.getY(),
+    paramTransform.getZ()
   );
 
   Matrix4X4Float::assignProjection(
@@ -218,12 +218,19 @@ const unsigned int& Camera::getAppScreenHeight() const {
 
 //TODO Check this code again
 //It must transform based on theta
-void Camera::transform(float transformX, float transformY, float transformZ) {
+void Camera::transformXYZ(const float& transformX, const float& transformY, const float& transformZ) {
   
-  transformInverseValue.setX(transformInverseValue.getX() - transformX);
-  transformInverseValue.setY(transformInverseValue.getY() - transformY); 
-  transformInverseValue.setZ(transformInverseValue.getZ() - transformZ);
+  newTransform.setX(transformX);
+  newTransform.setY(transformY);
+  newTransform.setZ(transformZ);
+  newTransform.setW(0.0f);
   
+  newTransform.multiply(rotationMatrix);
+  
+  transformInverseValue.setX(transformInverseValue.getX() - newTransform.getX());
+  transformInverseValue.setY(transformInverseValue.getY() - newTransform.getY()); 
+  transformInverseValue.setZ(transformInverseValue.getZ() - newTransform.getZ());
+
   Matrix4X4Float::assignTransformation(
     transformInverseMatrix, 
     transformInverseValue.getX(), 
@@ -245,6 +252,17 @@ void Camera::rotateXYZ(const float& x,const float& y,const float& z) {
     rotationInverseDegree.getX(),
     rotationInverseDegree.getY(),
     rotationInverseDegree.getZ()
+  );
+
+  rotationDegree.set(0, 0, rotationDegree.get(0, 0) + x);
+  rotationDegree.set(1, 0, rotationDegree.get(1, 0) + y);
+  rotationDegree.set(2, 0, rotationDegree.get(2, 0) + z);
+
+  Matrix4X4Float::assignRotationXYZ(
+    rotationMatrix,
+    rotationDegree.getX(),
+    rotationDegree.getY(),
+    rotationDegree.getZ()
   );
 
 }

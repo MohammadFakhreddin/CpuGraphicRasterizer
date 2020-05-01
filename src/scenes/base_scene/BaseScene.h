@@ -21,7 +21,7 @@ public:
 
 #ifdef __DESKTOP__
 
-  void notifyKeyIsPressed(const Constants::Buttons& keyEvent);
+  void notifyKeyIsPressed(const Constants::KeyboardButtons& keyEvent);
 
 #endif // __DESKTOP__
 
@@ -33,7 +33,7 @@ protected:
 
 #ifdef __DESKTOP__
 
-  bool useKeyEvent(const Constants::Buttons& keyEvent);
+  bool useKeyEvent(const Constants::KeyboardButtons& keyEvent);
 
 #endif
 
@@ -46,7 +46,11 @@ protected:
 private:
 
 #ifdef __DESKTOP__
-  std::unordered_map<Constants::Buttons, bool> keyEvents;
+
+  std::unordered_map<Constants::KeyboardButtons, bool> keyEvents;
+
+  std::unordered_map<Constants::MouseButtonName, Constants::MouseEvent> mouseEvents;
+
 #endif
 
   bool temporaryKeyEventPlaceholder = false;

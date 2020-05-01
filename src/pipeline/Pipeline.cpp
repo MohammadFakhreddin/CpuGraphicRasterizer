@@ -145,19 +145,19 @@ void PipeLine::updateShapeNodes(
     
     shape->worldPoints[nodeIndex].multiply(shape->transformMatrix);
 
+    shape->worldPoints[nodeIndex].multiply(camera.transformInverseMatrix);
+
     shape->worldPoints[nodeIndex].minus(camera.screenCenter);
 
-    float scaleValue = camera.scaleBasedOnZDistance(shape->worldPoints[nodeIndex].getZ() + camera.transformInverseValue.getZ());
-
     shape->worldPoints[nodeIndex].multiply(camera.rotationInverseMatrix);
+
+    float scaleValue = camera.scaleBasedOnZDistance(shape->worldPoints[nodeIndex].getZ());
 
     shape->worldPoints[nodeIndex].setX(shape->worldPoints[nodeIndex].getX() * scaleValue);
 
     shape->worldPoints[nodeIndex].setY(shape->worldPoints[nodeIndex].getY() * scaleValue);
 
     shape->worldPoints[nodeIndex].sum(camera.screenCenter);
-
-    shape->worldPoints[nodeIndex].multiply(camera.transformInverseMatrix);
 
   }
 }
@@ -190,12 +190,12 @@ void PipeLine::computeLightIntensityForPoint(
     for (const auto& light : directionalLights) {
       light->computeLightIntensity(worldNormal, colorOutputPlaceholder);
 
-      assert(colorOutputPlaceholder.getX() >= 0);
-      assert(colorOutputPlaceholder.getX() <= 1);
-      assert(colorOutputPlaceholder.getY() >= 0);
-      assert(colorOutputPlaceholder.getY() <= 1);
-      assert(colorOutputPlaceholder.getZ() >= 0);
-      assert(colorOutputPlaceholder.getZ() <= 1);
+      assert(colorOutputPlaceholder.getX() >= 0.0f);
+      assert(colorOutputPlaceholder.getX() <= 1.0f);
+      assert(colorOutputPlaceholder.getY() >= 0.0f);
+      assert(colorOutputPlaceholder.getY() <= 1.0f);
+      assert(colorOutputPlaceholder.getZ() >= 0.0f);
+      assert(colorOutputPlaceholder.getZ() <= 1.0f);
 
       output.sum(colorOutputPlaceholder);
     }
@@ -359,13 +359,13 @@ void PipeLine::assembleTriangles(Shape3d* shape3d, Surface* surface)
     surface->triangleMemoryPool.textureStart.assign(surface->textureCoordinate[0]);
 
     surface->triangleMemoryPool.textureStart.multiply(
-        camera.scaleBasedOnZDistance(surface->triangleMemoryPool.triangleStart.getZ())
+      camera.scaleBasedOnZDistance(surface->triangleMemoryPool.triangleStart.getZ())
     );
 
     surface->triangleMemoryPool.textureEnd.assign(surface->textureCoordinate[1]);
 
     surface->triangleMemoryPool.textureEnd.multiply(
-        camera.scaleBasedOnZDistance(surface->triangleMemoryPool.triangleEnd.getZ())
+      camera.scaleBasedOnZDistance(surface->triangleMemoryPool.triangleEnd.getZ())
     );
 
     surface->triangleMemoryPool.textureFinal.assign(surface->textureCoordinate[2]);

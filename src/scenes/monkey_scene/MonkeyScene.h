@@ -20,6 +20,9 @@ private:
 
   static constexpr float lightTransformSpeed = 0.1f;
 
+  static constexpr float cameraTransformSpeed = 0.2f;
+
+  static constexpr float cameraRotationSpeed = 0.002f;
 
 public:
   
@@ -41,11 +44,17 @@ private:
 
   std::unique_ptr<ColorTexture> metalColor;
 
-  float shapeRotationX = 0.0f;
+  float cameraTransformX = 0.0f;
 
-  float shapeRotationY = 0.0f;
+  float cameraTransformY = 0.0f;
 
-  float shapeRotationZ = 0.0f;
+  float cameraTransformZ = 0.0f;
+
+  float cameraRotationX = 0.0f;
+
+  float cameraRotationY = 0.0f;
+
+  float cameraRotationZ = 0.0f;
 
   PipeLine pip;
 

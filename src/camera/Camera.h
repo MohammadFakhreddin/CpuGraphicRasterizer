@@ -60,7 +60,7 @@ public:
   
   const unsigned int& getAppScreenHeight() const ;
 
-  void transform(float transformX, float transformY, float transformZ);
+  void transformXYZ(const float& transformX, const float& transformY, const float& transformZ);
 
   void rotateXYZ(const float& x, const float& y, const float& z);
 
@@ -134,6 +134,8 @@ public:
 
   Matrix4X4Float transformInverseMatrix;
 
+  Matrix4X4Float rotationMatrix;
+
   Matrix4X4Float rotationInverseMatrix;
 
   Matrix4X4Float projection;
@@ -141,6 +143,8 @@ public:
   Matrix3X1Float transformInverseValue;
 
   Matrix3X1Float rotationInverseDegree;
+
+  Matrix3X1Float rotationDegree;
 
   Matrix4X1Float screenCenter;
 
@@ -177,6 +181,8 @@ private:
   float endY;
 
   Matrix4X1Float position;
+
+  Matrix4X1Float newTransform;
 
 };
 

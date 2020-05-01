@@ -35,7 +35,7 @@ public:
   void navigateToScene(unsigned int sceneIndex);
 
 #ifdef __DESKTOP__
-  void notifyKeyIsPressed(Constants::Buttons key);
+  void notifyKeyIsPressed(Constants::KeyboardButtons key);
 #endif
 
 private:

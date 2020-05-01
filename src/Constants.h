@@ -66,7 +66,7 @@ namespace Constants {
 
 #ifdef __DESKTOP__
   
-  enum class Buttons
+  enum class KeyboardButtons
   {
     keyA,
     keyD,
@@ -99,6 +99,25 @@ namespace Constants {
     arrowRight,
     arrowUp,
     arrowDown
+  };
+
+  enum class MouseButtonName
+  {
+    left,
+    right,
+    middle
+  };
+
+  enum class MouseButtonState {
+    up,
+    bottom
+  };
+
+  struct MouseEvent {
+    MouseButtonName button;
+    MouseButtonState state;
+    int x;
+    int y;
   };
 
 #endif // __DESKTOP__

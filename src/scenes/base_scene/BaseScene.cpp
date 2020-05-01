@@ -20,7 +20,7 @@ BaseScene::BaseScene(OpenGL& gl,std::string sceneName)
 
 #ifdef __DESKTOP__
   
-  DataAccessPoint::getInstance()->getEventHandler().subscribeToEvent<Constants::Buttons>(
+  DataAccessPoint::getInstance()->getEventHandler().subscribeToEvent<Constants::KeyboardButtons>(
     EventHandler::EventName::keyboardKeyIsPressed,
     sceneName,
     std::bind(&BaseScene::notifyKeyIsPressed,this, std::placeholders::_1)
@@ -45,7 +45,7 @@ void BaseScene::render(double deltaTime) {
 }
 
 #ifdef __DESKTOP__
-void BaseScene::notifyKeyIsPressed(const Constants::Buttons & keyEvent) {
+void BaseScene::notifyKeyIsPressed(const Constants::KeyboardButtons & keyEvent) {
   if (isPageActive == false) {
     return;
   }
@@ -54,7 +54,7 @@ void BaseScene::notifyKeyIsPressed(const Constants::Buttons & keyEvent) {
 #endif // __DESKTOP__
 
 #ifdef __DESKTOP__
-bool BaseScene::useKeyEvent(const Constants::Buttons & keyEvent) {
+bool BaseScene::useKeyEvent(const Constants::KeyboardButtons & keyEvent) {
   temporaryKeyEventPlaceholder = keyEvents[keyEvent];
   keyEvents[keyEvent] = false;
   return temporaryKeyEventPlaceholder;

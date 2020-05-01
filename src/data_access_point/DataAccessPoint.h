@@ -44,7 +44,7 @@ public:
 
 #ifdef __DESKTOP__
 
-  Constants::Buttons getKeyCode(const unsigned char& key);
+  Constants::KeyboardButtons getKeyCode(const unsigned char& key);
 
 #endif // __DESKTOP__
   
@@ -54,7 +54,7 @@ private:
 
 #ifdef __DESKTOP__
 
-  std::unordered_map<char, Constants::Buttons> keyMap;
+  std::unordered_map<char, Constants::KeyboardButtons> keyMap;
 
 #endif // __DESKTOP__
 

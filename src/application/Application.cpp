@@ -25,11 +25,33 @@ https://stackoverflow.com/questions/150355/programmatically-find-the-number-of-c
 #ifdef __DESKTOP__
 void handleKeyboardEvent(unsigned char key, int x, int y)
 {
-  DataAccessPoint::getInstance()->getEventHandler().emitEvent<Constants::Buttons>(
+  DataAccessPoint::getInstance()->getEventHandler().emitEvent<Constants::KeyboardButtons>(
     EventHandler::EventName::keyboardKeyIsPressed,
     DataAccessPoint::getInstance()->getKeyCode(key)
   );
 }
+
+//void handleMouseEvent(int button, int state,int x, int y) {
+//  Logger::log("----------handleMouseEvent-----------");
+//  Logger::log("Button:"+std::to_string(button));
+//  Logger::log("X:" + std::to_string(x));
+//  Logger::log("Y:" + std::to_string(y));
+//  Logger::log("State:" + std::to_string(state));
+//  Logger::log("-------------------------------------");
+//  /*DataAccessPoint::getInstance()->getEventHandler().emitEvent<Constants::MouseEvent>(
+//    EventHandler::EventName::mouseKeyIsPressed,
+//    DataAccessPoint::get
+//  );*/
+//}
+//
+//void handleMouseWheelEvent(int button,int state,int x,int y) {
+//  Logger::log("----------handleMouseWheelEvent-----------");
+//  Logger::log("Button:" + std::to_string(button));
+//  Logger::log("X:" + std::to_string(x));
+//  Logger::log("Y:" + std::to_string(y));
+//  Logger::log("State:" + std::to_string(state));
+//  Logger::log("-------------------------------------");
+//}
 #endif
 
 Application::Application(
@@ -61,6 +83,8 @@ Application::Application(
 
 #ifdef __DESKTOP__
   glutKeyboardFunc(handleKeyboardEvent);
+  /*glutMouseFunc(handleMouseEvent);
+  glutMouseWheelFunc(handleMouseWheelEvent);*/
 #endif
 
   {
@@ -76,7 +100,7 @@ Application::Application(
   }
 
 #ifdef __DESKTOP__
-  DataAccessPoint::getInstance()->getEventHandler().subscribeToEvent<Constants::Buttons>(
+  DataAccessPoint::getInstance()->getEventHandler().subscribeToEvent<Constants::KeyboardButtons>(
     EventHandler::EventName::keyboardKeyIsPressed,
     "Application",
     std::bind(&Application::notifyKeyIsPressed, this, std::placeholders::_1)
@@ -168,8 +192,8 @@ void Application::navigateToScene(unsigned int sceneIndex) {
 }
 
 #ifdef __DESKTOP__
-void Application::notifyKeyIsPressed(Constants::Buttons key) {
-  if (key == Constants::Buttons::tab) {
+void Application::notifyKeyIsPressed(Constants::KeyboardButtons key) {
+  if (key == Constants::KeyboardButtons::tab) {
     sceneIndex++;
     if (sceneIndex >= sceneList.size()) {
       sceneIndex = 0;

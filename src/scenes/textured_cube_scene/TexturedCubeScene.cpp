@@ -52,22 +52,22 @@ void TexturedCubeScene::update(double deltaTime) {
     lightRotationX = 0.0f;
     lightRotationY = 0.0f;
     lightRotationZ = 0.0f;
-    if (useKeyEvent(Constants::Buttons::keyA)) {
+    if (useKeyEvent(Constants::KeyboardButtons::keyA)) {
       lightRotationX += float(deltaTime * lightTransformSpeed * -1.0f);
     }
-    if (useKeyEvent(Constants::Buttons::keyD)) {
+    if (useKeyEvent(Constants::KeyboardButtons::keyD)) {
       lightRotationX += float(deltaTime * lightTransformSpeed);
     }
-    if (useKeyEvent(Constants::Buttons::keyW)) {
+    if (useKeyEvent(Constants::KeyboardButtons::keyW)) {
       lightRotationY += float(deltaTime * lightTransformSpeed);
     }
-    if (useKeyEvent(Constants::Buttons::keyS)) {
+    if (useKeyEvent(Constants::KeyboardButtons::keyS)) {
       lightRotationY += float(deltaTime * lightTransformSpeed * -1.0);
     }
-    if (useKeyEvent(Constants::Buttons::keyC)) {
+    if (useKeyEvent(Constants::KeyboardButtons::keyC)) {
       lightRotationZ += float(deltaTime * lightTransformSpeed * -1.0 * 0.5);
     }
-    if (useKeyEvent(Constants::Buttons::keyV)) {
+    if (useKeyEvent(Constants::KeyboardButtons::keyV)) {
       lightRotationZ += float(deltaTime * lightTransformSpeed * 1.0 * 0.5);
     }
     if (lightRotationX != 0 || lightRotationY != 0 || lightRotationZ != 0) {

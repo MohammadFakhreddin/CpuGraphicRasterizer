@@ -20,45 +20,45 @@ DataAccessPoint::DataAccessPoint() {
 
 #ifdef __DESKTOP__
   {//Filling keyMap
-    keyMap['a'] = Constants::Buttons::keyA;
-    keyMap['b'] = Constants::Buttons::keyB;
-    keyMap['b'] = Constants::Buttons::keyB;
-    keyMap['c'] = Constants::Buttons::keyC;
-    keyMap['d'] = Constants::Buttons::keyD;
-    keyMap['e'] = Constants::Buttons::keyE;
-    keyMap['f'] = Constants::Buttons::keyF;
-    keyMap['g'] = Constants::Buttons::keyG;
-    keyMap['h'] = Constants::Buttons::keyH;
-    keyMap['i'] = Constants::Buttons::keyI;
-    keyMap['j'] = Constants::Buttons::keyJ;
-    keyMap['k'] = Constants::Buttons::keyK;
-    keyMap['l'] = Constants::Buttons::keyL;
-    keyMap['m'] = Constants::Buttons::keyM;
-    keyMap['n'] = Constants::Buttons::keyN;
-    keyMap['o'] = Constants::Buttons::keyO;
-    keyMap['p'] = Constants::Buttons::keyP;
-    keyMap['q'] = Constants::Buttons::keyQ;
-    keyMap['r'] = Constants::Buttons::keyR;
-    keyMap['s'] = Constants::Buttons::keyS;
-    keyMap['t'] = Constants::Buttons::keyT;
-    keyMap['u'] = Constants::Buttons::keyU;
-    keyMap['v'] = Constants::Buttons::keyV;
-    keyMap['w'] = Constants::Buttons::keyW;
-    keyMap['x'] = Constants::Buttons::keyX;
-    keyMap['y'] = Constants::Buttons::keyY;
-    keyMap['z'] = Constants::Buttons::keyZ;
-    keyMap[0x09] = Constants::Buttons::tab;
-    keyMap[0x25] = Constants::Buttons::arrowLeft;
-    keyMap[0x27] = Constants::Buttons::arrowRight;
-    keyMap[0x26] = Constants::Buttons::arrowUp;
-    keyMap[0x28] = Constants::Buttons::arrowDown;
+    keyMap['a'] = Constants::KeyboardButtons::keyA;
+    keyMap['b'] = Constants::KeyboardButtons::keyB;
+    keyMap['b'] = Constants::KeyboardButtons::keyB;
+    keyMap['c'] = Constants::KeyboardButtons::keyC;
+    keyMap['d'] = Constants::KeyboardButtons::keyD;
+    keyMap['e'] = Constants::KeyboardButtons::keyE;
+    keyMap['f'] = Constants::KeyboardButtons::keyF;
+    keyMap['g'] = Constants::KeyboardButtons::keyG;
+    keyMap['h'] = Constants::KeyboardButtons::keyH;
+    keyMap['i'] = Constants::KeyboardButtons::keyI;
+    keyMap['j'] = Constants::KeyboardButtons::keyJ;
+    keyMap['k'] = Constants::KeyboardButtons::keyK;
+    keyMap['l'] = Constants::KeyboardButtons::keyL;
+    keyMap['m'] = Constants::KeyboardButtons::keyM;
+    keyMap['n'] = Constants::KeyboardButtons::keyN;
+    keyMap['o'] = Constants::KeyboardButtons::keyO;
+    keyMap['p'] = Constants::KeyboardButtons::keyP;
+    keyMap['q'] = Constants::KeyboardButtons::keyQ;
+    keyMap['r'] = Constants::KeyboardButtons::keyR;
+    keyMap['s'] = Constants::KeyboardButtons::keyS;
+    keyMap['t'] = Constants::KeyboardButtons::keyT;
+    keyMap['u'] = Constants::KeyboardButtons::keyU;
+    keyMap['v'] = Constants::KeyboardButtons::keyV;
+    keyMap['w'] = Constants::KeyboardButtons::keyW;
+    keyMap['x'] = Constants::KeyboardButtons::keyX;
+    keyMap['y'] = Constants::KeyboardButtons::keyY;
+    keyMap['z'] = Constants::KeyboardButtons::keyZ;
+    keyMap[0x09] = Constants::KeyboardButtons::tab;
+    keyMap[0x25] = Constants::KeyboardButtons::arrowLeft;
+    keyMap[0x27] = Constants::KeyboardButtons::arrowRight;
+    keyMap[0x26] = Constants::KeyboardButtons::arrowUp;
+    keyMap[0x28] = Constants::KeyboardButtons::arrowDown;
   }
 #endif // __DESKTOP__
 
 }
 
 #ifdef __DESKTOP__
-Constants::Buttons DataAccessPoint::getKeyCode(const unsigned char& key) {
+Constants::KeyboardButtons DataAccessPoint::getKeyCode(const unsigned char& key) {
   return keyMap[std::tolower(key)];
 }
 #endif // __DESKTOP__

@@ -51,83 +51,84 @@ MonkeyScene::MonkeyScene(OpenGL& gl)
     monkey->transformZ(100.0f);
     monkey->scale(scaleFactor);
     monkey->setSpecularIntensity(0.5f);
-    monkey->rotateY(Math::piDouble);
+    monkey->rotateY(float(Math::piDouble));
   }
 
   pip.assignAmbientLight(ambientLight.get());
   pip.assignPointLight(pointLight.get());
   pip.assignShapes(monkey.get());
 
-  //camera.rotateXYZ(0, Math::piDouble, 0);
 }
 
 void MonkeyScene::update(double deltaTime) {
 #ifdef __DESKTOP__
-  {//We rotate light by keyboard
-    if (useKeyEvent(Constants::Buttons::keyK)) {
-      pointLight->transformX(float(deltaTime * lightTransformSpeed * -1.0f));
+  //{//We rotate light by keyboard
+  //  if (useKeyEvent(Constants::KeyboardButtons::keyK)) {
+  //    pointLight->transformX(float(deltaTime * lightTransformSpeed * 1.0f));
+  //  }
+  //  if (useKeyEvent(Constants::KeyboardButtons::keyH)) {
+  //    pointLight->transformX(float(deltaTime * lightTransformSpeed * -1.0f));
+  //  }
+  //  if (useKeyEvent(Constants::KeyboardButtons::keyU)) {
+  //    pointLight->transformY(float(deltaTime * lightTransformSpeed * 1.0f));
+  //  }
+  //  if (useKeyEvent(Constants::KeyboardButtons::keyJ)) {
+  //    pointLight->transformY(float(deltaTime * lightTransformSpeed * -1.0f));
+  //  }
+  //  if (useKeyEvent(Constants::KeyboardButtons::keyY)) {
+  //    pointLight->transformZ(float(deltaTime * lightTransformSpeed * -1.0f));
+  //  }
+  //  if (useKeyEvent(Constants::KeyboardButtons::keyI)) {
+  //    pointLight->transformZ(float(deltaTime * lightTransformSpeed * 1.0f));
+  //  }
+  //}
+  {//We rotate cmaera by keyboard and mouse
+    cameraTransformX = 0.0f;
+    if (useKeyEvent(Constants::KeyboardButtons::keyA)) {
+      cameraTransformX += float(-1.0f * deltaTime * cameraTransformSpeed);
     }
-    if (useKeyEvent(Constants::Buttons::keyH)) {
-      pointLight->transformX(float(deltaTime * lightTransformSpeed));
+    if (useKeyEvent(Constants::KeyboardButtons::keyD)) {
+      cameraTransformX += float(1.0f * deltaTime * cameraTransformSpeed);
     }
-    if (useKeyEvent(Constants::Buttons::keyU)) {
-      pointLight->transformY(float(deltaTime * lightTransformSpeed));
+    cameraTransformY = 0.0f;
+    if (useKeyEvent(Constants::KeyboardButtons::keyW)) {
+      cameraTransformY += float(1.0f * deltaTime * cameraTransformSpeed);
     }
-    if (useKeyEvent(Constants::Buttons::keyJ)) {
-      pointLight->transformY(float(deltaTime * lightTransformSpeed * -1.0));
+    if (useKeyEvent(Constants::KeyboardButtons::keyS)) {
+      cameraTransformY += float(-1.0f * deltaTime * cameraTransformSpeed);
     }
-    if (useKeyEvent(Constants::Buttons::keyY)) {
-      pointLight->transformZ(float(deltaTime * lightTransformSpeed * -1.0));
+    cameraTransformZ = 0.0f;
+    if (useKeyEvent(Constants::KeyboardButtons::keyC)) {
+      cameraTransformZ += float(+1.0f * deltaTime * cameraTransformSpeed);
     }
-    if (useKeyEvent(Constants::Buttons::keyI)) {
-      pointLight->transformZ(float(deltaTime * lightTransformSpeed * 1.0));
+    if (useKeyEvent(Constants::KeyboardButtons::keyV)) {
+      cameraTransformZ += float(-1.0f * deltaTime * cameraTransformSpeed);
     }
+    camera.transformXYZ(cameraTransformX, cameraTransformY, cameraTransformZ);
   }
-  /*
-  {//Rotating shape by keyboard
-    shapeRotationX = 0.0f;
-    shapeRotationY = 0.0f;
-    shapeRotationZ = 0.0f;
-    if (useKeyEvent(Constants::Buttons::keyI)) {
-      shapeRotationX += float(1.0 * shapeRotationSpeed * deltaTime);
+  {
+    cameraRotationX = 0.0f;
+    if (useKeyEvent(Constants::KeyboardButtons::keyF)) {
+      cameraRotationX += float(-1.0f * deltaTime * cameraRotationSpeed);
     }
-    if (useKeyEvent(Constants::Buttons::keyY)) {
-      shapeRotationX += float(-1.0 * shapeRotationSpeed * deltaTime);
+    if(useKeyEvent(Constants::KeyboardButtons::keyH)){
+      cameraRotationX += float(1.0f * deltaTime * cameraRotationSpeed);
     }
-    if (useKeyEvent(Constants::Buttons::keyK)) {
-      shapeRotationY += float(1.0 * shapeRotationSpeed * deltaTime);
+    cameraRotationY = 0.0f;
+    if (useKeyEvent(Constants::KeyboardButtons::keyT)) {
+      cameraRotationY += float(-1.0f * deltaTime * cameraRotationSpeed);
     }
-    if (useKeyEvent(Constants::Buttons::keyH)) {
-      shapeRotationY += float(-1.0 * shapeRotationSpeed * deltaTime);
+    if (useKeyEvent(Constants::KeyboardButtons::keyG)) {
+      cameraRotationY += float(1.0f * deltaTime * cameraRotationSpeed);
     }
-    if (useKeyEvent(Constants::Buttons::keyU)) {
-      shapeRotationZ += float(1.0 * shapeRotationSpeed * deltaTime);
+    cameraRotationZ = 0.0f;
+    if (useKeyEvent(Constants::KeyboardButtons::keyY)) {
+      cameraRotationZ += float(-1.0f * deltaTime * cameraRotationSpeed);
     }
-    if (useKeyEvent(Constants::Buttons::keyJ)) {
-      shapeRotationZ += float(-1.0 * shapeRotationSpeed * deltaTime);
+    if (useKeyEvent(Constants::KeyboardButtons::keyR)) {
+      cameraRotationZ += float(1.0f * deltaTime * cameraRotationSpeed);
     }
-    if (shapeRotationX != 0 || shapeRotationY != 0 || shapeRotationZ != 0) {
-      //We need separate rotation methods as well
-      monkey->rotateXYZ(shapeRotationX, shapeRotationY, shapeRotationZ);
-    }
-  }*/
-  if (useKeyEvent(Constants::Buttons::keyA)) {
-    camera.transform(float(deltaTime * lightTransformSpeed), 0, 0);
-  }
-  if (useKeyEvent(Constants::Buttons::keyD)) {
-    camera.transform(float(-1.0 * deltaTime * lightTransformSpeed), 0, 0);
-  }
-  if (useKeyEvent(Constants::Buttons::keyW)) {
-    camera.transform(0, float(deltaTime * lightTransformSpeed), 0);
-  }
-  if (useKeyEvent(Constants::Buttons::keyS)) {
-    camera.transform(0, float(-1.0 * deltaTime * lightTransformSpeed), 0);
-  }
-  if (useKeyEvent(Constants::Buttons::keyC)) {
-    camera.transform(0, 0, float(deltaTime * lightTransformSpeed));
-  }
-  if (useKeyEvent(Constants::Buttons::keyV)) {
-    camera.transform(0, 0, float(-1.0 * deltaTime * lightTransformSpeed));
+    camera.rotateXYZ(cameraRotationX, cameraRotationY, cameraRotationZ);
   }
 #endif
   pip.update(deltaTime);

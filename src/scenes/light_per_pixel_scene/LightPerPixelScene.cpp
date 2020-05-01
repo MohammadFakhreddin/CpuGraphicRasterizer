@@ -49,22 +49,22 @@ LightPerPixelScene::LightPerPixelScene(OpenGL& gl)
 void LightPerPixelScene::update(double deltaTime) {
 #ifdef __DESKTOP__
   {//We rotate light by keyboard
-    if (useKeyEvent(Constants::Buttons::keyA)) {
+    if (useKeyEvent(Constants::KeyboardButtons::keyA)) {
       pointLight->transformX(float(deltaTime * lightTransformSpeed * -1.0f));
     }
-    if (useKeyEvent(Constants::Buttons::keyD)) {
+    if (useKeyEvent(Constants::KeyboardButtons::keyD)) {
       pointLight->transformX(float(deltaTime * lightTransformSpeed));
     }
-    if (useKeyEvent(Constants::Buttons::keyW)) {
+    if (useKeyEvent(Constants::KeyboardButtons::keyW)) {
       pointLight->transformY(float(deltaTime * lightTransformSpeed));
     }
-    if (useKeyEvent(Constants::Buttons::keyS)) {
+    if (useKeyEvent(Constants::KeyboardButtons::keyS)) {
       pointLight->transformY(float(deltaTime * lightTransformSpeed * -1.0));
     }
-    if (useKeyEvent(Constants::Buttons::keyC)) {
+    if (useKeyEvent(Constants::KeyboardButtons::keyC)) {
       pointLight->transformZ(float(deltaTime * lightTransformSpeed * -1.0 * 0.5));
     }
-    if (useKeyEvent(Constants::Buttons::keyV)) {
+    if (useKeyEvent(Constants::KeyboardButtons::keyV)) {
       pointLight->transformZ(float(deltaTime * lightTransformSpeed * 1.0 * 0.5));
     }
   }
@@ -72,22 +72,22 @@ void LightPerPixelScene::update(double deltaTime) {
     shapeRotationX = 0.0f;
     shapeRotationY = 0.0f;
     shapeRotationZ = 0.0f;
-    if (useKeyEvent(Constants::Buttons::keyI)) {
+    if (useKeyEvent(Constants::KeyboardButtons::keyI)) {
       shapeRotationX += float(1.0 * shapeRotationSpeed * deltaTime);
     }
-    if (useKeyEvent(Constants::Buttons::keyY)) {
+    if (useKeyEvent(Constants::KeyboardButtons::keyY)) {
       shapeRotationX += float(-1.0 * shapeRotationSpeed * deltaTime);
     }
-    if (useKeyEvent(Constants::Buttons::keyK)) {
+    if (useKeyEvent(Constants::KeyboardButtons::keyK)) {
       shapeRotationY += float(1.0 * shapeRotationSpeed * deltaTime);
     }
-    if (useKeyEvent(Constants::Buttons::keyH)) {
+    if (useKeyEvent(Constants::KeyboardButtons::keyH)) {
       shapeRotationY += float(-1.0 * shapeRotationSpeed * deltaTime);
     }
-    if (useKeyEvent(Constants::Buttons::keyU)) {
+    if (useKeyEvent(Constants::KeyboardButtons::keyU)) {
       shapeRotationZ += float(1.0 * shapeRotationSpeed * deltaTime);
     }
-    if (useKeyEvent(Constants::Buttons::keyJ)) {
+    if (useKeyEvent(Constants::KeyboardButtons::keyJ)) {
       shapeRotationZ += float(-1.0 * shapeRotationSpeed * deltaTime);
     }
     if (shapeRotationX != 0 || shapeRotationY != 0 || shapeRotationZ != 0) {

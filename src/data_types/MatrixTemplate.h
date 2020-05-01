@@ -127,10 +127,9 @@ public:
   template <typename A>
   void operator-(_Matrix<A,width,height> rhs) = delete;
 
-  template<typename A>
-  void multiply(const A& rhs) {
+  void multiply(const T& rhs) {
     for (i = 0; i < matrixSize; i++) {
-      cells[i] *= T(rhs);
+      cells[i] *= rhs;
       assert(std::isnan(cells[i])==false);
     }
   }
