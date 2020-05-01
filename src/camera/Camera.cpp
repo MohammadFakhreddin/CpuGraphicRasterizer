@@ -220,16 +220,16 @@ const unsigned int& Camera::getAppScreenHeight() const {
 //It must transform based on theta
 void Camera::transformXYZ(const float& transformX, const float& transformY, const float& transformZ) {
   
-  newTransform.setX(transformX);
-  newTransform.setY(transformY);
-  newTransform.setZ(transformZ);
-  newTransform.setW(0.0f);
+  newTransform.setX(-1.0f * transformX);
+  newTransform.setY(-1.0f * transformY);
+  newTransform.setZ(-1.0f * transformZ);
+  newTransform.setW(1.0f);
   
   newTransform.multiply(rotationMatrix);
-  
-  transformInverseValue.setX(transformInverseValue.getX() - newTransform.getX());
-  transformInverseValue.setY(transformInverseValue.getY() - newTransform.getY()); 
-  transformInverseValue.setZ(transformInverseValue.getZ() - newTransform.getZ());
+
+  transformInverseValue.setX(transformInverseValue.getX() + newTransform.getX());
+  transformInverseValue.setY(transformInverseValue.getY() + newTransform.getY()); 
+  transformInverseValue.setZ(transformInverseValue.getZ() + newTransform.getZ());
 
   Matrix4X4Float::assignTransformation(
     transformInverseMatrix, 
