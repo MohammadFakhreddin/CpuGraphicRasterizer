@@ -27,9 +27,9 @@ MonkeyScene::MonkeyScene(OpenGL& gl)
     - 10.0f,
     float(DataAccessPoint::getInstance()->getAppScreenHeight()) / 2.0f
     - 10.0f,
-    100.0f,
+    90.0f,
     1.1f,
-    float(1.0 / double(100)),
+    float(1.0 / double(10000)),
     float(1.0 / double(10000)),
     30
   )),

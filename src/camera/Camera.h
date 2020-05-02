@@ -134,7 +134,11 @@ public:
 
   Matrix4X4Float transformInverseMatrix;
 
-  Matrix4X4Float rotationMatrix;
+  Matrix4X4Float rotationXMatrix;
+
+  Matrix4X4Float rotationYMatrix;
+
+  Matrix4X4Float rotationZMatrix;
 
   Matrix4X4Float rotationInverseMatrix;
 
