@@ -19,12 +19,6 @@ public:
   
   virtual void render(double deltaTime);
 
-#ifdef __DESKTOP__
-
-  void notifyKeyIsPressed(const Constants::KeyboardButtons& keyEvent);
-
-#endif // __DESKTOP__
-
   void onActiveSceneChanged(const std::string& sceneName);
 
   std::string getSceneName();
@@ -34,6 +28,12 @@ protected:
 #ifdef __DESKTOP__
 
   bool useKeyEvent(const Constants::KeyboardButtons& keyEvent);
+
+  void notifyKeyIsPressed(const Constants::KeyboardButtons& keyEvent);
+
+  void mouseButtonPressed(const Constants::MouseButtonName& mouseButton);
+
+  void mouseButtonReleased(const Constants::MouseButtonName& mouseButton);
 
 #endif
 
@@ -49,7 +49,7 @@ private:
 
   std::unordered_map<Constants::KeyboardButtons, bool> keyEvents;
 
-  std::unordered_map<Constants::MouseButtonName, Constants::MouseEvent> mouseEvents;
+  std::unordered_map<Constants::MouseButtonName, bool> mouseEvents;
 
 #endif
 

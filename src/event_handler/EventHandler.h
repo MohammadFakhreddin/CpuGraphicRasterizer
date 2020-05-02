@@ -18,6 +18,8 @@ public:
 
   enum class EventName {
     keyboardKeyIsPressed,
+    mouseButtonPressed,
+    mouseButtonRelease,
     screenSurfaceChanged,
     activeSceneChanged
   };

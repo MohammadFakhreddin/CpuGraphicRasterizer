@@ -112,3 +112,27 @@ EventHandler& DataAccessPoint::getEventHandler() {
 ThreadPool& DataAccessPoint::getThreadPool() {
   return threadPool;
 }
+
+void DataAccessPoint::setMousePosition(const int& x,const int& y){
+  mousePosition.setX(x);
+  mousePosition.setY(y);
+}
+
+const Matrix2X1Int& DataAccessPoint::getMousePosition(){
+  return mousePosition;
+}
+
+Constants::MouseButtonName DataAccessPoint::getMouseButtonName(const int& button){
+  switch (button)
+  {
+  case 0 :
+    return Constants::MouseButtonName::left;
+  case 1 :
+    return Constants::MouseButtonName::right;
+  case 2 :
+    return Constants::MouseButtonName::middle;
+  default:
+    Logger::exception("DataAccessPoint::getMouseButtonName is unknown");
+    return Constants::MouseButtonName::unknown;
+  }
+}

@@ -7,6 +7,7 @@
 #include "../Constants.h"
 #include "../event_handler/EventHandler.h"
 #include "../utils/thread_pool/ThreadPool.h"
+#include "../data_types/MatrixTemplate.h"
 
 class DataAccessPoint {
 
@@ -42,9 +43,15 @@ public:
 
   ThreadPool& getThreadPool();
 
+  void setMousePosition(const int& x,const int& y);
+
+  const Matrix2X1Int& getMousePosition();
+
 #ifdef __DESKTOP__
 
   Constants::KeyboardButtons getKeyCode(const unsigned char& key);
+
+  Constants::MouseButtonName getMouseButtonName(const int& button);
 
 #endif // __DESKTOP__
   
@@ -65,6 +72,8 @@ private:
   unsigned int appScreenWidth = 0;
 
   unsigned int appScreenHeight = 0;
+
+  Matrix2X1Int mousePosition;
 
   Constants::Platform platform = Constants::Platform::Unknown;
 
