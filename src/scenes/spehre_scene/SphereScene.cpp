@@ -44,8 +44,6 @@ SphereScene::SphereScene(OpenGL& gl)
   pipeLine.assignDirectionalLight(directionalLight.get());
   pipeLine.assignShapes(sphere.get());
   
-  // camera.rotateXYZ(0.0f,0.0f,0.0f);
-
 }
 
 void SphereScene::update(double deltaTime) {
