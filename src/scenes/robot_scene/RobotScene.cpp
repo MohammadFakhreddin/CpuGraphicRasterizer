@@ -12,8 +12,8 @@ RobotScene::RobotScene(OpenGL& gl)
   BaseScene(gl, "RobotScene"),
   cameraInstance(
     gl,
-    Matrix3X1Float(3, 1, 0.0f),
-    Matrix3X1Float(3, 1, 0.0f),
+    Matrix3X1Float(),
+    Matrix3X1Float(),
     DataAccessPoint::getInstance()->getAppScreenWidth(),
     DataAccessPoint::getInstance()->getAppScreenHeight(),
     "Robot main camera"
@@ -36,7 +36,8 @@ RobotScene::RobotScene(OpenGL& gl)
     );
     shape->transformX(float(DataAccessPoint::getInstance()->getAppScreenWidth()) / 2.0f);
     shape->transformY(float(DataAccessPoint::getInstance()->getAppScreenHeight()) / 2.0f);
-    shape->transformZ(cameraInitialZLocation - 100.0f);
+    shape->transformZ(100.0f);
+    shape->rotateXYZ(0.0f, Math::piFloat , 0.0f);
     shape->scale(scaleFactor);
   }
   pip.assignAmbientLight(ambientLight.get());

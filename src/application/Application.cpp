@@ -32,13 +32,6 @@ void handleKeyboardEvent(unsigned char key, int x, int y)
 }
 
 void handleMouseEvent(int button, int state, int x, int y) {
-  // Logger::log("----------handleMouseEvent-----------");
-  // Logger::log("Button:"+std::to_string(button));
-  // Logger::log("X:" + std::to_string(x));
-  // Logger::log("Y:" + std::to_string(y));
-  // Logger::log("State:" + std::to_string(state));
-  // Logger::log("-------------------------------------");
-  
   DataAccessPoint::getInstance()->getEventHandler().emitEvent<Constants::MouseButtonName>(
     state == 1 ? EventHandler::EventName::mouseButtonRelease : EventHandler::EventName::mouseButtonPressed,
     DataAccessPoint::getInstance()->getMouseButtonName(button)
@@ -47,18 +40,10 @@ void handleMouseEvent(int button, int state, int x, int y) {
 }
 
 void handleMotionEvent(int x, int y){
-  // Logger::log("----------handleMotionEvent-----------");
-  // Logger::log("X:" + std::to_string(x));
-  // Logger::log("Y:" + std::to_string(y));
-  // Logger::log("-------------------------------------");
   DataAccessPoint::getInstance()->setMousePosition(x,y);
 }
 
 void handlePassiveMotionEvent(int x,int y){
-  // Logger::log("----------handlePassiveMotionEvent-----------");
-  // Logger::log("X:" + std::to_string(x));
-  // Logger::log("Y:" + std::to_string(y));
-  // Logger::log("-------------------------------------");
   DataAccessPoint::getInstance()->setMousePosition(x,y);
 }
 
@@ -100,13 +85,13 @@ Application::Application(
 
   {
     //sceneList.emplace_back(std::make_unique<LightPerPixelScene>(openGLInstance));
-    // sceneList.emplace_back(std::make_unique<MonkeyScene>(openGLInstance));
+    sceneList.emplace_back(std::make_unique<MonkeyScene>(openGLInstance));
     // sceneList.emplace_back(std::make_unique<BunnyScene>(openGLInstance));
-    sceneList.emplace_back(std::make_unique<SphereScene>(openGLInstance));
+    // sceneList.emplace_back(std::make_unique<SphereScene>(openGLInstance));
     //sceneList.emplace_back(std::make_unique<ColoredCubeScene>(openGLInstance));
     // sceneList.emplace_back(std::make_unique<TexturedCubeScene>(openGLInstance));
-    //sceneList.emplace_back(std::make_unique<RobotScene>(openGLInstance));
-    //sceneList.emplace_back(std::make_unique<PlantScene>(openGLInstance));
+    sceneList.emplace_back(std::make_unique<RobotScene>(openGLInstance));
+    sceneList.emplace_back(std::make_unique<PlantScene>(openGLInstance));
     navigateToScene(0);
   }
 

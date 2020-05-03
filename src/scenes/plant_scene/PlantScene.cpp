@@ -12,8 +12,8 @@ PlantScene::PlantScene(OpenGL& gl)
   BaseScene(gl, "PlantScene"),
   cameraInstance(
     gl,
-    Matrix3X1Float(3, 1, 0.0f),
-    Matrix3X1Float(3, 1, 0.0f),
+    Matrix3X1Float(),
+    Matrix3X1Float(),
     DataAccessPoint::getInstance()->getAppScreenWidth(),
     DataAccessPoint::getInstance()->getAppScreenHeight(),
     "Plant main camera"
@@ -34,8 +34,8 @@ PlantScene::PlantScene(OpenGL& gl)
       false
     );
     shape->transformX(float(DataAccessPoint::getInstance()->getAppScreenWidth()) * 0.5f);
-    shape->transformY(float(DataAccessPoint::getInstance()->getAppScreenHeight()) * 0.25f);
-    shape->transformZ(cameraInitialZLocation - 100.0f);
+    shape->transformY(float(DataAccessPoint::getInstance()->getAppScreenHeight()) * 0.49f);
+    shape->transformZ(100.0f);
     shape->scale(5.0f);
   }
 

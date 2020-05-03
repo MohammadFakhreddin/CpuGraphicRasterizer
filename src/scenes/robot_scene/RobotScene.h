@@ -22,10 +22,6 @@ private:
 
   static constexpr float lightRotationSpeed = 0.01f;
 
-  static constexpr float cameraInitialZLocation = 1000.0f;
-
-  static constexpr float cameraInitialMaximumFov = 1000.0f;
-
 public:
 
   RobotScene(OpenGL& gl);
