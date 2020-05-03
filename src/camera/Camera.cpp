@@ -225,7 +225,7 @@ void Camera::transformXYZ(const float& transformX, const float& transformY, cons
   newTransform.setZ(-1.0f * transformZ);
   newTransform.setW(1.0f);
   
-  newTransform.multiply(rotationMatrix);
+  //newTransform.multiply(rotationMatrix);
 
   transformInverseValue.setX(transformInverseValue.getX() + newTransform.getX());
   transformInverseValue.setY(transformInverseValue.getY() + newTransform.getY()); 
