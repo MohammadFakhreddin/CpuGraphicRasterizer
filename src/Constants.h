@@ -105,19 +105,8 @@ namespace Constants {
   {
     left,
     right,
-    middle
-  };
-
-  enum class MouseButtonState {
-    up,
-    bottom
-  };
-
-  struct MouseEvent {
-    MouseButtonName button;
-    MouseButtonState state;
-    int x;
-    int y;
+    middle,
+    unknown
   };
 
 #endif // __DESKTOP__

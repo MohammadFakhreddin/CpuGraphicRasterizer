@@ -19,7 +19,7 @@ BaseScene::BaseScene(OpenGL& gl,std::string sceneName)
   }
 
 #ifdef __DESKTOP__
-  
+  //TODO Move all events to data access point
   DataAccessPoint::getInstance()->getEventHandler().subscribeToEvent<Constants::KeyboardButtons>(
     EventHandler::EventName::keyboardKeyIsPressed,
     sceneName,
@@ -32,6 +32,17 @@ BaseScene::BaseScene(OpenGL& gl,std::string sceneName)
     std::bind(&BaseScene::onActiveSceneChanged,this,std::placeholders::_1)
   );
 
+  DataAccessPoint::getInstance()->getEventHandler().subscribeToEvent<Constants::MouseButtonName>(
+    EventHandler::EventName::mouseButtonPressed,
+    sceneName,
+    std::bind(&BaseScene::mouseButtonPressed,this,std::placeholders::_1)
+  );
+
+  DataAccessPoint::getInstance()->getEventHandler().subscribeToEvent<Constants::MouseButtonName>(
+    EventHandler::EventName::mouseButtonRelease,
+    sceneName,
+    std::bind(&BaseScene::mouseButtonReleased,this,std::placeholders::_1)
+  );
 #endif // __DESKTOP__
 
 }
@@ -51,13 +62,15 @@ void BaseScene::notifyKeyIsPressed(const Constants::KeyboardButtons & keyEvent) 
   }
   keyEvents[keyEvent] = true;
 }
-#endif // __DESKTOP__
 
-#ifdef __DESKTOP__
-bool BaseScene::useKeyEvent(const Constants::KeyboardButtons & keyEvent) {
+const bool& BaseScene::useKeyEvent(const Constants::KeyboardButtons & keyEvent) {
   temporaryKeyEventPlaceholder = keyEvents[keyEvent];
   keyEvents[keyEvent] = false;
   return temporaryKeyEventPlaceholder;
+}
+
+const bool& BaseScene::getMouseEvent(const Constants::MouseButtonName& mouseButtonName){
+  return mouseEvents[mouseButtonName];
 }
 #endif // __DESKTOP__
 
@@ -76,4 +89,12 @@ std::string BaseScene::getSceneName() {
 
 void BaseScene::onActiveSceneChanged(const std::string& sceneName) {
   isPageActive = this->sceneName == sceneName;
+}
+
+void BaseScene::mouseButtonPressed(const Constants::MouseButtonName& buttonName){
+  mouseEvents[buttonName] = true;
+}
+
+void BaseScene::mouseButtonReleased(const Constants::MouseButtonName& buttonName){
+  mouseEvents[buttonName] = false;
 }

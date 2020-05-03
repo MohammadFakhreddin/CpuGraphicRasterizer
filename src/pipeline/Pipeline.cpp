@@ -14,7 +14,7 @@ PipeLine::PipeLine(
   threadPool(DataAccessPoint::getInstance()->getThreadPool()),
   camera(camera),
   numberOfSupportedThreads(threadPool.getNumberOfAvailableThreads()),
-  shapes(std::move(shapes))
+  shapes()
 {}
 
 PipeLine::PipeLine(
@@ -118,25 +118,7 @@ void PipeLine::updateShapeNodes(
     nodeIndex < shape->nodes.size();
     nodeIndex += numberOfSupportedThreads
     ) {
-    //TODO Start from here for checking camera transformations
-    /*shape->worldPoints[nodeIndex].assign(shape->nodes[nodeIndex]);
-
-    shape->worldPoints[nodeIndex].multiply(shape->rotationXYZMatrix);
-
-    shape->worldPoints[nodeIndex].multiply(camera.rotationInverseMatrix);
-
-    shape->worldPoints[nodeIndex].multiply(shape->scaleMatrix);
-
-    float scaleValue = camera.scaleBasedOnZDistance(shape->worldPoints[nodeIndex].getZ() + camera.transformInverseValue.getZ() + shape->transformValue.getZ());
-
-    shape->worldPoints[nodeIndex].setX(shape->worldPoints[nodeIndex].getX() * scaleValue);
-
-    shape->worldPoints[nodeIndex].setY(shape->worldPoints[nodeIndex].getY() * scaleValue);
-    
-    shape->worldPoints[nodeIndex].multiply(shape->transformMatrix);
-
-    shape->worldPoints[nodeIndex].multiply(camera.transformInverseMatrix);*/
-
+    //TODO Move this part to new function and merge all other update methods with this
     shape->worldPoints[nodeIndex].assign(shape->nodes[nodeIndex]);
 
     shape->worldPoints[nodeIndex].multiply(shape->rotationXYZMatrix);

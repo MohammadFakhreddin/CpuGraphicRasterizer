@@ -12,8 +12,8 @@ SphereScene::SphereScene(OpenGL& gl)
   BaseScene(gl, "SphereScene"),
   camera(
     gl,
-    Matrix3X1Float(3, 1, 0.0f),
-    Matrix3X1Float(3, 1, 0.0f),
+    Matrix3X1Float(),
+    Matrix3X1Float(),
     DataAccessPoint::getInstance()->getAppScreenWidth(),
     DataAccessPoint::getInstance()->getAppScreenHeight(),
     "Plant main camera"
@@ -25,7 +25,6 @@ SphereScene::SphereScene(OpenGL& gl)
 {
   
   auto radius = float((25.0f / 800.f) * DataAccessPoint::getInstance()->getAppScreenWidth());
-  //TODO Use simple pointer instead of refrence to unique_ptr
   sphere = ShapeGenerator::sphere(
     Constants::LightPrecision::perSurface,
     sphereColor.get(),
@@ -37,14 +36,14 @@ SphereScene::SphereScene(OpenGL& gl)
       DataAccessPoint::getInstance()->getAppScreenHeight() / 2.0f,
       100.0f
     ),
-    Vec3DFloat(0.0f, 0.0f, 0.0f),
+    Vec3DFloat(0.0f, Math::piFloat/2.0f, 0.0f),
     1.0f
   );
 
   pipeLine.assignAmbientLight(ambientLight.get());
   pipeLine.assignDirectionalLight(directionalLight.get());
   pipeLine.assignShapes(sphere.get());
-
+  
 }
 
 void SphereScene::update(double deltaTime) {

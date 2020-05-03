@@ -222,14 +222,18 @@ void Camera::transformXYZ(const float& transformX, const float& transformY, cons
   
   newTransform.setX(-1.0f * transformX);
   newTransform.setY(-1.0f * transformY);
-  newTransform.setZ(-1.0f * transformZ);
+  newTransform.setZ(1.0f * transformZ);
   newTransform.setW(1.0f);
   
-  //newTransform.multiply(rotationMatrix);
+  newTransform.multiply(rotationXMatrix);
 
+  newTransform.multiply(rotationYMatrix);
+
+  newTransform.multiply(rotationZMatrix);
+  
   transformInverseValue.setX(transformInverseValue.getX() + newTransform.getX());
   transformInverseValue.setY(transformInverseValue.getY() + newTransform.getY()); 
-  transformInverseValue.setZ(transformInverseValue.getZ() + newTransform.getZ());
+  transformInverseValue.setZ(transformInverseValue.getZ() - newTransform.getZ());
 
   Matrix4X4Float::assignTransformation(
     transformInverseMatrix, 
@@ -258,12 +262,11 @@ void Camera::rotateXYZ(const float& x,const float& y,const float& z) {
   rotationDegree.set(1, 0, rotationDegree.get(1, 0) + y);
   rotationDegree.set(2, 0, rotationDegree.get(2, 0) + z);
 
-  Matrix4X4Float::assignRotationXYZ(
-    rotationMatrix,
-    rotationDegree.getX(),
-    rotationDegree.getY(),
-    rotationDegree.getZ()
-  );
+  Matrix4X4Float::assignRotationX(rotationXMatrix,rotationDegree.getX());
+
+  Matrix4X4Float::assignRotationY(rotationYMatrix,rotationDegree.getY());
+
+  Matrix4X4Float::assignRotationZ(rotationZMatrix,rotationDegree.getZ());
 
 }
 
