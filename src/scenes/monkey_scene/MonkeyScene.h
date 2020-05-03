@@ -22,7 +22,7 @@ private:
 
   static constexpr float cameraTransformSpeed = 0.2f;
 
-  static constexpr float cameraRotationSpeed = 0.002f;
+  static constexpr float cameraRotationSpeed = 0.0002f;
 
 public:
   
@@ -57,6 +57,12 @@ private:
   float cameraRotationZ = 0.0f;
 
   PipeLine pip;
+
+  bool previouseLeftMouseButtonState = false;
+
+  Matrix2X1Int previousMousePosition;
+
+  Matrix2X1Int currentMousePosition;
 
 };
 

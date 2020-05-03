@@ -27,7 +27,9 @@ protected:
 
 #ifdef __DESKTOP__
 
-  bool useKeyEvent(const Constants::KeyboardButtons& keyEvent);
+  const bool& useKeyEvent(const Constants::KeyboardButtons& keyEvent);
+
+  const bool& getMouseEvent(const Constants::MouseButtonName& mouseButtonName);
 
   void notifyKeyIsPressed(const Constants::KeyboardButtons& keyEvent);
 

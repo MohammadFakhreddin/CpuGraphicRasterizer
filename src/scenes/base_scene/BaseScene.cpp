@@ -62,13 +62,15 @@ void BaseScene::notifyKeyIsPressed(const Constants::KeyboardButtons & keyEvent) 
   }
   keyEvents[keyEvent] = true;
 }
-#endif // __DESKTOP__
 
-#ifdef __DESKTOP__
-bool BaseScene::useKeyEvent(const Constants::KeyboardButtons & keyEvent) {
+const bool& BaseScene::useKeyEvent(const Constants::KeyboardButtons & keyEvent) {
   temporaryKeyEventPlaceholder = keyEvents[keyEvent];
   keyEvents[keyEvent] = false;
   return temporaryKeyEventPlaceholder;
+}
+
+const bool& BaseScene::getMouseEvent(const Constants::MouseButtonName& mouseButtonName){
+  return mouseEvents[mouseButtonName];
 }
 #endif // __DESKTOP__
 

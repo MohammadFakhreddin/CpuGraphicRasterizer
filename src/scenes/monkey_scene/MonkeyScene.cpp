@@ -62,27 +62,27 @@ MonkeyScene::MonkeyScene(OpenGL& gl)
 
 void MonkeyScene::update(double deltaTime) {
 #ifdef __DESKTOP__
-  //{//We rotate light by keyboard
-  //  if (useKeyEvent(Constants::KeyboardButtons::keyK)) {
-  //    pointLight->transformX(float(deltaTime * lightTransformSpeed * 1.0f));
-  //  }
-  //  if (useKeyEvent(Constants::KeyboardButtons::keyH)) {
-  //    pointLight->transformX(float(deltaTime * lightTransformSpeed * -1.0f));
-  //  }
-  //  if (useKeyEvent(Constants::KeyboardButtons::keyU)) {
-  //    pointLight->transformY(float(deltaTime * lightTransformSpeed * 1.0f));
-  //  }
-  //  if (useKeyEvent(Constants::KeyboardButtons::keyJ)) {
-  //    pointLight->transformY(float(deltaTime * lightTransformSpeed * -1.0f));
-  //  }
-  //  if (useKeyEvent(Constants::KeyboardButtons::keyY)) {
-  //    pointLight->transformZ(float(deltaTime * lightTransformSpeed * -1.0f));
-  //  }
-  //  if (useKeyEvent(Constants::KeyboardButtons::keyI)) {
-  //    pointLight->transformZ(float(deltaTime * lightTransformSpeed * 1.0f));
-  //  }
-  //}
-  {//We rotate cmaera by keyboard and mouse
+  {//We rotate light by keyboard
+   if (useKeyEvent(Constants::KeyboardButtons::keyK)) {
+     pointLight->transformX(float(deltaTime * lightTransformSpeed * 1.0f));
+   }
+   if (useKeyEvent(Constants::KeyboardButtons::keyH)) {
+     pointLight->transformX(float(deltaTime * lightTransformSpeed * -1.0f));
+   }
+   if (useKeyEvent(Constants::KeyboardButtons::keyU)) {
+     pointLight->transformY(float(deltaTime * lightTransformSpeed * 1.0f));
+   }
+   if (useKeyEvent(Constants::KeyboardButtons::keyJ)) {
+     pointLight->transformY(float(deltaTime * lightTransformSpeed * -1.0f));
+   }
+   if (useKeyEvent(Constants::KeyboardButtons::keyY)) {
+     pointLight->transformZ(float(deltaTime * lightTransformSpeed * -1.0f));
+   }
+   if (useKeyEvent(Constants::KeyboardButtons::keyI)) {
+     pointLight->transformZ(float(deltaTime * lightTransformSpeed * 1.0f));
+   }
+  }
+  {//Transform of camera
     cameraTransformX = 0.0f;
     if (useKeyEvent(Constants::KeyboardButtons::keyA)) {
       cameraTransformX += float(-1.0f * deltaTime * cameraTransformSpeed);
@@ -106,29 +106,38 @@ void MonkeyScene::update(double deltaTime) {
     }
     camera.transformXYZ(cameraTransformX, cameraTransformY, cameraTransformZ);
   }
-  {
-    cameraRotationX = 0.0f;
-    if (useKeyEvent(Constants::KeyboardButtons::keyF)) {
-      cameraRotationX += float(-1.0f * deltaTime * cameraRotationSpeed);
+  {//Rotation of camera
+    if(getMouseEvent(Constants::MouseButtonName::left)){
+      cameraRotationX = 0.0f;
+      cameraRotationY = 0.0f;
+      cameraRotationZ = 0.0f;
+      if(previouseLeftMouseButtonState==false){
+        previousMousePosition.assign(DataAccessPoint::getInstance()->getMousePosition());
+        previouseLeftMouseButtonState = true;
+      }else if(previouseLeftMouseButtonState==true){
+        currentMousePosition.assign(DataAccessPoint::getInstance()->getMousePosition());
+        cameraRotationX = float(
+          -1.0f * 
+          deltaTime * 
+          (
+            currentMousePosition.getY() - previousMousePosition.getY()
+          ) * cameraRotationSpeed
+        );
+        cameraRotationY = float(
+          +1.0f * 
+          deltaTime *
+          (
+            currentMousePosition.getX() - previousMousePosition.getX()
+          ) * cameraRotationSpeed
+        );
+        camera.rotateXYZ(cameraRotationX, cameraRotationY, cameraRotationZ);
+        previousMousePosition.assign(currentMousePosition);
+      }
+    }else
+    {
+      previouseLeftMouseButtonState = false;
     }
-    if(useKeyEvent(Constants::KeyboardButtons::keyH)){
-      cameraRotationX += float(1.0f * deltaTime * cameraRotationSpeed);
-    }
-    cameraRotationY = 0.0f;
-    if (useKeyEvent(Constants::KeyboardButtons::keyT)) {
-      cameraRotationY += float(-1.0f * deltaTime * cameraRotationSpeed);
-    }
-    if (useKeyEvent(Constants::KeyboardButtons::keyG)) {
-      cameraRotationY += float(1.0f * deltaTime * cameraRotationSpeed);
-    }
-    cameraRotationZ = 0.0f;
-    if (useKeyEvent(Constants::KeyboardButtons::keyY)) {
-      cameraRotationZ += float(-1.0f * deltaTime * cameraRotationSpeed);
-    }
-    if (useKeyEvent(Constants::KeyboardButtons::keyR)) {
-      cameraRotationZ += float(1.0f * deltaTime * cameraRotationSpeed);
-    }
-    camera.rotateXYZ(cameraRotationX, cameraRotationY, cameraRotationZ);
+    
   }
 #endif
   pip.update(deltaTime);
