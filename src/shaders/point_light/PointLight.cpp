@@ -112,10 +112,7 @@ void PointLight::computeLightIntensity(
   lightVectorPlaceholder.assign(worldPoint);
   lightVectorPlaceholder.minus(surfaceLocation);
   lightVectorPlaceholder.setW(0.0f);
-  /*lightVectorPlaceholder.set(0, 0, worldPoint.get(0, 0) - surfaceLocation.get(0, 0));
-  lightVectorPlaceholder.set(1, 0, worldPoint.get(1, 0) - surfaceLocation.get(1, 0));
-  lightVectorPlaceholder.set(2, 0, worldPoint.get(2, 0) - surfaceLocation.get(2, 0));*/
-
+  
   double squareDistance = lightVectorPlaceholder.squareSize<double>();
   assert(std::isnan(squareDistance) == false);
 
@@ -143,6 +140,7 @@ void PointLight::computeLightIntensity(
     distance * linearAttenuation +
     constantAttenuation
   );
+
   assert(std::isnan(distanceFactor) == false);
   //TODO We need memory pool
   //TODO I need a memory manger that I request objects from it
