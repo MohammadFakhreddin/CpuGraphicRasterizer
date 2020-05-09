@@ -229,14 +229,12 @@ public:
     assert(width == 2 || width == 3 || width == 4);
     assert(height == 1);
     cells[0] = value;
-    assert(std::isnan(cells[0])==false);
   }
 
   void setY(const T& value) {
     assert(width == 2 || width == 3 || width == 4);
     assert(height == 1);
     cells[1] = value;
-    assert(std::isnan(cells[1])==false);
   }
 
   void setZ(const T& value) {

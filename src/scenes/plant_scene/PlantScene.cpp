@@ -41,7 +41,7 @@ PlantScene::PlantScene(OpenGL& gl)
 
   pip.assignAmbientLight(ambientLight.get());
   pip.assignDirectionalLight(directionalLight.get());
-  pip.assignShapes(shape.get());
+  pip.assignShape(shape.get());
 
 }
 

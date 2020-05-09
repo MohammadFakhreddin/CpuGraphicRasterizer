@@ -42,7 +42,7 @@ SphereScene::SphereScene(OpenGL& gl)
 
   pipeLine.assignAmbientLight(ambientLight.get());
   pipeLine.assignDirectionalLight(directionalLight.get());
-  pipeLine.assignShapes(sphere.get());
+  pipeLine.assignShape(sphere.get());
   
 }
 

@@ -52,9 +52,10 @@ void PipeLine::assignPointLight(std::vector<PointLight*>& pointLights) {
   }
 }
 
-void PipeLine::assignShapes(std::vector<Shape3d*>& shapes) {
+void PipeLine::assignShape(std::vector<Shape3d*>& shapes) {
   assert(shapes.empty() == false);
   for (auto& shape : shapes) {
+    assert(shape != nullptr);
     this->shapes.emplace_back(shape);
   }
 }
@@ -69,9 +70,8 @@ void PipeLine::assignPointLight(PointLight* pointLight) {
   pointLights.emplace_back(pointLight);
 }
 
-void PipeLine::assignShapes(Shape3d* shape) {
+void PipeLine::assignShape(Shape3d* shape) {
   assert(shape != nullptr);
-  this->shapes.clear();
   this->shapes.emplace_back(shape);
 }
 
@@ -513,6 +513,24 @@ void PipeLine::assembleLines(
   const Matrix4X1Float& paramNormalEnd
 )
 {
+#ifdef DEBUG_PIPELINE
+  camera.putPixelInMap(
+    int(paramTriangleStart.getX()),
+    int(paramTriangleStart.getY()),
+    paramTriangleStart.getZ(),
+    1.0f,
+    0.0f,
+    0.0f
+  );
+  camera.putPixelInMap(
+    int(paramTriangleEnd.getX()),
+    int(paramTriangleEnd.getY()),
+    paramTriangleEnd.getZ(),
+    1.0f,
+    0.0f,
+    0.0f
+  );
+#else // DEBUG_PIPELINE
   {//TriangleStepValue
     surface->lineMemoryPool.lineStart.assign(paramTriangleStart);
 
@@ -658,6 +676,7 @@ void PipeLine::assembleLines(
       Logger::exception("Unhandled light precision");
     }
   }
+#endif
 }
 
 void PipeLine::updateShapeSurfacesConversionMethod(const unsigned int& threadNumber, void* shape) { 

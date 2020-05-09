@@ -8,6 +8,7 @@
 #include "../event_handler/EventHandler.h"
 #include "../utils/thread_pool/ThreadPool.h"
 #include "../data_types/MatrixTemplate.h"
+#include "../text/freetype/FreeType.h"
 
 class DataAccessPoint {
 
@@ -47,6 +48,8 @@ public:
 
   const Matrix2X1Int& getMousePosition();
 
+  const FreeType& getFreeType();
+
 #ifdef __DESKTOP__
 
   Constants::KeyboardButtons getKeyCode(const unsigned char& key);
@@ -80,6 +83,8 @@ private:
   EventHandler eventHandler;
 
   ThreadPool threadPool;
+
+  FreeType freeType;
 
 };
 

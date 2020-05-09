@@ -43,7 +43,7 @@ ColoredCubeScene::ColoredCubeScene(
 
   pip.assignAmbientLight(ambientLight.get());
   pip.assignDirectionalLight(directionalLight.get());
-  pip.assignShapes(cube.get());
+  pip.assignShape(cube.get());
 
 }
 

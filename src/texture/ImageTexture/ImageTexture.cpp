@@ -10,9 +10,9 @@
 #include "../../camera/Camera.h"
 
 ImageTexture::ImageTexture(
-  std::string address,
-  float virtualImageWidth,
-  float virtualImageHeight
+  const std::string& address,
+  const float& virtualImageWidth,
+  const float& virtualImageHeight
   )
   :
   address(address),
@@ -32,6 +32,7 @@ ImageTexture::ImageTexture(
   data = new float[dataLength];
   for (unsigned int i = 0; i < dataLength; i++) {
     data[i] = float(tempData[i]) / 255.0f;
+    assert(data[i] >= 0.0f && data[i] <= 1.0f);
   }
 
 #ifndef __ANDROID__
@@ -41,6 +42,42 @@ ImageTexture::ImageTexture(
 
   scaleX = float(width) / virtualImageWidth;
   scaleY = float(height) / virtualImageHeight;
+}
+
+ImageTexture::ImageTexture(
+  unsigned char* tempData, 
+  const int& numberOfChannels,
+  const int& realImageWidth, 
+  const int& realImageHeight, 
+  const float& virtualImageWidth, 
+  const float& virtualImageHeight
+)
+  :
+  address(address),
+  virtualImageWidth(virtualImageWidth),
+  virtualImageHeight(virtualImageHeight),
+  width(realImageWidth),
+  height(realImageHeight),
+  numberOfChannels(3)
+{
+  assert(virtualImageWidth > 0);
+  assert(virtualImageHeight > 0);
+
+  //For data protection we copy temp data so external events won't effect data
+  dataLength = (unsigned int)(width * height);
+
+  assert(dataLength % numberOfChannels == 0);
+
+  data = new float[dataLength];
+  for (unsigned int i = 0; i < dataLength; i++) {
+    data[i] = float(tempData[i]) / 255.0f;
+    assert(data[i] >= 0.0f && data[i] <= 1.0f);
+  }
+  //Removing temporary data
+  delete[] tempData;
+
+  scaleX = 1.0f;
+  scaleY = 1.0f;
 }
 
 ImageTexture::~ImageTexture() {
@@ -109,6 +146,10 @@ void ImageTexture::getDirectPixelColor(
   *green = data[position + 1];
   *blue = data[position + 2];
 
+  if (filter != nullptr) {
+    (*filter)(red, green, blue);
+  }
+
 }
 
 /**
@@ -146,4 +187,11 @@ void ImageTexture::update(double deltaTime, Camera& cameraInstance) {
 
 std::string ImageTexture::getAddress() {
   return address;
+}
+
+void ImageTexture::assignFilter(
+  std::function<void(float* red, float* green, float* blue)>* filter
+)
+{
+  this->filter = filter;
 }

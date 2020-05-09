@@ -1,6 +1,8 @@
 #ifndef PipeLine_Class
 #define PipeLine_Class
 
+//#define DEBUG_PIPELINE
+
 #include <functional>
 
 #include "../shaders/ambient_light/AmbientLight.h"
@@ -32,15 +34,20 @@ public:
 
   void assignPointLight(std::vector<PointLight*>& pointLights);
 
-  void assignShapes(std::vector<Shape3d*>& shapes);
+  void assignShape(std::vector<Shape3d*>& shapes);
 
   void assignDirectionalLight(DirectionalLight* directionalLights);
 
   void assignPointLight(PointLight* pointLights);
 
-  void assignShapes(Shape3d* shapes);
+  void assignShape(Shape3d* shapes);
 
   void update(double deltaTime);
+
+  void updateSurface(
+    Shape3d* shape3d,
+    Surface* surface
+  );
 
 private:
 
@@ -52,17 +59,6 @@ private:
   void updateShapeNormals(
     const unsigned int& threadNumber,
     Shape3d* shape
-  );
-
-
-  void updateShapeSurfaces(
-    const unsigned int& threadNumber,
-    Shape3d* shape
-  );
-
-  void updateSurface(
-    Shape3d* shape3d,
-    Surface* surface
   );
 
   void assembleTriangles(
@@ -116,6 +112,11 @@ private:
   );
 
   void updateShapeSurfacesConversionMethod(const unsigned int& threadNumber, void* shape);
+
+  void updateShapeSurfaces(
+    const unsigned int& threadNumber,
+    Shape3d* shape
+  );
 
   std::function<void(const unsigned int&, void*)>  updateShapeSurfacesReference = std::bind(
     &PipeLine::updateShapeSurfacesConversionMethod,

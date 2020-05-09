@@ -42,7 +42,7 @@ BunnyScene::BunnyScene(OpenGL& gl)
  
   pip.assignAmbientLight(ambientLight.get());
   pip.assignDirectionalLight(directionalLight.get());
-  pip.assignShapes(bunnyShape.get());
+  pip.assignShape(bunnyShape.get());
 
 }
 

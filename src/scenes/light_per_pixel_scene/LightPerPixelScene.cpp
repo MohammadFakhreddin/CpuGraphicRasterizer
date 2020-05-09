@@ -40,7 +40,7 @@ LightPerPixelScene::LightPerPixelScene(OpenGL& gl)
     shape->transformZ(500.0f);
   }
 
-  pip.assignShapes(shape.get());
+  pip.assignShape(shape.get());
   pip.assignAmbientLight(ambientLight.get());
   pip.assignPointLight(pointLight.get());
 

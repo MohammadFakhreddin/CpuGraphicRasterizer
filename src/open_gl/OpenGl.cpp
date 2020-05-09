@@ -218,9 +218,10 @@ void OpenGL::drawPixel(
   //OpenGL default world projection
   assert(x>=-1 && x<=1);
   assert(y>=-1 && y<=1);
-  assert(red>=0 && red<=1.0f);
+  //TODO Restore it
+  /*assert(red>=0 && red<=1.0f);
   assert(green>=0 && green<=1.0f);
-  assert(blue>=0 && blue<=1.0f);
+  assert(blue>=0 && blue<=1.0f);*/
 
 #ifdef __OPENGL__
 

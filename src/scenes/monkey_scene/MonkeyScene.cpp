@@ -1,4 +1,7 @@
-#include "./MonkeyScene.h"
+﻿#include "./MonkeyScene.h"
+
+#include <harfbuzz\hb.h>
+#include <codecvt>
 
 #include "../base_scene/BaseScene.h"
 #include "../../data_access_point/DataAccessPoint.h"
@@ -6,6 +9,7 @@
 #include "../../utils/path/Path.h"
 #include "../../shaders/directional_light/DirectionalLight.h"
 #include "../../shaders/ambient_light/AmbientLight.h"
+
 
 MonkeyScene::MonkeyScene(OpenGL& gl)
   :
@@ -33,7 +37,17 @@ MonkeyScene::MonkeyScene(OpenGL& gl)
     float(1.0 / double(10000)),
     30
   )),
-  pip(camera)
+  pip(camera),
+  font(
+    Path::generateAssetPath("font/BYekan", ".ttf"),
+    200,
+    &DataAccessPoint::getInstance()->getFreeType(),
+    hb_language_from_string("fa", 2),
+    HB_SCRIPT_ARABIC,
+    HB_DIRECTION_RTL,
+    &faCaSource
+  ),
+  whiteColor(std::make_unique<ColorTexture>(1.0f,1.0f,1.0f))
 {
 
   {//Creating shape
@@ -55,8 +69,8 @@ MonkeyScene::MonkeyScene(OpenGL& gl)
   }
 
   pip.assignAmbientLight(ambientLight.get());
-  pip.assignPointLight(pointLight.get());
-  pip.assignShapes(monkey.get());
+  //pip.assignPointLight(pointLight.get());
+  //pip.assignShape(monkey.get());
 
 }
 
@@ -141,6 +155,8 @@ void MonkeyScene::update(double deltaTime) {
   }
 #endif
   pip.update(deltaTime);
+  font.drawText(pip, U"زهرا  دوست  دارم", 100, 100, Font::PositionMode::leftTop, whiteColor.get());
+  
 }
 
 void MonkeyScene::render(double deltaTime) {

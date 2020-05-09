@@ -34,3 +34,17 @@ void ColorTexture::getPixelForPosition(
   *green = this->green;
   *blue = this->blue;
 }
+
+const float& ColorTexture::getRed()
+{
+  return red;
+}
+
+const float& ColorTexture::getGreen()
+{
+  return green;
+}
+
+const float& ColorTexture::getBlue() {
+  return blue;
+}

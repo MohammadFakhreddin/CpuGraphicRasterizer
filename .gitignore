@@ -79,6 +79,8 @@ CMakeSettings.json
 
 package.json
 
+package-lock.json
+
 3d-cube.dir
 Debug
 Debug/*

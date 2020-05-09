@@ -1,7 +1,8 @@
-#include "Application.h"
+﻿#include "Application.h"
 
 #include <memory>
 #include <vector>
+
 #include "../data_access_point/DataAccessPoint.h"
 #include "../scenes/monkey_scene/MonkeyScene.h"
 #include "../scenes/colored_cube_scene/ColoredCubeScene.h"
@@ -82,7 +83,6 @@ Application::Application(
   glutMotionFunc(handleMotionEvent);
   glutPassiveMotionFunc(handlePassiveMotionEvent);
 #endif
-
   {
     //sceneList.emplace_back(std::make_unique<LightPerPixelScene>(openGLInstance));
     sceneList.emplace_back(std::make_unique<MonkeyScene>(openGLInstance));
@@ -90,8 +90,8 @@ Application::Application(
     // sceneList.emplace_back(std::make_unique<SphereScene>(openGLInstance));
     //sceneList.emplace_back(std::make_unique<ColoredCubeScene>(openGLInstance));
     // sceneList.emplace_back(std::make_unique<TexturedCubeScene>(openGLInstance));
-    sceneList.emplace_back(std::make_unique<RobotScene>(openGLInstance));
-    sceneList.emplace_back(std::make_unique<PlantScene>(openGLInstance));
+    //sceneList.emplace_back(std::make_unique<RobotScene>(openGLInstance));
+    //sceneList.emplace_back(std::make_unique<PlantScene>(openGLInstance));
     navigateToScene(0);
   }
 

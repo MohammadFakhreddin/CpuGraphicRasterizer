@@ -25,6 +25,12 @@ public:
     float* blue
   ) const;
 
+  const float& getRed();
+
+  const float& getGreen();
+
+  const float& getBlue();
+
 private:
 
   float red;

@@ -1,3 +1,8 @@
+#ifndef ImageTexture_Class
+#define ImageTexture_Class
+
+#include <functional>
+
 #include "../Texture.h"
 
 class ImageTexture : public Texture {
@@ -27,9 +32,18 @@ private:
 public:
 
   ImageTexture(
-    std::string address,
-    float virtualImageWidth,
-    float virtualImageHeight
+    const std::string& address,
+    const float& virtualImageWidth,
+    const float& virtualImageHeight
+  );
+
+  ImageTexture(
+    unsigned char* data,
+    const int& numberOfChannels,
+    const int& realImageWidth,
+    const int& realImageHeight,
+    const float& virtualImageWidth,
+    const float& virtualImageHeight
   );
 
   ~ImageTexture() override;
@@ -70,6 +84,8 @@ public:
 
   std::string getAddress();
 
+  void assignFilter(std::function<void(float* red, float* green, float* blue)>* filter);
+
 private:
 
   void getDirectPixelColor(
@@ -79,4 +95,8 @@ private:
     float* blue
   ) const;
 
+  std::function<void(float* red, float* green, float* blue)>* filter = nullptr;
+
 };
+
+#endif // !ImageTexture_Class

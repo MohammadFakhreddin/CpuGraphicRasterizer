@@ -70,7 +70,11 @@ public:
 
   void transformXYZ(const float& x, const float& y, const float& z);
 
+  void resetTransform();
+
   void scale(float value);
+
+  void resetScale();
 
   void rotateX(const float& x);
 

@@ -146,10 +146,6 @@ void Camera::putPixelInMap(
   const float& blue
 ) {
 
-  assert(red>=0 && red<=1.0f);
-  assert(green>=0 && green<=1.0f);
-  assert(blue>=0 && blue<=1.0f);
-  
   if(
     zValue <= startZ ||
     zValue >= endZ ||
@@ -174,6 +170,7 @@ void Camera::assignToPixel(
 ) {
   auto& currentPixel = pixelMap[index];
   if (currentPixel.zValue > zValue) {
+    //TODO Maybe impelemting some antialising
     currentPixel.blue = blue;
     currentPixel.green = green;
     currentPixel.red = red;
@@ -205,6 +202,7 @@ void Camera::render(const double& deltaTime){
 }
 
 float Camera::scaleBasedOnZDistance(const float& zLocation) {
+  assert(zLocation != 0.0f);
   return zDistance / zLocation;
 }
 

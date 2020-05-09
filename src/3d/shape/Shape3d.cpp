@@ -204,9 +204,27 @@ void Shape3d::transformXYZ(const float& x, const float& y, const float& z) {
   );
 }
 
+void Shape3d::resetTransform() {
+  transformValue.setX(0.0f);
+  transformValue.setY(0.0f);
+  transformValue.setZ(0.0f);
+  Matrix4X4Float::assignTransformation(
+    transformMatrix,
+    transformValue.getX(),
+    transformValue.getY(),
+    transformValue.getZ()
+  );
+}
+
 void Shape3d::scale(float value) {
   scaleValue += value;
   assert(scaleValue > 0);
+  Matrix4X4Float::assignScale(scaleMatrix, scaleValue);
+}
+
+void Shape3d::resetScale()
+{
+  scaleValue = 1.0f;
   Matrix4X4Float::assignScale(scaleMatrix, scaleValue);
 }
 

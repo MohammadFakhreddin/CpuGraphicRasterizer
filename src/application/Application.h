@@ -57,6 +57,7 @@ private:
   Matrix2X1Float fpsDrawLocation;
 
   Matrix2X1Float sceneNameDrawLocation;
+
 };
 
 #endif

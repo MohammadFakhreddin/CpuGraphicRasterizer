@@ -15,6 +15,7 @@ public:
     }
     return result;
   }
+
   static std::vector<std::string> split(std::string text, char splitChar) {
     auto outputArray = std::vector<std::string>();
     if (text.size() > 0) {
@@ -50,6 +51,43 @@ public:
     }
     return outputArray;
   }
+  
+  static std::vector<std::u32string> split(std::u32string text, char splitChar) {
+    auto outputArray = std::vector<std::u32string>();
+    if (text.size() > 0) {
+      bool isCurrentlyAddingToAWord = false;
+      for (const auto& character : text) {
+        if (character == '\n') {
+          isCurrentlyAddingToAWord = false;
+          outputArray.emplace_back(std::u32string(1, character));
+        }
+        else {
+          if (isCurrentlyAddingToAWord) {
+            if (character == splitChar) {
+              isCurrentlyAddingToAWord = false;
+            }
+            else
+            {
+              outputArray.at(outputArray.size() - 1) += character;
+            }
+          }
+          else
+          {
+            if (character == splitChar) {
+              continue;
+            }
+            else
+            {
+              isCurrentlyAddingToAWord = true;
+              outputArray.emplace_back(std::u32string(1, character));
+            }
+          }
+        }
+      }
+    }
+    return outputArray;
+  }
+
   static std::string trim(std::string rawText) {
     if (rawText.length() == 0) {
       return rawText;
@@ -75,6 +113,33 @@ public:
     }
     return parsedText;
   }
+
+  static std::u32string trim(std::u32string rawText) {
+    if (rawText.length() == 0) {
+      return rawText;
+    }
+    int start = -1;
+    int end = -1;
+    for (int i = 0; i < rawText.length(); i++) {
+      if (rawText[i] != ' ') {
+        if (start == -1) {
+          start = i;
+        }
+        else {
+          end = i;
+        }
+      }
+    }
+    if (end == -1) {
+      return U"";
+    }
+    std::u32string parsedText = U"";
+    for (int i = start; i <= end; i++) {
+      parsedText += rawText[i];
+    }
+    return parsedText;
+  }
+
 };
 
 #endif

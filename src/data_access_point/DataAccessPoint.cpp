@@ -122,6 +122,11 @@ const Matrix2X1Int& DataAccessPoint::getMousePosition(){
   return mousePosition;
 }
 
+const FreeType& DataAccessPoint::getFreeType()
+{
+  return freeType;
+}
+
 Constants::MouseButtonName DataAccessPoint::getMouseButtonName(const int& button){
   switch (button)
   {
@@ -132,7 +137,8 @@ Constants::MouseButtonName DataAccessPoint::getMouseButtonName(const int& button
   case 2 :
     return Constants::MouseButtonName::middle;
   default:
-    Logger::exception("DataAccessPoint::getMouseButtonName is unknown");
+    //TODO Handle all mouse inputs
+    // Logger::exception("DataAccessPoint::getMouseButtonName is unknown");
     return Constants::MouseButtonName::unknown;
   }
 }

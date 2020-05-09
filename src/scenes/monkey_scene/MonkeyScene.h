@@ -7,6 +7,8 @@
 #include "../../texture/ColorTexture/ColorTexture.h"
 #include "../../shaders/point_light/PointLight.h"
 #include "../../pipeline/Pipeline.h"
+#include "../../texture/ImageTexture/ImageTexture.h"
+#include "../../text/font/Font.h"
 
 class MonkeyScene : public BaseScene {
 
@@ -34,6 +36,8 @@ public:
 
 private:
 
+  FaCharacterSource faCaSource;
+
   Camera camera;
 
   std::unique_ptr<Shape3d> monkey;
@@ -43,6 +47,8 @@ private:
   std::unique_ptr<AmbientLight> ambientLight;
 
   std::unique_ptr<ColorTexture> metalColor;
+
+  std::unique_ptr<ColorTexture> whiteColor;
 
   float cameraTransformX = 0.0f;
 
@@ -63,6 +69,8 @@ private:
   Matrix2X1Int previousMousePosition;
 
   Matrix2X1Int currentMousePosition;
+
+  Font font;
 
 };
 
