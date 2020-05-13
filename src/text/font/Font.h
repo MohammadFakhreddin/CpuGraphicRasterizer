@@ -12,8 +12,17 @@
 #include "../char_glyph/CharGlyph.h"
 #include "../resources/FaCharacterSource.h"
 #include "../../pipeline/Pipeline.h"
+#include "FontMemoryPool.h"
 
 class Font {
+
+private:
+
+  static constexpr char32_t asciiStart = 0;
+  static constexpr char32_t asciiEnd = 256;
+  static constexpr char32_t punchuationStart = 8192;
+  static constexpr char32_t punchuationEnd = 8303;
+
 public:
 
   enum class PositionMode {
@@ -24,10 +33,7 @@ public:
     const std::string& fontAddress,
     const int& fontSize,
     const FreeType* freeType,
-    const hb_language_t& language,
-    const hb_script_t& script,
-    const hb_direction_t& direction,
-    const LanguageCharacterSource* charactersSource
+    const std::vector<LanguageCharacterSource*> specialCharactersSource
   );
 
   ~Font();
@@ -47,6 +53,16 @@ public:
 
 private:
 
+  void renderAndEmptyRTLWordBuffer(PipeLine& pip);
+
+  void renderWord(PipeLine& pip,const std::u32string& word);
+
+  void renderGlyph(PipeLine& pip, std::unique_ptr<CharGlyph>& glyph);
+
+  void isRtl(const std::u32string& word, bool* result);
+
+  void renderSpace();
+
   const FreeType* freeType;
 
   const int size;
@@ -55,32 +71,29 @@ private:
 
   const float space;
 
-  const hb_language_t& language;
-
-  const hb_script_t& script;
-
-  const hb_direction_t& direction;
-
   FT_Face* face;
 
   hb_font_t* font;
 
   hb_buffer_t* buffer;
 
-  std::unordered_map<char32_t, std::unique_ptr<CharGlyph>> singleCharsMap;
+  std::unordered_map<char32_t, LanguageCharacterSource::Direction> unicodeSingleCharDirection;
+
+  std::unordered_map<char32_t, std::unique_ptr<CharGlyph>> unicodeSingleCharsMap;
   
-  std::unordered_map<char32_t, std::unique_ptr<CharGlyph>> startCharsMap;
+  std::unordered_map<char32_t, std::unique_ptr<CharGlyph>> unicodeStartCharsMap;
 
-  std::unordered_map<char32_t, std::unique_ptr<CharGlyph>> middleCharsMap;
+  std::unordered_map<char32_t, std::unique_ptr<CharGlyph>> unicodeMiddleCharsMap;
 
-  std::unordered_map<char32_t, std::unique_ptr<CharGlyph>> endCharsMap;
+  std::unordered_map<char32_t, std::unique_ptr<CharGlyph>> unicodeEndCharsMap;
 
-  std::unordered_map<char32_t, bool> connectionBreakers;
+  std::unordered_map<char32_t, bool> unicodeConnectionBreakers;
 
-  std::unordered_map<char32_t, std::unique_ptr<CharGlyph>> numbersCharMap;
-  
   CharGlyph* generateCharacter(
-    const char32_t& characterSymbol
+    const char32_t& characterSymbol,
+    const hb_language_t& language,
+    const hb_script_t& script,
+    const hb_direction_t& direction
   );
 
   void colorFilterMethod(float* red, float* green, float* blue);
@@ -94,6 +107,8 @@ private:
   );
 
   ColorTexture* currentColorTexture = nullptr;
+
+  FontMemoryPool mp;
 
 };
 

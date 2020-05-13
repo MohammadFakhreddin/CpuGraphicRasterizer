@@ -36,8 +36,6 @@ public:
 
 private:
 
-  FaCharacterSource faCaSource;
-
   Camera camera;
 
   std::unique_ptr<Shape3d> monkey;

@@ -8,13 +8,11 @@
 #include "../../pipeline/Pipeline.h"
 
 //This class is written based on harfbuzz library example
-Font::Font(const std::string& fontAddress,
+Font::Font(
+  const std::string& fontAddress,
   const int& fontSize,
   const FreeType* freeType,
-  const hb_language_t& language,
-  const hb_script_t& script,
-  const hb_direction_t& direction,
-  const LanguageCharacterSource* charactersSource
+  const std::vector<LanguageCharacterSource*> specialCharactersSource
 )
   :
   size(fontSize),
@@ -25,61 +23,84 @@ Font::Font(const std::string& fontAddress,
   face(freeType->loadFace(fontAddress, size * 64, 72, 72)),
   font(hb_ft_font_create(*face,nullptr)),
   buffer(hb_buffer_create()),
-  language(language),
-  script(script),
-  direction(direction),
-  singleCharsMap(),
-  startCharsMap(),
-  middleCharsMap(),
-  endCharsMap()
+  unicodeSingleCharsMap(),
+  unicodeStartCharsMap(),
+  unicodeMiddleCharsMap(),
+  unicodeEndCharsMap()
 {
   hb_buffer_allocation_successful(buffer);
-
-  if (charactersSource->getUnicodes().empty() == false) {
-    for (const auto& unicodeChars : charactersSource->getUnicodes()) {
-      std::vector<std::u32string> rawChars = Operators::split(Operators::trim(unicodeChars), U' ');
-      assert(rawChars.size() == 4);
-      {
-        assert(rawChars[0].size() == 1);
-        CharGlyph* charGlyph = generateCharacter(rawChars[0][0]);
-        assert(charGlyph != nullptr);
-        singleCharsMap.insert({ rawChars[0][0],std::unique_ptr<CharGlyph>(charGlyph) });
+  {
+    //TODO Start from here we need a fallback font that supports all unicode characters
+    auto languageCode = hb_language_from_string("en", 2);
+    auto direction = HB_DIRECTION_LTR;
+    auto script = HB_SCRIPT_LATIN;
+    //Ascii chars
+    for (char32_t asciiCharacter = asciiStart; asciiCharacter < asciiEnd; asciiCharacter++) {
+      Logger::log("Index:" + std::to_string(asciiCharacter));
+      CharGlyph* charGlyph = generateCharacter(asciiCharacter, languageCode, script, direction);
+      unicodeSingleCharsMap.insert({ asciiCharacter,std::unique_ptr<CharGlyph>(charGlyph) });
+      unicodeSingleCharDirection.insert({ asciiCharacter,LanguageCharacterSource::Direction::ltr });
+    }
+    //Punctuations
+    for (char32_t puncCharacter = punchuationStart; puncCharacter < punchuationEnd; puncCharacter++) {
+      CharGlyph* charGlyph = generateCharacter(puncCharacter, languageCode, script, direction);
+      unicodeSingleCharsMap.insert({ puncCharacter,std::unique_ptr<CharGlyph>(charGlyph) });
+      unicodeSingleCharDirection.insert({ puncCharacter,LanguageCharacterSource::Direction::ltr });
+    }
+  }
+  //Special unicode chars
+  if (specialCharactersSource.empty() == false) {
+    for (const auto& charactersSource : specialCharactersSource) {
+      auto languageCode = charactersSource->getLanguage();
+      auto direction = charactersSource->getDirection() == LanguageCharacterSource::Direction::ltr 
+        ? HB_DIRECTION_LTR 
+        : HB_DIRECTION_RTL;
+      auto script = charactersSource->getScript();
+      if (charactersSource->getUnicodes().empty() == false) {
+        for (const auto& unicodeChars : charactersSource->getUnicodes()) {
+          std::vector<std::u32string> rawChars = Operators::split(Operators::trim(unicodeChars), U' ');
+          assert(rawChars.size() == 4);
+          {
+            assert(rawChars[0].size() == 1);
+            CharGlyph* charGlyph = generateCharacter(rawChars[0][0], languageCode, script, direction);
+            assert(charGlyph != nullptr);
+            unicodeSingleCharsMap.insert({ rawChars[0][0],std::unique_ptr<CharGlyph>(charGlyph) });
+            unicodeSingleCharDirection.insert({ rawChars[0][0],charactersSource->getDirection() });
+          }
+          {
+            assert(rawChars[1].size() == 1);
+            CharGlyph* charGlyph = generateCharacter(rawChars[1][0], languageCode, script, direction);
+            assert(charGlyph != nullptr);
+            unicodeStartCharsMap.insert({ rawChars[0][0],std::unique_ptr<CharGlyph>(charGlyph) });
+          }
+          {
+            assert(rawChars[2].size() == 1);
+            CharGlyph* charGlyph = generateCharacter(rawChars[2][0], languageCode, script, direction);
+            assert(charGlyph != nullptr);
+            unicodeMiddleCharsMap.insert({ rawChars[0][0],std::unique_ptr<CharGlyph>(charGlyph) });
+          }
+          {
+            assert(rawChars[3].size() == 1);
+            CharGlyph* charGlyph = generateCharacter(rawChars[3][0], languageCode, script, direction);
+            assert(charGlyph != nullptr);
+            unicodeEndCharsMap.insert({ rawChars[0][0],std::unique_ptr<CharGlyph>(charGlyph) });
+          }
+        }
       }
-      {
-        assert(rawChars[1].size() == 1);
-        CharGlyph* charGlyph = generateCharacter(rawChars[1][0]);
-        assert(charGlyph != nullptr);
-        startCharsMap.insert({ rawChars[0][0],std::unique_ptr<CharGlyph>(charGlyph) });
+      if (charactersSource->getConnectionBreakers().empty() == false) {
+        for (const auto& connectionBreakder : charactersSource->getConnectionBreakers()) {
+          unicodeConnectionBreakers[connectionBreakder] = true;
+        }
       }
-      {
-        assert(rawChars[2].size() == 1);
-        CharGlyph* charGlyph = generateCharacter(rawChars[2][0]);
-        assert(charGlyph != nullptr);
-        middleCharsMap.insert({ rawChars[0][0],std::unique_ptr<CharGlyph>(charGlyph) });
-      }
-      {
-        assert(rawChars[3].size() == 1);
-        CharGlyph* charGlyph = generateCharacter(rawChars[3][0]);
-        assert(charGlyph != nullptr);
-        endCharsMap.insert({ rawChars[0][0],std::unique_ptr<CharGlyph>(charGlyph) });
+      if (charactersSource->getNumbers().empty() == false) {
+        for (const auto& number : charactersSource->getNumbers()) {
+          CharGlyph* charGlyph = generateCharacter(number, languageCode, script, direction);
+          assert(charGlyph != nullptr);
+          unicodeStartCharsMap.insert({ number,std::unique_ptr<CharGlyph>(charGlyph) });
+        }
       }
     }
   }
-
-  if (charactersSource->getConnectionBreakers().empty() == false) {
-    for (const auto& connectionBreakder : charactersSource->getConnectionBreakers()) {
-      connectionBreakers[connectionBreakder] = true;
-    }
-  }
-
-  if (charactersSource->getNumbers().empty() == false) {
-    for (const auto& number : charactersSource->getNumbers()) {
-      CharGlyph* charGlyph = generateCharacter(number);
-      assert(charGlyph != nullptr);
-      numbersCharMap[number] = std::unique_ptr<CharGlyph>(charGlyph);
-    }
-  }
-
 }
 
 Font::~Font() {
@@ -96,76 +117,227 @@ void Font::drawText(
   const Font::PositionMode& mode,
   ColorTexture* colorTexture
 ) {
+  if (text.size() <= 0) {
+    return;
+  }
   assert(colorTexture != nullptr);
   this->currentColorTexture = colorTexture;
-  //TODO We need scale too
-  //TODO We need size too
-  float currentPositionX = float(positionX);
-  float currentPositionY = float(positionY);
-  if (text.size() > 0) {
-    //std::vector<std::u32string> words;
-    //bool isPersian = false;
-    //bool isPreviousPersian = false;
-    //bool isPreviousEnglish = false;
-    //for (auto character : text) {
-    //  //TODO Handle punctuations
-    //  /*if (
-    //    character._char == "\n" ||
-    //    (
-    //      character.isASCII() == true &&
-    //      std::ispunct(character._char[0])
-    //      )
-    //    ) {
-    //    auto newWord = std::vector<cocos2d::StringUtils::StringUTF8::CharUTF8>();
-    //    newWord.emplace_back(character);
-    //    words.emplace_back(newWord);
-    //    isPreviousPersian = false;
-    //    isPreviousEnglish = false;
-    //  }
-    //  else {*/
-    //  isPersian = singleCharsMap[character] != nullptr;
-    //  if (isPersian) {
-    //    isPreviousEnglish = false;
-    //    if (isPreviousPersian == true) {
-    //      words.at(words.size() - 1)+=(character);
-    //    }
-    //    else {
-    //      isPreviousPersian = true;
-    //      std::u32string newWord = U"";
-    //      newWord += character;
-    //      words.emplace_back(newWord);
-    //    }
-    //  }
-    //  else {
-    //    isPreviousPersian = false;
-    //    if (isPreviousEnglish == true) {
-    //      words.at(words.size() - 1) += character;
-    //    }
-    //    else {
-    //      isPreviousEnglish = true;
-    //      auto newWord = U"";
-    //      newWord += character;
-    //      words.emplace_back(newWord);
-    //    }
-    //  }
-    //  //}
-    //}
-    for (auto& character : text) {
-      auto& glyph = singleCharsMap[character];
-      if (glyph == nullptr) {
-        currentPositionX += space;
-        continue;
+  for (auto character : text) {
+    //TODO Handle punctuations
+    if (
+      std::ispunct(character) || 
+      std::isspace(character)
+    ) {
+      auto newWord = U"";
+      newWord += character;
+      mp.words.emplace_back(newWord);
+      mp.isPreviousRtl = false;
+      mp.isPreviousLtr = false;
+    }
+    else {
+      isRtl(text,&mp.isRtl);
+      if (mp.isRtl) {
+        mp.isPreviousLtr = false;
+        if (mp.isPreviousRtl == true) {
+          mp.words.at(mp.words.size() - 1) += character;
+        }
+        else {
+          mp.isPreviousRtl = true;
+          std::u32string newWord = U"";
+          newWord += character;
+          mp.words.emplace_back(newWord);
+        }
       }
-      assert(glyph.get());
-      assert(glyph.get()->getShape());
-      auto& shape = glyph.get()->getShape();
-      shape->resetTransform();
-      shape->transformXYZ(currentPositionX, currentPositionY, 1.0f);
-      currentPositionX += glyph->getWidth(); 
-      updateTextNodes(shape.get());
-      updateTextSurfaces(pip, shape.get());
+      else {
+        mp.isPreviousRtl = false;
+        if (mp.isPreviousLtr == true) {
+          mp.words.at(mp.words.size() - 1) += character;
+        }
+        else {
+          mp.isPreviousLtr = true;
+          auto newWord = U"";
+          newWord += character;
+          mp.words.emplace_back(newWord);
+        }
+      }
     }
   }
+  //TODO We need scale too
+  //TODO We need size too
+  mp.currentPositionX = float(positionX);
+  mp.currentPositionY = float(positionY);
+  //Print glyphs one by one
+  {//Normalizing and connecting words to create normalized text
+    for (const auto& word : mp.words) {
+      if (word[0] == '\n')
+      {
+        assert(word.length() == 1);
+        renderAndEmptyRTLWordBuffer(pip);
+        mp.currentPositionY += mp.maximumGlyphHeight;
+        mp.currentPositionX = float(positionX);
+      }
+      else if (std::isspace(word[0])) {
+        assert(word.length() == 1);
+        if (mp.rtlWordBuffer.empty()) {
+          renderSpace();
+        }
+        else {
+          mp.rtlWordBuffer.push(word);
+        }
+      }
+      else if (std::ispunct(word[0])) {
+        assert(word.length() == 1);
+        if (mp.rtlWordBuffer.size() == 0) {
+          renderWord(pip, word);
+        }
+        else {
+          mp.rtlWordBuffer.push(word);
+        }
+      }
+      else {
+        isRtl(word, &mp.isRtl);
+        if (mp.isRtl) {
+          mp.rtlWordBuffer.push(word);
+        }
+        else {
+          renderAndEmptyRTLWordBuffer(pip);
+          renderWord(pip, word);
+        }
+      }
+    }
+    renderAndEmptyRTLWordBuffer(pip);
+  }
+}
+
+
+void Font::renderAndEmptyRTLWordBuffer(PipeLine& pip)
+{
+  while (mp.rtlWordBuffer.empty() == false) {
+    renderWord(pip, mp.rtlWordBuffer.top());
+    mp.rtlWordBuffer.pop();
+  }
+}
+
+void Font::renderWord(PipeLine& pip, const std::u32string& word)
+{
+  //TODO To many duplicate computation
+  assert(word.length() > 0);
+  if (std::isspace(word[0])) {
+    assert(word.length() == 1);
+    renderSpace();
+  }
+  else if (std::ispunct(word[0])) {
+    assert(word.length() == 1);
+    auto& glyph = unicodeSingleCharsMap[word[0]];
+    renderGlyph(pip, glyph);
+  }
+  else {
+    isRtl(word, &mp.isRtl);
+    auto wordLoopStart = mp.isRtl ? word.length() - 1 : 0;
+    auto wordLoopEnd = mp.isRtl ? 0 : word.length() -1;
+    auto wordLoopStepValue = mp.isRtl ? -1 : +1;
+    if (mp.isRtl) {
+      for (auto i = wordLoopStart; i >= wordLoopEnd; i += wordLoopStepValue) {
+        mp.isPreviouseCharacterABreakerChar = false;
+        if (i == 0) {
+          auto& existingGlyph = unicodeStartCharsMap[word[i]];
+          if (existingGlyph != nullptr) {
+            renderGlyph(pip, existingGlyph);
+          }
+          else
+          {
+            auto& basicGlyph = unicodeSingleCharsMap[word[i]];
+            if (basicGlyph != nullptr) {
+              renderGlyph(pip, basicGlyph);
+            }
+            else {
+              renderSpace();
+            }
+          }
+        }
+        else
+        {
+          mp.isPreviouseCharacterABreakerChar = unicodeConnectionBreakers[word[i]] == true;
+          if (mp.isPreviouseCharacterABreakerChar) {
+            if (i == word.length() - 1) {
+              auto& basicGlyph = unicodeSingleCharsMap[word[i]];
+              if (basicGlyph != nullptr) {
+                renderGlyph(pip, basicGlyph);
+              }
+              else {
+                renderSpace();
+              }
+            }
+            else {
+              auto& existingGlyph = unicodeStartCharsMap[word[i]];
+              if (existingGlyph != nullptr) {
+                renderGlyph(pip, existingGlyph);
+              }
+              else
+              {
+                auto& basicGlyph = unicodeSingleCharsMap[word[i]];
+                if (basicGlyph != nullptr) {
+                  renderGlyph(pip, basicGlyph);
+                }
+                else {
+                  renderSpace();
+                }
+              }
+            }
+          }
+          else
+          {
+            if (i == word.length() - 1)
+            {
+              auto& existingGlyph = unicodeEndCharsMap[word[i]];
+              if (existingGlyph != nullptr) {
+                renderGlyph(pip, existingGlyph);
+              }
+              else
+              {
+                auto& basicGlyph = unicodeSingleCharsMap[word[i]];
+                if (basicGlyph != nullptr) {
+                  renderGlyph(pip, basicGlyph);
+                }
+                else {
+                  renderSpace();
+                }
+              }
+            }
+            else {
+              auto& existingGlyph = unicodeMiddleCharsMap[word[i]];
+              if (existingGlyph != nullptr) {
+                renderGlyph(pip, existingGlyph);
+              }
+              else
+              {
+                auto& basicGlyph = unicodeSingleCharsMap[word[i]];
+                if (basicGlyph != nullptr) {
+                  renderGlyph(pip, basicGlyph);
+                }
+                else {
+                  renderSpace();
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+void Font::renderGlyph(PipeLine& pip,std::unique_ptr<CharGlyph>& glyph) {
+  auto& shape = glyph.get()->getShape();
+  shape->resetTransform();
+  shape->transformXYZ(mp.currentPositionX, mp.currentPositionY, 1.0f);
+  mp.currentPositionX += glyph->getWidth();
+  updateTextNodes(shape.get());
+  updateTextSurfaces(pip, shape.get());
+}
+
+void Font::renderSpace() {
+  mp.currentPositionX += space;
 }
 
 void Font::updateTextNodes(Shape3d* shape) {
@@ -196,9 +368,18 @@ void Font::updateTextSurfaces(PipeLine& pip,Shape3d* shape) {
   }
 }
 
+void Font::isRtl(const std::u32string& word, bool* result)
+{
+  assert(word.length() >= 1);
+  *result = unicodeSingleCharDirection[word[0]] == LanguageCharacterSource::Direction::rtl;
+}
+
 //We need to create all words using this method once and then combine them separately
 CharGlyph* Font::generateCharacter(
-  const char32_t& characterSymbol
+  const char32_t& characterSymbol,
+  const hb_language_t& language,
+  const hb_script_t& script,
+  const hb_direction_t& direction
 )
 {
   hb_buffer_reset(buffer);

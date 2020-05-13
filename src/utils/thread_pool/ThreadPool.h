@@ -18,11 +18,8 @@ public:
   ThreadPool();
 
   ~ThreadPool();
-  /*
-  void autoAssignTask(
-    std::function<void(const unsigned int&, void*)>* task,
-    void* param
-  );*/ 
+
+  bool isMainThread();
 
   void assignTaskToAllThreads(
     std::function<void(const unsigned int&, void*)>* function,

@@ -9,6 +9,8 @@
 #include "../utils/thread_pool/ThreadPool.h"
 #include "../data_types/MatrixTemplate.h"
 #include "../text/freetype/FreeType.h"
+#include "../text/resources/FaCharacterSource.h"
+#include "../text/resources/LanguageCharacterSource.h"
 
 class DataAccessPoint {
 
@@ -50,6 +52,8 @@ public:
 
   const FreeType& getFreeType();
 
+  const std::vector<LanguageCharacterSource*>& getSpecialCharacters();
+
 #ifdef __DESKTOP__
 
   Constants::KeyboardButtons getKeyCode(const unsigned char& key);
@@ -85,6 +89,12 @@ private:
   ThreadPool threadPool;
 
   FreeType freeType;
+
+  FaCharacterSource faCaSource;
+
+  std::vector<LanguageCharacterSource*> specialCharactersSource = std::vector<LanguageCharacterSource*>({
+    &faCaSource
+  });
 
 };
 

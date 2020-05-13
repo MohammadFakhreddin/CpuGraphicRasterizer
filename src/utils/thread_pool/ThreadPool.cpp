@@ -44,6 +44,10 @@ ThreadPool::ThreadPool()
 
 }
 
+bool ThreadPool::isMainThread() {
+  return std::this_thread::get_id() == mainThreadId;
+}
+
 ThreadPool::~ThreadPool() {
   isThreadPoolActive = false;
 }
@@ -57,22 +61,6 @@ void ThreadPool::assignTaskToAllThreads(
     assignTask(threadIndex, task, param);
   }
 }
-
-/*
-void ThreadPool::autoAssignTask(
-  std::function<void(const unsigned int&, void*)>* task,
-  void* param
-) {
-
-  assert(std::this_thread::get_id() == mainThreadId);
-  
-  assignTask(currentThreadIndex, task, param);
-  currentThreadIndex++;
-  if (currentThreadIndex >= numberOfThreads) {
-    currentThreadIndex = 0;
-  }
-
-}*/
 
 void ThreadPool::assignTask(
   const unsigned int& threadNumber,

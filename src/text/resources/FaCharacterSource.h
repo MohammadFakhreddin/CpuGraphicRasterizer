@@ -97,6 +97,10 @@ private:
       U'۹'
   });
 
+  hb_language_t language = hb_language_from_string("fa", 2);
+
+  hb_script_t script = HB_SCRIPT_ARABIC;
+
 public:
 
   const std::vector<std::u32string>& getUnicodes() const override {
@@ -110,6 +114,14 @@ public:
   const std::vector<char32_t>& getNumbers() const override {
     return persianNumbers;
   };
+
+  const hb_language_t& getLanguage() const override {
+    return language;
+  }
+
+  const hb_script_t& getScript() const override {
+    return script;
+  }
 
 };
 

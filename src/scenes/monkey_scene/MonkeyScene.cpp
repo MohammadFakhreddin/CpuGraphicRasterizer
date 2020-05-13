@@ -40,12 +40,9 @@ MonkeyScene::MonkeyScene(OpenGL& gl)
   pip(camera),
   font(
     Path::generateAssetPath("font/BYekan", ".ttf"),
-    200,
+    100,
     &DataAccessPoint::getInstance()->getFreeType(),
-    hb_language_from_string("fa", 2),
-    HB_SCRIPT_ARABIC,
-    HB_DIRECTION_RTL,
-    &faCaSource
+    DataAccessPoint::getInstance()->getSpecialCharacters()
   ),
   whiteColor(std::make_unique<ColorTexture>(1.0f,1.0f,1.0f))
 {

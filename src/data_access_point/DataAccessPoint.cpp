@@ -127,6 +127,11 @@ const FreeType& DataAccessPoint::getFreeType()
   return freeType;
 }
 
+const std::vector<LanguageCharacterSource*>& DataAccessPoint::getSpecialCharacters()
+{
+  return specialCharactersSource;
+}
+
 Constants::MouseButtonName DataAccessPoint::getMouseButtonName(const int& button){
   switch (button)
   {
