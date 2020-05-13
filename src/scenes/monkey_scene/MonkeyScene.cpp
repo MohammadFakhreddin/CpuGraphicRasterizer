@@ -40,7 +40,7 @@ MonkeyScene::MonkeyScene(OpenGL& gl)
   pip(camera),
   font(
     Path::generateAssetPath("font/BYekan", ".ttf"),
-    100,
+    200,
     &DataAccessPoint::getInstance()->getFreeType(),
     DataAccessPoint::getInstance()->getSpecialCharacters()
   ),
@@ -152,7 +152,7 @@ void MonkeyScene::update(double deltaTime) {
   }
 #endif
   pip.update(deltaTime);
-  font.drawText(pip, U"زهرا  دوست  دارم", 100, 100, Font::PositionMode::leftTop, whiteColor.get());
+  font.drawText(pip, U"گاوکوچولو", 100, 100, Font::PositionMode::leftTop, whiteColor.get());
   
 }
 

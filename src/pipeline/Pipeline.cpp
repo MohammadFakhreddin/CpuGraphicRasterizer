@@ -530,7 +530,7 @@ void PipeLine::assembleLines(
     0.0f,
     0.0f
   );
-#else // DEBUG_PIPELINE
+#endif // DEBUG_PIPELINE
   {//TriangleStepValue
     surface->lineMemoryPool.lineStart.assign(paramTriangleStart);
 
@@ -603,11 +603,12 @@ void PipeLine::assembleLines(
     Logger::exception("Unhandled light precision");
   }
 
-  float scaleValue = 0.0;
+  float scaleValue = 0.0f;
 
   for (unsigned long j = 0; j < surface->lineMemoryPool.totalStepCount; j++) {
 
     scaleValue = camera.scaleBasedOnZDistance(surface->lineMemoryPool.lineStart.getZ());
+    assert(scaleValue != 0.0f);
 
     surface->texture->getPixelForPosition(
       surface->lineMemoryPool.textureStart.getX() / scaleValue,
@@ -616,51 +617,79 @@ void PipeLine::assembleLines(
       &surface->lineMemoryPool.green,
       &surface->lineMemoryPool.blue
     );
-    if (surface->lightPrecision == Constants::LightPrecision::perSurface) {
-      // Multiply color by light value
-      surface->lineMemoryPool.red *= surface->lineMemoryPool.colorStart.getR();
-      surface->lineMemoryPool.green *= surface->lineMemoryPool.colorStart.getG();
-      surface->lineMemoryPool.blue *= surface->lineMemoryPool.colorStart.getB();
-    }
-    else if (surface->lightPrecision == Constants::LightPrecision::perPixel)
-    {
 
-      surface->lineMemoryPool.normalStart.hat(surface->lineMemoryPool.perPixelNormalHat);
+    if (shape->transparencyColorIsEnabled == false || 
+      shape->transparencyColor.getR() != surface->lineMemoryPool.red ||
+      shape->transparencyColor.getG() != surface->lineMemoryPool.green ||
+      shape->transparencyColor.getB() != surface->lineMemoryPool.blue
+    ) {
 
-      surface->lineMemoryPool.perPixelColorIntensity.set(0, 0, 0.0f);
-      surface->lineMemoryPool.perPixelColorIntensity.set(1, 0, 0.0f);
-      surface->lineMemoryPool.perPixelColorIntensity.set(2, 0, 0.0f);
+      if (surface->lightPrecision == Constants::LightPrecision::perSurface) {
+        // Multiply color by light value
+        surface->lineMemoryPool.red *= surface->lineMemoryPool.colorStart.getR();
+        surface->lineMemoryPool.green *= surface->lineMemoryPool.colorStart.getG();
+        surface->lineMemoryPool.blue *= surface->lineMemoryPool.colorStart.getB();
+      }
+      else if (surface->lightPrecision == Constants::LightPrecision::perPixel)
+      {
 
-      computeLightIntensityForPoint(
-        surface->lineMemoryPool.lineStart,
-        surface->lineMemoryPool.normalStart,
-        shape->specularIntensity,
-        surface->lineMemoryPool.colorOutputPlaceholder,
-        surface->lineMemoryPool.cameraVectorPlaceholder,
-        surface->lineMemoryPool.cameraVectorHatPlaceholder,
-        surface->lineMemoryPool.lightVectorPlaceholder,
-        surface->lineMemoryPool.lightVectorHatPlaceholder,
-        surface->lineMemoryPool.lightReflectionPlaceholder,
-        surface->lineMemoryPool.lightReflectionHatPlaceholder,
-        surface->lineMemoryPool.perPixelColorIntensity
+        surface->lineMemoryPool.normalStart.hat(surface->lineMemoryPool.perPixelNormalHat);
+
+        surface->lineMemoryPool.perPixelColorIntensity.set(0, 0, 0.0f);
+        surface->lineMemoryPool.perPixelColorIntensity.set(1, 0, 0.0f);
+        surface->lineMemoryPool.perPixelColorIntensity.set(2, 0, 0.0f);
+
+        computeLightIntensityForPoint(
+          surface->lineMemoryPool.lineStart,
+          surface->lineMemoryPool.normalStart,
+          shape->specularIntensity,
+          surface->lineMemoryPool.colorOutputPlaceholder,
+          surface->lineMemoryPool.cameraVectorPlaceholder,
+          surface->lineMemoryPool.cameraVectorHatPlaceholder,
+          surface->lineMemoryPool.lightVectorPlaceholder,
+          surface->lineMemoryPool.lightVectorHatPlaceholder,
+          surface->lineMemoryPool.lightReflectionPlaceholder,
+          surface->lineMemoryPool.lightReflectionHatPlaceholder,
+          surface->lineMemoryPool.perPixelColorIntensity
+        );
+
+        surface->lineMemoryPool.red *= surface->lineMemoryPool.perPixelColorIntensity.get(0, 0);
+        surface->lineMemoryPool.green *= surface->lineMemoryPool.perPixelColorIntensity.get(1, 0);
+        surface->lineMemoryPool.blue *= surface->lineMemoryPool.perPixelColorIntensity.get(2, 0);
+      }
+      else if (surface->lightPrecision != Constants::LightPrecision::none) {
+        Logger::exception("Unhandled light precision");
+      }
+
+      camera.putPixelInMap(
+        int(surface->lineMemoryPool.lineStart.getX()),
+        int(surface->lineMemoryPool.lineStart.getY()),
+        surface->lineMemoryPool.lineStart.getZ(),
+        fmaxf(surface->lineMemoryPool.red, 0.0f),
+        fmaxf(surface->lineMemoryPool.green, 0.0f),
+        fmaxf(surface->lineMemoryPool.blue, 0.0f)
       );
 
-      surface->lineMemoryPool.red *= surface->lineMemoryPool.perPixelColorIntensity.get(0, 0);
-      surface->lineMemoryPool.green *= surface->lineMemoryPool.perPixelColorIntensity.get(1, 0);
-      surface->lineMemoryPool.blue *= surface->lineMemoryPool.perPixelColorIntensity.get(2, 0);
     }
-    else if(surface->lightPrecision != Constants::LightPrecision::none){
-      Logger::exception("Unhandled light precision");
+#ifdef DEBUG_PIPELINE
+    if (
+      !(
+        shape->transparencyColorIsEnabled == false ||
+        shape->transparencyColor.getR() != surface->lineMemoryPool.red ||
+        shape->transparencyColor.getG() != surface->lineMemoryPool.green ||
+        shape->transparencyColor.getB() != surface->lineMemoryPool.blue
+      )) {
+      camera.putPixelInMap(
+        int(surface->lineMemoryPool.lineStart.getX()),
+        int(surface->lineMemoryPool.lineStart.getY()),
+        surface->lineMemoryPool.lineStart.getZ(),
+        1.0f,
+        0.0f,
+        0.0f
+      );
     }
+#endif // DEBUG_PIPELINE
 
-    camera.putPixelInMap(
-      int(surface->lineMemoryPool.lineStart.getX()),
-      int(surface->lineMemoryPool.lineStart.getY()),
-      surface->lineMemoryPool.lineStart.getZ(),
-      fmaxf(surface->lineMemoryPool.red, 0.0f),
-      fmaxf(surface->lineMemoryPool.green, 0.0f),
-      fmaxf(surface->lineMemoryPool.blue, 0.0f)
-    );
 
     surface->lineMemoryPool.lineStart.sum(surface->lineMemoryPool.lineStepValue);
 
@@ -676,7 +705,6 @@ void PipeLine::assembleLines(
       Logger::exception("Unhandled light precision");
     }
   }
-#endif
 }
 
 void PipeLine::updateShapeSurfacesConversionMethod(const unsigned int& threadNumber, void* shape) { 

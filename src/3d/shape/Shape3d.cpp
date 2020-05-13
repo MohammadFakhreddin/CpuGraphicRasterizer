@@ -63,7 +63,9 @@ Shape3d::Shape3d(
   float paramScaleValue
 ) :
   surfaces(std::move(paramSurfaces)),
-  specularIntensity(paramSpecularIntensity)
+  specularIntensity(paramSpecularIntensity),
+  transparencyColor(0.0f,0.0f,0.0f),
+  transparencyColorIsEnabled(false)
  {
   
   assert(specularIntensity >= 0);
@@ -465,4 +467,14 @@ std::vector<Matrix3X1Float> Shape3d::generateNormals(
 
   return normals;
 
+}
+
+void Shape3d::setTransparencyColor(const float& colorR, const float& colorG, const float& colorB) {
+  transparencyColor.setR(colorR);
+  transparencyColor.setG(colorG);
+  transparencyColor.setB(colorB);
+}
+
+void Shape3d::setTransparencyColorStatus(const bool& enable) {
+  transparencyColorIsEnabled = enable;
 }

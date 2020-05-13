@@ -101,6 +101,8 @@ private:
 
   hb_script_t script = HB_SCRIPT_ARABIC;
 
+  LanguageCharacterSource::Direction direction = LanguageCharacterSource::Direction::rtl;
+
 public:
 
   const std::vector<std::u32string>& getUnicodes() const override {
@@ -121,6 +123,10 @@ public:
 
   const hb_script_t& getScript() const override {
     return script;
+  }
+
+  const LanguageCharacterSource::Direction& getDirection() const {
+    return direction;
   }
 
 };

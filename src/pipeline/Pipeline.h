@@ -1,7 +1,7 @@
 #ifndef PipeLine_Class
 #define PipeLine_Class
 
-//#define DEBUG_PIPELINE
+#define DEBUG_PIPELINE
 
 #include <functional>
 
@@ -11,6 +11,7 @@
 #include "../shaders/point_light/PointLight.h"
 #include "../3d/shape/Shape3d.h"
 #include "../utils/thread_pool/ThreadPool.h"
+#include "../texture/ImageTexture/ImageTexture.h"
 
 class PipeLine {
 

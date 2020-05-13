@@ -12,7 +12,7 @@
 #include "../char_glyph/CharGlyph.h"
 #include "../resources/FaCharacterSource.h"
 #include "../../pipeline/Pipeline.h"
-#include "FontMemoryPool.h"
+#include "./FontMemoryPool.h"
 
 class Font {
 
@@ -52,6 +52,12 @@ public:
   void Font::updateTextSurfaces(PipeLine& pip, Shape3d* shape);
 
 private:
+
+  bool isPunctOrSpace(const char32_t& character);
+
+  bool isPunct(const char32_t& character);
+
+  bool isSpace(const char32_t& character);
 
   void renderAndEmptyRTLWordBuffer(PipeLine& pip);
 
@@ -105,6 +111,14 @@ private:
     std::placeholders::_2,
     std::placeholders::_3
   );
+
+  void findSmallestRectForGlyphTexture(
+    ImageTexture* texture,
+    float* textureStartX,
+    float* textureStartY,
+    float* textureEndX,
+    float* textureEndY
+  ) const;
 
   ColorTexture* currentColorTexture = nullptr;
 

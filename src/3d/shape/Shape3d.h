@@ -86,6 +86,10 @@ public:
 
   bool checkDataValidation();
 
+  void setTransparencyColor(const float& colorR, const float& colorG, const float& colorB);
+
+  void setTransparencyColorStatus(const bool& enable);
+
   std::vector<Matrix3X1Float> nodes;
   
   std::vector<std::unique_ptr<Surface>>surfaces;
@@ -109,6 +113,10 @@ public:
   Matrix4X4Float rotationXYZMatrix;
 
   Matrix4X4Float scaleMatrix;
+
+  Matrix3X1Float transparencyColor;
+
+  bool transparencyColorIsEnabled;
 
 };
 

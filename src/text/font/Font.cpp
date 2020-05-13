@@ -2,7 +2,6 @@
 
 #include <codecvt>
 
-#include "../../texture/ImageTexture/ImageTexture.h"
 #include "../../3d/surface/Surface.h"
 #include "../../utils/operators/Operators.h"
 #include "../../pipeline/Pipeline.h"
@@ -36,16 +35,25 @@ Font::Font(
     auto script = HB_SCRIPT_LATIN;
     //Ascii chars
     for (char32_t asciiCharacter = asciiStart; asciiCharacter < asciiEnd; asciiCharacter++) {
-      Logger::log("Index:" + std::to_string(asciiCharacter));
       CharGlyph* charGlyph = generateCharacter(asciiCharacter, languageCode, script, direction);
-      unicodeSingleCharsMap.insert({ asciiCharacter,std::unique_ptr<CharGlyph>(charGlyph) });
-      unicodeSingleCharDirection.insert({ asciiCharacter,LanguageCharacterSource::Direction::ltr });
+      if (charGlyph == nullptr) {
+        Logger::log(U"Creating glyph for following chracter failed:" + asciiCharacter);
+      }
+      else {
+        unicodeSingleCharsMap.insert({ asciiCharacter,std::unique_ptr<CharGlyph>(charGlyph) });
+        unicodeSingleCharDirection.insert({ asciiCharacter,LanguageCharacterSource::Direction::ltr });
+      }
     }
     //Punctuations
     for (char32_t puncCharacter = punchuationStart; puncCharacter < punchuationEnd; puncCharacter++) {
       CharGlyph* charGlyph = generateCharacter(puncCharacter, languageCode, script, direction);
-      unicodeSingleCharsMap.insert({ puncCharacter,std::unique_ptr<CharGlyph>(charGlyph) });
-      unicodeSingleCharDirection.insert({ puncCharacter,LanguageCharacterSource::Direction::ltr });
+      if (charGlyph == nullptr) {
+        Logger::log(U"Creating glyph for following chracter failed:" + puncCharacter);
+      }
+      else {
+        unicodeSingleCharsMap.insert({ puncCharacter,std::unique_ptr<CharGlyph>(charGlyph) });
+        unicodeSingleCharDirection.insert({ puncCharacter,LanguageCharacterSource::Direction::ltr });
+      }
     }
   }
   //Special unicode chars
@@ -63,27 +71,43 @@ Font::Font(
           {
             assert(rawChars[0].size() == 1);
             CharGlyph* charGlyph = generateCharacter(rawChars[0][0], languageCode, script, direction);
-            assert(charGlyph != nullptr);
-            unicodeSingleCharsMap.insert({ rawChars[0][0],std::unique_ptr<CharGlyph>(charGlyph) });
-            unicodeSingleCharDirection.insert({ rawChars[0][0],charactersSource->getDirection() });
+            if (charGlyph == nullptr) {
+              Logger::log(U"Creating glyph for following chracter failed:" + rawChars[0][0]);
+            }
+            else {
+              unicodeSingleCharsMap.insert({ rawChars[0][0],std::unique_ptr<CharGlyph>(charGlyph) });
+              unicodeSingleCharDirection.insert({ rawChars[0][0],charactersSource->getDirection() });
+            }
           }
           {
             assert(rawChars[1].size() == 1);
             CharGlyph* charGlyph = generateCharacter(rawChars[1][0], languageCode, script, direction);
-            assert(charGlyph != nullptr);
-            unicodeStartCharsMap.insert({ rawChars[0][0],std::unique_ptr<CharGlyph>(charGlyph) });
+            if (charGlyph == nullptr) {
+              Logger::log(U"Creating glyph for following chracter failed:" + rawChars[1][0]);
+            }
+            else {
+              unicodeStartCharsMap.insert({ rawChars[0][0],std::unique_ptr<CharGlyph>(charGlyph) });
+            }
           }
           {
             assert(rawChars[2].size() == 1);
             CharGlyph* charGlyph = generateCharacter(rawChars[2][0], languageCode, script, direction);
-            assert(charGlyph != nullptr);
-            unicodeMiddleCharsMap.insert({ rawChars[0][0],std::unique_ptr<CharGlyph>(charGlyph) });
+            if (charGlyph == nullptr) {
+              Logger::log(U"Creating glyph for following chracter failed:" + rawChars[2][0]);
+            }
+            else {
+              unicodeMiddleCharsMap.insert({ rawChars[0][0],std::unique_ptr<CharGlyph>(charGlyph) });
+            }
           }
           {
             assert(rawChars[3].size() == 1);
             CharGlyph* charGlyph = generateCharacter(rawChars[3][0], languageCode, script, direction);
-            assert(charGlyph != nullptr);
-            unicodeEndCharsMap.insert({ rawChars[0][0],std::unique_ptr<CharGlyph>(charGlyph) });
+            if (charGlyph == nullptr) {
+              Logger::log(U"Creating glyph for following chracter failed:" + rawChars[3][0]);
+            }
+            else {
+              unicodeEndCharsMap.insert({ rawChars[0][0],std::unique_ptr<CharGlyph>(charGlyph) });
+            }
           }
         }
       }
@@ -120,14 +144,21 @@ void Font::drawText(
   if (text.size() <= 0) {
     return;
   }
+  mp.currentPositionX = 0.0f;
+  mp.currentPositionY = 0.0f;
+  mp.maximumGlyphWidth = 0.0f;
+  mp.maximumGlyphHeight = 0.0f;
+  mp.words.clear();
+  assert(mp.words.size() == 0);
+  assert(mp.rtlWordBuffer.size() == 0);
   assert(colorTexture != nullptr);
+  mp.isPreviousRtl = false;
+  mp.isPreviousLtr = false;
+  mp.isPreviouseCharacterABreakerChar = false;
   this->currentColorTexture = colorTexture;
   for (auto character : text) {
     //TODO Handle punctuations
-    if (
-      std::ispunct(character) || 
-      std::isspace(character)
-    ) {
+    if (isPunctOrSpace(character)) {
       auto newWord = U"";
       newWord += character;
       mp.words.emplace_back(newWord);
@@ -162,6 +193,7 @@ void Font::drawText(
       }
     }
   }
+  assert(mp.words.size() > 0);
   //TODO We need scale too
   //TODO We need size too
   mp.currentPositionX = float(positionX);
@@ -176,7 +208,7 @@ void Font::drawText(
         mp.currentPositionY += mp.maximumGlyphHeight;
         mp.currentPositionX = float(positionX);
       }
-      else if (std::isspace(word[0])) {
+      else if (isPunct(word[0])) {
         assert(word.length() == 1);
         if (mp.rtlWordBuffer.empty()) {
           renderSpace();
@@ -185,7 +217,7 @@ void Font::drawText(
           mp.rtlWordBuffer.push(word);
         }
       }
-      else if (std::ispunct(word[0])) {
+      else if (isSpace(word[0])) {
         assert(word.length() == 1);
         if (mp.rtlWordBuffer.size() == 0) {
           renderWord(pip, word);
@@ -222,31 +254,46 @@ void Font::renderWord(PipeLine& pip, const std::u32string& word)
 {
   //TODO To many duplicate computation
   assert(word.length() > 0);
-  if (std::isspace(word[0])) {
+  if (isSpace(word[0])) {
     assert(word.length() == 1);
     renderSpace();
   }
-  else if (std::ispunct(word[0])) {
+  else if (isPunct(word[0])) {
     assert(word.length() == 1);
     auto& glyph = unicodeSingleCharsMap[word[0]];
     renderGlyph(pip, glyph);
   }
   else {
     isRtl(word, &mp.isRtl);
-    auto wordLoopStart = mp.isRtl ? word.length() - 1 : 0;
-    auto wordLoopEnd = mp.isRtl ? 0 : word.length() -1;
-    auto wordLoopStepValue = mp.isRtl ? -1 : +1;
-    if (mp.isRtl) {
-      for (auto i = wordLoopStart; i >= wordLoopEnd; i += wordLoopStepValue) {
-        mp.isPreviouseCharacterABreakerChar = false;
-        if (i == 0) {
-          auto& existingGlyph = unicodeStartCharsMap[word[i]];
-          if (existingGlyph != nullptr) {
-            renderGlyph(pip, existingGlyph);
+    int wordLoopStart = mp.isRtl ? word.length() - 1 : 0;
+    int wordLoopEnd = mp.isRtl ? -1 : word.length();
+    int wordLoopStepValue = mp.isRtl ? -1 : +1;
+    for (int i = wordLoopStart; i != wordLoopEnd; i += wordLoopStepValue) {
+      assert(i >= 0 && i < word.length());
+      mp.isPreviouseCharacterABreakerChar = false;
+      const auto& currentCharacter = word[i];
+      if (i == 0) {
+        auto& existingGlyph = unicodeStartCharsMap[currentCharacter];
+        if (existingGlyph != nullptr) {
+          renderGlyph(pip, existingGlyph);
+        }
+        else
+        {
+          auto& basicGlyph = unicodeSingleCharsMap[currentCharacter];
+          if (basicGlyph != nullptr) {
+            renderGlyph(pip, basicGlyph);
           }
-          else
-          {
-            auto& basicGlyph = unicodeSingleCharsMap[word[i]];
+          else {
+            renderSpace();
+          }
+        }
+      }
+      else
+      {
+        mp.isPreviouseCharacterABreakerChar = unicodeConnectionBreakers[word[i - 1]] == true;
+        if (mp.isPreviouseCharacterABreakerChar) {
+          if (i == word.length() - 1) {
+            auto& basicGlyph = unicodeSingleCharsMap[currentCharacter];
             if (basicGlyph != nullptr) {
               renderGlyph(pip, basicGlyph);
             }
@@ -254,13 +301,14 @@ void Font::renderWord(PipeLine& pip, const std::u32string& word)
               renderSpace();
             }
           }
-        }
-        else
-        {
-          mp.isPreviouseCharacterABreakerChar = unicodeConnectionBreakers[word[i]] == true;
-          if (mp.isPreviouseCharacterABreakerChar) {
-            if (i == word.length() - 1) {
-              auto& basicGlyph = unicodeSingleCharsMap[word[i]];
+          else {
+            auto& existingGlyph = unicodeStartCharsMap[currentCharacter];
+            if (existingGlyph != nullptr) {
+              renderGlyph(pip, existingGlyph);
+            }
+            else
+            {
+              auto& basicGlyph = unicodeSingleCharsMap[currentCharacter];
               if (basicGlyph != nullptr) {
                 renderGlyph(pip, basicGlyph);
               }
@@ -268,56 +316,40 @@ void Font::renderWord(PipeLine& pip, const std::u32string& word)
                 renderSpace();
               }
             }
-            else {
-              auto& existingGlyph = unicodeStartCharsMap[word[i]];
-              if (existingGlyph != nullptr) {
-                renderGlyph(pip, existingGlyph);
+          }
+        }
+        else
+        {
+          if (i == word.length() - 1)
+          {
+            auto& existingGlyph = unicodeEndCharsMap[currentCharacter];
+            if (existingGlyph != nullptr) {
+              renderGlyph(pip, existingGlyph);
+            }
+            else
+            {
+              auto& basicGlyph = unicodeSingleCharsMap[currentCharacter];
+              if (basicGlyph != nullptr) {
+                renderGlyph(pip, basicGlyph);
               }
-              else
-              {
-                auto& basicGlyph = unicodeSingleCharsMap[word[i]];
-                if (basicGlyph != nullptr) {
-                  renderGlyph(pip, basicGlyph);
-                }
-                else {
-                  renderSpace();
-                }
+              else {
+                renderSpace();
               }
             }
           }
-          else
-          {
-            if (i == word.length() - 1)
-            {
-              auto& existingGlyph = unicodeEndCharsMap[word[i]];
-              if (existingGlyph != nullptr) {
-                renderGlyph(pip, existingGlyph);
-              }
-              else
-              {
-                auto& basicGlyph = unicodeSingleCharsMap[word[i]];
-                if (basicGlyph != nullptr) {
-                  renderGlyph(pip, basicGlyph);
-                }
-                else {
-                  renderSpace();
-                }
-              }
+          else {
+            auto& existingGlyph = unicodeMiddleCharsMap[currentCharacter];
+            if (existingGlyph != nullptr) {
+              renderGlyph(pip, existingGlyph);
             }
-            else {
-              auto& existingGlyph = unicodeMiddleCharsMap[word[i]];
-              if (existingGlyph != nullptr) {
-                renderGlyph(pip, existingGlyph);
+            else
+            {
+              auto& basicGlyph = unicodeSingleCharsMap[currentCharacter];
+              if (basicGlyph != nullptr) {
+                renderGlyph(pip, basicGlyph);
               }
-              else
-              {
-                auto& basicGlyph = unicodeSingleCharsMap[word[i]];
-                if (basicGlyph != nullptr) {
-                  renderGlyph(pip, basicGlyph);
-                }
-                else {
-                  renderSpace();
-                }
+              else {
+                renderSpace();
               }
             }
           }
@@ -331,7 +363,7 @@ void Font::renderGlyph(PipeLine& pip,std::unique_ptr<CharGlyph>& glyph) {
   auto& shape = glyph.get()->getShape();
   shape->resetTransform();
   shape->transformXYZ(mp.currentPositionX, mp.currentPositionY, 1.0f);
-  mp.currentPositionX += glyph->getWidth();
+  mp.currentPositionX += glyph->getWidth() * 0.9f;
   updateTextNodes(shape.get());
   updateTextSurfaces(pip, shape.get());
 }
@@ -366,6 +398,31 @@ void Font::updateTextSurfaces(PipeLine& pip,Shape3d* shape) {
     ) {
     pip.updateSurface(shape, shape->surfaces[surfaceIndex].get());
   }
+}
+
+bool Font::isPunctOrSpace(const char32_t& character)
+{
+  if (character >= 256) {
+    return false;
+  }
+  return std::ispunct(character) ||
+    std::isspace(character);
+}
+
+bool Font::isPunct(const char32_t& character)
+{
+  if (character >= 256) {
+    return false;
+  }
+  return std::ispunct(character);
+}
+
+bool Font::isSpace(const char32_t& character)
+{
+  if (character >= 256) {
+    return false;
+  }
+  return std::isspace(character);
 }
 
 void Font::isRtl(const std::u32string& word, bool* result)
@@ -419,6 +476,10 @@ CharGlyph* Font::generateCharacter(
   unsigned int vertexStartIndex;
 
   FreeType::Glyph* glyph = freeType->rasterize(face, glyphInfo[0].codepoint);
+
+  if (glyph->width == 0 || glyph->height == 0) {
+    return nullptr;
+  }
   
   int twidth = int(pow(2.0, ceil(log(glyph->width) / log(2))));
     
@@ -432,13 +493,15 @@ CharGlyph* Font::generateCharacter(
     
   }
 
-  float s0 = 1.0f;
+  float textureMargin = 0.1f;
+
+  float textureStartX = textureMargin + (twidth / 3.0f);
     
-  float t0 = 1.0f;
-    
-  float s1 = (twidth / 3.0f) - 1.0f;
-    
-  float t1 = (theight / 3.0f) - 1.0f;
+  float textureStartY = textureMargin;
+ 
+  float textureEndX = (twidth * 2.0f)/3.0f - textureMargin;
+
+  float textureEndY = (theight/3.0f) - textureMargin;
 
   float x = 0;
 
@@ -495,9 +558,11 @@ CharGlyph* Font::generateCharacter(
   indices.back()->setNormalIndex(1, 0);
   indices.back()->setNormalIndex(2, 0);
 
-  indices.back()->setTextureCoordinates(0, s0, t0);
-  indices.back()->setTextureCoordinates(1, s0, t1);
-  indices.back()->setTextureCoordinates(2, s1, t1);
+  findSmallestRectForGlyphTexture(texture, &textureStartX, &textureStartY, &textureEndX, &textureEndY);
+
+  indices.back()->setTextureCoordinates(0, textureStartX, textureStartY);
+  indices.back()->setTextureCoordinates(1, textureStartX, textureEndY);
+  indices.back()->setTextureCoordinates(2, textureEndX, textureEndY);
 
   indices.emplace_back(std::make_unique<Surface>(
     Constants::LightPrecision::none,
@@ -511,9 +576,9 @@ CharGlyph* Font::generateCharacter(
   indices.back()->setNormalIndex(1, 0);
   indices.back()->setNormalIndex(2, 0);
 
-  indices.back()->setTextureCoordinates(0, s0, t0);
-  indices.back()->setTextureCoordinates(1, s1, t1);
-  indices.back()->setTextureCoordinates(2, s1, t0);
+  indices.back()->setTextureCoordinates(0, textureStartX, textureStartY);
+  indices.back()->setTextureCoordinates(1, textureEndX, textureEndY);
+  indices.back()->setTextureCoordinates(2, textureEndX, textureStartY);
   
   x += xa;
 
@@ -526,6 +591,10 @@ CharGlyph* Font::generateCharacter(
   normals.emplace_back(0.0f, 0.0f, -1.0f);
 
   Shape3d* shape = new Shape3d(vertices, indices, normals);
+
+  shape->setTransparencyColorStatus(true);
+
+  shape->setTransparencyColor(0.0f, 0.0f, 0.0f);
   
   return new CharGlyph(
     shape,
@@ -550,4 +619,17 @@ void Font::colorFilterMethod(float* red, float* green, float* blue) {
     *blue *= currentColorTexture->getBlue();
 
   }
+}
+
+void Font::findSmallestRectForGlyphTexture(
+  ImageTexture* texture, 
+  float* textureStartX, 
+  float* textureStartY, 
+  float* textureEndX, 
+  float* textureEndY
+) const
+{
+
+
+
 }

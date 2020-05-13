@@ -4,6 +4,7 @@
 #include <string>
 #include <iostream>
 #include <cassert>
+#include <codecvt>
 
 #include "../../Constants.h"
 #ifdef __ANDROID__
@@ -28,6 +29,12 @@ public:
     //TODO We have to throw custom exception
     Logger::log(text);
     assert(false);
+  }
+  static void log(std::u32string text) {
+   /* std::string characterString = "";
+    std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t> converter;
+    std::string characterString = converter.to_bytes(text);
+    log(characterString);*/
   }
 };
 
