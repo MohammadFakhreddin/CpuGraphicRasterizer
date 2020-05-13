@@ -1,7 +1,7 @@
 #ifndef PipeLine_Class
 #define PipeLine_Class
 
-#define DEBUG_PIPELINE
+//#define DEBUG_PIPELINE
 
 #include <functional>
 

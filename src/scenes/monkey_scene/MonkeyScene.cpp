@@ -152,7 +152,7 @@ void MonkeyScene::update(double deltaTime) {
   }
 #endif
   pip.update(deltaTime);
-  font.drawText(pip, U"گاوکوچولو", 100, 100, Font::PositionMode::leftTop, whiteColor.get());
+  font.drawText(pip, U"مادر", 100, 100, Font::PositionMode::leftTop, whiteColor.get());
   
 }
 

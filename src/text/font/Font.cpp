@@ -1,4 +1,4 @@
-#include "./Font.h"
+﻿#include "./Font.h"
 
 #include <codecvt>
 
@@ -29,7 +29,7 @@ Font::Font(
 {
   hb_buffer_allocation_successful(buffer);
   {
-    //TODO Start from here we need a fallback font that supports all unicode characters
+    //TODO We need a fallback font that supports all unicode characters in case that current font does not support that font
     auto languageCode = hb_language_from_string("en", 2);
     auto direction = HB_DIRECTION_LTR;
     auto script = HB_SCRIPT_LATIN;
@@ -493,7 +493,7 @@ CharGlyph* Font::generateCharacter(
     
   }
 
-  float textureMargin = 0.1f;
+  float textureMargin = 1.0f;
 
   float textureStartX = textureMargin + (twidth / 3.0f);
     
@@ -630,6 +630,73 @@ void Font::findSmallestRectForGlyphTexture(
 ) const
 {
 
+  int i = 0;
+  bool targetIndexCanBeMinimized = true;
+  float red;
+  float green;
+  float blue;
+  
+  const auto doesColorReachesThreshold = [&red, &green, &blue]() {
+    return red >= 0.4f || green >= 0.4f || blue >= 0.4f;
+  };
 
+  do {
+    for (i = int(*textureStartX); i < *textureEndX; i++) {
+      assert(*textureStartY < texture->getVirtualImageHeight());
+      texture->getPixelForPosition(i, *textureStartY, &red, &green, &blue);
+      if (doesColorReachesThreshold()) {
+        targetIndexCanBeMinimized = false;
+        break;
+      }
+    }
+    if (targetIndexCanBeMinimized == true) {
+      *textureStartY += 1.0f;
+    }
+  } while (targetIndexCanBeMinimized && *textureStartY < texture->getVirtualImageHeight());
+
+  targetIndexCanBeMinimized = true;
+  do {
+    for (i = int(*textureStartX); i < *textureEndX; i++) {
+      assert(*textureEndY >= 0);
+      texture->getPixelForPosition(i, *textureEndY, &red, &green, &blue);
+      if (doesColorReachesThreshold()) {
+        targetIndexCanBeMinimized = false;
+        break;
+      }
+    }
+    if (targetIndexCanBeMinimized == true) {
+      *textureEndY -= 1.0f;
+    }
+  } while (targetIndexCanBeMinimized && *textureEndY >= 0);
+
+  targetIndexCanBeMinimized = true;
+  do {
+    for (i = int(*textureStartY); i < *textureEndY; i++) {
+      assert(*textureStartX < texture->getVirtualImageWidth());
+      texture->getPixelForPosition(*textureStartX, i, &red, &green, &blue);
+      if (doesColorReachesThreshold()) {
+        targetIndexCanBeMinimized = false;
+        break;
+      }
+    }
+    if (targetIndexCanBeMinimized == true) {
+      *textureStartX += 1.0f;
+    }
+  } while (targetIndexCanBeMinimized && *textureStartX < texture->getVirtualImageWidth());
+
+  targetIndexCanBeMinimized = true;
+  do {
+    for (i = int(*textureStartY); i < *textureEndY; i++) {
+      assert(*textureEndX >= 0);
+      texture->getPixelForPosition(*textureEndX, i, &red, &green, &blue);
+      if (doesColorReachesThreshold()) {
+        targetIndexCanBeMinimized = false;
+        break;
+      }
+    }
+    if (targetIndexCanBeMinimized == true) {
+      *textureEndX -= 1.0f;
+    }
+  } while (targetIndexCanBeMinimized && *textureEndX >= 0);
 
 }
