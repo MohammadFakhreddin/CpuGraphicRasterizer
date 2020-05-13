@@ -6,7 +6,8 @@
 #include "../../utils/operators/Operators.h"
 #include "../../pipeline/Pipeline.h"
 
-//This class is written based on harfbuzz library example
+//TODO 3d canvas and text canvas must be separated
+
 Font::Font(
   const std::string& fontAddress,
   const int& fontSize,
