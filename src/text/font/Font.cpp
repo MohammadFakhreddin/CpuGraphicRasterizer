@@ -159,7 +159,7 @@ void Font::drawText(
   for (auto character : text) {
     //TODO Handle punctuations
     if (isPunctOrSpace(character)) {
-      auto newWord = U"";
+      std::u32string newWord = U"";
       newWord += character;
       mp.words.emplace_back(newWord);
       mp.isPreviousRtl = false;
@@ -363,7 +363,7 @@ void Font::renderGlyph(PipeLine& pip,std::unique_ptr<CharGlyph>& glyph) {
   auto& shape = glyph.get()->getShape();
   shape->resetTransform();
   shape->transformXYZ(mp.currentPositionX, mp.currentPositionY, 1.0f);
-  mp.currentPositionX += glyph->getWidth() * 0.9f;
+  mp.currentPositionX += glyph->getWidth();
   updateTextNodes(shape.get());
   updateTextSurfaces(pip, shape.get());
 }
@@ -595,6 +595,8 @@ CharGlyph* Font::generateCharacter(
   shape->setTransparencyColorStatus(true);
 
   shape->setTransparencyColor(0.0f, 0.0f, 0.0f);
+
+  //shape->scale(-0f);
   
   return new CharGlyph(
     shape,

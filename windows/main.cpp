@@ -44,6 +44,8 @@ int main(int argc, char** argv) {
             (int)(realScreenHeight/2 - appScreenHeight/2));
     glutCreateWindow(Constants::Window::appName);
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f); // Set background color to black and opaque
+    appScreenWidth *= 1.5f;
+    appScreenHeight *= 1.5f;
     application = std::unique_ptr<Application>(new Application(
 			Constants::Platform::Windows,
 			appScreenWidth,
