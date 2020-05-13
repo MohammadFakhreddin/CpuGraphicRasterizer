@@ -20,8 +20,8 @@ private:
 
   static constexpr char32_t asciiStart = 0;
   static constexpr char32_t asciiEnd = 256;
-  static constexpr char32_t punchuationStart = 8192;
-  static constexpr char32_t punchuationEnd = 8303;
+  static constexpr char32_t punctuationStart = 8192;
+  static constexpr char32_t punctuationEnd = 8303;
 
 public:
 
@@ -47,9 +47,9 @@ public:
     ColorTexture* colorTexture
   );
 
-  void Font::updateTextNodes(Shape3d* shape);
+  void updateTextNodes(Shape3d* shape);
 
-  void Font::updateTextSurfaces(PipeLine& pip, Shape3d* shape);
+  void updateTextSurfaces(PipeLine& pip, Shape3d* shape);
 
 private:
 
@@ -104,7 +104,7 @@ private:
 
   void colorFilterMethod(float* red, float* green, float* blue);
 
-  std::function<void(float* red, float* green, float* blue)> colorFilterRefrence = std::bind(
+  std::function<void(float* red, float* green, float* blue)> colorFilterReference = std::bind(
     &Font::colorFilterMethod,
     this,
     std::placeholders::_1,

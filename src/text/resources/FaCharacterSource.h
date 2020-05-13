@@ -125,7 +125,7 @@ public:
     return script;
   }
 
-  const LanguageCharacterSource::Direction& getDirection() const {
+  const LanguageCharacterSource::Direction& getDirection() const override {
     return direction;
   }
 

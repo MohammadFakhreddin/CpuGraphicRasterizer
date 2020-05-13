@@ -32,17 +32,17 @@ public:
   };
 
   virtual const LanguageCharacterSource::Direction& getDirection() const {
-    Logger::exception("LanguageCharacterSource::getDirection is not implemennted in child class");
+    Logger::exception("LanguageCharacterSource::getDirection is not implemented in child class");
     return direction;
   }
 
   virtual const hb_language_t& getLanguage() const {
-    Logger::exception("LanguageCharacterSource::getLanguage is not implemennted in child class");
+    Logger::exception("LanguageCharacterSource::getLanguage is not implemented in child class");
     return language;
   }
 
   virtual const hb_script_t& getScript() const {
-    Logger::exception("LanguageCharacterSource::getScript is not implemennted in child class");
+    Logger::exception("LanguageCharacterSource::getScript is not implemented in child class");
     return script;
   }
 

@@ -53,7 +53,7 @@ ImageTexture::ImageTexture(
   const float& virtualImageHeight
 )
   :
-  address(address),
+  address(""),
   virtualImageWidth(virtualImageWidth),
   virtualImageHeight(virtualImageHeight),
   width(realImageWidth),

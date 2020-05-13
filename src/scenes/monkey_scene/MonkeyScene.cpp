@@ -1,6 +1,5 @@
 ﻿#include "./MonkeyScene.h"
 
-#include <harfbuzz\hb.h>
 #include <codecvt>
 
 #include "../base_scene/BaseScene.h"

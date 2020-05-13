@@ -38,7 +38,7 @@ Font::Font(
     for (char32_t asciiCharacter = asciiStart; asciiCharacter < asciiEnd; asciiCharacter++) {
       CharGlyph* charGlyph = generateCharacter(asciiCharacter, languageCode, script, direction);
       if (charGlyph == nullptr) {
-        Logger::log(U"Creating glyph for following chracter failed:" + asciiCharacter);
+        Logger::log(U"Creating glyph for following character failed:" + asciiCharacter);
       }
       else {
         unicodeSingleCharsMap.insert({ asciiCharacter,std::unique_ptr<CharGlyph>(charGlyph) });
@@ -46,14 +46,14 @@ Font::Font(
       }
     }
     //Punctuations
-    for (char32_t puncCharacter = punchuationStart; puncCharacter < punchuationEnd; puncCharacter++) {
-      CharGlyph* charGlyph = generateCharacter(puncCharacter, languageCode, script, direction);
+    for (char32_t punctuationCharacter = punctuationStart; punctuationCharacter < punctuationEnd; punctuationCharacter++) {
+      CharGlyph* charGlyph = generateCharacter(punctuationCharacter, languageCode, script, direction);
       if (charGlyph == nullptr) {
-        Logger::log(U"Creating glyph for following chracter failed:" + puncCharacter);
+        Logger::log(U"Creating glyph for following character failed:" + punctuationCharacter);
       }
       else {
-        unicodeSingleCharsMap.insert({ puncCharacter,std::unique_ptr<CharGlyph>(charGlyph) });
-        unicodeSingleCharDirection.insert({ puncCharacter,LanguageCharacterSource::Direction::ltr });
+        unicodeSingleCharsMap.insert({ punctuationCharacter,std::unique_ptr<CharGlyph>(charGlyph) });
+        unicodeSingleCharDirection.insert({ punctuationCharacter,LanguageCharacterSource::Direction::ltr });
       }
     }
   }
@@ -73,7 +73,7 @@ Font::Font(
             assert(rawChars[0].size() == 1);
             CharGlyph* charGlyph = generateCharacter(rawChars[0][0], languageCode, script, direction);
             if (charGlyph == nullptr) {
-              Logger::log(U"Creating glyph for following chracter failed:" + rawChars[0][0]);
+              Logger::log(U"Creating glyph for following character failed:" + rawChars[0][0]);
             }
             else {
               unicodeSingleCharsMap.insert({ rawChars[0][0],std::unique_ptr<CharGlyph>(charGlyph) });
@@ -84,7 +84,7 @@ Font::Font(
             assert(rawChars[1].size() == 1);
             CharGlyph* charGlyph = generateCharacter(rawChars[1][0], languageCode, script, direction);
             if (charGlyph == nullptr) {
-              Logger::log(U"Creating glyph for following chracter failed:" + rawChars[1][0]);
+              Logger::log(U"Creating glyph for following character failed:" + rawChars[1][0]);
             }
             else {
               unicodeStartCharsMap.insert({ rawChars[0][0],std::unique_ptr<CharGlyph>(charGlyph) });
@@ -94,7 +94,7 @@ Font::Font(
             assert(rawChars[2].size() == 1);
             CharGlyph* charGlyph = generateCharacter(rawChars[2][0], languageCode, script, direction);
             if (charGlyph == nullptr) {
-              Logger::log(U"Creating glyph for following chracter failed:" + rawChars[2][0]);
+              Logger::log(U"Creating glyph for following character failed:" + rawChars[2][0]);
             }
             else {
               unicodeMiddleCharsMap.insert({ rawChars[0][0],std::unique_ptr<CharGlyph>(charGlyph) });
@@ -104,7 +104,7 @@ Font::Font(
             assert(rawChars[3].size() == 1);
             CharGlyph* charGlyph = generateCharacter(rawChars[3][0], languageCode, script, direction);
             if (charGlyph == nullptr) {
-              Logger::log(U"Creating glyph for following chracter failed:" + rawChars[3][0]);
+              Logger::log(U"Creating glyph for following character failed:" + rawChars[3][0]);
             }
             else {
               unicodeEndCharsMap.insert({ rawChars[0][0],std::unique_ptr<CharGlyph>(charGlyph) });
@@ -545,7 +545,7 @@ CharGlyph* Font::generateCharacter(
     float(theight)
   );
  
-  texture->assignFilter(&colorFilterRefrence);
+  texture->assignFilter(&colorFilterReference);
 
   indices.emplace_back(std::make_unique<Surface>(
     Constants::LightPrecision::none,
@@ -596,8 +596,6 @@ CharGlyph* Font::generateCharacter(
   shape->setTransparencyColorStatus(true);
 
   shape->setTransparencyColor(0.0f, 0.0f, 0.0f);
-
-  //shape->scale(-0f);
   
   return new CharGlyph(
     shape,
