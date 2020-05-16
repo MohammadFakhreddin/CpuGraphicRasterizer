@@ -16,54 +16,6 @@ void DataAccessPoint::createInstance() {
   }
 }
 
-DataAccessPoint::DataAccessPoint() {
-
-#ifdef __DESKTOP__
-  {//Filling keyMap
-    keyMap['a'] = Constants::KeyboardButtons::keyA;
-    keyMap['b'] = Constants::KeyboardButtons::keyB;
-    keyMap['b'] = Constants::KeyboardButtons::keyB;
-    keyMap['c'] = Constants::KeyboardButtons::keyC;
-    keyMap['d'] = Constants::KeyboardButtons::keyD;
-    keyMap['e'] = Constants::KeyboardButtons::keyE;
-    keyMap['f'] = Constants::KeyboardButtons::keyF;
-    keyMap['g'] = Constants::KeyboardButtons::keyG;
-    keyMap['h'] = Constants::KeyboardButtons::keyH;
-    keyMap['i'] = Constants::KeyboardButtons::keyI;
-    keyMap['j'] = Constants::KeyboardButtons::keyJ;
-    keyMap['k'] = Constants::KeyboardButtons::keyK;
-    keyMap['l'] = Constants::KeyboardButtons::keyL;
-    keyMap['m'] = Constants::KeyboardButtons::keyM;
-    keyMap['n'] = Constants::KeyboardButtons::keyN;
-    keyMap['o'] = Constants::KeyboardButtons::keyO;
-    keyMap['p'] = Constants::KeyboardButtons::keyP;
-    keyMap['q'] = Constants::KeyboardButtons::keyQ;
-    keyMap['r'] = Constants::KeyboardButtons::keyR;
-    keyMap['s'] = Constants::KeyboardButtons::keyS;
-    keyMap['t'] = Constants::KeyboardButtons::keyT;
-    keyMap['u'] = Constants::KeyboardButtons::keyU;
-    keyMap['v'] = Constants::KeyboardButtons::keyV;
-    keyMap['w'] = Constants::KeyboardButtons::keyW;
-    keyMap['x'] = Constants::KeyboardButtons::keyX;
-    keyMap['y'] = Constants::KeyboardButtons::keyY;
-    keyMap['z'] = Constants::KeyboardButtons::keyZ;
-    keyMap[0x09] = Constants::KeyboardButtons::tab;
-    keyMap[0x25] = Constants::KeyboardButtons::arrowLeft;
-    keyMap[0x27] = Constants::KeyboardButtons::arrowRight;
-    keyMap[0x26] = Constants::KeyboardButtons::arrowUp;
-    keyMap[0x28] = Constants::KeyboardButtons::arrowDown;
-  }
-#endif // __DESKTOP__
-
-}
-
-#ifdef __DESKTOP__
-Constants::KeyboardButtons DataAccessPoint::getKeyCode(const unsigned char& key) {
-  return keyMap[std::tolower(key)];
-}
-#endif // __DESKTOP__
-
-
 void DataAccessPoint::setAppScreenWidth(const unsigned int appScreenWidth) {
   this->appScreenWidth = appScreenWidth;
 }
@@ -130,20 +82,4 @@ const FreeType& DataAccessPoint::getFreeType()
 const std::vector<LanguageCharacterSource*>& DataAccessPoint::getSpecialCharacters()
 {
   return specialCharactersSource;
-}
-
-Constants::MouseButtonName DataAccessPoint::getMouseButtonName(const int& button){
-  switch (button)
-  {
-  case 0 :
-    return Constants::MouseButtonName::left;
-  case 1 :
-    return Constants::MouseButtonName::right;
-  case 2 :
-    return Constants::MouseButtonName::middle;
-  default:
-    //TODO Handle all mouse inputs
-    // Logger::exception("DataAccessPoint::getMouseButtonName is unknown");
-    return Constants::MouseButtonName::unknown;
-  }
 }

@@ -27,15 +27,19 @@ protected:
 
 #ifdef __DESKTOP__
 
-  const bool& useKeyEvent(const Constants::KeyboardButtons& keyEvent);
+  const bool& useKeyboardCharacterEvent(const int& keyboardKey);
 
-  const bool& getMouseEvent(const Constants::MouseButtonName& mouseButtonName);
+  const bool& useScanCodeEvent(const int& scanCode);
 
-  void notifyKeyIsPressed(const Constants::KeyboardButtons& keyEvent);
+  const bool& getMouseEvent(const int& mouseButtonName);
 
-  void mouseButtonPressed(const Constants::MouseButtonName& mouseButton);
+  void notifyForNewKeyboardCharacterEvent(const int& keyboardCharacter);
 
-  void mouseButtonReleased(const Constants::MouseButtonName& mouseButton);
+  void notifyForNewScanCodeCharacterEvent(const int& scanCode);
+
+  void mouseButtonPressed(const int& mouseButton);
+
+  void mouseButtonReleased(const int& mouseButton);
 
 #endif
 
@@ -49,13 +53,17 @@ private:
 
 #ifdef __DESKTOP__
 
-  std::unordered_map<Constants::KeyboardButtons, bool> keyEvents;
+  std::unordered_map<int, bool> keyEvents;
 
-  std::unordered_map<Constants::MouseButtonName, bool> mouseEvents;
+  std::unordered_map<int, bool> mouseEvents;
+
+  std::unordered_map<int,bool> scanCodeEvents;
 
 #endif
 
   bool temporaryKeyEventPlaceholder = false;
+
+  bool temporaryScanCodeEventPlaceholder = false;
 
 };
 

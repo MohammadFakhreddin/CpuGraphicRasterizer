@@ -54,21 +54,14 @@ public:
 
   const std::vector<LanguageCharacterSource*>& getSpecialCharacters();
 
-#ifdef __DESKTOP__
-
-  Constants::KeyboardButtons getKeyCode(const unsigned char& key);
-
-  Constants::MouseButtonName getMouseButtonName(const int& button);
-
-#endif // __DESKTOP__
-  
+   
 private:
 
   static std::unique_ptr<DataAccessPoint> instance;
 
 #ifdef __DESKTOP__
 
-  std::unordered_map<char, Constants::KeyboardButtons> keyMap;
+  std::unordered_map<char, int> keyMap;
 
 #endif // __DESKTOP__
 

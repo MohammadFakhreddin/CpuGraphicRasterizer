@@ -53,22 +53,22 @@ void ColoredCubeScene::update(double deltaTime) {
     lightRotationX = 0.0f;
     lightRotationY = 0.0f;
     lightRotationZ = 0.0f;
-    if (useKeyEvent(Constants::KeyboardButtons::keyA)) {
+    if (useScanCodeEvent(GLFW_KEY_A)) {
       lightRotationX += float(deltaTime * lightTransformSpeed * -1.0f);
     }
-    if (useKeyEvent(Constants::KeyboardButtons::keyD)) {
+    if (useScanCodeEvent(GLFW_KEY_D)) {
       lightRotationX += float(deltaTime * lightTransformSpeed);
     }
-    if (useKeyEvent(Constants::KeyboardButtons::keyW)) {
+    if (useScanCodeEvent(GLFW_KEY_W)) {
       lightRotationY += float(deltaTime * lightTransformSpeed);
     }
-    if (useKeyEvent(Constants::KeyboardButtons::keyS)) {
+    if (useScanCodeEvent(GLFW_KEY_S)) {
       lightRotationY += float(deltaTime * lightTransformSpeed * -1.0);
     }
-    if (useKeyEvent(Constants::KeyboardButtons::keyC)) {
+    if (useScanCodeEvent(GLFW_KEY_C)) {
       lightRotationZ += float(deltaTime * lightTransformSpeed * -1.0 * 0.5);
     }
-    if (useKeyEvent(Constants::KeyboardButtons::keyV)) {
+    if (useScanCodeEvent(GLFW_KEY_V)) {
       lightRotationZ += float(deltaTime * lightTransformSpeed * 1.0 * 0.5);
     }
     if (lightRotationX != 0 || lightRotationY != 0 || lightRotationZ != 0) {

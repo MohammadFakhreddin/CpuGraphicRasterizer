@@ -26,25 +26,25 @@ https://stackoverflow.com/questions/150355/programmatically-find-the-number-of-c
 #ifdef __DESKTOP__
 void handleKeyboardEvent(GLFWwindow* window,int key,int scanCode,int action)
 {
-  DataAccessPoint::getInstance()->getEventHandler().emitEvent<Constants::KeyboardButtons>(
-    EventHandler::EventName::keyboardKeyIsPressed,
-    DataAccessPoint::getInstance()->getKeyCode(key)
+  DataAccessPoint::getInstance()->getEventHandler().emitEvent<int>(
+    EventHandler::EventName::keyboardCharacterIsPressed,
+    key
+  );
+  DataAccessPoint::getInstance()->getEventHandler().emitEvent<int>(
+    EventHandler::EventName::keyboardScanCodeIsPressed,
+    scanCode
   );
 }
 
 void handleMouseEvent(int button, int state, int x, int y) {
-  DataAccessPoint::getInstance()->getEventHandler().emitEvent<Constants::MouseButtonName>(
+  DataAccessPoint::getInstance()->getEventHandler().emitEvent<int>(
     state == 1 ? EventHandler::EventName::mouseButtonRelease : EventHandler::EventName::mouseButtonPressed,
-    DataAccessPoint::getInstance()->getMouseButtonName(button)
+    button
   );
   DataAccessPoint::getInstance()->setMousePosition(x,y);
 }
 
 void handleMotionEvent(int x, int y){
-  DataAccessPoint::getInstance()->setMousePosition(x,y);
-}
-
-void handlePassiveMotionEvent(int x,int y){
   DataAccessPoint::getInstance()->setMousePosition(x,y);
 }
 
@@ -101,8 +101,8 @@ Application::Application(
   }
 
 #ifdef __DESKTOP__
-  DataAccessPoint::getInstance()->getEventHandler().subscribeToEvent<Constants::KeyboardButtons>(
-    EventHandler::EventName::keyboardKeyIsPressed,
+  DataAccessPoint::getInstance()->getEventHandler().subscribeToEvent<int>(
+    EventHandler::EventName::keyboardScanCodeIsPressed,
     "Application",
     std::bind(&Application::notifyKeyIsPressed, this, std::placeholders::_1)
   );
@@ -194,8 +194,8 @@ void Application::navigateToScene(unsigned int sceneIndex) {
 }
 
 #ifdef __DESKTOP__
-void Application::notifyKeyIsPressed(Constants::KeyboardButtons key) {
-  if (key == Constants::KeyboardButtons::tab) {
+void Application::notifyKeyIsPressed(const int& key) {
+  if (key == GLFW_KEY_TAB) {
     sceneIndex++;
     if (sceneIndex >= sceneList.size()) {
       sceneIndex = 0;

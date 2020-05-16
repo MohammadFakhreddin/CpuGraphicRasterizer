@@ -19,26 +19,32 @@ BaseScene::BaseScene(OpenGL& gl,std::string sceneName)
   }
 
 #ifdef __DESKTOP__
-  //TODO Move all events to data access point
-  DataAccessPoint::getInstance()->getEventHandler().subscribeToEvent<Constants::KeyboardButtons>(
-    EventHandler::EventName::keyboardKeyIsPressed,
+  
+  DataAccessPoint::getInstance()->getEventHandler().subscribeToEvent<int>(
+    EventHandler::EventName::keyboardCharacterIsPressed,
     sceneName,
-    std::bind(&BaseScene::notifyKeyIsPressed,this, std::placeholders::_1)
+    std::bind(&BaseScene::notifyForNewKeyboardCharacterEvent,this, std::placeholders::_1)
   );
   
+  DataAccessPoint::getInstance()->getEventHandler().subscribeToEvent<int>(
+    EventHandler::EventName::keyboardScanCodeIsPressed,
+    sceneName,
+    std::bind(&BaseScene::notifyForNewScanCodeCharacterEvent,this, std::placeholders::_1)
+  );
+
   DataAccessPoint::getInstance()->getEventHandler().subscribeToEvent<std::string>(
     EventHandler::EventName::activeSceneChanged,
     sceneName,
     std::bind(&BaseScene::onActiveSceneChanged,this,std::placeholders::_1)
   );
 
-  DataAccessPoint::getInstance()->getEventHandler().subscribeToEvent<Constants::MouseButtonName>(
+  DataAccessPoint::getInstance()->getEventHandler().subscribeToEvent<int>(
     EventHandler::EventName::mouseButtonPressed,
     sceneName,
     std::bind(&BaseScene::mouseButtonPressed,this,std::placeholders::_1)
   );
 
-  DataAccessPoint::getInstance()->getEventHandler().subscribeToEvent<Constants::MouseButtonName>(
+  DataAccessPoint::getInstance()->getEventHandler().subscribeToEvent<int>(
     EventHandler::EventName::mouseButtonRelease,
     sceneName,
     std::bind(&BaseScene::mouseButtonReleased,this,std::placeholders::_1)
@@ -56,20 +62,33 @@ void BaseScene::render(double deltaTime) {
 }
 
 #ifdef __DESKTOP__
-void BaseScene::notifyKeyIsPressed(const Constants::KeyboardButtons & keyEvent) {
+void BaseScene::notifyForNewKeyboardCharacterEvent(const int & keyEvent) {
   if (isPageActive == false) {
     return;
   }
   keyEvents[keyEvent] = true;
 }
 
-const bool& BaseScene::useKeyEvent(const Constants::KeyboardButtons & keyEvent) {
-  temporaryKeyEventPlaceholder = keyEvents[keyEvent];
-  keyEvents[keyEvent] = false;
+void BaseScene::notifyForNewScanCodeCharacterEvent(const int& scanCode){
+  if(isPageActive == false){
+    return;
+  }
+  scanCodeEvents[scanCode] = true;
+}
+
+const bool& BaseScene::useKeyboardCharacterEvent(const int& keyboardKey){
+  temporaryKeyEventPlaceholder = keyEvents[keyboardKey];
+  keyEvents[keyboardKey] = false;
   return temporaryKeyEventPlaceholder;
 }
 
-const bool& BaseScene::getMouseEvent(const Constants::MouseButtonName& mouseButtonName){
+const bool& BaseScene::useScanCodeEvent(const int& scanCode){
+  temporaryScanCodeEventPlaceholder = scanCodeEvents[scanCode];
+  scanCodeEvents[scanCode] = false;
+  return temporaryScanCodeEventPlaceholder;
+}
+
+const bool& BaseScene::getMouseEvent(const int& mouseButtonName){
   return mouseEvents[mouseButtonName];
 }
 #endif // __DESKTOP__
@@ -91,10 +110,10 @@ void BaseScene::onActiveSceneChanged(const std::string& sceneName) {
   isPageActive = this->sceneName == sceneName;
 }
 
-void BaseScene::mouseButtonPressed(const Constants::MouseButtonName& buttonName){
+void BaseScene::mouseButtonPressed(const int& buttonName){
   mouseEvents[buttonName] = true;
 }
 
-void BaseScene::mouseButtonReleased(const Constants::MouseButtonName& buttonName){
+void BaseScene::mouseButtonReleased(const int& buttonName){
   mouseEvents[buttonName] = false;
 }

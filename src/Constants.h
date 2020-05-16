@@ -64,53 +64,6 @@ namespace Constants {
     Unknown
   };
 
-#ifdef __DESKTOP__
-  
-  enum class KeyboardButtons
-  {
-    keyA,
-    keyD,
-    keyW,
-    keyS,
-    keyE,
-    keyQ,
-    keyR,
-    keyT,
-    keyF,
-    keyG,
-    keyX,
-    keyC,
-    keyV,
-    keyB,
-    keyU,
-    keyH,
-    keyJ,
-    keyK,
-    keyY,
-    keyI,
-    keyL,
-    keyM,
-    keyN,
-    keyO,
-    keyP,
-    keyZ,
-    tab,
-    arrowLeft,
-    arrowRight,
-    arrowUp,
-    arrowDown
-  };
-
-  enum class MouseButtonName
-  {
-    left,
-    right,
-    middle,
-    unknown
-  };
-
-#endif // __DESKTOP__
-
   enum class LightPrecision {
     perPixel,
     perSurface,

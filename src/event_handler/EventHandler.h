@@ -17,7 +17,8 @@ private:
 public:
 
   enum class EventName {
-    keyboardKeyIsPressed,
+    keyboardCharacterIsPressed,
+    keyboardScanCodeIsPressed,
     mouseButtonPressed,
     mouseButtonRelease,
     screenSurfaceChanged,

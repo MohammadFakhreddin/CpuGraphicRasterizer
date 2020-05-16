@@ -52,22 +52,22 @@ void BunnyScene::update(double deltaTime) {
     lightRotationX = 0.0f;
     lightRotationY = 0.0f;
     lightRotationZ = 0.0f;
-    if (useKeyEvent(Constants::KeyboardButtons::keyA)) {
+    if (useScanCodeEvent(GLFW_KEY_A)) {
       lightRotationX += float(deltaTime * lightTransformSpeed * -1.0f);
     }
-    if (useKeyEvent(Constants::KeyboardButtons::keyD)) {
+    if (useScanCodeEvent(GLFW_KEY_D)) {
       lightRotationX += float(deltaTime * lightTransformSpeed);
     }
-    if (useKeyEvent(Constants::KeyboardButtons::keyW)) {
+    if (useScanCodeEvent(GLFW_KEY_W)) {
       lightRotationY += float(deltaTime * lightTransformSpeed);
     }
-    if (useKeyEvent(Constants::KeyboardButtons::keyS)) {
+    if (useScanCodeEvent(GLFW_KEY_S)) {
       lightRotationY += float(deltaTime * lightTransformSpeed * -1.0);
     }
-    if (useKeyEvent(Constants::KeyboardButtons::keyC)) {
+    if (useScanCodeEvent(GLFW_KEY_C)) {
       lightRotationZ += float(deltaTime * lightTransformSpeed * -1.0 * 0.5);
     }
-    if (useKeyEvent(Constants::KeyboardButtons::keyV)) {
+    if (useScanCodeEvent(GLFW_KEY_V)) {
       lightRotationZ += float(deltaTime * lightTransformSpeed * 1.0 * 0.5);
     }
     if (lightRotationX != 0 || lightRotationY != 0 || lightRotationZ != 0) {
@@ -78,26 +78,26 @@ void BunnyScene::update(double deltaTime) {
     shapeRotationX = 0.0f;
     shapeRotationY = 0.0f;
     shapeRotationZ = 0.0f;
-    if (useKeyEvent(Constants::KeyboardButtons::keyI)) {
+    if (useScanCodeEvent(GLFW_KEY_I)) {
       shapeRotationX += float(1.0 * shapeRotationSpeed * deltaTime);
     }
-    if (useKeyEvent(Constants::KeyboardButtons::keyY)) {
+    if (useScanCodeEvent(GLFW_KEY_Y)) {
       shapeRotationX += float(-1.0 * shapeRotationSpeed * deltaTime);
     }
-    if (useKeyEvent(Constants::KeyboardButtons::keyK)) {
+    if (useScanCodeEvent(GLFW_KEY_K)) {
       shapeRotationY += float(1.0 * shapeRotationSpeed * deltaTime);
     }
-    if (useKeyEvent(Constants::KeyboardButtons::keyH)) {
+    if (useScanCodeEvent(GLFW_KEY_H)) {
       shapeRotationY += float(-1.0 * shapeRotationSpeed * deltaTime);
     }
-    if (useKeyEvent(Constants::KeyboardButtons::keyU)) {
+    if (useScanCodeEvent(GLFW_KEY_U)) {
       shapeRotationZ += float(1.0 * shapeRotationSpeed * deltaTime);
     }
-    if (useKeyEvent(Constants::KeyboardButtons::keyJ)) {
+    if (useScanCodeEvent(GLFW_KEY_J)) {
       shapeRotationZ += float(-1.0 * shapeRotationSpeed * deltaTime);
     }
     if (shapeRotationX != 0 || shapeRotationY != 0 || shapeRotationZ != 0) {
-      //We need seperate rotation methods as well
+      //We need separate rotation methods as well
       bunnyShape->rotateXYZ(shapeRotationX, shapeRotationY, shapeRotationZ);
     }
   }
