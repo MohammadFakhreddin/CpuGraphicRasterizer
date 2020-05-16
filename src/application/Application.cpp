@@ -77,6 +77,9 @@ Application::Application(
     physicalDeviceScreenWidth,
     physicalDeviceScreenHeight
   ),
+#ifdef __DESKTOP__
+  window(window),
+#endif // __DESKTOP__
   fpsDrawLocation(-1.0f, -1.0f),
   sceneNameDrawLocation(-1.0f, 0.9f)
 {
@@ -150,7 +153,9 @@ void Application::notifyScreenSurfaceChanged(
   }
 }
 
-
+void Application::update(double deltaTime) {
+  currentScene->update(deltaTime);
+}
 
 void Application::render(double deltaTime) {
   openGLInstance.clear();
@@ -177,10 +182,6 @@ void Application::render(double deltaTime) {
   openGLInstance.flush();
 }
 
-void Application::update(double deltaTime) {
-  currentScene->update(deltaTime);
-}
-
 void Application::mainLoop(double deltaTime){
   deltaTime = fmin(deltaTime,100.0);
   update(deltaTime);
@@ -190,6 +191,24 @@ void Application::mainLoop(double deltaTime){
   }
   assert(openGLInstance.checkForOpenGlError());
 }
+
+#ifdef __DESKTOP__
+void Application::run() {
+  while (!glfwWindowShouldClose(window))
+  {
+    currentTime = glfwGetTime();
+    deltaTime = currentTime - lastTime;
+    lastTime = currentTime;
+    mainLoop(deltaTime);
+    sleepTime = loopTime - deltaTime;
+    if (sleepTime > 0.0) {
+      std::this_thread::sleep_for(std::chrono::nanoseconds(int(1000 * sleepTime)));
+    }
+    glfwSwapBuffers(window);
+    glfwPollEvents();
+  }
+}
+#endif // __DESKTOP__
 
 void Application::navigateToScene(unsigned int sceneIndex) {
   assert(sceneIndex >= 0 && sceneIndex <= sceneList.size());

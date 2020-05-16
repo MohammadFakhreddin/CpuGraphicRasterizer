@@ -38,14 +38,18 @@ public:
   void navigateToScene(unsigned int sceneIndex);
 
 #ifdef __DESKTOP__
+  
   void notifyKeyIsPressed(const int& key);
+
+  void run();
+
 #endif
 
 private:
 
-  void render(double deltaTime);
-  
   void update(double deltaTime);
+
+  void render(double deltaTime);
 
   BaseScene* currentScene;
 
@@ -60,6 +64,22 @@ private:
   Matrix2X1Float fpsDrawLocation;
 
   Matrix2X1Float sceneNameDrawLocation;
+
+#ifdef __DESKTOP__
+
+  GLFWwindow* window;
+
+  const double loopTime = 1.0 / 60.0;
+
+  double currentTime = 0.0;
+
+  double lastTime = 0.0;
+
+  double deltaTime = 0.0;
+
+  double sleepTime = 0.0;
+
+#endif // __DESKTOP__
 
 };
 

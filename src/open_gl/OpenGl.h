@@ -8,6 +8,7 @@
   #define GL_SILENCE_DEPRECATION
   /* Defined before OpenGL and GLUT includes to avoid deprecation messages */
   #define __OPENGL__
+  #include <Glad/glad.h>
   #include <GLFW/glfw3.h>
 #elif defined(__IOS__)
   #define __GLES__
@@ -17,9 +18,11 @@
   #include <GLES2/gl2.h>
 #elif defined(__PLATFORM_WIN__)
 	#define __OPENGL__
-	#include <GLFW/glfw3.h>
+  #include <Glad/glad.h>
+  #include <GLFW/glfw3.h>
 #elif defined(__PLATFORM_LINUX__)
   #define __OPENGL__
+  #include <Glad/glad.h>
   #include <GLFW/glfw3.h>
 #endif
 
