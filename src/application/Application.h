@@ -12,6 +12,9 @@ class Application {
 public:
 
   Application(
+  #ifdef __OPENGL__
+    GLFWwindow* window,
+  #endif
     Constants::Platform platform,
     unsigned int appScreenWidth,
     unsigned int appScreenHeight,

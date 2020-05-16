@@ -6,10 +6,13 @@
 #include "../../utils/path/Path.h"
 #include "../../shaders/directional_light/DirectionalLight.h"
 #include "../../shaders/ambient_light/AmbientLight.h"
+#include "../../utils/math/Math.h"
 
 RobotScene::RobotScene(OpenGL& gl)
   :
   BaseScene(gl, "RobotScene"),
+  ambientLight(std::make_unique<AmbientLight>(0.2f, 0.2f, 0.2f)),
+  directionalLight(std::make_unique<DirectionalLight>(1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f)),
   cameraInstance(
     gl,
     Matrix3X1Float(),
@@ -18,8 +21,6 @@ RobotScene::RobotScene(OpenGL& gl)
     DataAccessPoint::getInstance()->getAppScreenHeight(),
     "Robot main camera"
   ),
-  ambientLight(std::make_unique<AmbientLight>(0.2f, 0.2f, 0.2f)),
-  directionalLight(std::make_unique<DirectionalLight>(1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f)),
   colorTexture(std::make_unique<ColorTexture>(1.0f, 1.0f, 1.0f)),
   pip(cameraInstance)
 {
@@ -37,7 +38,8 @@ RobotScene::RobotScene(OpenGL& gl)
     shape->transformX(float(DataAccessPoint::getInstance()->getAppScreenWidth()) / 2.0f);
     shape->transformY(float(DataAccessPoint::getInstance()->getAppScreenHeight()) / 2.0f);
     shape->transformZ(100.0f);
-    shape->rotateXYZ(0.0f, Math::piFloat , 0.0f);
+    float rotationYValue = Math::piFloat;
+    shape->rotateXYZ(0.0f, rotationYValue , 0.0f);
     shape->scale(scaleFactor);
   }
   pip.assignAmbientLight(ambientLight.get());

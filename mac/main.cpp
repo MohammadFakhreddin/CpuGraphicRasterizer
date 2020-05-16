@@ -3,56 +3,79 @@
 #define TINYOBJLOADER_IMPLEMENTATION
 #include "../src/libs/tiny_obj_loader/tiny_obj_loader.h"
 
-#include "../src/open_gl/OpenGl.h"
 #include <memory>
+
 #include <CoreGraphics/CGDisplayConfiguration.h>
 #include "../src/application/Application.h"
+#include "../src/open_gl/OpenGl.h"
+#include "../src/utils/log/Logger.h"
 
 std::unique_ptr<Application> application;
 
-int currentTime = 0;
-int lastTime = 0;
-int deltaTime = 0;
+double currentTime = 0;
+double lastTime = 0;
+double deltaTime = 0;
 
 void mainLoop() {
-    currentTime = glutGet(GLUT_ELAPSED_TIME);
+    currentTime = glfwGetTime();
     deltaTime = currentTime - lastTime;
     lastTime = currentTime;
     application->mainLoop(deltaTime);
 }
 
-void timer(int value)
+void errorCallback(int error, const char* description)
 {
-	glutTimerFunc(16, timer, 0);
-	glutPostRedisplay();
+    fprintf(stderr, "Error: %s\n", description);
 }
+
 
 /* Main function: GLUT runs as a console application starting at main()  */
 int main(int argc, char** argv) {
-	glutInit(&argc,argv);
-  	glutInitDisplayMode ( GLUT_SINGLE | GLUT_RGB );
-	auto mainDisplayId = CGMainDisplayID();
+	if (!glfwInit())
+	{
+		Logger::log("Initing glfw failed");
+		exit(EXIT_FAILURE);
+		return -1;
+	}
 
+  	glfwSetErrorCallback(errorCallback);
+
+	auto mainDisplayId = CGMainDisplayID();
 	unsigned int realScreenWidth = CGDisplayPixelsWide(mainDisplayId);
 	unsigned int realScreenHeight = CGDisplayPixelsHigh(mainDisplayId);
 	unsigned int appScreenWidth = 800;
 	unsigned int appScreenHeight = 600;
 	
-	glutInitWindowSize(appScreenWidth,appScreenHeight);
-	glutInitWindowPosition(
-			(int)(realScreenWidth/2 - appScreenWidth/2),
-			(int)(realScreenHeight/2 - appScreenHeight/2));
-	glutCreateWindow(Constants::Window::appName);
+	GLFWwindow* window = glfwCreateWindow(appScreenWidth, appScreenHeight, Constants::Window::appName, NULL, NULL);
+	if (!window)
+	{
+		Logger::log("Creating window failed");
+		glfwTerminate();
+        exit(EXIT_FAILURE);
+		return -1;
+	}
+	glfwSetWindowPos(window,(int)(realScreenWidth/2 - appScreenWidth/2),(int)(realScreenHeight/2 - appScreenHeight/2));
+	glfwMakeContextCurrent(window);
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f); // Set background color to black and opaque
 	application = std::make_unique<Application>(
+		window,
 		Constants::Platform::Mac,
 		appScreenWidth,
 		appScreenHeight,
 		realScreenWidth,
 		realScreenHeight
 	);
-	glutTimerFunc(0, timer, 0);
-	glutDisplayFunc(mainLoop);
-	glutMainLoop();
+
+	while (!glfwWindowShouldClose(window))
+    {
+		mainLoop();
+		glfwSwapBuffers(window);
+        glfwPollEvents();
+	}
+	
+	glfwDestroyWindow(window);
+    glfwTerminate();
+    exit(EXIT_SUCCESS);
+	
 	return 0;
 }

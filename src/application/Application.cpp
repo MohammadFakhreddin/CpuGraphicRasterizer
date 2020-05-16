@@ -24,7 +24,7 @@ https://stackoverflow.com/questions/150355/programmatically-find-the-number-of-c
 */
 
 #ifdef __DESKTOP__
-void handleKeyboardEvent(unsigned char key, int x, int y)
+void handleKeyboardEvent(GLFWwindow* window,int key,int scanCode,int action)
 {
   DataAccessPoint::getInstance()->getEventHandler().emitEvent<Constants::KeyboardButtons>(
     EventHandler::EventName::keyboardKeyIsPressed,
@@ -51,6 +51,9 @@ void handlePassiveMotionEvent(int x,int y){
 #endif
 
 Application::Application(
+#ifdef __OPENGL__
+  GLFWwindow* window,
+#endif
   Constants::Platform platform,
   unsigned int appScreenWidth,
   unsigned int appScreenHeight,
@@ -59,11 +62,14 @@ Application::Application(
   )
   :
   openGLInstance(
+  #ifdef __OPENGL__
+    window,
+  #endif
     appScreenWidth,
     appScreenHeight,
     physicalDeviceScreenWidth,
     physicalDeviceScreenHeight
-    ),
+  ),
   fpsDrawLocation(-1.0f, -1.0f),
   sceneNameDrawLocation(-1.0f, 0.9f)
 {
@@ -78,20 +84,19 @@ Application::Application(
   }
 
 #ifdef __DESKTOP__
-  glutKeyboardFunc(handleKeyboardEvent);
-  glutMouseFunc(handleMouseEvent);
-  glutMotionFunc(handleMotionEvent);
-  glutPassiveMotionFunc(handlePassiveMotionEvent);
+  GLFWkeyfun(handleKeyboardEvent);
+  GLFWmousebuttonfun(handleMouseEvent);
+  GLFWcursorposfun(handleMotionEvent);
 #endif
   {
     //sceneList.emplace_back(std::make_unique<LightPerPixelScene>(openGLInstance));
     sceneList.emplace_back(std::make_unique<MonkeyScene>(openGLInstance));
-    // sceneList.emplace_back(std::make_unique<BunnyScene>(openGLInstance));
-    // sceneList.emplace_back(std::make_unique<SphereScene>(openGLInstance));
-    //sceneList.emplace_back(std::make_unique<ColoredCubeScene>(openGLInstance));
-    // sceneList.emplace_back(std::make_unique<TexturedCubeScene>(openGLInstance));
-    //sceneList.emplace_back(std::make_unique<RobotScene>(openGLInstance));
-    //sceneList.emplace_back(std::make_unique<PlantScene>(openGLInstance));
+    sceneList.emplace_back(std::make_unique<BunnyScene>(openGLInstance));
+    sceneList.emplace_back(std::make_unique<SphereScene>(openGLInstance));
+    sceneList.emplace_back(std::make_unique<ColoredCubeScene>(openGLInstance));
+    sceneList.emplace_back(std::make_unique<TexturedCubeScene>(openGLInstance));
+    sceneList.emplace_back(std::make_unique<RobotScene>(openGLInstance));
+    sceneList.emplace_back(std::make_unique<PlantScene>(openGLInstance));
     navigateToScene(0);
   }
 
@@ -145,22 +150,23 @@ void Application::render(double deltaTime) {
   {//Drawing current active scene
     currentScene->render(deltaTime);
   }
-  {//FPSText
-    openGLInstance.drawText(
-      fpsDrawLocation.getX(),
-      fpsDrawLocation.getY(),
-      std::to_string(currentFps),
-      1.0f,1.0f,1.0f
-    );
-  }
-  {//SceneNameText
-    openGLInstance.drawText(
-      sceneNameDrawLocation.getX(),
-      sceneNameDrawLocation.getY(),
-      currentScene->getSceneName(), 
-      1.0f, 1.0f, 1.0f
-    );
-  }
+  //TODO Use font instead
+  // {//FPSText
+  //   openGLInstance.drawText(
+  //     fpsDrawLocation.getX(),
+  //     fpsDrawLocation.getY(),
+  //     std::to_string(currentFps),
+  //     1.0f,1.0f,1.0f
+  //   );
+  // }
+  // {//SceneNameText
+  //   openGLInstance.drawText(
+  //     sceneNameDrawLocation.getX(),
+  //     sceneNameDrawLocation.getY(),
+  //     currentScene->getSceneName(), 
+  //     1.0f, 1.0f, 1.0f
+  //   );
+  // }
   openGLInstance.flush();
 }
 

@@ -1,0 +1,1235 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXAggregateTarget section */
+		0E96EB21FD9C47D3A0C2962D /* ALL_BUILD */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = F1D6E04C5C2747738E1FA6BF /* Build configuration list for PBXAggregateTarget "ALL_BUILD" */;
+			buildPhases = (
+				3460AF783E744D8DB08384E6 /* CMake Rules */,
+			);
+			dependencies = (
+				5D77ED26E49A49A4AF53EC32 /* PBXTargetDependency */,
+				9C52BB1589B64C7A83D2333C /* PBXTargetDependency */,
+				6719B56310C445909290A8F2 /* PBXTargetDependency */,
+			);
+			name = ALL_BUILD;
+			productName = ALL_BUILD;
+		};
+		5B64DBDEDE604BE2A1662E2A /* RUN_TESTS */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = EF43BB5489A94B8C87A903C1 /* Build configuration list for PBXAggregateTarget "RUN_TESTS" */;
+			buildPhases = (
+				BF6929768D334D8DA40A34E1 /* CMake PostBuild Rules */,
+			);
+			dependencies = (
+			);
+			name = RUN_TESTS;
+			productName = RUN_TESTS;
+		};
+		88D400AA9A6A46D69113AAFC /* ZERO_CHECK */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 9B0B519A8F67430F90C8F14D /* Build configuration list for PBXAggregateTarget "ZERO_CHECK" */;
+			buildPhases = (
+				BB2AF2BC65C04AB1861003F9 /* CMake Rules */,
+			);
+			dependencies = (
+			);
+			name = ZERO_CHECK;
+			productName = ZERO_CHECK;
+		};
+/* End PBXAggregateTarget section */
+
+/* Begin PBXBuildFile section */
+		016D6F5DC4AB431CBFE753EE /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/3d/models/DiceCube.h */ = {isa = PBXBuildFile; fileRef = 6B2C7356299442B397319076 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/3d/models/DiceCube.h */; };
+		080421C869DF463EA1305BCC /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/texture/ColorTexture/ColorTexture.h */ = {isa = PBXBuildFile; fileRef = 40AB6356280241258F0E0129 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/texture/ColorTexture/ColorTexture.h */; };
+		0A6B984F18EC4CD4A45DFF1D /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/CMakeFiles/3d-cube.dir/Info.plist */ = {isa = PBXBuildFile; fileRef = EDAC57B464DC407E82091DA7 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/CMakeFiles/3d-cube.dir/Info.plist */; };
+		0BF7CFE4F6354B23B150154F /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/3d/surface/Surface.cpp */ = {isa = PBXBuildFile; fileRef = 5727BDAAB532444B919E2D4E /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/3d/surface/Surface.cpp */; };
+		0CBCFFFB1EF343F69CE46571 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/utils/thread_pool/ThreadPool.h */ = {isa = PBXBuildFile; fileRef = CE612E810A7E4F31A64F8FB9 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/utils/thread_pool/ThreadPool.h */; };
+		10DDBEB06CB043CC8984FB17 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/open_gl/OpenGl.cpp */ = {isa = PBXBuildFile; fileRef = C011178977CA4E3FA7905C3B /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/open_gl/OpenGl.cpp */; };
+		120557EE412E4014B2C7900A /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/scenes/plant_scene/PlantScene.cpp */ = {isa = PBXBuildFile; fileRef = CE2BB7FE6C1E4EA89B8972D8 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/scenes/plant_scene/PlantScene.cpp */; };
+		134C9277BD29410E9819B27A /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/mac/main.cpp */ = {isa = PBXBuildFile; fileRef = 55975F8F6F15477BACB129CC /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/mac/main.cpp */; };
+		13636948B71440BC860CDCBA /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/pipeline/Pipeline.h */ = {isa = PBXBuildFile; fileRef = 62A567800FE345C0885AD45A /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/pipeline/Pipeline.h */; };
+		1B003A8EDF234525B456643A /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/CMakeLists.txt */ = {isa = PBXBuildFile; fileRef = 4AB87808173D4B5BBCA1B3E6 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/CMakeLists.txt */; };
+		1C3E5A9783F84D208F36F0D9 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/3d/surface/Surface.h */ = {isa = PBXBuildFile; fileRef = 39635CDDFCE448C9AB5B3603 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/3d/surface/Surface.h */; };
+		205975A0E05A4F89AB1B6BDF /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/scenes/monkey_scene/MonkeyScene.cpp */ = {isa = PBXBuildFile; fileRef = 3973B3DB0EE94214B6119134 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/scenes/monkey_scene/MonkeyScene.cpp */; };
+		210A65241F7C4F80B630BFC3 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/text/font/Font.h */ = {isa = PBXBuildFile; fileRef = 2798B67D0D3C45C2AEB7C597 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/text/font/Font.h */; };
+		21D24278BA84486BA3DBE6AA /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/data_types/MatrixTemplate.h */ = {isa = PBXBuildFile; fileRef = 4849A420A8EC493EA9C5DF98 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/data_types/MatrixTemplate.h */; };
+		28B3183BA7CF4F84A2CF3699 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/shaders/ambient_light/AmbientLight.cpp */ = {isa = PBXBuildFile; fileRef = A894662B77D24137AA11BE3C /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/shaders/ambient_light/AmbientLight.cpp */; };
+		28D0A6A4C6EB4174AECE1DF2 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/event_handler/EventHandler.h */ = {isa = PBXBuildFile; fileRef = E7B501D8AF5644469F9EE3A9 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/event_handler/EventHandler.h */; };
+		2B3D9492CA514255B3056D0C /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/scenes/bunny_scene/BunnyScene.h */ = {isa = PBXBuildFile; fileRef = 30BDC735617E4A78B55E316C /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/scenes/bunny_scene/BunnyScene.h */; };
+		2EA40E6111BE4D4287853A9D /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/text/resources/LanguageCharacterSource.h */ = {isa = PBXBuildFile; fileRef = 0F07C4D5F08F425B9C1C8A88 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/text/resources/LanguageCharacterSource.h */; };
+		3922B5F478E449F79E810D79 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/file_system/FileSystem.h */ = {isa = PBXBuildFile; fileRef = 4FE7C558197C4E70A15E624D /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/file_system/FileSystem.h */; };
+		3A0A718F83B5495292C5CF93 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/text/char_glyph/CharGlyph.h */ = {isa = PBXBuildFile; fileRef = 77E2152B1C6B44B68BEC0CA7 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/text/char_glyph/CharGlyph.h */; };
+		3DEF8A8265DE44D7B750AA11 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/texture/Texture.h */ = {isa = PBXBuildFile; fileRef = 9FDC1C63AC204B0A984F335B /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/texture/Texture.h */; };
+		3F1F964BB0044166882D6ABE /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/text/font/FontMemoryPool.h */ = {isa = PBXBuildFile; fileRef = 581488F10AF6425BA6783E65 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/text/font/FontMemoryPool.h */; };
+		429797336D7B4E11A4D24D49 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/Constants.h */ = {isa = PBXBuildFile; fileRef = D118B5971BD649B8BEEDAF09 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/Constants.h */; };
+		43D7309DBCC74AD0BA6FBAF1 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/text/freetype/FreeType.cpp */ = {isa = PBXBuildFile; fileRef = 9C33106E25074DA8B1A77DBA /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/text/freetype/FreeType.cpp */; };
+		4660133BFD384307A6FFB5D6 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/scenes/textured_cube_scene/TexturedCubeScene.h */ = {isa = PBXBuildFile; fileRef = E20CA06E353F4262BB1967B3 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/scenes/textured_cube_scene/TexturedCubeScene.h */; };
+		466F4E546CD84CEDA867E581 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/libs/stb_image/open_gl_stb_image.h */ = {isa = PBXBuildFile; fileRef = 6F0A283D08DB4D48837FC4B4 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/libs/stb_image/open_gl_stb_image.h */; };
+		4867095D822D46AC8D48D8AF /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/shaders/point_light/PointLight.cpp */ = {isa = PBXBuildFile; fileRef = A9E8CD1153794A25BCC4D8C0 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/shaders/point_light/PointLight.cpp */; };
+		4BB25BD45E534E5CB0864716 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/3d/shape/Shape3d.h */ = {isa = PBXBuildFile; fileRef = CC71132B703640CE96B08A13 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/3d/shape/Shape3d.h */; };
+		4ECBE3D818714B02A0368493 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/3d/surface/TriangleMemoryPool.h */ = {isa = PBXBuildFile; fileRef = 4A2039D57BE5450B96B1BD6C /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/3d/surface/TriangleMemoryPool.h */; };
+		4F34265EC4F243AF90098C8A /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/texture/ImageTexture/ImageTexture.cpp */ = {isa = PBXBuildFile; fileRef = F6C925FB09A748F8A34CED7C /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/texture/ImageTexture/ImageTexture.cpp */; };
+		50748223DC5242118D337676 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/scenes/robot_scene/RobotScene.h */ = {isa = PBXBuildFile; fileRef = 13E39AC6D99248208FAC9865 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/scenes/robot_scene/RobotScene.h */; };
+		511F2C2AFBAA4B14A8B84CD9 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/pipeline/Pipeline.cpp */ = {isa = PBXBuildFile; fileRef = 2925316B4D454C3EA1902680 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/pipeline/Pipeline.cpp */; };
+		53E4D59A07274D729EB7379C /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/shaders/ambient_light/AmbientLight.h */ = {isa = PBXBuildFile; fileRef = 97092815478F4F92B2BD0027 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/shaders/ambient_light/AmbientLight.h */; };
+		5DA1A5F5D1854212A4E2451D /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/scenes/monkey_scene/MonkeyScene.h */ = {isa = PBXBuildFile; fileRef = 041980F1C93747E48767F782 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/scenes/monkey_scene/MonkeyScene.h */; };
+		67083E1012DB4D7599014104 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/tests/main.cpp */ = {isa = PBXBuildFile; fileRef = CD5A9E57F65D418E8843D0D1 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/tests/main.cpp */; };
+		680E12E028524A6E8E978CBF /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/libs/mini_ball/Miniball.h */ = {isa = PBXBuildFile; fileRef = E266DDBAD9164A66991F2654 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/libs/mini_ball/Miniball.h */; };
+		6A276C903E30445A86949569 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/scenes/spehre_scene/SphereScene.h */ = {isa = PBXBuildFile; fileRef = ED27B55DA41C4387A715CB86 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/scenes/spehre_scene/SphereScene.h */; };
+		6B57C5AE0A02445DBDED6A86 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/text/font/Font.cpp */ = {isa = PBXBuildFile; fileRef = 85A6D5CDCF954E3F9E643082 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/text/font/Font.cpp */; };
+		6F32923807024770A4D1C0DD /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/scenes/textured_cube_scene/TexturedCubeScene.cpp */ = {isa = PBXBuildFile; fileRef = 30E6E6C2CE624AE4BDF9F7C2 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/scenes/textured_cube_scene/TexturedCubeScene.cpp */; };
+		702E291E36984D67BD19D728 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/scenes/base_scene/BaseScene.h */ = {isa = PBXBuildFile; fileRef = F456A7B10DF94A8DB7E50DA1 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/scenes/base_scene/BaseScene.h */; };
+		7034E3BB62774DF281619968 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/shaders/point_light/PointLight.h */ = {isa = PBXBuildFile; fileRef = CEB1FB23174D4AC3A3835A81 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/shaders/point_light/PointLight.h */; };
+		74116A088A2D45948F2C1244 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/text/freetype/FreeType.h */ = {isa = PBXBuildFile; fileRef = E5AAC8F4010443F59C36EE67 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/text/freetype/FreeType.h */; };
+		8265C7B226964FFA8F718FD3 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/scenes/base_scene/BaseScene.cpp */ = {isa = PBXBuildFile; fileRef = 477152EC43ED4F1D82E31CA2 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/scenes/base_scene/BaseScene.cpp */; };
+		85907B8A26CC42369BC650C7 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/data_types/VectorTemplate.h */ = {isa = PBXBuildFile; fileRef = D1AA30273D9A4754A2419060 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/data_types/VectorTemplate.h */; };
+		889D0147BA264D80B4030AF2 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/data_access_point/DataAccessPoint.cpp */ = {isa = PBXBuildFile; fileRef = EB2C622671D8491184A8E086 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/data_access_point/DataAccessPoint.cpp */; };
+		93C0B9FC88754028B842560D /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/utils/log/Logger.h */ = {isa = PBXBuildFile; fileRef = E72A7774F0CE42488246D991 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/utils/log/Logger.h */; };
+		9B65280FBC06496E9A003929 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/scenes/robot_scene/RobotScene.cpp */ = {isa = PBXBuildFile; fileRef = 8FF8CAD61466472A8CE26A03 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/scenes/robot_scene/RobotScene.cpp */; };
+		9EBCE0230A314538A332D79B /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/data_types/FaObject.h */ = {isa = PBXBuildFile; fileRef = BDAE0A79C68947FFAC4D2107 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/data_types/FaObject.h */; };
+		A36A7A09F8124241B6B94DEF /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/open_gl/OpenGl.h */ = {isa = PBXBuildFile; fileRef = 75DE1E6607B444C6B7731BB3 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/open_gl/OpenGl.h */; };
+		A550179D0AF646B7AD9BDE17 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/utils/thread_pool/ThreadPool.cpp */ = {isa = PBXBuildFile; fileRef = E98C58B195414860B2D73C2A /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/utils/thread_pool/ThreadPool.cpp */; };
+		A5CCB354D5BF40FDBB0EECE8 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/scenes/colored_cube_scene/ColoredCubeScene.cpp */ = {isa = PBXBuildFile; fileRef = 901C3B77B7FC4A8FB87BE403 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/scenes/colored_cube_scene/ColoredCubeScene.cpp */; };
+		A7D94F6F2B2B47C9B8CACD46 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/utils/path/Path.h */ = {isa = PBXBuildFile; fileRef = 58A9ADCF0B264CA08CB709E4 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/utils/path/Path.h */; };
+		A82E59D9DBA843199C3DC986 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/application/Application.cpp */ = {isa = PBXBuildFile; fileRef = 6D6D039441644F28BC368FDE /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/application/Application.cpp */; };
+		AA5B1D5A70EF4C2E90D49433 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/text/resources/FaCharacterSource.h */ = {isa = PBXBuildFile; fileRef = 06CDA07D909449449FC0B33B /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/text/resources/FaCharacterSource.h */; };
+		B2F73B69480A4D1282B498B0 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/CMakeLists.txt */ = {isa = PBXBuildFile; fileRef = 3ED43F75174F424287BAB720 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/CMakeLists.txt */; };
+		BA2526425CDA46538A539E1D /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/scenes/bunny_scene/BunnyScene.cpp */ = {isa = PBXBuildFile; fileRef = 54F63540B3604FABA7DE63B8 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/scenes/bunny_scene/BunnyScene.cpp */; };
+		BA7FFF15EAF14E9AACE6FA78 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/texture/Texture.cpp */ = {isa = PBXBuildFile; fileRef = 3A2BEF628F3747D19F2DE87B /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/texture/Texture.cpp */; };
+		BFF63BD47E3A4F17ACC53F3D /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/camera/Camera.h */ = {isa = PBXBuildFile; fileRef = 7220EF0FEA424D9D94681183 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/camera/Camera.h */; };
+		C1CD64716E194244A7B173AF /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/3d/shape/Shape3d.cpp */ = {isa = PBXBuildFile; fileRef = 6DA21DCEA6BD48FC81E2F36A /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/3d/shape/Shape3d.cpp */; };
+		C1FAB64BBAA648758D47E700 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/camera/Camera.cpp */ = {isa = PBXBuildFile; fileRef = DAF950B2962646BF824B0254 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/camera/Camera.cpp */; };
+		C2A37424AE2E4710AF40CC1C /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/utils/operators/Operators.h */ = {isa = PBXBuildFile; fileRef = E3C5533D0BEE4B71A7D4B89F /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/utils/operators/Operators.h */; };
+		C83962C524A84506B4A4E0F5 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/event_handler/EventHandler.cpp */ = {isa = PBXBuildFile; fileRef = 29D65E363FF049389FDD16C3 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/event_handler/EventHandler.cpp */; };
+		CE48A83CC32846559BB31717 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/shaders/directional_light/DirectionalLight.cpp */ = {isa = PBXBuildFile; fileRef = 59A613E02E20468D9027E1C3 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/shaders/directional_light/DirectionalLight.cpp */; };
+		D2B0E0FB05654D4EAA7645C4 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/3d/models/ShapeGenerator.h */ = {isa = PBXBuildFile; fileRef = A6190CD251854FD1B5A0FFB8 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/3d/models/ShapeGenerator.h */; };
+		D4543DA94713447DBF500B4F /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/scenes/light_per_pixel_scene/LightPerPixelScene.cpp */ = {isa = PBXBuildFile; fileRef = EC03231324A94789A1BBDA9D /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/scenes/light_per_pixel_scene/LightPerPixelScene.cpp */; };
+		D4D42F71BDB0473E94268A9F /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/scenes/spehre_scene/SphereScene.cpp */ = {isa = PBXBuildFile; fileRef = B68665DFD459419DA96C0A07 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/scenes/spehre_scene/SphereScene.cpp */; };
+		D5A15052470E48C3A1305C02 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/text/char_glyph/CharGlyph.cpp */ = {isa = PBXBuildFile; fileRef = 86663C8DB00F452991BA0366 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/text/char_glyph/CharGlyph.cpp */; };
+		D6BEA3D36FD24469AF84F7E9 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/texture/ImageTexture/ImageTexture.h */ = {isa = PBXBuildFile; fileRef = 3A494C3D8492433EA50B2CA4 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/texture/ImageTexture/ImageTexture.h */; };
+		D7E97F9622724F1FB58BF590 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/shaders/directional_light/DirectionalLight.h */ = {isa = PBXBuildFile; fileRef = 87ADECA992C24A3CA5A844F8 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/shaders/directional_light/DirectionalLight.h */; };
+		E0D7CC84B9304201BBAA3ECA /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/texture/ColorTexture/ColorTexture.cpp */ = {isa = PBXBuildFile; fileRef = E774F9497CD643A7A29702EB /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/texture/ColorTexture/ColorTexture.cpp */; };
+		E15A50AA15E04C81B74EE434 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/3d/models/ColoredCube.h */ = {isa = PBXBuildFile; fileRef = D2FECEB7C74B444B8AB4FEF6 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/3d/models/ColoredCube.h */; };
+		E1FDE285C7DD4A479FB93AA1 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/data_access_point/DataAccessPoint.h */ = {isa = PBXBuildFile; fileRef = 09FA207034B843EB95701173 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/data_access_point/DataAccessPoint.h */; };
+		E7068DB646984801A10AAF91 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/scenes/light_per_pixel_scene/LightPerPixelScene.h */ = {isa = PBXBuildFile; fileRef = 41182294C397429B82F2628F /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/scenes/light_per_pixel_scene/LightPerPixelScene.h */; };
+		E769DE1C7D4243468C0AC4ED /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/scenes/colored_cube_scene/ColoredCubeScene.h */ = {isa = PBXBuildFile; fileRef = C4BBDB5128A745E58D5ACC6B /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/scenes/colored_cube_scene/ColoredCubeScene.h */; };
+		EF58F13BCC4644C78D838B29 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/utils/math/Math.h */ = {isa = PBXBuildFile; fileRef = AA79E87C61744953B691FC85 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/utils/math/Math.h */; };
+		F09CFF246AA84C6D84A8B6DD /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/application/Application.h */ = {isa = PBXBuildFile; fileRef = C23557C5E864457CA80D7400 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/application/Application.h */; };
+		F6223161EB974B3B8C3073B7 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/libs/tiny_obj_loader/tiny_obj_loader.h */ = {isa = PBXBuildFile; fileRef = 203B3E57D02C4067B788A257 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/libs/tiny_obj_loader/tiny_obj_loader.h */; };
+		F69E62EEDECE49E69B1B05BB /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/3d/surface/LineMemoryPool.h */ = {isa = PBXBuildFile; fileRef = AD10CAA382FE470E88A87017 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/3d/surface/LineMemoryPool.h */; };
+		F926BF73CC9A436DA8F5F84D /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/scenes/plant_scene/PlantScene.h */ = {isa = PBXBuildFile; fileRef = 4BB2EC31DADF46C2A5DAB9E9 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/scenes/plant_scene/PlantScene.h */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXBuildStyle section */
+		373AC6272B194CABBF657213 /* RelWithDebInfo */ = {
+			isa = PBXBuildStyle;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+			};
+			name = RelWithDebInfo;
+		};
+		6C97039F9D9A4B328BC9DE0C /* MinSizeRel */ = {
+			isa = PBXBuildStyle;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+			};
+			name = MinSizeRel;
+		};
+		E11E85917815417288B1A89A /* Debug */ = {
+			isa = PBXBuildStyle;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+			};
+			name = Debug;
+		};
+		FD6CF5056D0C4E67BC944FB4 /* Release */ = {
+			isa = PBXBuildStyle;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+			};
+			name = Release;
+		};
+/* End PBXBuildStyle section */
+
+/* Begin PBXContainerItemProxy section */
+		0BC827CB4E7F4BB3BBE29166 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7D735CCDF1B8490FAE6840A0 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 88D400AA9A6A46D69113AAFC;
+			remoteInfo = ZERO_CHECK;
+		};
+		1A11FC26FA1C4DBAB40746B8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7D735CCDF1B8490FAE6840A0 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C6B04D0612564C2C8C59335E;
+			remoteInfo = "3d-cube";
+		};
+		3A3F2D51A4DE4C499957D045 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7D735CCDF1B8490FAE6840A0 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 393FFD4C28B546DBB6E52399;
+			remoteInfo = "unit-test";
+		};
+		4F220E82D0564F99AEBBCF06 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7D735CCDF1B8490FAE6840A0 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 88D400AA9A6A46D69113AAFC;
+			remoteInfo = ZERO_CHECK;
+		};
+		B07531263FBB4F2989637C93 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7D735CCDF1B8490FAE6840A0 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 88D400AA9A6A46D69113AAFC;
+			remoteInfo = ZERO_CHECK;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		041980F1C93747E48767F782 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/scenes/monkey_scene/MonkeyScene.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = MonkeyScene.h; path = src/scenes/monkey_scene/MonkeyScene.h; sourceTree = SOURCE_ROOT; };
+		0669DAAE42F14440914033D5 /* unit-test */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; path = "unit-test"; sourceTree = BUILT_PRODUCTS_DIR; };
+		06CDA07D909449449FC0B33B /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/text/resources/FaCharacterSource.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = FaCharacterSource.h; path = src/text/resources/FaCharacterSource.h; sourceTree = SOURCE_ROOT; };
+		09FA207034B843EB95701173 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/data_access_point/DataAccessPoint.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = DataAccessPoint.h; path = src/data_access_point/DataAccessPoint.h; sourceTree = SOURCE_ROOT; };
+		0F07C4D5F08F425B9C1C8A88 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/text/resources/LanguageCharacterSource.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = LanguageCharacterSource.h; path = src/text/resources/LanguageCharacterSource.h; sourceTree = SOURCE_ROOT; };
+		13E39AC6D99248208FAC9865 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/scenes/robot_scene/RobotScene.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = RobotScene.h; path = src/scenes/robot_scene/RobotScene.h; sourceTree = SOURCE_ROOT; };
+		17B398AC272E47EEBCE74550 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/CMakeLists.txt */ = {isa = PBXFileReference; explicitFileType = sourcecode.text; fileEncoding = 4; name = CMakeLists.txt; path = CMakeLists.txt; sourceTree = SOURCE_ROOT; };
+		203B3E57D02C4067B788A257 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/libs/tiny_obj_loader/tiny_obj_loader.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = tiny_obj_loader.h; path = src/libs/tiny_obj_loader/tiny_obj_loader.h; sourceTree = SOURCE_ROOT; };
+		2798B67D0D3C45C2AEB7C597 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/text/font/Font.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = Font.h; path = src/text/font/Font.h; sourceTree = SOURCE_ROOT; };
+		2925316B4D454C3EA1902680 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/pipeline/Pipeline.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = Pipeline.cpp; path = src/pipeline/Pipeline.cpp; sourceTree = SOURCE_ROOT; };
+		29D65E363FF049389FDD16C3 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/event_handler/EventHandler.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = EventHandler.cpp; path = src/event_handler/EventHandler.cpp; sourceTree = SOURCE_ROOT; };
+		30BDC735617E4A78B55E316C /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/scenes/bunny_scene/BunnyScene.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = BunnyScene.h; path = src/scenes/bunny_scene/BunnyScene.h; sourceTree = SOURCE_ROOT; };
+		30E6E6C2CE624AE4BDF9F7C2 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/scenes/textured_cube_scene/TexturedCubeScene.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = TexturedCubeScene.cpp; path = src/scenes/textured_cube_scene/TexturedCubeScene.cpp; sourceTree = SOURCE_ROOT; };
+		39635CDDFCE448C9AB5B3603 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/3d/surface/Surface.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = Surface.h; path = src/3d/surface/Surface.h; sourceTree = SOURCE_ROOT; };
+		3973B3DB0EE94214B6119134 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/scenes/monkey_scene/MonkeyScene.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = MonkeyScene.cpp; path = src/scenes/monkey_scene/MonkeyScene.cpp; sourceTree = SOURCE_ROOT; };
+		3A2BEF628F3747D19F2DE87B /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/texture/Texture.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = Texture.cpp; path = src/texture/Texture.cpp; sourceTree = SOURCE_ROOT; };
+		3A494C3D8492433EA50B2CA4 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/texture/ImageTexture/ImageTexture.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = ImageTexture.h; path = src/texture/ImageTexture/ImageTexture.h; sourceTree = SOURCE_ROOT; };
+		3ED43F75174F424287BAB720 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/CMakeLists.txt */ = {isa = PBXFileReference; explicitFileType = sourcecode.text; fileEncoding = 4; name = CMakeLists.txt; path = CMakeLists.txt; sourceTree = SOURCE_ROOT; };
+		40AB6356280241258F0E0129 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/texture/ColorTexture/ColorTexture.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = ColorTexture.h; path = src/texture/ColorTexture/ColorTexture.h; sourceTree = SOURCE_ROOT; };
+		41182294C397429B82F2628F /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/scenes/light_per_pixel_scene/LightPerPixelScene.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = LightPerPixelScene.h; path = src/scenes/light_per_pixel_scene/LightPerPixelScene.h; sourceTree = SOURCE_ROOT; };
+		477152EC43ED4F1D82E31CA2 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/scenes/base_scene/BaseScene.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = BaseScene.cpp; path = src/scenes/base_scene/BaseScene.cpp; sourceTree = SOURCE_ROOT; };
+		4849A420A8EC493EA9C5DF98 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/data_types/MatrixTemplate.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = MatrixTemplate.h; path = src/data_types/MatrixTemplate.h; sourceTree = SOURCE_ROOT; };
+		4A2039D57BE5450B96B1BD6C /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/3d/surface/TriangleMemoryPool.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = TriangleMemoryPool.h; path = src/3d/surface/TriangleMemoryPool.h; sourceTree = SOURCE_ROOT; };
+		4AB87808173D4B5BBCA1B3E6 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/CMakeLists.txt */ = {isa = PBXFileReference; explicitFileType = sourcecode.text; fileEncoding = 4; name = CMakeLists.txt; path = CMakeLists.txt; sourceTree = SOURCE_ROOT; };
+		4BB2EC31DADF46C2A5DAB9E9 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/scenes/plant_scene/PlantScene.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = PlantScene.h; path = src/scenes/plant_scene/PlantScene.h; sourceTree = SOURCE_ROOT; };
+		4FE7C558197C4E70A15E624D /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/file_system/FileSystem.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = FileSystem.h; path = src/file_system/FileSystem.h; sourceTree = SOURCE_ROOT; };
+		54F63540B3604FABA7DE63B8 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/scenes/bunny_scene/BunnyScene.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = BunnyScene.cpp; path = src/scenes/bunny_scene/BunnyScene.cpp; sourceTree = SOURCE_ROOT; };
+		55975F8F6F15477BACB129CC /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/mac/main.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = main.cpp; path = mac/main.cpp; sourceTree = SOURCE_ROOT; };
+		5727BDAAB532444B919E2D4E /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/3d/surface/Surface.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = Surface.cpp; path = src/3d/surface/Surface.cpp; sourceTree = SOURCE_ROOT; };
+		581488F10AF6425BA6783E65 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/text/font/FontMemoryPool.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = FontMemoryPool.h; path = src/text/font/FontMemoryPool.h; sourceTree = SOURCE_ROOT; };
+		58A9ADCF0B264CA08CB709E4 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/utils/path/Path.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = Path.h; path = src/utils/path/Path.h; sourceTree = SOURCE_ROOT; };
+		59A613E02E20468D9027E1C3 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/shaders/directional_light/DirectionalLight.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = DirectionalLight.cpp; path = src/shaders/directional_light/DirectionalLight.cpp; sourceTree = SOURCE_ROOT; };
+		62A567800FE345C0885AD45A /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/pipeline/Pipeline.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = Pipeline.h; path = src/pipeline/Pipeline.h; sourceTree = SOURCE_ROOT; };
+		6B2C7356299442B397319076 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/3d/models/DiceCube.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = DiceCube.h; path = src/3d/models/DiceCube.h; sourceTree = SOURCE_ROOT; };
+		6D6D039441644F28BC368FDE /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/application/Application.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = Application.cpp; path = src/application/Application.cpp; sourceTree = SOURCE_ROOT; };
+		6DA21DCEA6BD48FC81E2F36A /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/3d/shape/Shape3d.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = Shape3d.cpp; path = src/3d/shape/Shape3d.cpp; sourceTree = SOURCE_ROOT; };
+		6F0A283D08DB4D48837FC4B4 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/libs/stb_image/open_gl_stb_image.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = open_gl_stb_image.h; path = src/libs/stb_image/open_gl_stb_image.h; sourceTree = SOURCE_ROOT; };
+		7220EF0FEA424D9D94681183 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/camera/Camera.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = Camera.h; path = src/camera/Camera.h; sourceTree = SOURCE_ROOT; };
+		75DE1E6607B444C6B7731BB3 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/open_gl/OpenGl.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = OpenGl.h; path = src/open_gl/OpenGl.h; sourceTree = SOURCE_ROOT; };
+		77E2152B1C6B44B68BEC0CA7 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/text/char_glyph/CharGlyph.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = CharGlyph.h; path = src/text/char_glyph/CharGlyph.h; sourceTree = SOURCE_ROOT; };
+		85A6D5CDCF954E3F9E643082 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/text/font/Font.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = Font.cpp; path = src/text/font/Font.cpp; sourceTree = SOURCE_ROOT; };
+		86663C8DB00F452991BA0366 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/text/char_glyph/CharGlyph.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = CharGlyph.cpp; path = src/text/char_glyph/CharGlyph.cpp; sourceTree = SOURCE_ROOT; };
+		87ADECA992C24A3CA5A844F8 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/shaders/directional_light/DirectionalLight.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = DirectionalLight.h; path = src/shaders/directional_light/DirectionalLight.h; sourceTree = SOURCE_ROOT; };
+		8FF8CAD61466472A8CE26A03 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/scenes/robot_scene/RobotScene.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = RobotScene.cpp; path = src/scenes/robot_scene/RobotScene.cpp; sourceTree = SOURCE_ROOT; };
+		901C3B77B7FC4A8FB87BE403 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/scenes/colored_cube_scene/ColoredCubeScene.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = ColoredCubeScene.cpp; path = src/scenes/colored_cube_scene/ColoredCubeScene.cpp; sourceTree = SOURCE_ROOT; };
+		97092815478F4F92B2BD0027 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/shaders/ambient_light/AmbientLight.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = AmbientLight.h; path = src/shaders/ambient_light/AmbientLight.h; sourceTree = SOURCE_ROOT; };
+		9C33106E25074DA8B1A77DBA /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/text/freetype/FreeType.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = FreeType.cpp; path = src/text/freetype/FreeType.cpp; sourceTree = SOURCE_ROOT; };
+		9FDC1C63AC204B0A984F335B /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/texture/Texture.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = Texture.h; path = src/texture/Texture.h; sourceTree = SOURCE_ROOT; };
+		A6190CD251854FD1B5A0FFB8 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/3d/models/ShapeGenerator.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = ShapeGenerator.h; path = src/3d/models/ShapeGenerator.h; sourceTree = SOURCE_ROOT; };
+		A894662B77D24137AA11BE3C /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/shaders/ambient_light/AmbientLight.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = AmbientLight.cpp; path = src/shaders/ambient_light/AmbientLight.cpp; sourceTree = SOURCE_ROOT; };
+		A9E8CD1153794A25BCC4D8C0 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/shaders/point_light/PointLight.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = PointLight.cpp; path = src/shaders/point_light/PointLight.cpp; sourceTree = SOURCE_ROOT; };
+		AA79E87C61744953B691FC85 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/utils/math/Math.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = Math.h; path = src/utils/math/Math.h; sourceTree = SOURCE_ROOT; };
+		AD10CAA382FE470E88A87017 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/3d/surface/LineMemoryPool.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = LineMemoryPool.h; path = src/3d/surface/LineMemoryPool.h; sourceTree = SOURCE_ROOT; };
+		B68665DFD459419DA96C0A07 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/scenes/spehre_scene/SphereScene.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = SphereScene.cpp; path = src/scenes/spehre_scene/SphereScene.cpp; sourceTree = SOURCE_ROOT; };
+		BDAE0A79C68947FFAC4D2107 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/data_types/FaObject.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = FaObject.h; path = src/data_types/FaObject.h; sourceTree = SOURCE_ROOT; };
+		C011178977CA4E3FA7905C3B /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/open_gl/OpenGl.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = OpenGl.cpp; path = src/open_gl/OpenGl.cpp; sourceTree = SOURCE_ROOT; };
+		C23557C5E864457CA80D7400 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/application/Application.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = Application.h; path = src/application/Application.h; sourceTree = SOURCE_ROOT; };
+		C4BBDB5128A745E58D5ACC6B /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/scenes/colored_cube_scene/ColoredCubeScene.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = ColoredCubeScene.h; path = src/scenes/colored_cube_scene/ColoredCubeScene.h; sourceTree = SOURCE_ROOT; };
+		CC71132B703640CE96B08A13 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/3d/shape/Shape3d.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = Shape3d.h; path = src/3d/shape/Shape3d.h; sourceTree = SOURCE_ROOT; };
+		CD5A9E57F65D418E8843D0D1 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/tests/main.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = main.cpp; path = tests/main.cpp; sourceTree = SOURCE_ROOT; };
+		CE2BB7FE6C1E4EA89B8972D8 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/scenes/plant_scene/PlantScene.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = PlantScene.cpp; path = src/scenes/plant_scene/PlantScene.cpp; sourceTree = SOURCE_ROOT; };
+		CE612E810A7E4F31A64F8FB9 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/utils/thread_pool/ThreadPool.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = ThreadPool.h; path = src/utils/thread_pool/ThreadPool.h; sourceTree = SOURCE_ROOT; };
+		CEB1FB23174D4AC3A3835A81 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/shaders/point_light/PointLight.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = PointLight.h; path = src/shaders/point_light/PointLight.h; sourceTree = SOURCE_ROOT; };
+		D118B5971BD649B8BEEDAF09 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/Constants.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = Constants.h; path = src/Constants.h; sourceTree = SOURCE_ROOT; };
+		D1AA30273D9A4754A2419060 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/data_types/VectorTemplate.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = VectorTemplate.h; path = src/data_types/VectorTemplate.h; sourceTree = SOURCE_ROOT; };
+		D2FECEB7C74B444B8AB4FEF6 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/3d/models/ColoredCube.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = ColoredCube.h; path = src/3d/models/ColoredCube.h; sourceTree = SOURCE_ROOT; };
+		D58928A2907F4684AA312770 /* 3d-cube */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; path = "3d-cube"; sourceTree = BUILT_PRODUCTS_DIR; };
+		DAF950B2962646BF824B0254 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/camera/Camera.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = Camera.cpp; path = src/camera/Camera.cpp; sourceTree = SOURCE_ROOT; };
+		E20CA06E353F4262BB1967B3 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/scenes/textured_cube_scene/TexturedCubeScene.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = TexturedCubeScene.h; path = src/scenes/textured_cube_scene/TexturedCubeScene.h; sourceTree = SOURCE_ROOT; };
+		E266DDBAD9164A66991F2654 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/libs/mini_ball/Miniball.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = Miniball.h; path = src/libs/mini_ball/Miniball.h; sourceTree = SOURCE_ROOT; };
+		E3C5533D0BEE4B71A7D4B89F /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/utils/operators/Operators.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = Operators.h; path = src/utils/operators/Operators.h; sourceTree = SOURCE_ROOT; };
+		E5AAC8F4010443F59C36EE67 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/text/freetype/FreeType.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = FreeType.h; path = src/text/freetype/FreeType.h; sourceTree = SOURCE_ROOT; };
+		E72A7774F0CE42488246D991 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/utils/log/Logger.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = Logger.h; path = src/utils/log/Logger.h; sourceTree = SOURCE_ROOT; };
+		E774F9497CD643A7A29702EB /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/texture/ColorTexture/ColorTexture.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = ColorTexture.cpp; path = src/texture/ColorTexture/ColorTexture.cpp; sourceTree = SOURCE_ROOT; };
+		E7B501D8AF5644469F9EE3A9 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/event_handler/EventHandler.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = EventHandler.h; path = src/event_handler/EventHandler.h; sourceTree = SOURCE_ROOT; };
+		E98C58B195414860B2D73C2A /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/utils/thread_pool/ThreadPool.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = ThreadPool.cpp; path = src/utils/thread_pool/ThreadPool.cpp; sourceTree = SOURCE_ROOT; };
+		EB2C622671D8491184A8E086 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/data_access_point/DataAccessPoint.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = DataAccessPoint.cpp; path = src/data_access_point/DataAccessPoint.cpp; sourceTree = SOURCE_ROOT; };
+		EC03231324A94789A1BBDA9D /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/scenes/light_per_pixel_scene/LightPerPixelScene.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = LightPerPixelScene.cpp; path = src/scenes/light_per_pixel_scene/LightPerPixelScene.cpp; sourceTree = SOURCE_ROOT; };
+		ED27B55DA41C4387A715CB86 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/scenes/spehre_scene/SphereScene.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = SphereScene.h; path = src/scenes/spehre_scene/SphereScene.h; sourceTree = SOURCE_ROOT; };
+		EDAC57B464DC407E82091DA7 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/CMakeFiles/3d-cube.dir/Info.plist */ = {isa = PBXFileReference; explicitFileType = sourcecode.text.plist; fileEncoding = 4; name = Info.plist; path = "CMakeFiles/3d-cube.dir/Info.plist"; sourceTree = SOURCE_ROOT; };
+		F456A7B10DF94A8DB7E50DA1 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/scenes/base_scene/BaseScene.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = BaseScene.h; path = src/scenes/base_scene/BaseScene.h; sourceTree = SOURCE_ROOT; };
+		F6C925FB09A748F8A34CED7C /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/texture/ImageTexture/ImageTexture.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = ImageTexture.cpp; path = src/texture/ImageTexture/ImageTexture.cpp; sourceTree = SOURCE_ROOT; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		0286CEB8513F456C9FFE1691 /* CMake Rules */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "CMake Rules";
+			sourceTree = "<group>";
+		};
+		2380871D81D347BCB2935D82 = {
+			isa = PBXGroup;
+			children = (
+				F87E717F824B468D944D2B12 /* unit-test */,
+				D18946C7C53B439B9440E716 /* 3d-cube */,
+				A820DA7F6AFC4BF681FC2C91 /* ALL_BUILD */,
+				BAD96F16B98B4596B46581BD /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		2D18607C96F249C7A4D36D48 /* Source Files */ = {
+			isa = PBXGroup;
+			children = (
+				CD5A9E57F65D418E8843D0D1 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/tests/main.cpp */,
+			);
+			name = "Source Files";
+			sourceTree = "<group>";
+		};
+		8DB068CC7F404B4D9DF007D8 /* Header Files */ = {
+			isa = PBXGroup;
+			children = (
+				D2FECEB7C74B444B8AB4FEF6 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/3d/models/ColoredCube.h */,
+				6B2C7356299442B397319076 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/3d/models/DiceCube.h */,
+				A6190CD251854FD1B5A0FFB8 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/3d/models/ShapeGenerator.h */,
+				CC71132B703640CE96B08A13 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/3d/shape/Shape3d.h */,
+				AD10CAA382FE470E88A87017 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/3d/surface/LineMemoryPool.h */,
+				39635CDDFCE448C9AB5B3603 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/3d/surface/Surface.h */,
+				4A2039D57BE5450B96B1BD6C /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/3d/surface/TriangleMemoryPool.h */,
+				D118B5971BD649B8BEEDAF09 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/Constants.h */,
+				C23557C5E864457CA80D7400 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/application/Application.h */,
+				7220EF0FEA424D9D94681183 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/camera/Camera.h */,
+				09FA207034B843EB95701173 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/data_access_point/DataAccessPoint.h */,
+				BDAE0A79C68947FFAC4D2107 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/data_types/FaObject.h */,
+				4849A420A8EC493EA9C5DF98 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/data_types/MatrixTemplate.h */,
+				D1AA30273D9A4754A2419060 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/data_types/VectorTemplate.h */,
+				E7B501D8AF5644469F9EE3A9 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/event_handler/EventHandler.h */,
+				4FE7C558197C4E70A15E624D /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/file_system/FileSystem.h */,
+				E266DDBAD9164A66991F2654 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/libs/mini_ball/Miniball.h */,
+				6F0A283D08DB4D48837FC4B4 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/libs/stb_image/open_gl_stb_image.h */,
+				203B3E57D02C4067B788A257 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/libs/tiny_obj_loader/tiny_obj_loader.h */,
+				75DE1E6607B444C6B7731BB3 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/open_gl/OpenGl.h */,
+				62A567800FE345C0885AD45A /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/pipeline/Pipeline.h */,
+				F456A7B10DF94A8DB7E50DA1 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/scenes/base_scene/BaseScene.h */,
+				30BDC735617E4A78B55E316C /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/scenes/bunny_scene/BunnyScene.h */,
+				C4BBDB5128A745E58D5ACC6B /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/scenes/colored_cube_scene/ColoredCubeScene.h */,
+				41182294C397429B82F2628F /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/scenes/light_per_pixel_scene/LightPerPixelScene.h */,
+				041980F1C93747E48767F782 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/scenes/monkey_scene/MonkeyScene.h */,
+				4BB2EC31DADF46C2A5DAB9E9 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/scenes/plant_scene/PlantScene.h */,
+				13E39AC6D99248208FAC9865 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/scenes/robot_scene/RobotScene.h */,
+				ED27B55DA41C4387A715CB86 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/scenes/spehre_scene/SphereScene.h */,
+				E20CA06E353F4262BB1967B3 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/scenes/textured_cube_scene/TexturedCubeScene.h */,
+				97092815478F4F92B2BD0027 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/shaders/ambient_light/AmbientLight.h */,
+				87ADECA992C24A3CA5A844F8 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/shaders/directional_light/DirectionalLight.h */,
+				CEB1FB23174D4AC3A3835A81 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/shaders/point_light/PointLight.h */,
+				77E2152B1C6B44B68BEC0CA7 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/text/char_glyph/CharGlyph.h */,
+				2798B67D0D3C45C2AEB7C597 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/text/font/Font.h */,
+				581488F10AF6425BA6783E65 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/text/font/FontMemoryPool.h */,
+				E5AAC8F4010443F59C36EE67 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/text/freetype/FreeType.h */,
+				06CDA07D909449449FC0B33B /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/text/resources/FaCharacterSource.h */,
+				0F07C4D5F08F425B9C1C8A88 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/text/resources/LanguageCharacterSource.h */,
+				40AB6356280241258F0E0129 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/texture/ColorTexture/ColorTexture.h */,
+				3A494C3D8492433EA50B2CA4 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/texture/ImageTexture/ImageTexture.h */,
+				9FDC1C63AC204B0A984F335B /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/texture/Texture.h */,
+				E72A7774F0CE42488246D991 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/utils/log/Logger.h */,
+				AA79E87C61744953B691FC85 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/utils/math/Math.h */,
+				E3C5533D0BEE4B71A7D4B89F /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/utils/operators/Operators.h */,
+				58A9ADCF0B264CA08CB709E4 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/utils/path/Path.h */,
+				CE612E810A7E4F31A64F8FB9 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/utils/thread_pool/ThreadPool.h */,
+			);
+			name = "Header Files";
+			sourceTree = "<group>";
+		};
+		A561FADB0F964F9083E15D5E /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				EDAC57B464DC407E82091DA7 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/CMakeFiles/3d-cube.dir/Info.plist */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		A820DA7F6AFC4BF681FC2C91 /* ALL_BUILD */ = {
+			isa = PBXGroup;
+			children = (
+				0286CEB8513F456C9FFE1691 /* CMake Rules */,
+				17B398AC272E47EEBCE74550 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/CMakeLists.txt */,
+			);
+			name = ALL_BUILD;
+			sourceTree = "<group>";
+		};
+		AFCE05528611417E89CC06CE /* Source Files */ = {
+			isa = PBXGroup;
+			children = (
+				55975F8F6F15477BACB129CC /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/mac/main.cpp */,
+				6DA21DCEA6BD48FC81E2F36A /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/3d/shape/Shape3d.cpp */,
+				5727BDAAB532444B919E2D4E /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/3d/surface/Surface.cpp */,
+				6D6D039441644F28BC368FDE /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/application/Application.cpp */,
+				DAF950B2962646BF824B0254 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/camera/Camera.cpp */,
+				EB2C622671D8491184A8E086 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/data_access_point/DataAccessPoint.cpp */,
+				29D65E363FF049389FDD16C3 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/event_handler/EventHandler.cpp */,
+				C011178977CA4E3FA7905C3B /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/open_gl/OpenGl.cpp */,
+				2925316B4D454C3EA1902680 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/pipeline/Pipeline.cpp */,
+				477152EC43ED4F1D82E31CA2 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/scenes/base_scene/BaseScene.cpp */,
+				54F63540B3604FABA7DE63B8 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/scenes/bunny_scene/BunnyScene.cpp */,
+				901C3B77B7FC4A8FB87BE403 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/scenes/colored_cube_scene/ColoredCubeScene.cpp */,
+				EC03231324A94789A1BBDA9D /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/scenes/light_per_pixel_scene/LightPerPixelScene.cpp */,
+				3973B3DB0EE94214B6119134 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/scenes/monkey_scene/MonkeyScene.cpp */,
+				CE2BB7FE6C1E4EA89B8972D8 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/scenes/plant_scene/PlantScene.cpp */,
+				8FF8CAD61466472A8CE26A03 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/scenes/robot_scene/RobotScene.cpp */,
+				B68665DFD459419DA96C0A07 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/scenes/spehre_scene/SphereScene.cpp */,
+				30E6E6C2CE624AE4BDF9F7C2 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/scenes/textured_cube_scene/TexturedCubeScene.cpp */,
+				A894662B77D24137AA11BE3C /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/shaders/ambient_light/AmbientLight.cpp */,
+				59A613E02E20468D9027E1C3 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/shaders/directional_light/DirectionalLight.cpp */,
+				A9E8CD1153794A25BCC4D8C0 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/shaders/point_light/PointLight.cpp */,
+				86663C8DB00F452991BA0366 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/text/char_glyph/CharGlyph.cpp */,
+				85A6D5CDCF954E3F9E643082 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/text/font/Font.cpp */,
+				9C33106E25074DA8B1A77DBA /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/text/freetype/FreeType.cpp */,
+				E774F9497CD643A7A29702EB /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/texture/ColorTexture/ColorTexture.cpp */,
+				F6C925FB09A748F8A34CED7C /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/texture/ImageTexture/ImageTexture.cpp */,
+				3A2BEF628F3747D19F2DE87B /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/texture/Texture.cpp */,
+				E98C58B195414860B2D73C2A /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/utils/thread_pool/ThreadPool.cpp */,
+			);
+			name = "Source Files";
+			sourceTree = "<group>";
+		};
+		BAD96F16B98B4596B46581BD /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D58928A2907F4684AA312770 /* 3d-cube */,
+				0669DAAE42F14440914033D5 /* unit-test */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		D18946C7C53B439B9440E716 /* 3d-cube */ = {
+			isa = PBXGroup;
+			children = (
+				8DB068CC7F404B4D9DF007D8 /* Header Files */,
+				AFCE05528611417E89CC06CE /* Source Files */,
+				A561FADB0F964F9083E15D5E /* Resources */,
+				3ED43F75174F424287BAB720 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/CMakeLists.txt */,
+			);
+			name = "3d-cube";
+			sourceTree = "<group>";
+		};
+		F87E717F824B468D944D2B12 /* unit-test */ = {
+			isa = PBXGroup;
+			children = (
+				2D18607C96F249C7A4D36D48 /* Source Files */,
+				4AB87808173D4B5BBCA1B3E6 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/CMakeLists.txt */,
+			);
+			name = "unit-test";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		393FFD4C28B546DBB6E52399 /* unit-test */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 796425217DB5410C8584E0D2 /* Build configuration list for PBXNativeTarget "unit-test" */;
+			buildPhases = (
+				B3FB14FDD1DA4E9F955CB84E /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				62F11261B69E4B9290A5153E /* PBXTargetDependency */,
+			);
+			name = "unit-test";
+			productName = "unit-test";
+			productReference = 0669DAAE42F14440914033D5 /* unit-test */;
+			productType = "com.apple.product-type.tool";
+		};
+		C6B04D0612564C2C8C59335E /* 3d-cube */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D72BE1A649FC42A79915946E /* Build configuration list for PBXNativeTarget "3d-cube" */;
+			buildPhases = (
+				1FE83FDC5BA44AE3A8C6BE4A /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				1EA4F04D034F4E04B78F5CF1 /* PBXTargetDependency */,
+			);
+			name = "3d-cube";
+			productName = "3d-cube";
+			productReference = D58928A2907F4684AA312770 /* 3d-cube */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		7D735CCDF1B8490FAE6840A0 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1140;
+			};
+			buildConfigurationList = BEEE9624B7E14235BCC3856C /* Build configuration list for PBXProject "3d-cube" */;
+			buildSettings = {
+			};
+			buildStyles = (
+				E11E85917815417288B1A89A /* Debug */,
+				FD6CF5056D0C4E67BC944FB4 /* Release */,
+				6C97039F9D9A4B328BC9DE0C /* MinSizeRel */,
+				373AC6272B194CABBF657213 /* RelWithDebInfo */,
+			);
+			compatibilityVersion = "Xcode 3.2";
+			hasScannedForEncodings = 0;
+			mainGroup = 2380871D81D347BCB2935D82;
+			projectDirPath = .;
+			projectRoot = "";
+			targets = (
+				0E96EB21FD9C47D3A0C2962D /* ALL_BUILD */,
+				C6B04D0612564C2C8C59335E /* 3d-cube */,
+				5B64DBDEDE604BE2A1662E2A /* RUN_TESTS */,
+				88D400AA9A6A46D69113AAFC /* ZERO_CHECK */,
+				393FFD4C28B546DBB6E52399 /* unit-test */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		2BC94155EA494801A40B69E0 = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# shell script goes here
+exit 0";
+			showEnvVarsInLog = 0;
+		};
+		3460AF783E744D8DB08384E6 /* CMake Rules */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			name = "CMake Rules";
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "make -C /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube -f /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/CMakeScripts/ALL_BUILD_cmakeRulesBuildPhase.make$CONFIGURATION OBJDIR=$(basename \"$OBJECT_FILE_DIR_normal\") all";
+			showEnvVarsInLog = 0;
+		};
+		857B571FC77A40E189D84437 = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# shell script goes here
+exit 0";
+			showEnvVarsInLog = 0;
+		};
+		BB2AF2BC65C04AB1861003F9 /* CMake Rules */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			name = "CMake Rules";
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "make -C /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube -f /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/CMakeScripts/ZERO_CHECK_cmakeRulesBuildPhase.make$CONFIGURATION OBJDIR=$(basename \"$OBJECT_FILE_DIR_normal\") all";
+			showEnvVarsInLog = 0;
+		};
+		BF6929768D334D8DA40A34E1 /* CMake PostBuild Rules */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			name = "CMake PostBuild Rules";
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "make -C /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube -f /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/CMakeScripts/RUN_TESTS_postBuildPhase.make$CONFIGURATION OBJDIR=$(basename \"$OBJECT_FILE_DIR_normal\") all";
+			showEnvVarsInLog = 0;
+		};
+		F780AFCDAF954439831F9A73 = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# shell script goes here
+exit 0";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		1FE83FDC5BA44AE3A8C6BE4A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				134C9277BD29410E9819B27A /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/mac/main.cpp */,
+				C1CD64716E194244A7B173AF /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/3d/shape/Shape3d.cpp */,
+				0BF7CFE4F6354B23B150154F /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/3d/surface/Surface.cpp */,
+				A82E59D9DBA843199C3DC986 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/application/Application.cpp */,
+				C1FAB64BBAA648758D47E700 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/camera/Camera.cpp */,
+				889D0147BA264D80B4030AF2 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/data_access_point/DataAccessPoint.cpp */,
+				C83962C524A84506B4A4E0F5 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/event_handler/EventHandler.cpp */,
+				10DDBEB06CB043CC8984FB17 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/open_gl/OpenGl.cpp */,
+				511F2C2AFBAA4B14A8B84CD9 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/pipeline/Pipeline.cpp */,
+				8265C7B226964FFA8F718FD3 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/scenes/base_scene/BaseScene.cpp */,
+				BA2526425CDA46538A539E1D /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/scenes/bunny_scene/BunnyScene.cpp */,
+				A5CCB354D5BF40FDBB0EECE8 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/scenes/colored_cube_scene/ColoredCubeScene.cpp */,
+				D4543DA94713447DBF500B4F /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/scenes/light_per_pixel_scene/LightPerPixelScene.cpp */,
+				205975A0E05A4F89AB1B6BDF /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/scenes/monkey_scene/MonkeyScene.cpp */,
+				120557EE412E4014B2C7900A /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/scenes/plant_scene/PlantScene.cpp */,
+				9B65280FBC06496E9A003929 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/scenes/robot_scene/RobotScene.cpp */,
+				D4D42F71BDB0473E94268A9F /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/scenes/spehre_scene/SphereScene.cpp */,
+				6F32923807024770A4D1C0DD /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/scenes/textured_cube_scene/TexturedCubeScene.cpp */,
+				28B3183BA7CF4F84A2CF3699 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/shaders/ambient_light/AmbientLight.cpp */,
+				CE48A83CC32846559BB31717 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/shaders/directional_light/DirectionalLight.cpp */,
+				4867095D822D46AC8D48D8AF /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/shaders/point_light/PointLight.cpp */,
+				D5A15052470E48C3A1305C02 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/text/char_glyph/CharGlyph.cpp */,
+				6B57C5AE0A02445DBDED6A86 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/text/font/Font.cpp */,
+				43D7309DBCC74AD0BA6FBAF1 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/text/freetype/FreeType.cpp */,
+				E0D7CC84B9304201BBAA3ECA /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/texture/ColorTexture/ColorTexture.cpp */,
+				4F34265EC4F243AF90098C8A /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/texture/ImageTexture/ImageTexture.cpp */,
+				BA7FFF15EAF14E9AACE6FA78 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/texture/Texture.cpp */,
+				A550179D0AF646B7AD9BDE17 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/src/utils/thread_pool/ThreadPool.cpp */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B3FB14FDD1DA4E9F955CB84E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				67083E1012DB4D7599014104 /* /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/tests/main.cpp */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		1EA4F04D034F4E04B78F5CF1 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 88D400AA9A6A46D69113AAFC /* ZERO_CHECK */;
+			targetProxy = B07531263FBB4F2989637C93 /* PBXContainerItemProxy */;
+		};
+		5D77ED26E49A49A4AF53EC32 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 88D400AA9A6A46D69113AAFC /* ZERO_CHECK */;
+			targetProxy = 0BC827CB4E7F4BB3BBE29166 /* PBXContainerItemProxy */;
+		};
+		62F11261B69E4B9290A5153E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 88D400AA9A6A46D69113AAFC /* ZERO_CHECK */;
+			targetProxy = 4F220E82D0564F99AEBBCF06 /* PBXContainerItemProxy */;
+		};
+		6719B56310C445909290A8F2 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C6B04D0612564C2C8C59335E /* 3d-cube */;
+			targetProxy = 1A11FC26FA1C4DBAB40746B8 /* PBXContainerItemProxy */;
+		};
+		9C52BB1589B64C7A83D2333C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 393FFD4C28B546DBB6E52399 /* unit-test */;
+			targetProxy = 3A3F2D51A4DE4C499957D045 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		0B726324C5624EF297F19137 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				OTHER_LDFLAGS = " ";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = RUN_TESTS;
+				SECTORDER_FLAGS = "";
+				SYMROOT = "/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("-Wmost","-Wno-four-char-constants","-Wno-unknown-pragmas","$(inherited)");
+			};
+			name = Release;
+		};
+		25D22C0FDCA74B4CA2592391 /* RelWithDebInfo */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				OTHER_LDFLAGS = " ";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = ALL_BUILD;
+				SECTORDER_FLAGS = "";
+				SYMROOT = "/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("-Wmost","-Wno-four-char-constants","-Wno-unknown-pragmas","$(inherited)");
+			};
+			name = RelWithDebInfo;
+		};
+		2F4E80108AB14DDEA7A0589C /* MinSizeRel */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk;
+				SYMROOT = "/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/build";
+			};
+			name = MinSizeRel;
+		};
+		333F4B6ABB5E49048787CEC1 /* RelWithDebInfo */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				CONFIGURATION_BUILD_DIR = "/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/RelWithDebInfo";
+				EXECUTABLE_PREFIX = "";
+				EXECUTABLE_SUFFIX = "";
+				FRAMEWORK_SEARCH_PATHS = (/Library/Frameworks);
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 2;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INFOPLIST_FILE = "/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/CMakeFiles/3d-cube.dir/Info.plist";
+				INSTALL_PATH = "";
+				LD_RUNPATH_SEARCH_PATHS = /Library/Frameworks;
+				LIBRARY_SEARCH_PATHS = "";
+				OTHER_CPLUSPLUSFLAGS = "       -DNDEBUG '-std=c++14'  ";
+				OTHER_LDFLAGS = " -Wl,-search_paths_first -Wl,-headerpad_max_install_names  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk/System/Library/Frameworks/GLUT.framework/GLUT -framework OpenGL -framework OpenGL /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/vcpkg/installed/x64-osx/lib/libfreetype.a /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/vcpkg/installed/x64-osx/lib/libharfbuzz.a /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk/System/Library/Frameworks/Cocoa.framework/Cocoa /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/vcpkg/installed/x64-osx/debug/lib/libz.a /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/vcpkg/installed/x64-osx/debug/lib/libpng.a /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/vcpkg/installed/x64-osx/debug/lib/libz.a /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/vcpkg/installed/x64-osx/debug/lib/libpng.a -framework freetype /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/vcpkg/installed/x64-osx/lib/libz.a /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/vcpkg/installed/x64-osx/lib/libpng.a /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/vcpkg/installed/x64-osx/lib/libz.a /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/vcpkg/installed/x64-osx/lib/libpng.a /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/vcpkg/installed/x64-osx/lib/libbz2.a -framework ApplicationServices";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = "3d-cube";
+				SECTORDER_FLAGS = "";
+				SYMROOT = "/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube";
+				SYSTEM_HEADER_SEARCH_PATHS = (/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk/System/Library/Frameworks/GLUT.framework/Headers,"/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/vcpkg/installed/x64-osx/include","/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/vcpkg/installed/x64-osx/include/freetype");
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("-Wmost","-Wno-four-char-constants","-Wno-unknown-pragmas","$(inherited)");
+			};
+			name = RelWithDebInfo;
+		};
+		35F79E03F953459BB440C8D5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				OTHER_LDFLAGS = " ";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = RUN_TESTS;
+				SECTORDER_FLAGS = "";
+				SYMROOT = "/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("-Wmost","-Wno-four-char-constants","-Wno-unknown-pragmas","$(inherited)");
+			};
+			name = Debug;
+		};
+		4E2BF3D6E59742ED96733C0B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk;
+				SYMROOT = "/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/build";
+			};
+			name = Debug;
+		};
+		552CB52DD1814E49968BA42D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				OTHER_LDFLAGS = " ";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = ZERO_CHECK;
+				SECTORDER_FLAGS = "";
+				SYMROOT = "/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("-Wmost","-Wno-four-char-constants","-Wno-unknown-pragmas","$(inherited)");
+			};
+			name = Debug;
+		};
+		579FEAE5FBBA4B61AAD1C741 /* MinSizeRel */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				CONFIGURATION_BUILD_DIR = "/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/MinSizeRel";
+				EXECUTABLE_PREFIX = "";
+				EXECUTABLE_SUFFIX = "";
+				FRAMEWORK_SEARCH_PATHS = (/Library/Frameworks);
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = s;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INFOPLIST_FILE = "/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/CMakeFiles/3d-cube.dir/Info.plist";
+				INSTALL_PATH = "";
+				LD_RUNPATH_SEARCH_PATHS = /Library/Frameworks;
+				LIBRARY_SEARCH_PATHS = "";
+				OTHER_CPLUSPLUSFLAGS = "    -DNDEBUG '-std=c++14'  ";
+				OTHER_LDFLAGS = " -Wl,-search_paths_first -Wl,-headerpad_max_install_names  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk/System/Library/Frameworks/GLUT.framework/GLUT -framework OpenGL -framework OpenGL /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/vcpkg/installed/x64-osx/lib/libfreetype.a /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/vcpkg/installed/x64-osx/lib/libharfbuzz.a /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk/System/Library/Frameworks/Cocoa.framework/Cocoa /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/vcpkg/installed/x64-osx/debug/lib/libz.a /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/vcpkg/installed/x64-osx/debug/lib/libpng.a /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/vcpkg/installed/x64-osx/debug/lib/libz.a /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/vcpkg/installed/x64-osx/debug/lib/libpng.a -framework freetype /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/vcpkg/installed/x64-osx/lib/libz.a /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/vcpkg/installed/x64-osx/lib/libpng.a /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/vcpkg/installed/x64-osx/lib/libz.a /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/vcpkg/installed/x64-osx/lib/libpng.a /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/vcpkg/installed/x64-osx/lib/libbz2.a -framework ApplicationServices";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = "3d-cube";
+				SECTORDER_FLAGS = "";
+				SYMROOT = "/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube";
+				SYSTEM_HEADER_SEARCH_PATHS = (/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk/System/Library/Frameworks/GLUT.framework/Headers,"/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/vcpkg/installed/x64-osx/include","/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/vcpkg/installed/x64-osx/include/freetype");
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("-Wmost","-Wno-four-char-constants","-Wno-unknown-pragmas","$(inherited)");
+			};
+			name = MinSizeRel;
+		};
+		5AC1E7FEAB5F4503A9A13D30 /* RelWithDebInfo */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk;
+				SYMROOT = "/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/build";
+			};
+			name = RelWithDebInfo;
+		};
+		6256786103C643C180C6078F /* MinSizeRel */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				OTHER_LDFLAGS = " ";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = ALL_BUILD;
+				SECTORDER_FLAGS = "";
+				SYMROOT = "/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("-Wmost","-Wno-four-char-constants","-Wno-unknown-pragmas","$(inherited)");
+			};
+			name = MinSizeRel;
+		};
+		76A08D81E0A147ACACD4887F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk;
+				SYMROOT = "/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/build";
+			};
+			name = Release;
+		};
+		79929F8F31CE470BB0391867 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				OTHER_LDFLAGS = " ";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = ALL_BUILD;
+				SECTORDER_FLAGS = "";
+				SYMROOT = "/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("-Wmost","-Wno-four-char-constants","-Wno-unknown-pragmas","$(inherited)");
+			};
+			name = Debug;
+		};
+		7DE0EB3091A34ECEA7D88104 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				CONFIGURATION_BUILD_DIR = "/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/Release";
+				EXECUTABLE_PREFIX = "";
+				EXECUTABLE_SUFFIX = "";
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				LIBRARY_SEARCH_PATHS = "";
+				OTHER_CPLUSPLUSFLAGS = "    -DNDEBUG '-std=c++14'  ";
+				OTHER_LDFLAGS = " -Wl,-search_paths_first -Wl,-headerpad_max_install_names  /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/vcpkg/installed/x64-osx/lib/libgtest.a /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/vcpkg/installed/x64-osx/lib/manual-link/libgtest_main.a /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/vcpkg/installed/x64-osx/lib/libgmock.a /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/vcpkg/installed/x64-osx/lib/manual-link/libgmock_main.a /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/vcpkg/installed/x64-osx/lib/libgmock.a /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/vcpkg/installed/x64-osx/lib/libgtest.a  -lpthread";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = "unit-test";
+				SECTORDER_FLAGS = "";
+				SYMROOT = "/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube";
+				SYSTEM_HEADER_SEARCH_PATHS = ("/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/vcpkg/installed/x64-osx/include");
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("-Wmost","-Wno-four-char-constants","-Wno-unknown-pragmas","$(inherited)");
+			};
+			name = Release;
+		};
+		8166CA67C4B7488AB684AD79 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				CONFIGURATION_BUILD_DIR = "/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/Debug";
+				EXECUTABLE_PREFIX = "";
+				EXECUTABLE_SUFFIX = "";
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INFOPLIST_FILE = "/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/CMakeFiles/3d-cube.dir/Info.plist";
+				INSTALL_PATH = "";
+				LIBRARY_SEARCH_PATHS = "";
+				OTHER_CPLUSPLUSFLAGS = "   '-std=c++14'  ";
+				OTHER_LDFLAGS = " -Wl,-search_paths_first -Wl,-headerpad_max_install_names  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk/System/Library/Frameworks/GLUT.framework/GLUT -framework OpenGL -framework OpenGL /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/vcpkg/installed/x64-osx/debug/lib/libfreetyped.a /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/vcpkg/installed/x64-osx/debug/lib/libharfbuzz.a /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk/System/Library/Frameworks/Cocoa.framework/Cocoa /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/vcpkg/installed/x64-osx/debug/lib/libfreetyped.a /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/vcpkg/installed/x64-osx/debug/lib/libz.a /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/vcpkg/installed/x64-osx/debug/lib/libbz2d.a /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/vcpkg/installed/x64-osx/debug/lib/libpng16d.a /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/vcpkg/installed/x64-osx/debug/lib/libz.a /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/vcpkg/installed/x64-osx/debug/lib/libbz2d.a /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/vcpkg/installed/x64-osx/debug/lib/libpng16d.a -framework ApplicationServices";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = "3d-cube";
+				SECTORDER_FLAGS = "";
+				SYMROOT = "/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube";
+				SYSTEM_HEADER_SEARCH_PATHS = (/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk/System/Library/Frameworks/GLUT.framework/Headers,"/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/vcpkg/installed/x64-osx/include","/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/vcpkg/installed/x64-osx/include/freetype");
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("-Wmost","-Wno-four-char-constants","-Wno-unknown-pragmas","$(inherited)");
+			};
+			name = Debug;
+		};
+		9F4DC6FBD1234BF184BCE0F2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				OTHER_LDFLAGS = " ";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = ZERO_CHECK;
+				SECTORDER_FLAGS = "";
+				SYMROOT = "/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("-Wmost","-Wno-four-char-constants","-Wno-unknown-pragmas","$(inherited)");
+			};
+			name = Release;
+		};
+		A63E25A3C72444199A776901 /* MinSizeRel */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				OTHER_LDFLAGS = " ";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = RUN_TESTS;
+				SECTORDER_FLAGS = "";
+				SYMROOT = "/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("-Wmost","-Wno-four-char-constants","-Wno-unknown-pragmas","$(inherited)");
+			};
+			name = MinSizeRel;
+		};
+		B5516ACFBBCD421387B7DC0D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				CONFIGURATION_BUILD_DIR = "/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/Release";
+				EXECUTABLE_PREFIX = "";
+				EXECUTABLE_SUFFIX = "";
+				FRAMEWORK_SEARCH_PATHS = (/Library/Frameworks);
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INFOPLIST_FILE = "/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/CMakeFiles/3d-cube.dir/Info.plist";
+				INSTALL_PATH = "";
+				LD_RUNPATH_SEARCH_PATHS = /Library/Frameworks;
+				LIBRARY_SEARCH_PATHS = "";
+				OTHER_CPLUSPLUSFLAGS = "    -DNDEBUG '-std=c++14'  ";
+				OTHER_LDFLAGS = " -Wl,-search_paths_first -Wl,-headerpad_max_install_names  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk/System/Library/Frameworks/GLUT.framework/GLUT -framework OpenGL -framework OpenGL /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/vcpkg/installed/x64-osx/lib/libfreetype.a /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/vcpkg/installed/x64-osx/lib/libharfbuzz.a /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk/System/Library/Frameworks/Cocoa.framework/Cocoa /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/vcpkg/installed/x64-osx/debug/lib/libz.a /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/vcpkg/installed/x64-osx/debug/lib/libpng.a /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/vcpkg/installed/x64-osx/debug/lib/libz.a /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/vcpkg/installed/x64-osx/debug/lib/libpng.a -framework freetype /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/vcpkg/installed/x64-osx/lib/libz.a /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/vcpkg/installed/x64-osx/lib/libpng.a /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/vcpkg/installed/x64-osx/lib/libz.a /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/vcpkg/installed/x64-osx/lib/libpng.a /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/vcpkg/installed/x64-osx/lib/libbz2.a -framework ApplicationServices";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = "3d-cube";
+				SECTORDER_FLAGS = "";
+				SYMROOT = "/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube";
+				SYSTEM_HEADER_SEARCH_PATHS = (/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk/System/Library/Frameworks/GLUT.framework/Headers,"/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/vcpkg/installed/x64-osx/include","/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/vcpkg/installed/x64-osx/include/freetype");
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("-Wmost","-Wno-four-char-constants","-Wno-unknown-pragmas","$(inherited)");
+			};
+			name = Release;
+		};
+		B88813BEC4C145798B087690 /* MinSizeRel */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				OTHER_LDFLAGS = " ";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = ZERO_CHECK;
+				SECTORDER_FLAGS = "";
+				SYMROOT = "/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("-Wmost","-Wno-four-char-constants","-Wno-unknown-pragmas","$(inherited)");
+			};
+			name = MinSizeRel;
+		};
+		BC4A6E26396347A5BC35779D /* RelWithDebInfo */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				OTHER_LDFLAGS = " ";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = RUN_TESTS;
+				SECTORDER_FLAGS = "";
+				SYMROOT = "/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("-Wmost","-Wno-four-char-constants","-Wno-unknown-pragmas","$(inherited)");
+			};
+			name = RelWithDebInfo;
+		};
+		CCA34F447DD044E9B92600B7 /* MinSizeRel */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				CONFIGURATION_BUILD_DIR = "/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/MinSizeRel";
+				EXECUTABLE_PREFIX = "";
+				EXECUTABLE_SUFFIX = "";
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = s;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				LIBRARY_SEARCH_PATHS = "";
+				OTHER_CPLUSPLUSFLAGS = "    -DNDEBUG '-std=c++14'  ";
+				OTHER_LDFLAGS = " -Wl,-search_paths_first -Wl,-headerpad_max_install_names  /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/vcpkg/installed/x64-osx/lib/libgtest.a /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/vcpkg/installed/x64-osx/lib/manual-link/libgtest_main.a /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/vcpkg/installed/x64-osx/lib/libgmock.a /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/vcpkg/installed/x64-osx/lib/manual-link/libgmock_main.a /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/vcpkg/installed/x64-osx/lib/libgmock.a /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/vcpkg/installed/x64-osx/lib/libgtest.a  -lpthread";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = "unit-test";
+				SECTORDER_FLAGS = "";
+				SYMROOT = "/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube";
+				SYSTEM_HEADER_SEARCH_PATHS = ("/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/vcpkg/installed/x64-osx/include");
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("-Wmost","-Wno-four-char-constants","-Wno-unknown-pragmas","$(inherited)");
+			};
+			name = MinSizeRel;
+		};
+		D6920650A6FB41E280FBE734 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				OTHER_LDFLAGS = " ";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = ALL_BUILD;
+				SECTORDER_FLAGS = "";
+				SYMROOT = "/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("-Wmost","-Wno-four-char-constants","-Wno-unknown-pragmas","$(inherited)");
+			};
+			name = Release;
+		};
+		D80BE9CD1AA44CCF96AD6211 /* RelWithDebInfo */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				OTHER_LDFLAGS = " ";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = ZERO_CHECK;
+				SECTORDER_FLAGS = "";
+				SYMROOT = "/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("-Wmost","-Wno-four-char-constants","-Wno-unknown-pragmas","$(inherited)");
+			};
+			name = RelWithDebInfo;
+		};
+		E20A7F8C5CDF444FB77F0748 /* RelWithDebInfo */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				CONFIGURATION_BUILD_DIR = "/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/RelWithDebInfo";
+				EXECUTABLE_PREFIX = "";
+				EXECUTABLE_SUFFIX = "";
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 2;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				LIBRARY_SEARCH_PATHS = "";
+				OTHER_CPLUSPLUSFLAGS = "       -DNDEBUG '-std=c++14'  ";
+				OTHER_LDFLAGS = " -Wl,-search_paths_first -Wl,-headerpad_max_install_names  /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/vcpkg/installed/x64-osx/lib/libgtest.a /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/vcpkg/installed/x64-osx/lib/manual-link/libgtest_main.a /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/vcpkg/installed/x64-osx/lib/libgmock.a /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/vcpkg/installed/x64-osx/lib/manual-link/libgmock_main.a /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/vcpkg/installed/x64-osx/lib/libgmock.a /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/vcpkg/installed/x64-osx/lib/libgtest.a  -lpthread";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = "unit-test";
+				SECTORDER_FLAGS = "";
+				SYMROOT = "/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube";
+				SYSTEM_HEADER_SEARCH_PATHS = ("/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/vcpkg/installed/x64-osx/include");
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("-Wmost","-Wno-four-char-constants","-Wno-unknown-pragmas","$(inherited)");
+			};
+			name = RelWithDebInfo;
+		};
+		E6E82DFB08F34CC880D74CC5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				CONFIGURATION_BUILD_DIR = "/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube/Debug";
+				EXECUTABLE_PREFIX = "";
+				EXECUTABLE_SUFFIX = "";
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				LIBRARY_SEARCH_PATHS = "";
+				OTHER_CPLUSPLUSFLAGS = "   '-std=c++14'  ";
+				OTHER_LDFLAGS = " -Wl,-search_paths_first -Wl,-headerpad_max_install_names  /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/vcpkg/installed/x64-osx/debug/lib/libgtestd.a /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/vcpkg/installed/x64-osx/debug/lib/manual-link/libgtest_maind.a /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/vcpkg/installed/x64-osx/debug/lib/libgmockd.a /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/vcpkg/installed/x64-osx/debug/lib/manual-link/libgmock_maind.a /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/vcpkg/installed/x64-osx/debug/lib/libgmockd.a /Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/vcpkg/installed/x64-osx/debug/lib/libgtestd.a  -lpthread";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = "unit-test";
+				SECTORDER_FLAGS = "";
+				SYMROOT = "/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/openGl-3D-cube";
+				SYSTEM_HEADER_SEARCH_PATHS = ("/Users/mohammad.fakhreddin/Documents/c-plus-plus-projects/vcpkg/installed/x64-osx/include");
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("-Wmost","-Wno-four-char-constants","-Wno-unknown-pragmas","$(inherited)");
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		796425217DB5410C8584E0D2 /* Build configuration list for PBXNativeTarget "unit-test" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E6E82DFB08F34CC880D74CC5 /* Debug */,
+				7DE0EB3091A34ECEA7D88104 /* Release */,
+				CCA34F447DD044E9B92600B7 /* MinSizeRel */,
+				E20A7F8C5CDF444FB77F0748 /* RelWithDebInfo */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		9B0B519A8F67430F90C8F14D /* Build configuration list for PBXAggregateTarget "ZERO_CHECK" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				552CB52DD1814E49968BA42D /* Debug */,
+				9F4DC6FBD1234BF184BCE0F2 /* Release */,
+				B88813BEC4C145798B087690 /* MinSizeRel */,
+				D80BE9CD1AA44CCF96AD6211 /* RelWithDebInfo */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		BEEE9624B7E14235BCC3856C /* Build configuration list for PBXProject "3d-cube" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4E2BF3D6E59742ED96733C0B /* Debug */,
+				76A08D81E0A147ACACD4887F /* Release */,
+				2F4E80108AB14DDEA7A0589C /* MinSizeRel */,
+				5AC1E7FEAB5F4503A9A13D30 /* RelWithDebInfo */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		D72BE1A649FC42A79915946E /* Build configuration list for PBXNativeTarget "3d-cube" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8166CA67C4B7488AB684AD79 /* Debug */,
+				B5516ACFBBCD421387B7DC0D /* Release */,
+				579FEAE5FBBA4B61AAD1C741 /* MinSizeRel */,
+				333F4B6ABB5E49048787CEC1 /* RelWithDebInfo */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		EF43BB5489A94B8C87A903C1 /* Build configuration list for PBXAggregateTarget "RUN_TESTS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				35F79E03F953459BB440C8D5 /* Debug */,
+				0B726324C5624EF297F19137 /* Release */,
+				A63E25A3C72444199A776901 /* MinSizeRel */,
+				BC4A6E26396347A5BC35779D /* RelWithDebInfo */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		F1D6E04C5C2747738E1FA6BF /* Build configuration list for PBXAggregateTarget "ALL_BUILD" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				79929F8F31CE470BB0391867 /* Debug */,
+				D6920650A6FB41E280FBE734 /* Release */,
+				6256786103C643C180C6078F /* MinSizeRel */,
+				25D22C0FDCA74B4CA2592391 /* RelWithDebInfo */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 7D735CCDF1B8490FAE6840A0 /* Project object */;
+}

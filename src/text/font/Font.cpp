@@ -37,10 +37,7 @@ Font::Font(
     //Ascii chars
     for (char32_t asciiCharacter = asciiStart; asciiCharacter < asciiEnd; asciiCharacter++) {
       CharGlyph* charGlyph = generateCharacter(asciiCharacter, languageCode, script, direction);
-      if (charGlyph == nullptr) {
-        Logger::log(U"Creating glyph for following character failed:" + asciiCharacter);
-      }
-      else {
+      if(charGlyph!=nullptr) {
         unicodeSingleCharsMap.insert({ asciiCharacter,std::unique_ptr<CharGlyph>(charGlyph) });
         unicodeSingleCharDirection.insert({ asciiCharacter,LanguageCharacterSource::Direction::ltr });
       }
@@ -48,10 +45,7 @@ Font::Font(
     //Punctuations
     for (char32_t punctuationCharacter = punctuationStart; punctuationCharacter < punctuationEnd; punctuationCharacter++) {
       CharGlyph* charGlyph = generateCharacter(punctuationCharacter, languageCode, script, direction);
-      if (charGlyph == nullptr) {
-        Logger::log(U"Creating glyph for following character failed:" + punctuationCharacter);
-      }
-      else {
+      if(charGlyph!=nullptr) {
         unicodeSingleCharsMap.insert({ punctuationCharacter,std::unique_ptr<CharGlyph>(charGlyph) });
         unicodeSingleCharDirection.insert({ punctuationCharacter,LanguageCharacterSource::Direction::ltr });
       }
@@ -72,10 +66,7 @@ Font::Font(
           {
             assert(rawChars[0].size() == 1);
             CharGlyph* charGlyph = generateCharacter(rawChars[0][0], languageCode, script, direction);
-            if (charGlyph == nullptr) {
-              Logger::log(U"Creating glyph for following character failed:" + rawChars[0][0]);
-            }
-            else {
+            if (charGlyph != nullptr){
               unicodeSingleCharsMap.insert({ rawChars[0][0],std::unique_ptr<CharGlyph>(charGlyph) });
               unicodeSingleCharDirection.insert({ rawChars[0][0],charactersSource->getDirection() });
             }
@@ -83,30 +74,21 @@ Font::Font(
           {
             assert(rawChars[1].size() == 1);
             CharGlyph* charGlyph = generateCharacter(rawChars[1][0], languageCode, script, direction);
-            if (charGlyph == nullptr) {
-              Logger::log(U"Creating glyph for following character failed:" + rawChars[1][0]);
-            }
-            else {
+            if (charGlyph != nullptr) {
               unicodeStartCharsMap.insert({ rawChars[0][0],std::unique_ptr<CharGlyph>(charGlyph) });
             }
           }
           {
             assert(rawChars[2].size() == 1);
             CharGlyph* charGlyph = generateCharacter(rawChars[2][0], languageCode, script, direction);
-            if (charGlyph == nullptr) {
-              Logger::log(U"Creating glyph for following character failed:" + rawChars[2][0]);
-            }
-            else {
+            if (charGlyph != nullptr) {
               unicodeMiddleCharsMap.insert({ rawChars[0][0],std::unique_ptr<CharGlyph>(charGlyph) });
             }
           }
           {
             assert(rawChars[3].size() == 1);
             CharGlyph* charGlyph = generateCharacter(rawChars[3][0], languageCode, script, direction);
-            if (charGlyph == nullptr) {
-              Logger::log(U"Creating glyph for following character failed:" + rawChars[3][0]);
-            }
-            else {
+            if (charGlyph != nullptr) {
               unicodeEndCharsMap.insert({ rawChars[0][0],std::unique_ptr<CharGlyph>(charGlyph) });
             }
           }

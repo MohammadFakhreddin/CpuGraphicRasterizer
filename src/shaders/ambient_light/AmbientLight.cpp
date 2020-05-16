@@ -2,36 +2,6 @@
 
 #include <cassert>
 
-/*
-AmbientLight::AmbientLight(
-  const float& colorR,
-  const float& colorG,
-  const float& colorB
-) 
-  :
-  color(colorR,colorG,colorB)
-{
-
-  assert(colorR >= 0.0f && colorR <= 1.0f);
-  assert(colorG >= 0.0f && colorG <= 1.0f);
-  assert(colorB >= 0.0f && colorB <= 1.0f);
-
-  color.setR(colorR);
-  color.setG(colorG);
-  color.setB(colorB);
-
-}
-
-AmbientLight(const Matrix3X1Float& paramColor)
-{
-  assert(color.getR() >= 0.0f && color.getR() <= 1.0f);
-  assert(color.getG() >= 0.0f && color.getG() <= 1.0f);
-  assert(color.getB() >= 0.0f && color.getB() <= 1.0f);
-
-  color.assign(paramColor);
-
-}*/
-
 AmbientLight::AmbientLight(const float& colorR, const float& colorG, const float& colorB)
 {
   color.setR(colorR);

@@ -1,4 +1,4 @@
-﻿#include "./MonkeyScene.h"
+#include "./MonkeyScene.h"
 
 #include <codecvt>
 
@@ -21,8 +21,6 @@ MonkeyScene::MonkeyScene(OpenGL& gl)
     DataAccessPoint::getInstance()->getAppScreenHeight(),
     "Monkey main camera"
   ),
-  ambientLight(std::make_unique<AmbientLight>(0.05f, 0.05f, 0.05f)),
-  metalColor(std::make_unique<ColorTexture>(171.0f / 255.0f, 171.0f / 255.0f, 171.0f / 255.0f)),
   pointLight(std::make_unique<PointLight>(
     1.1f,
     255.0f / 256.0f, 214.0f / 256.0f, 170.0f / 256.0f,
@@ -36,14 +34,16 @@ MonkeyScene::MonkeyScene(OpenGL& gl)
     float(1.0 / double(10000)),
     30
   )),
+  ambientLight(std::make_unique<AmbientLight>(0.05f, 0.05f, 0.05f)),
+  metalColor(std::make_unique<ColorTexture>(171.0f / 255.0f, 171.0f / 255.0f, 171.0f / 255.0f)),
+  whiteColor(std::make_unique<ColorTexture>(1.0f,1.0f,1.0f)),
   pip(camera),
   font(
     Path::generateAssetPath("font/BYekan", ".ttf"),
     200,
     &DataAccessPoint::getInstance()->getFreeType(),
     DataAccessPoint::getInstance()->getSpecialCharacters()
-  ),
-  whiteColor(std::make_unique<ColorTexture>(1.0f,1.0f,1.0f))
+  )
 {
 
   {//Creating shape

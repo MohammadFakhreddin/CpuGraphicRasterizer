@@ -186,7 +186,7 @@ public:
 
     const auto sideLatCount = numberOfLat - 2;
 
-    auto convertLatAndLongToVertices = [numberOfLat, numberOfLong, &vertices, sideLatCount](unsigned int latIndex, unsigned int longIndex) {
+    auto convertLatAndLongToVertices = [numberOfLat, numberOfLong, sideLatCount](unsigned int latIndex, unsigned int longIndex) {
       assert(
         latIndex >= 0 && latIndex < numberOfLat &&
         "ShapeGenerator::sphere::convertLatAndLongToVertices latIndex must be above 0 and bellow numberOfLat"

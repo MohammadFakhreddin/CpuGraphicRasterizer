@@ -20,14 +20,14 @@ Camera::Camera(
   std::string paramCameraName
 )
   :
-  gl(paramGl),
-  pixelMapSize(paramAppScreenWidth * paramAppScreenHeight),
-  startX(0.0f),
-  startY(0.0f),
-  endX(float(paramAppScreenWidth)),
-  endY(float(paramAppScreenHeight)),
   appScreenWidth(paramAppScreenWidth),
-  appScreenHeight(paramAppScreenHeight)
+  appScreenHeight(paramAppScreenHeight),
+  pixelMapSize(paramAppScreenWidth * paramAppScreenHeight),
+  gl(paramGl),
+  startX(0.0f),
+  endX(float(paramAppScreenWidth)),
+  startY(0.0f),
+  endY(float(paramAppScreenHeight))
 {
 
   assert(paramAppScreenWidth > 0);

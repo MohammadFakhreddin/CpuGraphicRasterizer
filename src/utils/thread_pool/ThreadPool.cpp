@@ -83,10 +83,10 @@ void ThreadPool::assignTask(
 
 ThreadPool::ThreadObject::ThreadObject(const unsigned int& threadNumber, ThreadPool& parent)
   :
+  parent(parent),
   threadNumber(threadNumber),
   mutex(),
-  lock(mutex),
-  parent(parent)
+  lock(mutex)
 {
   thread = std::make_unique<std::thread>(mainLoopReference);
 }

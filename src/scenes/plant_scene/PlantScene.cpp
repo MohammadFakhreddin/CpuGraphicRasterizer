@@ -10,6 +10,7 @@
 PlantScene::PlantScene(OpenGL& gl)
   :
   BaseScene(gl, "PlantScene"),
+  directionalLight(std::make_unique<DirectionalLight>(1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f)),
   cameraInstance(
     gl,
     Matrix3X1Float(),
@@ -19,7 +20,6 @@ PlantScene::PlantScene(OpenGL& gl)
     "Plant main camera"
   ),
   ambientLight(std::make_unique<AmbientLight>(0.2f, 0.2f, 0.2f)),
-  directionalLight(std::make_unique<DirectionalLight>(1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f)),
   colorTexture(std::make_unique<ColorTexture>(1.0f, 1.0f, 1.0f)),
   pip(cameraInstance)
 {
