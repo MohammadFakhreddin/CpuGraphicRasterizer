@@ -20,8 +20,6 @@ public:
 
   static void createInstance();
 
-  DataAccessPoint();
-
   void setAppScreenWidth(const unsigned int appScreenWidth);
 
   void setAppScreenHeight(const unsigned int appScreenHeight);

@@ -1,5 +1,7 @@
 ﻿#include "Application.h"
 
+#define DEBUG_INPUT
+
 #include <memory>
 #include <vector>
 
@@ -24,16 +26,21 @@ https://stackoverflow.com/questions/150355/programmatically-find-the-number-of-c
 */
 
 #ifdef __DESKTOP__
-void handleKeyboardEvent(GLFWwindow* window,int key,int scanCode,int action)
+void handleKeyboardEvent(GLFWwindow* window, int key, int scanCode, int action, int mode)
 {
-  DataAccessPoint::getInstance()->getEventHandler().emitEvent<int>(
-    EventHandler::EventName::keyboardCharacterIsPressed,
-    key
-  );
-  DataAccessPoint::getInstance()->getEventHandler().emitEvent<int>(
-    EventHandler::EventName::keyboardScanCodeIsPressed,
-    scanCode
-  );
+#ifdef DEBUG_INPUT
+  Logger::log("key: "+std::to_string(key) + " ScanCode: " + std::to_string(scanCode) + " mode: " + std::to_string(mode));
+#endif
+  if(action == GLFW_PRESS){
+    DataAccessPoint::getInstance()->getEventHandler().emitEvent<int>(
+      EventHandler::EventName::keyboardCharacterIsPressed,
+      key
+    );
+    DataAccessPoint::getInstance()->getEventHandler().emitEvent<int>(
+      EventHandler::EventName::keyboardScanCodeIsPressed,
+      scanCode
+    );
+  }
 }
 
 void handleMouseEvent(int button, int state, int x, int y) {
@@ -84,7 +91,7 @@ Application::Application(
   }
 
 #ifdef __DESKTOP__
-  GLFWkeyfun(handleKeyboardEvent);
+  glfwSetKeyCallback(window, handleKeyboardEvent);
   GLFWmousebuttonfun(handleMouseEvent);
   GLFWcursorposfun(handleMotionEvent);
 #endif

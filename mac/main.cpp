@@ -4,23 +4,32 @@
 #include "../src/libs/tiny_obj_loader/tiny_obj_loader.h"
 
 #include <memory>
+#include <thread>
+#include <chrono>
 
 #include <CoreGraphics/CGDisplayConfiguration.h>
 #include "../src/application/Application.h"
 #include "../src/open_gl/OpenGl.h"
 #include "../src/utils/log/Logger.h"
 
+const double loopTime = 1.0 / 60.0;
+
 std::unique_ptr<Application> application;
 
-double currentTime = 0;
-double lastTime = 0;
-double deltaTime = 0;
+double currentTime = 0.0;
+double lastTime = 0.0;
+double deltaTime = 0.0;
+double sleepTime = 0.0;
 
 void mainLoop() {
     currentTime = glfwGetTime();
     deltaTime = currentTime - lastTime;
     lastTime = currentTime;
     application->mainLoop(deltaTime);
+	sleepTime = loopTime - deltaTime;
+	if(sleepTime>0.0){
+		std::this_thread::sleep_for(std::chrono::nanoseconds(int(1000 * sleepTime)));
+	}
 }
 
 void errorCallback(int error, const char* description)

@@ -49,6 +49,7 @@ BaseScene::BaseScene(OpenGL& gl,std::string sceneName)
     sceneName,
     std::bind(&BaseScene::mouseButtonReleased,this,std::placeholders::_1)
   );
+
 #endif // __DESKTOP__
 
 }
@@ -68,7 +69,7 @@ void BaseScene::notifyForNewKeyboardCharacterEvent(const int & keyEvent) {
   }
   keyEvents[keyEvent] = true;
 }
-
+//TODO Rename this method
 void BaseScene::notifyForNewScanCodeCharacterEvent(const int& scanCode){
   if(isPageActive == false){
     return;
