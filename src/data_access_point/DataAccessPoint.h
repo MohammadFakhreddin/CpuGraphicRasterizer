@@ -51,7 +51,6 @@ public:
   const FreeType& getFreeType();
 
   const std::vector<LanguageCharacterSource*>& getSpecialCharacters();
-
    
 private:
 

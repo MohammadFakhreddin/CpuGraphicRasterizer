@@ -1,7 +1,7 @@
 #ifndef Font_Class
 #define Font_Class
 
-#include <string>
+#include <codecvt>
 #include <memory>
 #include <harfbuzz/hb.h>
 #include <harfbuzz/hb-ot.h>

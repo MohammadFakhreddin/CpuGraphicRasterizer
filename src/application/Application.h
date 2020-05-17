@@ -46,7 +46,13 @@ public:
     bool forceNewAppScreenData
   );
 
-  void init();
+  void init(
+    Constants::Platform& platform,
+    unsigned int& appScreenWidth,
+    unsigned int& appScreenHeight,
+    unsigned int& physicalDeviceScreenWidth,
+    unsigned int& physicalDeviceScreenHeight
+  );
   
   void mainLoop(double deltaTime);
 

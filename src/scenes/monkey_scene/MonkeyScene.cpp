@@ -37,13 +37,7 @@ MonkeyScene::MonkeyScene(OpenGL& gl)
   ambientLight(std::make_unique<AmbientLight>(0.05f, 0.05f, 0.05f)),
   metalColor(std::make_unique<ColorTexture>(171.0f / 255.0f, 171.0f / 255.0f, 171.0f / 255.0f)),
   whiteColor(std::make_unique<ColorTexture>(1.0f,1.0f,1.0f)),
-  pip(camera),
-  font(
-    Path::generateAssetPath("font/BYekan", ".ttf"),
-    200,
-    &DataAccessPoint::getInstance()->getFreeType(),
-    DataAccessPoint::getInstance()->getSpecialCharacters()
-  )
+  pip(camera)
 {
 
   {//Creating shape
@@ -67,6 +61,13 @@ MonkeyScene::MonkeyScene(OpenGL& gl)
   pip.assignAmbientLight(ambientLight.get());
   pip.assignPointLight(pointLight.get());
   pip.assignShape(monkey.get());
+
+  font = std::make_unique<Font>(
+    Path::generateAssetPath("font/BYekan", ".ttf"),
+    200,
+    &DataAccessPoint::getInstance()->getFreeType(),
+    DataAccessPoint::getInstance()->getSpecialCharacters()
+  );
 
 }
 
@@ -151,7 +152,7 @@ void MonkeyScene::update(double deltaTime) {
   }
 #endif
   pip.update(deltaTime);
-  font.drawText(pip, U"به نام خدا", 100, 100, Font::PositionMode::leftTop, whiteColor.get());
+  font->drawText(pip, U"ممد", 100, 100, Font::PositionMode::leftTop, whiteColor.get());
   
 }
 

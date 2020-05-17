@@ -68,7 +68,7 @@ private:
 
   Matrix2X1Int currentMousePosition;
 
-  Font font;
+  std::unique_ptr<Font> font;
 
 };
 

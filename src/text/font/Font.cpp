@@ -1,6 +1,4 @@
-﻿#include "./Font.h"
-
-#include <codecvt>
+#include "./Font.h"
 
 #include "../../3d/surface/Surface.h"
 #include "../../utils/operators/Operators.h"
@@ -139,7 +137,7 @@ void Font::drawText(
   mp.isPreviousLtr = false;
   mp.isPreviouseCharacterABreakerChar = false;
   this->currentColorTexture = colorTexture;
-  for (auto character : text) {
+  for (const char32_t& character : text) {
     //TODO Handle punctuations
     if (isPunctOrSpace(character)) {
       std::u32string newWord = U"";
@@ -169,7 +167,7 @@ void Font::drawText(
         }
         else {
           mp.isPreviousLtr = true;
-          auto newWord = U"";
+          std::u32string newWord = U"";
           newWord += character;
           mp.words.emplace_back(newWord);
         }
@@ -183,7 +181,7 @@ void Font::drawText(
   mp.currentPositionY = float(positionY);
   //Print glyphs one by one
   {//Normalizing and connecting words to create normalized text
-    for (const auto& word : mp.words) {
+    for (const std::u32string& word : mp.words) {
       if (word[0] == '\n')
       {
         assert(word.length() == 1);

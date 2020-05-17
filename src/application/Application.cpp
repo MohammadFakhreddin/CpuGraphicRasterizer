@@ -79,7 +79,15 @@ Application::Application(
   fpsDrawLocation(-1.0f, -1.0f),
   sceneNameDrawLocation(-1.0f, 0.9f)
 {
-  init();
+
+  init(
+    platform,
+    appScreenWidth,
+    appScreenHeight,
+    physicalDeviceScreenWidth,
+    physicalDeviceScreenHeight
+  );
+
 }
 
 #ifdef __OPENGL__
@@ -103,15 +111,43 @@ Application::Application(
   fpsDrawLocation(-1.0f, -1.0f),
   sceneNameDrawLocation(-1.0f, 0.9f)
 {
-  {
-    DataAccessPoint::createInstance();
 
-    DataAccessPoint::getInstance()->setAppScreenWidth(appScreenWidth);
-    DataAccessPoint::getInstance()->setAppScreenHeight(appScreenHeight);
-    DataAccessPoint::getInstance()->setPhysicalScreenWidth(physicalDeviceScreenWidth);
-    DataAccessPoint::getInstance()->setPhysicalScreenHeight(physicalDeviceScreenHeight);
-    DataAccessPoint::getInstance()->setPlatform(platform);
-  }
+  init(
+    platform,
+    appScreenWidth,
+    appScreenHeight,
+    physicalDeviceScreenWidth,
+    physicalDeviceScreenHeight
+  );
+
+}
+#endif // __OPENGL__
+
+void Application::init(
+  Constants::Platform& platform,
+  unsigned int& appScreenWidth,
+  unsigned int& appScreenHeight,
+  unsigned int& physicalDeviceScreenWidth,
+  unsigned int& physicalDeviceScreenHeight
+) {
+
+  DataAccessPoint::createInstance();
+
+  DataAccessPoint::getInstance()->setAppScreenWidth(appScreenWidth);
+  DataAccessPoint::getInstance()->setAppScreenHeight(appScreenHeight);
+  DataAccessPoint::getInstance()->setPhysicalScreenWidth(physicalDeviceScreenWidth);
+  DataAccessPoint::getInstance()->setPhysicalScreenHeight(physicalDeviceScreenHeight);
+  DataAccessPoint::getInstance()->setPlatform(platform);
+  
+  //sceneList.emplace_back(std::make_unique<LightPerPixelScene>(openGLInstance));
+  sceneList.emplace_back(std::make_unique<MonkeyScene>(openGLInstance));
+  sceneList.emplace_back(std::make_unique<BunnyScene>(openGLInstance));
+  sceneList.emplace_back(std::make_unique<SphereScene>(openGLInstance));
+  sceneList.emplace_back(std::make_unique<ColoredCubeScene>(openGLInstance));
+  sceneList.emplace_back(std::make_unique<TexturedCubeScene>(openGLInstance));
+  sceneList.emplace_back(std::make_unique<RobotScene>(openGLInstance));
+  sceneList.emplace_back(std::make_unique<PlantScene>(openGLInstance));
+  navigateToScene(0);
 
 #ifdef __DESKTOP__
   glfwSetKeyCallback(window, handleKeyboardEvent);
@@ -125,24 +161,9 @@ Application::Application(
     EventHandler::EventName::keyboardCharacterIsPressed,
     "Application",
     std::bind(&Application::notifyKeyIsPressed, this, std::placeholders::_1)
-  );
+    );
 #endif // __DESKTOP__
 
-  init();
-
-}
-#endif // __OPENGL__
-
-void Application::init() {
-  //sceneList.emplace_back(std::make_unique<LightPerPixelScene>(openGLInstance));
-  sceneList.emplace_back(std::make_unique<MonkeyScene>(openGLInstance));
-  sceneList.emplace_back(std::make_unique<BunnyScene>(openGLInstance));
-  sceneList.emplace_back(std::make_unique<SphereScene>(openGLInstance));
-  sceneList.emplace_back(std::make_unique<ColoredCubeScene>(openGLInstance));
-  sceneList.emplace_back(std::make_unique<TexturedCubeScene>(openGLInstance));
-  sceneList.emplace_back(std::make_unique<RobotScene>(openGLInstance));
-  sceneList.emplace_back(std::make_unique<PlantScene>(openGLInstance));
-  navigateToScene(0);
 }
 
 void Application::notifyScreenSurfaceChanged(
