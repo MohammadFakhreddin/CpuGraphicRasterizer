@@ -50,10 +50,20 @@ int main(int argc, char** argv) {
 		return -1;
 	}
 	
-	glfwSetWindowPos(window,(int)(realScreenWidth/2 - appScreenWidth/2),(int)(realScreenHeight/2 - appScreenHeight/2));
-	
 	glfwMakeContextCurrent(window);
 	
+	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+	{
+		Logger::log("Failed to initialize OpenGL context");
+		return -1;
+	}
+
+	glfwSetWindowPos(
+		window, 
+		(int)(realScreenWidth / 2.0f - appScreenWidth / 2.0f), 
+		(int)(realScreenHeight / 2.0f - appScreenHeight / 2.0f)
+	);
+
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f); // Set background color to black and opaque
 
 	Application* application = new Application(

@@ -12,6 +12,9 @@
 #include "../src/open_gl/OpenGl.h"
 #include "../src/application/Application.h"
 
+
+std::unique_ptr<Application> application = nullptr;
+
 void errorCallback(int error, const char* description)
 {
   fprintf(stderr, "Error: %s\n", description);
@@ -49,17 +52,23 @@ int main(int argc, char** argv) {
 		return -1;
 	}
 	
-	glfwSetWindowPos(
-		window, 
-		(int)(realScreenWidth / 2 - appScreenWidth / 2), 
-		(int)(realScreenHeight / 2 - appScreenHeight / 2)
-	);
-	
 	glfwMakeContextCurrent(window);
+
+	glfwSetWindowPos(
+		window,
+		(int)(realScreenWidth / 2.0f - appScreenWidth / 2.0f),
+		(int)(realScreenHeight / 2.0f - appScreenHeight / 2.0f)
+	);
+
+	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+	{
+		Logger::log("Failed to initialize OpenGL context");
+		return -1;
+	}
 	
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f); // Set background color to black and opaque
 	
-	Application* application = new Application(
+	application = std::make_unique<Application>(
 		window,
 		Constants::Platform::Windows,
 		appScreenWidth,
@@ -69,8 +78,6 @@ int main(int argc, char** argv) {
 	);
 
 	application->run();
-
-	delete application;
 
 	glfwDestroyWindow(window);
 	

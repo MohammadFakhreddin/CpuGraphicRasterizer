@@ -2,6 +2,7 @@
 #define Application_class
 
 #include <memory>
+#include <chrono>
 
 #include "../Constants.h"
 #include "../open_gl/OpenGl.h"
@@ -11,16 +12,28 @@
 class Application {
 public:
 
+  Application() = delete;
+
   Application(
-  #ifdef __OPENGL__
-    GLFWwindow* window,
-  #endif
     Constants::Platform platform,
     unsigned int appScreenWidth,
     unsigned int appScreenHeight,
     unsigned int physicalDeviceScreenWidth,
     unsigned int physicalDeviceScreenHeight
   );
+
+#ifdef __OPENGL__
+  
+  Application(
+    GLFWwindow* window,
+    Constants::Platform platform,
+    unsigned int appScreenWidth,
+    unsigned int appScreenHeight,
+    unsigned int physicalDeviceScreenWidth,
+    unsigned int physicalDeviceScreenHeight
+  );
+
+#endif // __OPENGL__
 
   /**
    * Currently this event is only for android
@@ -32,6 +45,8 @@ public:
     unsigned int paramPhysicalScreenHeight,
     bool forceNewAppScreenData
   );
+
+  void init();
   
   void mainLoop(double deltaTime);
 
@@ -69,15 +84,15 @@ private:
 
   GLFWwindow* window;
 
-  const double loopTime = 1.0 / 60.0;
+  static constexpr std::chrono::nanoseconds loopTime = std::chrono::nanoseconds(int(1000.0 / 60.0));
 
-  double currentTime = 0.0;
+  std::chrono::steady_clock::time_point currentTime;
 
-  double lastTime = 0.0;
+  std::chrono::steady_clock::time_point lastTime;
 
-  double deltaTime = 0.0;
+  std::chrono::steady_clock::duration deltaTime;
 
-  double sleepTime = 0.0;
+  std::chrono::steady_clock::duration sleepTime;
 
 #endif // __DESKTOP__
 

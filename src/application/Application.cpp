@@ -1,6 +1,6 @@
 ﻿#include "Application.h"
 
-#define DEBUG_INPUT
+//#define DEBUG_INPUT
 
 #include <memory>
 #include <vector>
@@ -43,24 +43,48 @@ void handleKeyboardEvent(GLFWwindow* window, int key, int scanCode, int action, 
   }
 }
 
-void handleMouseEvent(int button, int state, int x, int y) {
+void handleMouseEvent(GLFWwindow* window, int button, int action, int mods) {
+#ifdef DEBUG_INPUT
+  Logger::log("button: " + std::to_string(button) + " action: " + std::to_string(action) + " mods: " + std::to_string(mods));
+#endif
   DataAccessPoint::getInstance()->getEventHandler().emitEvent<int>(
-    state == 1 ? EventHandler::EventName::mouseButtonRelease : EventHandler::EventName::mouseButtonPressed,
+    action == GLFW_RELEASE ? EventHandler::EventName::mouseButtonRelease : EventHandler::EventName::mouseButtonPressed,
     button
   );
-  DataAccessPoint::getInstance()->setMousePosition(x,y);
 }
 
-void handleMotionEvent(int x, int y){
-  DataAccessPoint::getInstance()->setMousePosition(x,y);
+void handleMotionEvent(GLFWwindow* window, double x, double y){
+#ifdef DEBUG_INPUT
+  Logger::log("xPos: " + std::to_string(x) + " yPos: " + std::to_string(y));
+#endif
+  DataAccessPoint::getInstance()->setMousePosition(int(x),int(y));
 }
 
 #endif
 
 Application::Application(
+  Constants::Platform platform, 
+  unsigned int appScreenWidth, 
+  unsigned int appScreenHeight, 
+  unsigned int physicalDeviceScreenWidth, 
+  unsigned int physicalDeviceScreenHeight
+)
+  :
+  openGLInstance(
+    appScreenWidth,
+    appScreenHeight,
+    physicalDeviceScreenWidth,
+    physicalDeviceScreenHeight
+  ),
+  fpsDrawLocation(-1.0f, -1.0f),
+  sceneNameDrawLocation(-1.0f, 0.9f)
+{
+  init();
+}
+
 #ifdef __OPENGL__
+Application::Application(
   GLFWwindow* window,
-#endif
   Constants::Platform platform,
   unsigned int appScreenWidth,
   unsigned int appScreenHeight,
@@ -69,17 +93,13 @@ Application::Application(
   )
   :
   openGLInstance(
-  #ifdef __OPENGL__
     window,
-  #endif
     appScreenWidth,
     appScreenHeight,
     physicalDeviceScreenWidth,
     physicalDeviceScreenHeight
   ),
-#ifdef __DESKTOP__
   window(window),
-#endif // __DESKTOP__
   fpsDrawLocation(-1.0f, -1.0f),
   sceneNameDrawLocation(-1.0f, 0.9f)
 {
@@ -95,29 +115,34 @@ Application::Application(
 
 #ifdef __DESKTOP__
   glfwSetKeyCallback(window, handleKeyboardEvent);
-  GLFWmousebuttonfun(handleMouseEvent);
-  GLFWcursorposfun(handleMotionEvent);
+  glfwSetMouseButtonCallback(window, handleMouseEvent);
+  glfwSetCursorPosCallback(window, handleMotionEvent);
 #endif
-  {
-    //sceneList.emplace_back(std::make_unique<LightPerPixelScene>(openGLInstance));
-    sceneList.emplace_back(std::make_unique<MonkeyScene>(openGLInstance));
-    sceneList.emplace_back(std::make_unique<BunnyScene>(openGLInstance));
-    sceneList.emplace_back(std::make_unique<SphereScene>(openGLInstance));
-    sceneList.emplace_back(std::make_unique<ColoredCubeScene>(openGLInstance));
-    sceneList.emplace_back(std::make_unique<TexturedCubeScene>(openGLInstance));
-    sceneList.emplace_back(std::make_unique<RobotScene>(openGLInstance));
-    sceneList.emplace_back(std::make_unique<PlantScene>(openGLInstance));
-    navigateToScene(0);
-  }
+
 
 #ifdef __DESKTOP__
   DataAccessPoint::getInstance()->getEventHandler().subscribeToEvent<int>(
-    EventHandler::EventName::keyboardScanCodeIsPressed,
+    EventHandler::EventName::keyboardCharacterIsPressed,
     "Application",
     std::bind(&Application::notifyKeyIsPressed, this, std::placeholders::_1)
   );
 #endif // __DESKTOP__
 
+  init();
+
+}
+#endif // __OPENGL__
+
+void Application::init() {
+  //sceneList.emplace_back(std::make_unique<LightPerPixelScene>(openGLInstance));
+  sceneList.emplace_back(std::make_unique<MonkeyScene>(openGLInstance));
+  sceneList.emplace_back(std::make_unique<BunnyScene>(openGLInstance));
+  sceneList.emplace_back(std::make_unique<SphereScene>(openGLInstance));
+  sceneList.emplace_back(std::make_unique<ColoredCubeScene>(openGLInstance));
+  sceneList.emplace_back(std::make_unique<TexturedCubeScene>(openGLInstance));
+  sceneList.emplace_back(std::make_unique<RobotScene>(openGLInstance));
+  sceneList.emplace_back(std::make_unique<PlantScene>(openGLInstance));
+  navigateToScene(0);
 }
 
 void Application::notifyScreenSurfaceChanged(
@@ -193,21 +218,21 @@ void Application::mainLoop(double deltaTime){
 }
 
 #ifdef __DESKTOP__
+
 void Application::run() {
   while (!glfwWindowShouldClose(window))
   {
-    currentTime = glfwGetTime();
+    currentTime = std::chrono::high_resolution_clock::now();
     deltaTime = currentTime - lastTime;
     lastTime = currentTime;
-    mainLoop(deltaTime);
+    mainLoop(std::chrono::duration<double>(deltaTime).count() * 1000);
     sleepTime = loopTime - deltaTime;
-    if (sleepTime > 0.0) {
-      std::this_thread::sleep_for(std::chrono::nanoseconds(int(1000 * sleepTime)));
-    }
+    std::this_thread::sleep_for(sleepTime);
     glfwSwapBuffers(window);
     glfwPollEvents();
   }
 }
+
 #endif // __DESKTOP__
 
 void Application::navigateToScene(unsigned int sceneIndex) {
@@ -220,6 +245,7 @@ void Application::navigateToScene(unsigned int sceneIndex) {
 }
 
 #ifdef __DESKTOP__
+
 void Application::notifyKeyIsPressed(const int& key) {
   if (key == GLFW_KEY_TAB) {
     sceneIndex++;
@@ -229,4 +255,5 @@ void Application::notifyKeyIsPressed(const int& key) {
     navigateToScene(sceneIndex);
   }
 }
+
 #endif

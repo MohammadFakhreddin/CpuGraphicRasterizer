@@ -5,18 +5,12 @@
 #include <string>
 
 OpenGL::OpenGL(
-#ifdef __OPENGL__
-  GLFWwindow* window,
-#endif
-  unsigned int appScreenWidth,
-  unsigned int appScreenHeight,
-  unsigned int physicalScreenWidth,
+  unsigned int appScreenWidth, 
+  unsigned int appScreenHeight, 
+  unsigned int physicalScreenWidth, 
   unsigned int physicalScreenHeight
 )
-:
-#ifdef __OPENGL__
-  window(window),
-#endif
+  :
   appScreenWidth(appScreenWidth),
   appScreenHeight(appScreenHeight),
   physicalScreenWidth(physicalScreenWidth),
@@ -26,6 +20,27 @@ OpenGL::OpenGL(
   Logger::log("AppScreenHeight: " + std::to_string(appScreenHeight));
   init();
 }
+
+#ifdef __OPENGL__
+OpenGL::OpenGL(
+  GLFWwindow* window,
+  unsigned int appScreenWidth,
+  unsigned int appScreenHeight,
+  unsigned int physicalScreenWidth,
+  unsigned int physicalScreenHeight
+)
+:
+  window(window),
+  appScreenWidth(appScreenWidth),
+  appScreenHeight(appScreenHeight),
+  physicalScreenWidth(physicalScreenWidth),
+  physicalScreenHeight(physicalScreenHeight)
+{
+  Logger::log("AppScreenWidth: " + std::to_string(appScreenWidth));
+  Logger::log("AppScreenHeight: " + std::to_string(appScreenHeight));
+  init();
+}
+#endif
 
 void OpenGL::notifyScreenSurfaceChanged(
   unsigned int paramAppScreenWidth,

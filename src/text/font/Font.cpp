@@ -626,7 +626,7 @@ void Font::findSmallestRectForGlyphTexture(
   do {
     for (i = int(*textureStartX); i < *textureEndX; i++) {
       assert(*textureStartY < texture->getVirtualImageHeight());
-      texture->getPixelForPosition(i, *textureStartY, &red, &green, &blue);
+      texture->getPixelForPosition(float(i), *textureStartY, &red, &green, &blue);
       if (doesColorReachesThreshold()) {
         targetIndexCanBeMinimized = false;
         break;
@@ -641,7 +641,7 @@ void Font::findSmallestRectForGlyphTexture(
   do {
     for (i = int(*textureStartX); i < *textureEndX; i++) {
       assert(*textureEndY >= 0);
-      texture->getPixelForPosition(i, *textureEndY, &red, &green, &blue);
+      texture->getPixelForPosition(float(i), *textureEndY, &red, &green, &blue);
       if (doesColorReachesThreshold()) {
         targetIndexCanBeMinimized = false;
         break;
@@ -656,7 +656,7 @@ void Font::findSmallestRectForGlyphTexture(
   do {
     for (i = int(*textureStartY); i < *textureEndY; i++) {
       assert(*textureStartX < texture->getVirtualImageWidth());
-      texture->getPixelForPosition(*textureStartX, i, &red, &green, &blue);
+      texture->getPixelForPosition(float(*textureStartX), float(i), &red, &green, &blue);
       if (doesColorReachesThreshold()) {
         targetIndexCanBeMinimized = false;
         break;
@@ -671,7 +671,7 @@ void Font::findSmallestRectForGlyphTexture(
   do {
     for (i = int(*textureStartY); i < *textureEndY; i++) {
       assert(*textureEndX >= 0);
-      texture->getPixelForPosition(*textureEndX, i, &red, &green, &blue);
+      texture->getPixelForPosition(float(*textureEndX), float(i), &red, &green, &blue);
       if (doesColorReachesThreshold()) {
         targetIndexCanBeMinimized = false;
         break;
