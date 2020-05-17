@@ -1,5 +1,7 @@
 #include "./Font.h"
 
+#include <string>
+
 #include "../../3d/surface/Surface.h"
 #include "../../utils/operators/Operators.h"
 #include "../../pipeline/Pipeline.h"

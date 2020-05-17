@@ -92,13 +92,13 @@ private:
 
   static constexpr std::chrono::nanoseconds loopTime = std::chrono::nanoseconds(int(1000.0 / 60.0));
 
-  std::chrono::steady_clock::time_point currentTime;
+  std::chrono::system_clock::time_point currentTime;
 
-  std::chrono::steady_clock::time_point lastTime;
+  std::chrono::system_clock::time_point lastTime;
 
-  std::chrono::steady_clock::duration deltaTime;
+  std::chrono::system_clock::duration deltaTime;
 
-  std::chrono::steady_clock::duration sleepTime;
+  std::chrono::system_clock::duration sleepTime;
 
 #endif // __DESKTOP__
 

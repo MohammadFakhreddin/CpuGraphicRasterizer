@@ -94,3 +94,7 @@ CTestTestfile.cmake
 *.cmake
 
 npm-debug.log
+
+CMakeScripts/*
+
+CMakeScripts
