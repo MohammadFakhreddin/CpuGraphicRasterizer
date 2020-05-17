@@ -116,6 +116,18 @@ Font::~Font() {
 
 void Font::drawText(
   PipeLine& pip,
+  const std::string& text,
+  const int& positionX,
+  const int& positionY,
+  const Font::PositionMode& mode,
+  ColorTexture* colorTexture
+){
+  std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t> converter;
+  drawText(pip,converter.from_bytes(text),positionX,positionY,mode,colorTexture);
+}
+
+void Font::drawText(
+  PipeLine& pip,
   const std::u32string& text,
   const int& positionX,
   const int& positionY,

@@ -29,7 +29,7 @@ int main(int argc, char** argv) {
 
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
 
-  glfwSetErrorCallback(errorCallback);
+  	glfwSetErrorCallback(errorCallback);
 
 	auto mainDisplayId = CGMainDisplayID();
 	
@@ -37,9 +37,9 @@ int main(int argc, char** argv) {
 	
 	unsigned int realScreenHeight = CGDisplayPixelsHigh(mainDisplayId);
 	
-	unsigned int appScreenWidth = 800;
+	unsigned int appScreenWidth = 960;
 	
-	unsigned int appScreenHeight = 600;
+	unsigned int appScreenHeight = 540;
 	
 	GLFWwindow* window = glfwCreateWindow(appScreenWidth, appScreenHeight, Constants::Window::appName, NULL, NULL);
 	if (!window)
@@ -69,8 +69,8 @@ int main(int argc, char** argv) {
 	Application* application = new Application(
 		window,
 		Constants::Platform::Mac,
-		appScreenWidth,
-		appScreenHeight,
+		960,
+		540,
 		realScreenWidth,
 		realScreenHeight
 	);

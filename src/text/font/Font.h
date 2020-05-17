@@ -40,6 +40,15 @@ public:
 
   void drawText(
     PipeLine& pip,
+    const std::string& text,
+    const int& positionX,
+    const int& positionY,
+    const Font::PositionMode& mode,
+    ColorTexture* colorTexture
+  );
+
+  void drawText(
+    PipeLine& pip,
     const std::u32string& text, 
     const int& positionX, 
     const int& positionY, 
