@@ -1,5 +1,8 @@
 #ifndef Constants_class
 #define Constants_class
+
+#include <chrono>
+
 //
 // Created by mohammad.fakhreddin on 1/3/20.
 //
@@ -71,4 +74,11 @@ namespace Constants {
   };
 
 };
+
+#ifdef __PLATFORM_LINUX__
+  using supportedClock = std::chrono::system_clock;
+#else
+  using supportedClock = std::chrono::steady_clock;
+#endif
+
 #endif //!Constants_class
