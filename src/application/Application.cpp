@@ -177,12 +177,14 @@ void Application::notifyScreenSurfaceChanged(
 
   if(forceNewAppScreenWidthAndHeight){
     DataAccessPoint::getInstance()->setPhysicalScreenWidth(paramAppScreenWidth);
+    
     DataAccessPoint::getInstance()->setAppScreenHeight(paramAppScreenHeight);
 
     sceneNameDrawLocation.setY(0.9f);
   }
 
   DataAccessPoint::getInstance()->setPhysicalScreenWidth(paramPhysicalScreenWidth);
+  
   DataAccessPoint::getInstance()->setPhysicalScreenHeight(paramPhysicalScreenHeight);
   
   openGLInstance.notifyScreenSurfaceChanged(

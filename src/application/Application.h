@@ -89,7 +89,7 @@ private:
 #ifdef __DESKTOP__
 
   GLFWwindow* window;
-
+  //For ubuntu only we need system clock
   static constexpr std::chrono::nanoseconds loopTime = std::chrono::nanoseconds(int(1000.0 / 60.0));
 
   std::chrono::system_clock::time_point currentTime;

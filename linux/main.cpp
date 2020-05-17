@@ -21,18 +21,26 @@ void errorCallback(int error, const char* description)
 
 /* Main function: GLUT runs as a console application starting at main()  */
 int main(int argc, char** argv) {
-  if (!glfwInit(argc,argv))
+  if (!glfwInit())
   {
     Logger::log("Initing glfw failed");
     exit(EXIT_FAILURE);
     return -1;
   }
 
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
+  glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
 
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
 
   glfwSetErrorCallback(errorCallback);
+
+  //Get screen width and height
+  Display* display = XOpenDisplay(NULL);
+  Screen*  screen = DefaultScreenOfDisplay(display);
+  unsigned int realScreenWidth = (int)screen->width;
+  unsigned int realScreenHeight = (int)screen->height;
+  unsigned int appScreenWidth = 800;
+  unsigned int appScreenHeight = 600;
 
   GLFWwindow* window = glfwCreateWindow(appScreenWidth, appScreenHeight, Constants::Window::appName, NULL, NULL);
 	if (!window)
