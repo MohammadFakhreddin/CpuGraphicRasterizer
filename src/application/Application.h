@@ -2,7 +2,6 @@
 #define Application_class
 
 #include <memory>
-#include <chrono>
 
 #include "../Constants.h"
 #include "../open_gl/OpenGl.h"
@@ -89,16 +88,16 @@ private:
 #ifdef __DESKTOP__
 
   GLFWwindow* window;
-
+  //For ubuntu only we need system clock
   static constexpr std::chrono::nanoseconds loopTime = std::chrono::nanoseconds(int(1000.0 / 60.0));
 
-  std::chrono::steady_clock::time_point currentTime;
+  supportedClock::time_point currentTime;
 
-  std::chrono::steady_clock::time_point lastTime;
+  supportedClock::time_point lastTime;
 
-  std::chrono::steady_clock::duration deltaTime;
+  supportedClock::duration deltaTime;
 
-  std::chrono::steady_clock::duration sleepTime;
+  supportedClock::duration sleepTime;
 
 #endif // __DESKTOP__
 
