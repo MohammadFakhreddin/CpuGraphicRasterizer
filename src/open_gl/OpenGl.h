@@ -36,6 +36,7 @@ public:
     unsigned int physicalScreenHeight
   );
 
+#ifdef __DESKTOP__
   OpenGL(
     GLFWwindow* window,
     unsigned int appScreenWidth,
@@ -43,6 +44,7 @@ public:
     unsigned int physicalScreenWidth,
     unsigned int physicalScreenHeight
   );
+#endif
   
   /**
    * 
