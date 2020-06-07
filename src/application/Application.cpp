@@ -231,6 +231,7 @@ void Application::render(double deltaTime) {
 }
 
 void Application::mainLoop(double deltaTime){
+  Logger::log("Fps:" + std::to_string(1.0 / deltaTime));
   deltaTime = fmin(deltaTime,100.0);
   update(deltaTime);
   render(deltaTime);
@@ -246,10 +247,11 @@ void Application::run() {
   while (!glfwWindowShouldClose(window))
   {
     currentTime = std::chrono::high_resolution_clock::now();
-    deltaTime = currentTime - lastTime;
+    deltaTimeInChrono = currentTime - lastTime;
     lastTime = currentTime;
-    mainLoop(std::chrono::duration<double>(deltaTime).count() * 1000);
-    sleepTime = loopTime - deltaTime;
+    deltaTimeInSecond = double(std::chrono::duration_cast<std::chrono::milliseconds>(deltaTimeInChrono).count()) / 1000.0;
+    mainLoop(deltaTimeInSecond);
+    sleepTime = loopTime - deltaTimeInChrono;
     std::this_thread::sleep_for(sleepTime);
     glfwSwapBuffers(window);
     glfwPollEvents();

@@ -10,17 +10,19 @@
 #include "../../texture/ColorTexture/ColorTexture.h"
 #include "../../pipeline/Pipeline.h"
 
+#define BUNNY_SCENE_SPEED_FACTOR 1000
+
 class BunnyScene : public BaseScene {
 
 private:
 
-  static constexpr float shapeTransformSpeed = 1.0f;
+  static constexpr float shapeTransformSpeed = 1.0f * BUNNY_SCENE_SPEED_FACTOR;
 
-  static constexpr float shapeRotationSpeed = 0.01f;
+  static constexpr float shapeRotationSpeed = 0.01f * BUNNY_SCENE_SPEED_FACTOR;
 
-  static constexpr float shapeScaleSpeed = 0.1f;
+  static constexpr float shapeScaleSpeed = 0.1f * BUNNY_SCENE_SPEED_FACTOR;
 
-  static constexpr float lightTransformSpeed = 0.01f;
+  static constexpr float lightTransformSpeed = 0.01f * BUNNY_SCENE_SPEED_FACTOR;
 
 public:
 

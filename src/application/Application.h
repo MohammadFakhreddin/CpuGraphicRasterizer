@@ -89,13 +89,15 @@ private:
 
   GLFWwindow* window;
   //For ubuntu only we need system clock
-  static constexpr std::chrono::nanoseconds loopTime = std::chrono::nanoseconds(int(1000.0 / 60.0));
+  static constexpr std::chrono::nanoseconds loopTime = std::chrono::nanoseconds(int(1000000000.0 / 90.0));
 
   supportedClock::time_point currentTime;
 
   supportedClock::time_point lastTime;
 
-  supportedClock::duration deltaTime;
+  supportedClock::duration deltaTimeInChrono;
+
+  double deltaTimeInSecond;
 
   supportedClock::duration sleepTime;
 

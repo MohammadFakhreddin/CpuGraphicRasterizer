@@ -61,9 +61,7 @@ void OpenGL::init(){
   glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &nrAttributes);
   Logger::log("Maximum nr of vertex attributes supported:"+std::to_string(nrAttributes));
 #ifdef __OPENGL__
-  float pointSize = (float(physicalScreenWidth)/float(appScreenWidth)) * 2.0f + 0.5f;
-#endif
-#ifdef __OPENGL__
+  float pointSize = (float(physicalScreenWidth) / float(appScreenWidth)) * 1.2f + 0.5f;
   glPointSize(pointSize);
 #endif
   const std::string vShaderStr =

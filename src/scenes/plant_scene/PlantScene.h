@@ -10,17 +10,19 @@
 #include "../../texture/ColorTexture/ColorTexture.h"
 #include "../../pipeline/Pipeline.h"
 
+#define PLANT_SCENE_DELTA_TIME 100
+
 class PlantScene : public BaseScene {
 
 private:
 
-  static constexpr float shapeTransformSpeed = 1.0f;
+  static constexpr float shapeTransformSpeed = 1.0f * PLANT_SCENE_DELTA_TIME;
 
-  static constexpr float shapeRotationSpeed = 0.01f;
+  static constexpr float shapeRotationSpeed = 0.01f * PLANT_SCENE_DELTA_TIME;
 
-  static constexpr float shapeScaleSpeed = 0.1f;
+  static constexpr float shapeScaleSpeed = 0.1f * PLANT_SCENE_DELTA_TIME;
 
-  static constexpr float lightRotationSpeed = 0.01f;
+  static constexpr float lightRotationSpeed = 0.01f * PLANT_SCENE_DELTA_TIME;
 
 public:
 

@@ -11,13 +11,15 @@
 #include "../../3d/models/ColoredCube.h"
 #include "../../pipeline/Pipeline.h"
 
+#define COLORED_CUBE_SPEED_FACTOR 0.2f
+
 class ColoredCubeScene : public BaseScene {
 
 private:
 
-  static constexpr float shapeRotationSpeed = 0.002f;
+  static constexpr float shapeRotationSpeed = 4.0f * COLORED_CUBE_SPEED_FACTOR;
 
-  static constexpr float lightTransformSpeed = 0.01f;
+  static constexpr float lightTransformSpeed = 10.0f * COLORED_CUBE_SPEED_FACTOR;
 
 public:
 

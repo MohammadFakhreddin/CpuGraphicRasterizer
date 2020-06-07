@@ -52,22 +52,22 @@ void SphereScene::update(double deltaTime) {
     lightRotationX = 0.0f;
     lightRotationY = 0.0f;
     lightRotationZ = 0.0f;
-    if (useScanCodeEvent(GLFW_KEY_A)) {
+    if (useKeyboardCharacterEvent(GLFW_KEY_A)) {
       lightRotationX += float(deltaTime * lightTransformSpeed * -1.0f);
     }
-    if (useScanCodeEvent(GLFW_KEY_D)) {
+    if (useKeyboardCharacterEvent(GLFW_KEY_D)) {
       lightRotationX += float(deltaTime * lightTransformSpeed);
     }
-    if (useScanCodeEvent(GLFW_KEY_W)) {
+    if (useKeyboardCharacterEvent(GLFW_KEY_W)) {
       lightRotationY += float(deltaTime * lightTransformSpeed);
     }
-    if (useScanCodeEvent(GLFW_KEY_S)) {
+    if (useKeyboardCharacterEvent(GLFW_KEY_S)) {
       lightRotationY += float(deltaTime * lightTransformSpeed * -1.0);
     }
-    if (useScanCodeEvent(GLFW_KEY_C)) {
+    if (useKeyboardCharacterEvent(GLFW_KEY_C)) {
       lightRotationZ += float(deltaTime * lightTransformSpeed * -1.0 * 0.5);
     }
-    if (useScanCodeEvent(GLFW_KEY_V)) {
+    if (useKeyboardCharacterEvent(GLFW_KEY_V)) {
       lightRotationZ += float(deltaTime * lightTransformSpeed * 1.0 * 0.5);
     }
     if (lightRotationX != 0 || lightRotationY != 0 || lightRotationZ != 0) {
