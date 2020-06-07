@@ -10,13 +10,15 @@
 #include "../../3d/models/DiceCube.h"
 #include "../../pipeline/Pipeline.h"
 
+#define TEXTURED_CUBE_SCENE_SPEED 900.0f
+
 class TexturedCubeScene : public BaseScene {
 
 private:
 
-  static constexpr float shapeRotationSpeed = 0.01f;
+  static constexpr float shapeRotationSpeed = 0.01f * TEXTURED_CUBE_SCENE_SPEED;
 
-  static constexpr float lightTransformSpeed = 0.01f;
+  static constexpr float lightTransformSpeed = 0.01f * TEXTURED_CUBE_SCENE_SPEED;
 
 public:
 

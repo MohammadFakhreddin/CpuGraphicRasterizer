@@ -10,17 +10,19 @@
 #include "../../shaders/directional_light/DirectionalLight.h"
 #include "../../pipeline/Pipeline.h"
 
+#define ROBOT_SCENE_SPEED_FACTOR 1000
+
 class RobotScene : public BaseScene {
 
 private:
 
-  static constexpr float shapeTransformSpeed = 1.0f;
+  static constexpr float shapeTransformSpeed = 1.0f * ROBOT_SCENE_SPEED_FACTOR;
 
-  static constexpr float shapeRotationSpeed = 0.01f;
+  static constexpr float shapeRotationSpeed = 0.01f * ROBOT_SCENE_SPEED_FACTOR;
 
-  static constexpr float shapeScaleSpeed = 0.1f;
+  static constexpr float shapeScaleSpeed = 0.1f * ROBOT_SCENE_SPEED_FACTOR;
 
-  static constexpr float lightRotationSpeed = 0.01f;
+  static constexpr float lightRotationSpeed = 0.01f * ROBOT_SCENE_SPEED_FACTOR;
 
 public:
 

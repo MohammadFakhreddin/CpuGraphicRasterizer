@@ -10,6 +10,8 @@
 #include "../../3d/shape/Shape3d.h"
 #include "../../pipeline/Pipeline.h"
 
+#define SPHERE_SCENE_SPEED 100
+
 class SphereScene : public BaseScene {
 
 public:
@@ -22,9 +24,9 @@ public:
 
 private:
 
-  static constexpr float shapeRotationSpeed = 0.01f;
+  static constexpr float shapeRotationSpeed = 0.01f * SPHERE_SCENE_SPEED;
 
-  static constexpr float lightTransformSpeed = 0.01f;
+  static constexpr float lightTransformSpeed = 0.01f * SPHERE_SCENE_SPEED;
 
   Camera camera;
 

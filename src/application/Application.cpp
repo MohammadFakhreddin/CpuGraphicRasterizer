@@ -231,26 +231,25 @@ void Application::render(double deltaTime) {
 }
 
 void Application::mainLoop(double deltaTime){
-  deltaTime = fmin(deltaTime,100.0);
+  Logger::log("Fps:" + std::to_string(1.0 / deltaTime));
   update(deltaTime);
   render(deltaTime);
-  if(deltaTime>0){
-    currentFps = 1000.0f/deltaTime;
-  }
   assert(openGLInstance.checkForOpenGlError());
 }
 
 #ifdef __DESKTOP__
 
 void Application::run() {
+
+  glfwSwapInterval(1);
+
+  lastTime = glfwGetTime();
+
   while (!glfwWindowShouldClose(window))
   {
-    currentTime = std::chrono::high_resolution_clock::now();
-    deltaTime = currentTime - lastTime;
+    currentTime = glfwGetTime();
+    mainLoop(currentTime - lastTime);
     lastTime = currentTime;
-    mainLoop(std::chrono::duration<double>(deltaTime).count() * 1000);
-    sleepTime = loopTime - deltaTime;
-    std::this_thread::sleep_for(sleepTime);
     glfwSwapBuffers(window);
     glfwPollEvents();
   }

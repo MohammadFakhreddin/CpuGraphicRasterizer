@@ -61,9 +61,7 @@ void OpenGL::init(){
   glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &nrAttributes);
   Logger::log("Maximum nr of vertex attributes supported:"+std::to_string(nrAttributes));
 #ifdef __OPENGL__
-  float pointSize = (float(physicalScreenWidth)/float(appScreenWidth)) * 2.0f + 0.5f;
-#endif
-#ifdef __OPENGL__
+  float pointSize = (float(physicalScreenWidth) / float(appScreenWidth)) * 1.2f + 0.5f;
   glPointSize(pointSize);
 #endif
   const std::string vShaderStr =
@@ -221,9 +219,15 @@ GLuint OpenGL::createProgram(const char* vertexSource, const char * fragmentSour
 
 void OpenGL::clear(){
   glClear(GL_COLOR_BUFFER_BIT);
+  #ifdef __OPENGL__
+    glBegin(GL_POINTS);
+  #endif
 }
 
 void OpenGL::flush(){
+#ifdef __OPENGL__
+  glEnd();
+#endif
   glFlush();
 }
 
@@ -237,7 +241,10 @@ void OpenGL::drawPixel(
   //OpenGL default world projection
   assert(x>=-1 && x<=1);
   assert(y>=-1 && y<=1);
-    
+#ifdef __OPENGL__
+  glColor3f(red,green,blue);
+  glVertex2f(x,y);
+#else  
   {
     position[0] = x;
     position[1] = y;
@@ -259,7 +266,7 @@ void OpenGL::drawPixel(
   assert(checkForOpenGlError());
   glDisableVertexAttribArray((GLuint)pointParamLocation);
   glDisableVertexAttribArray((GLuint)colorParamLocation);
-
+#endif
 }
 
 void OpenGL::beginDrawingPoints(){

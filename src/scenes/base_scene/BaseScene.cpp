@@ -86,6 +86,7 @@ const bool& BaseScene::useKeyboardCharacterEvent(const int& keyboardKey){
 const bool& BaseScene::useScanCodeEvent(const int& scanCode){
   temporaryScanCodeEventPlaceholder = scanCodeEvents[scanCode];
   scanCodeEvents[scanCode] = false;
+  Logger::log("Code:" + std::to_string(temporaryScanCodeEventPlaceholder));
   return temporaryScanCodeEventPlaceholder;
 }
 

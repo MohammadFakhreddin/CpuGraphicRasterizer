@@ -104,6 +104,7 @@ else()
    add_executable(${PROJECT_NAME} ${APP_HEADER} ${APP_SOURCE})
 endif()
 
+#TODO I think we can remove this line
 set(${CMAKE_CXX_FLAGS} "${CMAKE_CXX_FLAGS}")
 
 if(ANDROID)

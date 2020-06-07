@@ -10,21 +10,23 @@
 #include "../../texture/ImageTexture/ImageTexture.h"
 #include "../../text/font/Font.h"
 
+#define MONKEY_SCENE_SPEED_FACTOR 100
+
 class MonkeyScene : public BaseScene {
 
 private:
 
-  static constexpr float shapeTransformSpeed = 1.0f;
+  static constexpr float shapeTransformSpeed = 1.0f * MONKEY_SCENE_SPEED_FACTOR;
 
-  static constexpr float shapeRotationSpeed = 0.01f;
+  static constexpr float shapeRotationSpeed = 0.01f * MONKEY_SCENE_SPEED_FACTOR;
 
-  static constexpr float shapeScaleSpeed = 0.1f;
+  static constexpr float shapeScaleSpeed = 0.1f * MONKEY_SCENE_SPEED_FACTOR;
 
-  static constexpr float lightTransformSpeed = 0.1f;
+  static constexpr float lightTransformSpeed = 0.1f * MONKEY_SCENE_SPEED_FACTOR;
 
-  static constexpr float cameraTransformSpeed = 0.2f;
+  static constexpr float cameraTransformSpeed = 0.2f * MONKEY_SCENE_SPEED_FACTOR;
 
-  static constexpr float cameraRotationSpeed = 0.0002f;
+  static constexpr float cameraRotationSpeed = 0.0002f * MONKEY_SCENE_SPEED_FACTOR;
 
 public:
   
