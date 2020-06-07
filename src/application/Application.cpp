@@ -234,9 +234,6 @@ void Application::mainLoop(double deltaTime){
   Logger::log("Fps:" + std::to_string(1.0 / deltaTime));
   update(deltaTime);
   render(deltaTime);
-  if(deltaTime>0){
-    currentFps = 1000.0f/deltaTime;
-  }
   assert(openGLInstance.checkForOpenGlError());
 }
 
@@ -246,18 +243,13 @@ void Application::run() {
 
   glfwSwapInterval(1);
 
+  lastTime = glfwGetTime();
+
   while (!glfwWindowShouldClose(window))
   {
-    currentTime = std::chrono::high_resolution_clock::now();
-    deltaTimeInChrono = currentTime - lastTime;
+    currentTime = glfwGetTime();
+    mainLoop(currentTime - lastTime);
     lastTime = currentTime;
-    deltaTimeInSecond = double(std::chrono::duration_cast<std::chrono::milliseconds>(deltaTimeInChrono).count()) / 1000.0;
-    mainLoop(deltaTimeInSecond);
-    //Not limiting fps for now
-    if (deltaTimeInSecond < loopTimeInSeconds) {
-      sleepTime = loopTime - deltaTimeInChrono;
-      std::this_thread::sleep_for(sleepTime);
-    }
     glfwSwapBuffers(window);
     glfwPollEvents();
   }
