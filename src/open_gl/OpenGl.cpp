@@ -219,54 +219,52 @@ GLuint OpenGL::createProgram(const char* vertexSource, const char * fragmentSour
 
 void OpenGL::clear(){
   glClear(GL_COLOR_BUFFER_BIT);
-  #ifdef __OPENGL__
-    glBegin(GL_POINTS);
-  #endif
+  // #ifdef __OPENGL__
+  //   glBegin(GL_POINTS);
+  // #endif
 }
 
 void OpenGL::flush(){
-#ifdef __OPENGL__
-  glEnd();
-#endif
+// #ifdef __OPENGL__
+//   glEnd();
+// #endif
   glFlush();
 }
 
 void OpenGL::drawPixel(
-  const float& x, 
-  const float& y, 
-  const float& red, 
-  const float& green, 
-  const float& blue
+  const GLfloat* position,
+  const GLfloat* color,
+  const int& pixelCount
 ){
   //OpenGL default world projection
-  assert(x>=-1 && x<=1);
-  assert(y>=-1 && y<=1);
-#ifdef __OPENGL__
-  glColor3f(red,green,blue);
-  glVertex2f(x,y);
-#else  
+  assert(sizeof(position) == 4 * pixelCount * sizeof(GLfloat));
+  assert(sizeof(color) == 3 * pixelCount * sizeof(GLfloat));
+// #ifdef __OPENGL__
+//   glColor3f(red,green,blue);
+//   glVertex2f(x,y);
+// #else  
   {
-    position[0] = x;
-    position[1] = y;
+    // position[0] = x;
+    // position[1] = y;
     glVertexAttribPointer((GLuint)pointParamLocation,4,GL_FLOAT,GL_FALSE,0,position);
     assert(checkForOpenGlError());
     glEnableVertexAttribArray((GLuint)pointParamLocation);
     assert(checkForOpenGlError());
   }
   {
-    color[0] = red;
-    color[1] = green;
-    color[2] = blue;
-    glVertexAttribPointer((GLuint)colorParamLocation,4,GL_FLOAT,GL_FALSE,0,color);
+    // color[0] = red;
+    // color[1] = green;
+    // color[2] = blue;
+    glVertexAttribPointer((GLuint)colorParamLocation,3,GL_FLOAT,GL_FALSE,0,color);
     assert(checkForOpenGlError());
     glEnableVertexAttribArray((GLuint)colorParamLocation);
     assert(checkForOpenGlError());
   }
-  glDrawArrays(GL_POINTS,0,1);
+  glDrawArrays(GL_POINTS,0,pixelCount);
   assert(checkForOpenGlError());
   glDisableVertexAttribArray((GLuint)pointParamLocation);
   glDisableVertexAttribArray((GLuint)colorParamLocation);
-#endif
+// #endif
 }
 
 void OpenGL::beginDrawingPoints(){

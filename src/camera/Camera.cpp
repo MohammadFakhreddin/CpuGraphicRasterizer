@@ -87,7 +87,10 @@ Camera::Camera(
 
 Camera::~Camera() {
   DataAccessPoint::getInstance()->getEventHandler().unSubscribeFromEvents(cameraName);
-  delete[] pixelMap;
+  
+  delete[] points;
+  
+  delete[] colors;
 }
 
 void Camera::notifyScreenSurfaceIsChanged(
@@ -110,7 +113,9 @@ void Camera::notifyScreenSurfaceIsChanged(
   assert(appScreenWidth>0);
   assert(appScreenHeight>0);
 
-  delete[] pixelMap;
+  delete[] points;
+
+  delete[] colors;
 
   initPixelMap();
 }
@@ -120,18 +125,29 @@ void Camera::initPixelMap(){
   double xPixelStep = 2.0 / double(endX - startX);
   double yPixelStep = 2.0 / double(endY - startY);
 
-  pixelMap = new DrawPixel[pixelMapSize];
+  points = new GLfloat[pixelMapSize * 4];
+  colors = new GLfloat[pixelMapSize * 3];
   unsigned int rowValue = 0;
+  unsigned int pointsIndex = 0;
+  unsigned int colorsIndex = 0;
   for(unsigned int i=0;i<appScreenWidth;i++){
-    rowValue = i * appScreenHeight;
     for(unsigned int j=0;j<appScreenHeight;j++){
-      auto currentPixel = &pixelMap[rowValue + j];
-      currentPixel->zValue = endZ;
-      currentPixel->blue = 0;
-      currentPixel->green = 0;
-      currentPixel->red = 0;
-      currentPixel->x = float(-1.0 + xPixelStep * i);
-      currentPixel->y = float(-1.0 + yPixelStep * j);
+      pointsIndex = rowValue * 4;
+      colorsIndex = rowValue * 3;
+      // auto currentPixel = &pixelMap[rowValue + j];
+      // currentPixel->zValue = endZ;
+      // currentPixel->blue = 0;
+      // currentPixel->green = 0;
+      // currentPixel->red = 0;
+      // currentPixel->x = float(-1.0 + xPixelStep * i);
+      // currentPixel->y = float(-1.0 + yPixelStep * j);
+      points[pointsIndex] = float(-1.0 + xPixelStep * i);
+      points[pointsIndex + 1] = float(-1.0 + yPixelStep * j);
+      points[pointsIndex + 2] = 0;
+      colors[colorsIndex] = 0;
+      colors[colorsIndex + 1] = 0;
+      colors[colorsIndex + 2] = 0;
+      rowValue++;
     }
   }
 
@@ -168,35 +184,38 @@ void Camera::assignToPixel(
   const float& green,
   const float& blue
 ) {
-  auto& currentPixel = pixelMap[index];
-  if (currentPixel.zValue > zValue) {
+  // auto& currentPixel = pixelMap[index];
+  unsigned int pointIndex = index * 4;
+  unsigned int colorIndex = index * 3;
+  if (points[pointIndex + 2] > zValue) {
     //TODO Maybe impelemting some antialising
-    currentPixel.blue = blue;
-    currentPixel.green = green;
-    currentPixel.red = red;
-    currentPixel.zValue = zValue;
+    points[pointIndex + 2] = zValue;
+    colors[colorIndex] = red;
+    colors[colorIndex + 1] = green;
+    colors[colorIndex + 2] = blue;
   }
 }
 
 void Camera::render(const double& deltaTime){
   {//Drawing screen
     gl.beginDrawingPoints();
-    for (unsigned int i = 0; i < pixelMapSize; i++) {
-      auto currentPixel = &pixelMap[i];
-      if (currentPixel->zValue != endZ) {
-        gl.drawPixel(
-          currentPixel->x,
-          currentPixel->y,
-          currentPixel->red,
-          currentPixel->green,
-          currentPixel->blue
-        );
-        currentPixel->zValue = endZ;
-        currentPixel->red = 0.0f;
-        currentPixel->green = 0.0f;
-        currentPixel->blue = 0.0f;
-      }
-    }
+    gl.drawPixel(points,colors,pixelMapSize);
+    // for (unsigned int i = 0; i < pixelMapSize; i++) {
+    //   auto currentPixel = &pixelMap[i];
+    //   if (currentPixel->zValue != endZ) {
+    //     gl.drawPixel(
+    //       currentPixel->x,
+    //       currentPixel->y,
+    //       currentPixel->red,
+    //       currentPixel->green,
+    //       currentPixel->blue
+    //     );
+    //     currentPixel->zValue = endZ;
+    //     currentPixel->red = 0.0f;
+    //     currentPixel->green = 0.0f;
+    //     currentPixel->blue = 0.0f;
+    //   }
+    // }
     gl.resetProgram();
   }
 }
