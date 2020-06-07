@@ -8,6 +8,8 @@
 #include "../camera/Camera.h"
 #include "../scenes/base_scene/BaseScene.h"
 
+#define APPLICATION_FPS 90
+
 class Application {
 public:
 
@@ -89,7 +91,9 @@ private:
 
   GLFWwindow* window;
   //For ubuntu only we need system clock
-  static constexpr std::chrono::nanoseconds loopTime = std::chrono::nanoseconds(int(1000000000.0 / 90.0));
+  static constexpr std::chrono::nanoseconds loopTime = std::chrono::nanoseconds(int(1000000000.0 / APPLICATION_FPS));
+
+  static constexpr double loopTimeInSeconds = 1.0 / APPLICATION_FPS;
 
   supportedClock::time_point currentTime;
 

@@ -44,7 +44,6 @@ public:
 
   _Matrix(T defaultValue)
   {
-    assert(std::isnan(defaultValue)==false);
     if (defaultValue != 0) {
       std::fill_n(cells, matrixSize, defaultValue);
     }
@@ -54,8 +53,6 @@ public:
   {
     assert(width == 2);
     assert(height == 1);
-    assert(std::isnan(x)==false);
-    assert(std::isnan(y)==false);
     cells[0] = x;
     cells[1] = y;
   }
@@ -64,9 +61,6 @@ public:
   {
     assert(width == 3);
     assert(height == 1);
-    assert(std::isnan(x)==false);
-    assert(std::isnan(y)==false);
-    assert(std::isnan(z)==false);
     cells[0] = x;
     cells[1] = y;
     cells[2] = z;
@@ -76,10 +70,6 @@ public:
   {
     assert(width == 4);
     assert(height == 1);
-    assert(std::isnan(x)==false);
-    assert(std::isnan(y)==false);
-    assert(std::isnan(z)==false);
-    assert(std::isnan(w)==false);
     cells[0] = x;
     cells[1] = y;
     cells[2] = z;
@@ -103,7 +93,6 @@ public:
   void sum(const _Matrix<T, width, height>& rhs) {
     for (i = 0; i < matrixSize; i++) {
       cells[i] += rhs.cells[i];
-      assert(std::isnan(cells[i])==false);
     }
   }
 
@@ -117,7 +106,6 @@ public:
   void minus(const _Matrix<T, width, height>& rhs) {
     for (i = 0; i < matrixSize; i++) {
       cells[i] -= rhs.cells[i];
-      assert(std::isnan(cells[i])==false);
     }
   }
 
@@ -130,7 +118,6 @@ public:
   void multiply(const T& rhs) {
     for (i = 0; i < matrixSize; i++) {
       cells[i] *= rhs;
-      assert(std::isnan(cells[i])==false);
     }
   }
 
@@ -281,13 +268,11 @@ public:
     assert(x < width);
     assert(y < height);
     cells[x * height + y] = value;
-    assert(std::isnan(cells[x * height + y])==false);
   }
 
   void setDirect(const unsigned int& index, const T& value) {
     assert(index < matrixSize);
     cells[index] = value;
-    assert(std::isnan(cells[index])==false);
   }
 
   template<typename A, typename B>

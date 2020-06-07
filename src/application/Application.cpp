@@ -232,7 +232,6 @@ void Application::render(double deltaTime) {
 
 void Application::mainLoop(double deltaTime){
   Logger::log("Fps:" + std::to_string(1.0 / deltaTime));
-  deltaTime = fmin(deltaTime,100.0);
   update(deltaTime);
   render(deltaTime);
   if(deltaTime>0){
@@ -244,6 +243,9 @@ void Application::mainLoop(double deltaTime){
 #ifdef __DESKTOP__
 
 void Application::run() {
+
+  glfwSwapInterval(1);
+
   while (!glfwWindowShouldClose(window))
   {
     currentTime = std::chrono::high_resolution_clock::now();
@@ -251,8 +253,11 @@ void Application::run() {
     lastTime = currentTime;
     deltaTimeInSecond = double(std::chrono::duration_cast<std::chrono::milliseconds>(deltaTimeInChrono).count()) / 1000.0;
     mainLoop(deltaTimeInSecond);
-    sleepTime = loopTime - deltaTimeInChrono;
-    std::this_thread::sleep_for(sleepTime);
+    //Not limiting fps for now
+    if (deltaTimeInSecond < loopTimeInSeconds) {
+      sleepTime = loopTime - deltaTimeInChrono;
+      std::this_thread::sleep_for(sleepTime);
+    }
     glfwSwapBuffers(window);
     glfwPollEvents();
   }
