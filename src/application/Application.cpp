@@ -231,7 +231,7 @@ void Application::render(double deltaTime) {
 }
 
 void Application::mainLoop(double deltaTime){
-  Logger::log("Fps:" + std::to_string(1.0 / deltaTime));
+  //Logger::log("Fps:" + std::to_string(1.0 / deltaTime));
   update(deltaTime);
   render(deltaTime);
   assert(openGLInstance.checkForOpenGlError());
