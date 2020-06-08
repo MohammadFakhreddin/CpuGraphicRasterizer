@@ -162,9 +162,14 @@ private:
 
   unsigned int pixelMapSize;
 
+  GLfloat* pointsDefaultValue;
   GLfloat* points;
   
+  GLfloat* colorsDefaultValue;
   GLfloat* colors;
+
+  size_t sizeOfColors;
+  size_t sizeOfPoints;
 
   OpenGL& gl;
 

@@ -237,8 +237,8 @@ void OpenGL::drawPixel(
   const int& pixelCount
 ){
   //OpenGL default world projection
-  assert(sizeof(position) == 4 * pixelCount * sizeof(GLfloat));
-  assert(sizeof(color) == 3 * pixelCount * sizeof(GLfloat));
+  // assert(sizeof(position) == 4 * pixelCount * sizeof(GLfloat));
+  // assert(sizeof(color) == 3 * pixelCount * sizeof(GLfloat));
 // #ifdef __OPENGL__
 //   glColor3f(red,green,blue);
 //   glVertex2f(x,y);
@@ -246,7 +246,7 @@ void OpenGL::drawPixel(
   {
     // position[0] = x;
     // position[1] = y;
-    glVertexAttribPointer((GLuint)pointParamLocation,4,GL_FLOAT,GL_FALSE,0,position);
+    glVertexAttribPointer((GLuint)pointParamLocation,4,GL_FLOAT,GL_FALSE, 4 * sizeof(GLfloat),position);
     assert(checkForOpenGlError());
     glEnableVertexAttribArray((GLuint)pointParamLocation);
     assert(checkForOpenGlError());
@@ -255,7 +255,7 @@ void OpenGL::drawPixel(
     // color[0] = red;
     // color[1] = green;
     // color[2] = blue;
-    glVertexAttribPointer((GLuint)colorParamLocation,3,GL_FLOAT,GL_FALSE,0,color);
+    glVertexAttribPointer((GLuint)colorParamLocation,3,GL_FLOAT,GL_FALSE, 3 * sizeof(GLfloat),color);
     assert(checkForOpenGlError());
     glEnableVertexAttribArray((GLuint)colorParamLocation);
     assert(checkForOpenGlError());
@@ -284,17 +284,32 @@ void OpenGL::resetProgram(){
 }
 
 bool OpenGL::checkForOpenGlError(){
-  auto error = glGetError();
-  if(error==GL_NO_ERROR){
-    return true;
-  }
+  // auto error = glGetError();
+  // if(error==GL_NO_ERROR){
+  //   return true;
+  // }
   
-  Logger::log("OpenGLError:\n"+std::to_string(error));
+  // Logger::log("OpenGLError:\n"+std::to_string(error));
   
-  while ((error = glGetError())!=GL_NO_ERROR)
+  // while ((error = glGetError())!=GL_NO_ERROR)
+  // {
+  //   Logger::log("OpenGLError:\n"+std::to_string(error));
+  // }
+  GLenum errorCode;
+  std::string error = "";
+  while ((errorCode = glGetError()) != GL_NO_ERROR)
   {
-    Logger::log("OpenGLError:\n"+std::to_string(error));
+    switch (errorCode)
+    {
+      case GL_INVALID_ENUM:                  error = "INVALID_ENUM"; break;
+      case GL_INVALID_VALUE:                 error = "INVALID_VALUE"; break;
+      case GL_INVALID_OPERATION:             error = "INVALID_OPERATION"; break;
+      case GL_STACK_OVERFLOW:                error = "STACK_OVERFLOW"; break;
+      case GL_STACK_UNDERFLOW:               error = "STACK_UNDERFLOW"; break;
+      case GL_OUT_OF_MEMORY:                 error = "OUT_OF_MEMORY"; break;
+      case GL_INVALID_FRAMEBUFFER_OPERATION: error = "INVALID_FRAMEBUFFER_OPERATION"; break;
+    }
+    Logger::log("OpenGLError:\n" + error);
   }
-  
   return false;
 }

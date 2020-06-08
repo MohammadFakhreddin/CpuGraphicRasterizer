@@ -126,7 +126,11 @@ void Camera::initPixelMap(){
   double yPixelStep = 2.0 / double(endY - startY);
 
   points = new GLfloat[pixelMapSize * 4];
+  pointsDefaultValue = new GLfloat[pixelMapSize * 4];
+  sizeOfPoints = sizeof(pointsDefaultValue);
   colors = new GLfloat[pixelMapSize * 3];
+  colorsDefaultValue = new GLfloat[pixelMapSize * 3];
+  sizeOfColors = sizeof(colorsDefaultValue);
   unsigned int rowValue = 0;
   unsigned int pointsIndex = 0;
   unsigned int colorsIndex = 0;
@@ -134,19 +138,18 @@ void Camera::initPixelMap(){
     for(unsigned int j=0;j<appScreenHeight;j++){
       pointsIndex = rowValue * 4;
       colorsIndex = rowValue * 3;
-      // auto currentPixel = &pixelMap[rowValue + j];
-      // currentPixel->zValue = endZ;
-      // currentPixel->blue = 0;
-      // currentPixel->green = 0;
-      // currentPixel->red = 0;
-      // currentPixel->x = float(-1.0 + xPixelStep * i);
-      // currentPixel->y = float(-1.0 + yPixelStep * j);
       points[pointsIndex] = float(-1.0 + xPixelStep * i);
       points[pointsIndex + 1] = float(-1.0 + yPixelStep * j);
-      points[pointsIndex + 2] = 0;
+      points[pointsIndex + 2] = endZ;
+      pointsDefaultValue[pointsIndex] = float(-1.0 + xPixelStep * i);
+      pointsDefaultValue[pointsIndex + 1] = float(-1.0 + yPixelStep * j);
+      pointsDefaultValue[pointsIndex + 2] = endZ;
       colors[colorsIndex] = 0;
       colors[colorsIndex + 1] = 0;
       colors[colorsIndex + 2] = 0;
+      colorsDefaultValue[colorsIndex] = 0;
+      colorsDefaultValue[colorsIndex + 1] = 0;
+      colorsDefaultValue[colorsIndex + 2] = 1;  
       rowValue++;
     }
   }
@@ -200,6 +203,8 @@ void Camera::render(const double& deltaTime){
   {//Drawing screen
     gl.beginDrawingPoints();
     gl.drawPixel(points,colors,pixelMapSize);
+    std::memcpy(colors,colorsDefaultValue,sizeOfColors);
+    std::memcpy(points,pointsDefaultValue,sizeOfPoints);
     // for (unsigned int i = 0; i < pixelMapSize; i++) {
     //   auto currentPixel = &pixelMap[i];
     //   if (currentPixel->zValue != endZ) {
