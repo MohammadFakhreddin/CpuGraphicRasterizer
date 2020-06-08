@@ -73,7 +73,7 @@ void OpenGL::init(){
   #ifdef __GLES__
     "gl_PointSize = "+std::to_string(pointSize)+";\n"
   #endif
-    "gl_Position = aVertexPosition;\n"
+    "gl_Position = vec4(aVertexPosition.xy,0,1);\n"
   "}\n";
 
   const std::string fShaderStr =
@@ -129,10 +129,6 @@ void OpenGL::init(){
   assert(colorParamLocation>=0);
 
   glClearColor(0.0f, 0.0f, 0.0f, 1.0f); // Set background color to black and opaque
-// #if defined(__OPENGL__)
-//   glPointSize(1.4f);
-//   glViewport(0,0,appScreenWidth,appScreenHeight);
-// #endif
 #if defined(__GLES__)
   
   viewPortWidth = physicalScreenWidth * 2;
@@ -142,9 +138,6 @@ void OpenGL::init(){
   viewPortStartY = int(-1 * (float(viewPortHeight)/2.0f));
 
 #endif
-// #if defined(__ANDROID__)
-//   glViewport(viewPortStartX,viewPortStartY,viewPortWidth,viewPortHeight);
-// #endif
 }
 
 GLuint OpenGL::loadShader(GLenum shaderType, const char* shaderSource){
@@ -219,15 +212,9 @@ GLuint OpenGL::createProgram(const char* vertexSource, const char * fragmentSour
 
 void OpenGL::clear(){
   glClear(GL_COLOR_BUFFER_BIT);
-  // #ifdef __OPENGL__
-  //   glBegin(GL_POINTS);
-  // #endif
 }
 
 void OpenGL::flush(){
-// #ifdef __OPENGL__
-//   glEnd();
-// #endif
   glFlush();
 }
 
@@ -236,35 +223,22 @@ void OpenGL::drawPixel(
   const GLfloat* color,
   const int& pixelCount
 ){
-  //OpenGL default world projection
-  // assert(sizeof(position) == 4 * pixelCount * sizeof(GLfloat));
-  // assert(sizeof(color) == 3 * pixelCount * sizeof(GLfloat));
-// #ifdef __OPENGL__
-//   glColor3f(red,green,blue);
-//   glVertex2f(x,y);
-// #else  
   {
-    // position[0] = x;
-    // position[1] = y;
-    glVertexAttribPointer((GLuint)pointParamLocation,4,GL_FLOAT,GL_FALSE,0,position);
+    glVertexAttribPointer(pointParamLocation,4,GL_FLOAT,GL_FALSE,0,position);
     assert(checkForOpenGlError());
-    glEnableVertexAttribArray((GLuint)pointParamLocation);
+    glEnableVertexAttribArray(pointParamLocation);
     assert(checkForOpenGlError());
   }
   {
-    // color[0] = red;
-    // color[1] = green;
-    // color[2] = blue;
-    glVertexAttribPointer((GLuint)colorParamLocation,3,GL_FLOAT,GL_FALSE,0,color);
+    glVertexAttribPointer(colorParamLocation,4,GL_FLOAT,GL_FALSE,0,color);
     assert(checkForOpenGlError());
-    glEnableVertexAttribArray((GLuint)colorParamLocation);
+    glEnableVertexAttribArray(colorParamLocation);
     assert(checkForOpenGlError());
   }
   glDrawArrays(GL_POINTS,0,pixelCount);
   assert(checkForOpenGlError());
-  glDisableVertexAttribArray((GLuint)pointParamLocation);
-  glDisableVertexAttribArray((GLuint)colorParamLocation);
-// #endif
+  glDisableVertexAttribArray(pointParamLocation);
+  glDisableVertexAttribArray(colorParamLocation);
 }
 
 void OpenGL::beginDrawingPoints(){
@@ -276,7 +250,7 @@ void OpenGL::beginDrawingPoints(){
   glfwGetFramebufferSize(window, &bufferWidth, &bufferHeight);
   glViewport(0, 0, bufferWidth, bufferHeight);
 #endif
-  glClear(GL_COLOR_BUFFER_BIT);
+  //glClear(GL_COLOR_BUFFER_BIT );
 }
 
 void OpenGL::resetProgram(){
@@ -300,5 +274,5 @@ bool OpenGL::checkForOpenGlError(){
     }
     Logger::log("OpenGLError:\n" + error);
   }
-  return false;
+  return errorCode == GL_NO_ERROR;
 }

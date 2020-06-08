@@ -91,6 +91,10 @@ Camera::~Camera() {
   delete[] points;
   
   delete[] colors;
+
+  delete[] colorsDefaultValue;
+
+  delete[] pointsDefaultValue;
 }
 
 void Camera::notifyScreenSurfaceIsChanged(
@@ -127,29 +131,33 @@ void Camera::initPixelMap(){
 
   points = new GLfloat[pixelMapSize * 4];
   pointsDefaultValue = new GLfloat[pixelMapSize * 4];
-  sizeOfPoints = sizeof(pointsDefaultValue);
-  colors = new GLfloat[pixelMapSize * 3];
-  colorsDefaultValue = new GLfloat[pixelMapSize * 3];
-  sizeOfColors = sizeof(colorsDefaultValue);
+  sizeOfPoints = sizeof(GLfloat) * pixelMapSize * 4;
+  colors = new GLfloat[pixelMapSize * 4];
+  colorsDefaultValue = new GLfloat[pixelMapSize * 4];
+  sizeOfColors = sizeof(GLfloat) * pixelMapSize * 4;
   unsigned int rowValue = 0;
   unsigned int pointsIndex = 0;
   unsigned int colorsIndex = 0;
   for(unsigned int i=0;i<appScreenWidth;i++){
     for(unsigned int j=0;j<appScreenHeight;j++){
       pointsIndex = rowValue * 4;
-      colorsIndex = rowValue * 3;
+      colorsIndex = rowValue * 4;
       points[pointsIndex] = float(-1.0 + xPixelStep * i);
       points[pointsIndex + 1] = float(-1.0 + yPixelStep * j);
       points[pointsIndex + 2] = endZ;
+      points[pointsIndex + 3] = 1.0f;
       pointsDefaultValue[pointsIndex] = float(-1.0 + xPixelStep * i);
       pointsDefaultValue[pointsIndex + 1] = float(-1.0 + yPixelStep * j);
       pointsDefaultValue[pointsIndex + 2] = endZ;
-      colors[colorsIndex] = 0;
-      colors[colorsIndex + 1] = 0;
-      colors[colorsIndex + 2] = 0;
-      colorsDefaultValue[colorsIndex] = 0;
-      colorsDefaultValue[colorsIndex + 1] = 0;
-      colorsDefaultValue[colorsIndex + 2] = 1;  
+      pointsDefaultValue[pointsIndex + 3] = 1.0f;
+      colors[colorsIndex] = 0.0f;
+      colors[colorsIndex + 1] = 0.0f;
+      colors[colorsIndex + 2] = 0.0f;
+      colors[colorsIndex + 3] = 1.0f;
+      colorsDefaultValue[colorsIndex] = 0.0f;
+      colorsDefaultValue[colorsIndex + 1] = 0.0f;
+      colorsDefaultValue[colorsIndex + 2] = 0.0f;  
+      colorsDefaultValue[colorsIndex + 3] = 1.0f;
       rowValue++;
     }
   }
@@ -187,9 +195,8 @@ void Camera::assignToPixel(
   const float& green,
   const float& blue
 ) {
-  // auto& currentPixel = pixelMap[index];
   unsigned int pointIndex = index * 4;
-  unsigned int colorIndex = index * 3;
+  unsigned int colorIndex = index * 4;
   if (points[pointIndex + 2] > zValue) {
     //TODO Maybe impelemting some antialising
     points[pointIndex + 2] = zValue;
@@ -205,22 +212,6 @@ void Camera::render(const double& deltaTime){
     gl.drawPixel(points,colors,pixelMapSize);
     std::memcpy(colors,colorsDefaultValue,sizeOfColors);
     std::memcpy(points,pointsDefaultValue,sizeOfPoints);
-    // for (unsigned int i = 0; i < pixelMapSize; i++) {
-    //   auto currentPixel = &pixelMap[i];
-    //   if (currentPixel->zValue != endZ) {
-    //     gl.drawPixel(
-    //       currentPixel->x,
-    //       currentPixel->y,
-    //       currentPixel->red,
-    //       currentPixel->green,
-    //       currentPixel->blue
-    //     );
-    //     currentPixel->zValue = endZ;
-    //     currentPixel->red = 0.0f;
-    //     currentPixel->green = 0.0f;
-    //     currentPixel->blue = 0.0f;
-    //   }
-    // }
     gl.resetProgram();
   }
 }

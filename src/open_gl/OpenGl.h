@@ -79,10 +79,6 @@ public:
   
   GLuint createProgram(const char* vertexSource, const char * fragmentSource);
   
-  // GLfloat color[4] = {0,0,0,1.0f};
-  
-  // GLfloat position[4] = {0,0,0.0f,1.0f};
-
 private:
 
   unsigned int appScreenWidth = 0;
