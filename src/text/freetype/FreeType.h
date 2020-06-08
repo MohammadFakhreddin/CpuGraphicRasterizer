@@ -1,6 +1,8 @@
 #ifndef FontType_Class
 #define FontType_Class
 
+#include "./../../open_gl/OpenGl.h"
+#ifdef __OPENGL__
 #include <string>
 #include <ft2build.h>
 #include FT_FREETYPE_H
@@ -39,5 +41,5 @@ private:
 
   int forceUcs2CharMap(FT_Face ftf) const;
 };
-
+#endif
 #endif // !FontType_Class

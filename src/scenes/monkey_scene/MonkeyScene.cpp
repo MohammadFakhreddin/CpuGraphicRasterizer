@@ -61,14 +61,14 @@ MonkeyScene::MonkeyScene(OpenGL& gl)
   pip.assignAmbientLight(ambientLight.get());
   pip.assignPointLight(pointLight.get());
   pip.assignShape(monkey.get());
-
+#ifdef __OPENGL__
   font = std::make_unique<Font>(
     Path::generateAssetPath("font/BYekan", ".ttf"),
     200,
     &DataAccessPoint::getInstance()->getFreeType(),
     DataAccessPoint::getInstance()->getSpecialCharacters()
   );
-
+#endif
 }
 
 void MonkeyScene::update(double deltaTime) {
@@ -152,8 +152,9 @@ void MonkeyScene::update(double deltaTime) {
   }
 #endif
   pip.update(deltaTime);
+#ifdef __OPENGL__
   font->drawText(pip, "به نام خدا", 100, 100, Font::PositionMode::leftTop, whiteColor.get());
-  
+#endif
 }
 
 void MonkeyScene::render(double deltaTime) {

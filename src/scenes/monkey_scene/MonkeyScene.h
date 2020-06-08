@@ -8,7 +8,9 @@
 #include "../../shaders/point_light/PointLight.h"
 #include "../../pipeline/Pipeline.h"
 #include "../../texture/ImageTexture/ImageTexture.h"
+#ifdef __OPENGL__
 #include "../../text/font/Font.h"
+#endif
 
 #define MONKEY_SCENE_SPEED_FACTOR 100
 
@@ -69,9 +71,9 @@ private:
   Matrix2X1Int previousMousePosition;
 
   Matrix2X1Int currentMousePosition;
-
+#ifdef __OPENGL__
   std::unique_ptr<Font> font;
-
+#endif
 };
 
 #endif // !MonkeyScene_Class

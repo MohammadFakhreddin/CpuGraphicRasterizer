@@ -60,8 +60,8 @@ void OpenGL::init(){
   int nrAttributes;
   glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &nrAttributes);
   Logger::log("Maximum nr of vertex attributes supported:"+std::to_string(nrAttributes));
-#ifdef __OPENGL__
   float pointSize = (float(physicalScreenWidth) / float(appScreenWidth)) * 1.2f + 0.5f;
+#ifdef __OPENGL__
   glPointSize(pointSize);
 #endif
   const std::string vShaderStr =
@@ -250,7 +250,6 @@ void OpenGL::beginDrawingPoints(){
   glfwGetFramebufferSize(window, &bufferWidth, &bufferHeight);
   glViewport(0, 0, bufferWidth, bufferHeight);
 #endif
-  //glClear(GL_COLOR_BUFFER_BIT );
 }
 
 void OpenGL::resetProgram(){
@@ -267,8 +266,10 @@ bool OpenGL::checkForOpenGlError(){
       case GL_INVALID_ENUM:                  error = "INVALID_ENUM"; break;
       case GL_INVALID_VALUE:                 error = "INVALID_VALUE"; break;
       case GL_INVALID_OPERATION:             error = "INVALID_OPERATION"; break;
+#ifdef __OPENGL__
       case GL_STACK_OVERFLOW:                error = "STACK_OVERFLOW"; break;
       case GL_STACK_UNDERFLOW:               error = "STACK_UNDERFLOW"; break;
+#endif
       case GL_OUT_OF_MEMORY:                 error = "OUT_OF_MEMORY"; break;
       case GL_INVALID_FRAMEBUFFER_OPERATION: error = "INVALID_FRAMEBUFFER_OPERATION"; break;
     }

@@ -73,7 +73,7 @@ void DataAccessPoint::setMousePosition(const int& x,const int& y){
 const Matrix2X1Int& DataAccessPoint::getMousePosition(){
   return mousePosition;
 }
-
+#ifdef __OPENGL__
 const FreeType& DataAccessPoint::getFreeType()
 {
   return freeType;
@@ -83,3 +83,4 @@ const std::vector<LanguageCharacterSource*>& DataAccessPoint::getSpecialCharacte
 {
   return specialCharactersSource;
 }
+#endif

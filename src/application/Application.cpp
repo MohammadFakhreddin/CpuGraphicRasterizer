@@ -140,13 +140,13 @@ void Application::init(
   DataAccessPoint::getInstance()->setPlatform(platform);
   
   //sceneList.emplace_back(std::make_unique<LightPerPixelScene>(openGLInstance));
-  sceneList.emplace_back(std::make_unique<MonkeyScene>(openGLInstance));
+  // sceneList.emplace_back(std::make_unique<MonkeyScene>(openGLInstance));
   sceneList.emplace_back(std::make_unique<BunnyScene>(openGLInstance));
-  sceneList.emplace_back(std::make_unique<SphereScene>(openGLInstance));
-  sceneList.emplace_back(std::make_unique<ColoredCubeScene>(openGLInstance));
-  sceneList.emplace_back(std::make_unique<TexturedCubeScene>(openGLInstance));
-  sceneList.emplace_back(std::make_unique<RobotScene>(openGLInstance));
-  sceneList.emplace_back(std::make_unique<PlantScene>(openGLInstance));
+  // sceneList.emplace_back(std::make_unique<SphereScene>(openGLInstance));
+  // sceneList.emplace_back(std::make_unique<ColoredCubeScene>(openGLInstance));
+  // sceneList.emplace_back(std::make_unique<TexturedCubeScene>(openGLInstance));
+  // sceneList.emplace_back(std::make_unique<RobotScene>(openGLInstance));
+  // sceneList.emplace_back(std::make_unique<PlantScene>(openGLInstance));
   navigateToScene(0);
 
 #ifdef __DESKTOP__

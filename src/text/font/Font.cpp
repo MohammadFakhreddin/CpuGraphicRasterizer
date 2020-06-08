@@ -9,7 +9,7 @@
 #include "../../pipeline/Pipeline.h"
 
 //TODO 3d canvas and text canvas must be separated
-
+#ifdef __OPENGL__
 Font::Font(
   const std::string& fontAddress,
   const int& fontSize,
@@ -697,3 +697,4 @@ void Font::findSmallestRectForGlyphTexture(
   } while (targetIndexCanBeMinimized && *textureEndX >= 0);
 
 }
+#endif

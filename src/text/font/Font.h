@@ -1,6 +1,8 @@
 #ifndef Font_Class
 #define Font_Class
 
+#include "../../open_gl/OpenGl.h"
+#ifdef  __OPENGL__
 #include <codecvt>
 #include <memory>
 #include <harfbuzz/hb.h>
@@ -85,12 +87,13 @@ private:
   const float margin;
 
   const float space;
-
+#ifdef __OPENGL__
   FT_Face* face;
 
   hb_font_t* font;
 
   hb_buffer_t* buffer;
+#endif
 
   std::unordered_map<char32_t, LanguageCharacterSource::Direction> unicodeSingleCharDirection;
 
@@ -134,5 +137,5 @@ private:
   FontMemoryPool mp;
 
 };
-
+#endif
 #endif // !Font_Class

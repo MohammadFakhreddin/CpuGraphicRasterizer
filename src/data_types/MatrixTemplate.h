@@ -17,7 +17,7 @@ class _Matrix {
 
 public:
 
-  static constexpr unsigned int matrixSize = width * height;
+  unsigned int matrixSize = width * height;
 
   T cells[width * height] = { 0 };
 

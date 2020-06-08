@@ -8,9 +8,12 @@
 #include "../event_handler/EventHandler.h"
 #include "../utils/thread_pool/ThreadPool.h"
 #include "../data_types/MatrixTemplate.h"
+#include "../open_gl/OpenGl.h"
+#ifdef  __OPENGL__
 #include "../text/freetype/FreeType.h"
 #include "../text/resources/FaCharacterSource.h"
 #include "../text/resources/LanguageCharacterSource.h"
+#endif
 
 class DataAccessPoint {
 
@@ -47,11 +50,11 @@ public:
   void setMousePosition(const int& x,const int& y);
 
   const Matrix2X1Int& getMousePosition();
-
+#ifdef __OPENGL__
   const FreeType& getFreeType();
-
   const std::vector<LanguageCharacterSource*>& getSpecialCharacters();
-   
+#endif
+
 private:
 
   static std::unique_ptr<DataAccessPoint> instance;
@@ -77,14 +80,13 @@ private:
   EventHandler eventHandler;
 
   ThreadPool threadPool;
-
+#ifdef __OPENGL__
   FreeType freeType;
-
   FaCharacterSource faCaSource;
-
   std::vector<LanguageCharacterSource*> specialCharactersSource = std::vector<LanguageCharacterSource*>({
     &faCaSource
   });
+#endif
 
 };
 

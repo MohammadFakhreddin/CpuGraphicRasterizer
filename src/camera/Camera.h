@@ -12,11 +12,11 @@ class Camera{
 
 public:
 
-  static constexpr float endZ = 1000;
+ float endZ = 1000;
 
-  static constexpr float startZ = 0;
+ float startZ = 0;
 
-  static constexpr float zDistance = endZ - startZ;
+ float zDistance = endZ - startZ;
 
   Camera(
     OpenGL& paramGl,

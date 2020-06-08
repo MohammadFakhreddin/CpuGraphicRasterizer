@@ -112,6 +112,7 @@ void BaseScene::onActiveSceneChanged(const std::string& sceneName) {
   isPageActive = this->sceneName == sceneName;
 }
 
+#ifdef __OPENGL__
 void BaseScene::mouseButtonPressed(const int& buttonName){
   mouseEvents[buttonName] = true;
 }
@@ -119,3 +120,4 @@ void BaseScene::mouseButtonPressed(const int& buttonName){
 void BaseScene::mouseButtonReleased(const int& buttonName){
   mouseEvents[buttonName] = false;
 }
+#endif

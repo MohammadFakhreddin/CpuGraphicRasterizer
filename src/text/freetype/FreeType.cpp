@@ -2,6 +2,7 @@
 
 #include <cassert>
 #include <cstring>
+#ifdef __OPENGL__
 
 FreeType::FreeType()
 {
@@ -97,3 +98,4 @@ int FreeType::forceUcs2CharMap(FT_Face ftf) const
   }
   return -1;
 }
+#endif
