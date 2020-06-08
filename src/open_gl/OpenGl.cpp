@@ -246,7 +246,7 @@ void OpenGL::drawPixel(
   {
     // position[0] = x;
     // position[1] = y;
-    glVertexAttribPointer((GLuint)pointParamLocation,4,GL_FLOAT,GL_FALSE, 4 * sizeof(GLfloat),position);
+    glVertexAttribPointer((GLuint)pointParamLocation,4,GL_FLOAT,GL_FALSE,0,position);
     assert(checkForOpenGlError());
     glEnableVertexAttribArray((GLuint)pointParamLocation);
     assert(checkForOpenGlError());
@@ -255,7 +255,7 @@ void OpenGL::drawPixel(
     // color[0] = red;
     // color[1] = green;
     // color[2] = blue;
-    glVertexAttribPointer((GLuint)colorParamLocation,3,GL_FLOAT,GL_FALSE, 3 * sizeof(GLfloat),color);
+    glVertexAttribPointer((GLuint)colorParamLocation,3,GL_FLOAT,GL_FALSE,0,color);
     assert(checkForOpenGlError());
     glEnableVertexAttribArray((GLuint)colorParamLocation);
     assert(checkForOpenGlError());
@@ -284,17 +284,6 @@ void OpenGL::resetProgram(){
 }
 
 bool OpenGL::checkForOpenGlError(){
-  // auto error = glGetError();
-  // if(error==GL_NO_ERROR){
-  //   return true;
-  // }
-  
-  // Logger::log("OpenGLError:\n"+std::to_string(error));
-  
-  // while ((error = glGetError())!=GL_NO_ERROR)
-  // {
-  //   Logger::log("OpenGLError:\n"+std::to_string(error));
-  // }
   GLenum errorCode;
   std::string error = "";
   while ((errorCode = glGetError()) != GL_NO_ERROR)
