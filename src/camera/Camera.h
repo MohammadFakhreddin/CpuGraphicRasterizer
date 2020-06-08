@@ -17,16 +17,6 @@ public:
   static constexpr float startZ = 0;
 
   static constexpr float zDistance = endZ - startZ;
-  
-  //TODO Store point size as well
-  struct DrawPixel{
-    float x;
-    float y;
-    float zValue;
-    float red;
-    float green;
-    float blue;
-  };
 
   Camera(
     OpenGL& paramGl,
@@ -172,7 +162,14 @@ private:
 
   unsigned int pixelMapSize;
 
-  DrawPixel* pixelMap;
+  GLfloat* pointsDefaultValue;
+  GLfloat* points;
+  
+  GLfloat* colorsDefaultValue;
+  GLfloat* colors;
+
+  size_t sizeOfColors;
+  size_t sizeOfPoints;
 
   OpenGL& gl;
 

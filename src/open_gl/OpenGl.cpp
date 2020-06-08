@@ -73,7 +73,7 @@ void OpenGL::init(){
   #ifdef __GLES__
     "gl_PointSize = "+std::to_string(pointSize)+";\n"
   #endif
-    "gl_Position = aVertexPosition;\n"
+    "gl_Position = vec4(aVertexPosition.xy,0,1);\n"
   "}\n";
 
   const std::string fShaderStr =
@@ -129,10 +129,6 @@ void OpenGL::init(){
   assert(colorParamLocation>=0);
 
   glClearColor(0.0f, 0.0f, 0.0f, 1.0f); // Set background color to black and opaque
-// #if defined(__OPENGL__)
-//   glPointSize(1.4f);
-//   glViewport(0,0,appScreenWidth,appScreenHeight);
-// #endif
 #if defined(__GLES__)
   
   viewPortWidth = physicalScreenWidth * 2;
@@ -142,9 +138,6 @@ void OpenGL::init(){
   viewPortStartY = int(-1 * (float(viewPortHeight)/2.0f));
 
 #endif
-// #if defined(__ANDROID__)
-//   glViewport(viewPortStartX,viewPortStartY,viewPortWidth,viewPortHeight);
-// #endif
 }
 
 GLuint OpenGL::loadShader(GLenum shaderType, const char* shaderSource){
@@ -226,38 +219,26 @@ void OpenGL::flush(){
 }
 
 void OpenGL::drawPixel(
-  const float& x, 
-  const float& y, 
-  const float& red, 
-  const float& green, 
-  const float& blue
+  const GLfloat* position,
+  const GLfloat* color,
+  const int& pixelCount
 ){
-  //OpenGL default world projection
-  assert(x>=-1 && x<=1);
-  assert(y>=-1 && y<=1);
-    
   {
-    position[0] = x;
-    position[1] = y;
-    glVertexAttribPointer((GLuint)pointParamLocation,4,GL_FLOAT,GL_FALSE,0,position);
+    glVertexAttribPointer(pointParamLocation,4,GL_FLOAT,GL_FALSE,0,position);
     assert(checkForOpenGlError());
-    glEnableVertexAttribArray((GLuint)pointParamLocation);
+    glEnableVertexAttribArray(pointParamLocation);
     assert(checkForOpenGlError());
   }
   {
-    color[0] = red;
-    color[1] = green;
-    color[2] = blue;
-    glVertexAttribPointer((GLuint)colorParamLocation,4,GL_FLOAT,GL_FALSE,0,color);
+    glVertexAttribPointer(colorParamLocation,4,GL_FLOAT,GL_FALSE,0,color);
     assert(checkForOpenGlError());
-    glEnableVertexAttribArray((GLuint)colorParamLocation);
+    glEnableVertexAttribArray(colorParamLocation);
     assert(checkForOpenGlError());
   }
-  glDrawArrays(GL_POINTS,0,1);
+  glDrawArrays(GL_POINTS,0,pixelCount);
   assert(checkForOpenGlError());
-  glDisableVertexAttribArray((GLuint)pointParamLocation);
-  glDisableVertexAttribArray((GLuint)colorParamLocation);
-
+  glDisableVertexAttribArray(pointParamLocation);
+  glDisableVertexAttribArray(colorParamLocation);
 }
 
 void OpenGL::beginDrawingPoints(){
@@ -269,7 +250,7 @@ void OpenGL::beginDrawingPoints(){
   glfwGetFramebufferSize(window, &bufferWidth, &bufferHeight);
   glViewport(0, 0, bufferWidth, bufferHeight);
 #endif
-  glClear(GL_COLOR_BUFFER_BIT);
+  //glClear(GL_COLOR_BUFFER_BIT );
 }
 
 void OpenGL::resetProgram(){
@@ -277,17 +258,21 @@ void OpenGL::resetProgram(){
 }
 
 bool OpenGL::checkForOpenGlError(){
-  auto error = glGetError();
-  if(error==GL_NO_ERROR){
-    return true;
-  }
-  
-  Logger::log("OpenGLError:\n"+std::to_string(error));
-  
-  while ((error = glGetError())!=GL_NO_ERROR)
+  GLenum errorCode;
+  std::string error = "";
+  while ((errorCode = glGetError()) != GL_NO_ERROR)
   {
-    Logger::log("OpenGLError:\n"+std::to_string(error));
+    switch (errorCode)
+    {
+      case GL_INVALID_ENUM:                  error = "INVALID_ENUM"; break;
+      case GL_INVALID_VALUE:                 error = "INVALID_VALUE"; break;
+      case GL_INVALID_OPERATION:             error = "INVALID_OPERATION"; break;
+      case GL_STACK_OVERFLOW:                error = "STACK_OVERFLOW"; break;
+      case GL_STACK_UNDERFLOW:               error = "STACK_UNDERFLOW"; break;
+      case GL_OUT_OF_MEMORY:                 error = "OUT_OF_MEMORY"; break;
+      case GL_INVALID_FRAMEBUFFER_OPERATION: error = "INVALID_FRAMEBUFFER_OPERATION"; break;
+    }
+    Logger::log("OpenGLError:\n" + error);
   }
-  
-  return false;
+  return errorCode == GL_NO_ERROR;
 }

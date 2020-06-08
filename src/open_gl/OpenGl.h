@@ -58,7 +58,11 @@ public:
   
   void init();
   
-  void drawPixel(const float& x,const float& y,const float& red,const float& green,const float& blue);
+  void drawPixel(
+    const GLfloat* position,
+    const GLfloat* color,
+    const int& pixelCount
+  );
   
   void clear();
   
@@ -75,10 +79,6 @@ public:
   
   GLuint createProgram(const char* vertexSource, const char * fragmentSource);
   
-  GLfloat color[4] = {0,0,0,1.0f};
-  
-  GLfloat position[4] = {0,0,0.0f,1.0f};
-
 private:
 
   unsigned int appScreenWidth = 0;
