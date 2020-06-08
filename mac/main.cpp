@@ -39,7 +39,7 @@ int main(int argc, char** argv) {
 	
 	unsigned int appScreenWidth = 960;
 	
-	unsigned int appScreenHeight = 540;
+	unsigned int appScreenHeight = 960;
 	
 	GLFWwindow* window = glfwCreateWindow(appScreenWidth, appScreenHeight, Constants::Window::appName, NULL, NULL);
 	if (!window)
@@ -69,8 +69,8 @@ int main(int argc, char** argv) {
 	Application* application = new Application(
 		window,
 		Constants::Platform::Mac,
-		960,
-		540,
+		appScreenWidth,
+		appScreenHeight,
 		realScreenWidth,
 		realScreenHeight
 	);

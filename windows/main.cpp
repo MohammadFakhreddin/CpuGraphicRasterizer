@@ -39,9 +39,9 @@ int main(int argc, char** argv) {
   
 	unsigned int realScreenHeight = (int)GetSystemMetrics(SM_CYSCREEN);
 	
-	unsigned int appScreenWidth = 800;
+	unsigned int appScreenWidth = 960;
 	
-	unsigned int appScreenHeight = 600;
+	unsigned int appScreenHeight = 960;
 
 	GLFWwindow* window = glfwCreateWindow(appScreenWidth, appScreenHeight, Constants::Window::appName, NULL, NULL);
 	if (!window)
