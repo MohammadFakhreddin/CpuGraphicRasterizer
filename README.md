@@ -1,6 +1,7 @@
-# 3D-Cube 
+# CPU only graphic processor
 ### Using c++,cmake, pure math and putPixel equivalent in openGL
-### Currently entire game engine processes runs only on cpu (But multi threaded)
+### Rntire game engine processes runs only on cpu (But multi threaded)
+### Implemented graphic pipeline + rasterizer on cpu
 
 <div>
     <h2>Specular highlight</h2>
