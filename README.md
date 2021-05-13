@@ -3,14 +3,25 @@
 ### Rntire game engine processes runs only on cpu (But multi threaded)
 ### Implemented graphic pipeline + rasterizer on cpu
 
+<br/>
+<div>
+    <h2>Text rasterization</h2>
+    <img src="text-rasterizing.gif">
+</div>
+
+<br/>
 <div>
     <h2>Specular highlight</h2>
     <img src="specular_highlight.gif">
 </div>
+
+<br/>
 <div>
     <h2>Point light (Runs multi-thread on cpu)</h2>
     <img src="point_light.gif">
 </div>
+
+<br/>
 <div>
     <h2>Smooth shadows using auto generated normal vectors</h2>
     <img src="smooth_shadows.gif">
